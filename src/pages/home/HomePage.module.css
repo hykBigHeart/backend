@@ -1,0 +1,8 @@
+.page-content {
+    width: 1200px;
+    min-height: calc(100vh - 173px);
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px;
+    margin-bottom: 100px;
+  }
