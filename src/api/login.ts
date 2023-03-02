@@ -10,7 +10,7 @@ export function login(
     email: email,
     password: password,
     captcha_key: captchaKey,
-    captcha_val: captchaVal,
+    captcha_value: captchaVal,
   });
 }
 
