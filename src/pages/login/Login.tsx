@@ -57,7 +57,7 @@ export const Login: React.FC = (defaultState) => {
   };
 
   const getUser = () => {
-    system.getUser().then((res) => {
+    login.getUser().then((res) => {
       console.log(res);
     });
   };
@@ -65,20 +65,7 @@ export const Login: React.FC = (defaultState) => {
   useEffect(() => {
     fetchData();
   }, []);
-  if (loading) {
-    return (
-      <Spin
-        size="large"
-        style={{
-          marginTop: 200,
-          marginBottom: 200,
-          marginLeft: "auto",
-          marginRight: "auto",
-          width: "100%",
-        }}
-      />
-    );
-  }
+ 
   return (
     <div className={styles["login-content"]}>
       <div className={styles["login-box"]}>

@@ -10,6 +10,9 @@ export class HttpClient {
       baseURL: url,
       timeout: 15000,
       withCredentials: false,
+      headers:{
+        "Accept":"application/json"
+      }
     });
 
     //拦截器注册

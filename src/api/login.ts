@@ -17,3 +17,7 @@ export function login(
 export function logout() {
   return client.post("/backend/v1/auth/logout", {});
 }
+
+export function getUser() {
+  return client.get("/backend/v1/auth/detail", {});
+}
