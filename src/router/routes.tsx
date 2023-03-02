@@ -1,6 +1,6 @@
 import React from "react";
 import { RouteObject } from "react-router-dom";
-import { Login, HomePage, Dashboard } from "../pages";
+import { Login, HomePage, Dashboard, ErrorPage } from "../pages";
 
 const routes: RouteObject[] = [
   {
@@ -16,6 +16,10 @@ const routes: RouteObject[] = [
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "*",
+    element: <ErrorPage />,
   },
 ];
 

@@ -1,4 +1,5 @@
 import React from "react";
+import styles from "./Error.module.css";
 
 export const ErrorPage: React.FC<any> = () => {
   return (
