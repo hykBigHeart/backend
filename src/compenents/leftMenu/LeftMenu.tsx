@@ -9,6 +9,7 @@ import { Menu } from "antd";
 import { useNavigate, Link } from "react-router-dom";
 import styles from "./LeftMenu.module.css";
 import logo from "../../assets/logo.png";
+import "../../utils/index.css";
 
 function getItem(label: any, key: any, icon: any, children: any, type: any) {
   return {
@@ -21,7 +22,7 @@ function getItem(label: any, key: any, icon: any, children: any, type: any) {
 }
 const items = [
   getItem("首页概览", "/", <SettingOutlined />, null, null),
-  getItem("网校装修", "/", <SettingOutlined />, null, null),
+  getItem("网校装修", "/decoration", <SettingOutlined />, null, null),
   getItem(
     "课程内容",
     "2",
@@ -61,10 +62,7 @@ export const LeftMenu: React.FC = () => {
   };
   return (
     <div className={styles["left-menu"]}>
-      <Link
-        style={{ textDecoration: "none" }}
-        to={`/`}
-      >
+      <Link style={{ textDecoration: "none" }} to={`/`}>
         <img src={logo} alt="" className={styles["App-logo"]} />
       </Link>
       <Menu

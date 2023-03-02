@@ -1,0 +1,27 @@
+.ant-menu-item {
+  width: calc(100% - 32px) !important;
+  margin-left: 16px !important;
+  margin-right: 16px !important;
+}
+
+.ant-menu-submenu {
+  width: calc(100% - 24px) !important;
+  margin-left: 12px !important;
+  margin-right: 12px !important;
+}
+
+.ant-menu,
+.ant-menu-sub,
+.ant-menu-inline {
+  background-color: #ffffff !important;
+}
+
+.ant-menu-item-selected {
+  background-color: #ff4d4f !important;
+  color: white !important;
+}
+
+.ant-menu-item-active {
+  background-color: #ff4d4f !important;
+  color: white !important;
+}

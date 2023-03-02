@@ -1,14 +1,6 @@
-.page-content {
-  width: 1200px;
-  min-height: calc(100vh - 173px);
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 30px;
-  margin-bottom: 100px;
-}
-
 .layout-wrap {
   width: 100%;
+  height: 100vh;
   display: flex;
 }
 
@@ -20,4 +12,17 @@
   width: calc(100% - 200px);
   display: flex;
   flex-direction: column;
+}
+
+.right-top {
+  width: 100%;
+  height: 48px;
+}
+
+.right-main {
+  flex: 1;
+  box-sizing: border-box;
+  padding: 24px;
+  overflow-y: auto;
+  background-color: #f1f2f9;
 }
