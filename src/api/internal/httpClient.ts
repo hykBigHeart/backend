@@ -1,4 +1,5 @@
 import axios, { Axios, AxiosResponse } from "axios";
+import { message } from "antd";
 import { getToken, clearToken } from "../../utils/index";
 
 export class HttpClient {
@@ -27,13 +28,18 @@ export class HttpClient {
       (response: AxiosResponse) => {
         let status = response.data.status; //HTTP状态码
         let code = response.data.code; //业务返回代码
+        let msg = response.data.msg; //错误消息
 
-        console.log("response", status, code);
-
-        if (status === 200 && code === 0) {
+        if (code === 0) {
           return Promise.resolve(response);
+        } else {
+          message.error(msg);
+          return Promise.reject(response);
         }
-
+      },
+      // 当http的状态码非0
+      (error) => {
+        let status = error.response.status;
         if (status === 401) {
           clearToken();
           // 跳转到登录界面
@@ -43,19 +49,6 @@ export class HttpClient {
           // 跳转到无权限页面
         } else if (status === 500) {
           // 跳转到500异常页面
-        }
-        return Promise.reject(response);
-      },
-      // 当http的状态码非0
-      (error) => {
-        let httpCode = error.response.status;
-        if (httpCode === 401) {
-          //未登录
-          clearToken();
-          return;
-        } else if (httpCode === 403) {
-          //无权限
-          return;
         }
         return Promise.reject(error.response);
       }
