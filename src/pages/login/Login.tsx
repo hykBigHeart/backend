@@ -4,9 +4,9 @@ import { Typography, Spin, Input, Button, message } from "antd";
 import { login, system } from "../../api/index";
 import { setToken } from "../../utils/index";
 
-export const Login: React.FC = (defaultState) => {
+export const Login: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
-  const [captchaList, setCourse] = useState<any>(null);
+  const [image, setImage] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [captcha_val, setCaptcha_val] = useState<string>("");
@@ -14,7 +14,7 @@ export const Login: React.FC = (defaultState) => {
   const fetchData = () => {
     setLoading(true);
     system.getImageCaptcha().then((res: any) => {
-      setCourse(res.data);
+      setImage(res.data.image);
       setCaptcha_key(res.data.key);
       setLoading(false);
     });
@@ -65,7 +65,7 @@ export const Login: React.FC = (defaultState) => {
   useEffect(() => {
     fetchData();
   }, []);
- 
+
   return (
     <div className={styles["login-content"]}>
       <div className={styles["login-box"]}>
@@ -105,7 +105,7 @@ export const Login: React.FC = (defaultState) => {
             <img
               className={styles["captcha"]}
               onClick={fetchData}
-              src={captchaList.image}
+              src={image}
               alt=""
             />
           </div>

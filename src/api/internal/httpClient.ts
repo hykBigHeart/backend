@@ -1,6 +1,12 @@
 import axios, { Axios, AxiosResponse } from "axios";
 import { message } from "antd";
 import { getToken, clearToken } from "../../utils/index";
+import { useNavigate } from "react-router-dom";
+
+const GoLogin = () => {
+  const navigate = useNavigate();
+  navigate("/login");
+};
 
 export class HttpClient {
   axios: Axios;
@@ -10,9 +16,9 @@ export class HttpClient {
       baseURL: url,
       timeout: 15000,
       withCredentials: false,
-      headers:{
-        "Accept":"application/json"
-      }
+      headers: {
+        Accept: "application/json",
+      },
     });
 
     //拦截器注册
@@ -46,6 +52,7 @@ export class HttpClient {
         if (status === 401) {
           clearToken();
           // 跳转到登录界面
+          GoLogin();
         } else if (status === 404) {
           // 跳转到404页面
         } else if (status === 403) {

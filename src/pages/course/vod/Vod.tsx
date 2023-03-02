@@ -64,7 +64,7 @@ const data: DataType[] = [
 
 export const VodListPage: React.FC = () => {
   useEffect(() => {
-    login.login("1@qq.com", "123123", "1", "2");
+    
   }, []);
   const handleChange = (e: any) => {
     console.log(e);
