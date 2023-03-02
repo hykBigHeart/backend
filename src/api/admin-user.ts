@@ -48,3 +48,7 @@ export function updateAdminUser(
     role_ids: roleIds,
   });
 }
+
+export function destroyAdminUser(id: number) {
+  return client.destroy(`/backend/v1/admin-user/${id}`);
+}

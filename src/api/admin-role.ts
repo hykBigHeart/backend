@@ -29,3 +29,7 @@ export function updateAdminRole(
     permission_ids: permissionIds,
   });
 }
+
+export function destroyAdminRole(id: number) {
+  return client.destroy(`/backend/v1/admin-role/${id}`);
+}
