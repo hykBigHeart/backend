@@ -1,8 +1,23 @@
 .page-content {
-    width: 1200px;
-    min-height: calc(100vh - 173px);
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 30px;
-    margin-bottom: 100px;
-  }
+  width: 1200px;
+  min-height: calc(100vh - 173px);
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 30px;
+  margin-bottom: 100px;
+}
+
+.layout-wrap {
+  width: 100%;
+  display: flex;
+}
+
+.left-menu {
+  width: 200px;
+}
+
+.right-cont {
+  width: calc(100% - 200px);
+  display: flex;
+  flex-direction: column;
+}
