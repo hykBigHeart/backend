@@ -9,7 +9,6 @@ import { Menu } from "antd";
 import { useNavigate, Link } from "react-router-dom";
 import styles from "./index.module.less";
 import logo from "../../assets/logo.png";
-import "../../utils/index.less";
 
 function getItem(label: any, key: any, icon: any, children: any, type: any) {
   return {
