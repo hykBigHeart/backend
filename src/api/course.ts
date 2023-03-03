@@ -24,6 +24,8 @@ export function createCourse() {
   return client.get("/backend/v1/course/create", {});
 }
 
+// depIds => 部门id数组，请用英文逗号连接
+// categoryIds => 所属分类数组，请用英文逗号连接
 export function storeCourse(
   title: string,
   thumb: string,
