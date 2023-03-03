@@ -63,9 +63,7 @@ const data: DataType[] = [
 ];
 
 export const VodListPage: React.FC = () => {
-  useEffect(() => {
-    
-  }, []);
+  useEffect(() => {}, []);
   const handleChange = (e: any) => {
     console.log(e);
   };
@@ -91,27 +89,18 @@ export const VodListPage: React.FC = () => {
             />
           </div>
           <div className="d-flex mr-24">
-            <Button className="mr-16" danger>
-              重 置
-            </Button>
-            <Button type="primary" danger>
-              查 询
-            </Button>
+            <Button className="mr-16">重 置</Button>
+            <Button type="primary">查 询</Button>
           </div>
         </div>
       </div>
       <div className="playedu-main-body">
         <div className="float-left j-b-flex mb-24">
           <div className="d-flex">
-            <Button
-              icon={<PlusOutlined />}
-              className="mr-16"
-              type="primary"
-              danger
-            >
+            <Button icon={<PlusOutlined />} className="mr-16" type="primary">
               新建
             </Button>
-            <Button danger>删除</Button>
+            <Button>删除</Button>
           </div>
           <div className="d-flex">
             <Button

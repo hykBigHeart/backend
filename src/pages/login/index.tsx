@@ -132,7 +132,6 @@ export const Login: React.FC = () => {
             <Button
               style={{ width: 400, height: 54 }}
               type="primary"
-              danger
               onClick={loginSubmit}
             >
               立即登录

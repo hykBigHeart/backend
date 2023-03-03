@@ -138,27 +138,20 @@ export const MemberPage: React.FC = () => {
             <Input style={{ width: 160 }} placeholder="昵称或手机号" />
           </div>
           <div className="d-flex mr-24">
-            <Button className="mr-16" danger onClick={resetData}>
+            <Button className="mr-16" onClick={resetData}>
               重 置
             </Button>
-            <Button type="primary" danger>
-              查 询
-            </Button>
+            <Button type="primary">查 询</Button>
           </div>
         </div>
       </div>
       <div className="playedu-main-body">
         <div className="float-left j-b-flex mb-24">
           <div className="d-flex">
-            <Button
-              icon={<PlusOutlined />}
-              className="mr-16"
-              type="primary"
-              danger
-            >
+            <Button icon={<PlusOutlined />} className="mr-16" type="primary">
               新建
             </Button>
-            <Button danger>删除</Button>
+            <Button>删除</Button>
           </div>
           <div className="d-flex">
             <Button
