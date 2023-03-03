@@ -33,15 +33,15 @@ export const Login: React.FC = () => {
 
   const loginSubmit = (e: any) => {
     if (!email) {
-      message.error("请输入账号");
+      message.error("请输入管理员邮箱账号");
       return;
     }
     if (!password) {
-      message.error("请输入密码号");
+      message.error("请输入密码");
       return;
     }
     if (!captcha_val) {
-      message.error("请输入图片验证码");
+      message.error("请输入图形验证码");
       return;
     }
     if (loading) {
@@ -99,7 +99,7 @@ export const Login: React.FC = () => {
                 setEmail(e.target.value);
               }}
               style={{ width: 400, height: 54 }}
-              placeholder="请输入账号"
+              placeholder="请输入管理员邮箱账号"
             />
           </div>
           <div className="d-flex mt-50">
@@ -116,7 +116,7 @@ export const Login: React.FC = () => {
             <Input
               value={captcha_val}
               style={{ width: 260, height: 54 }}
-              placeholder="请输入验证码"
+              placeholder="请输入图形验证码"
               onChange={(e) => {
                 setCaptcha_val(e.target.value);
               }}
