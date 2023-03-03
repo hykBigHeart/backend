@@ -16,6 +16,7 @@ import styles from "./index.module.less";
 import { PlusOutlined, ReloadOutlined } from "@ant-design/icons";
 import { user } from "../../api/index";
 import { TreeDepartment } from "../../compenents";
+import { dateFormat } from "../../utils/index";
 
 interface DataType {
   id: React.Key;
@@ -61,6 +62,7 @@ export const MemberPage: React.FC = () => {
     {
       title: "注册时间",
       dataIndex: "created_at",
+      render: (text: string) => <span>{dateFormat(text)}</span>,
     },
     {
       title: "操作",
