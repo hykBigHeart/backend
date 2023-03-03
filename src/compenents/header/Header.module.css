@@ -2,7 +2,6 @@
   background-color: white !important;
 }
 
-
 .main-header {
   width: 100%;
   background-color: white !important;
@@ -24,8 +23,3 @@
   align-items: center;
 }
 
-.title {
-  line-height: 64px !important;
-  display: inline;
-  color: #03a9f4 !important;
-}

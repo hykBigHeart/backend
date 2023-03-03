@@ -3,8 +3,17 @@ import styles from "./Login.module.css";
 import { Typography, Spin, Input, Button, message } from "antd";
 import { login, system } from "../../api/index";
 import { setToken } from "../../utils/index";
+import { useDispatch } from "react-redux";
+import {
+  IsLoginActionCreator,
+  SetUserActionCreator,
+  SetPermisssionsActionCreator,
+} from "../../store/user/userActions";
+import { useNavigate } from "react-router-dom";
 
 export const Login: React.FC = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(true);
   const [image, setImage] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -57,8 +66,12 @@ export const Login: React.FC = () => {
   };
 
   const getUser = () => {
-    login.getUser().then((res) => {
-      console.log(res);
+    login.getUser().then((res: any) => {
+      const data = res.data;
+      dispatch(IsLoginActionCreator());
+      dispatch(SetUserActionCreator(data.user));
+      dispatch(SetPermisssionsActionCreator(data.permissions));
+      navigate("/");
     });
   };
 

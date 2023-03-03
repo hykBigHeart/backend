@@ -1,30 +1,7 @@
+import { createStore, applyMiddleware } from "redux";
+import userReducer from "./user/userReducer";
+import thunk from "redux-thunk";
 
-import { createStore } from "redux";
-interface IAction {
-  type: string;
-  payload?: any;
-}
-interface IState {
-  isshow: boolean;
-}
-const reducer = (
-  preState: IState = {
-    isshow: false,
-  },
-  action: IAction
-) => {
-  const { type } = action;
-  const newState = { ...preState };
-  switch (type) {
-    case "show":
-      newState.isshow = true;
-      return newState;
-    case "hidden":
-      newState.isshow = false;
-      return newState;
-    default:
-      return preState;
-  }
-};
-const store = createStore(reducer);
+const store = createStore(userReducer, applyMiddleware(thunk));
+export type RootState = ReturnType<typeof store.getState>;
 export default store;

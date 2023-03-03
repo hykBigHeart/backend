@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Typography, Input, Select, Button, Space, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import styles from "./Index.module.css";
+import styles from "./Vod.module.css";
 import { PlusOutlined, ReloadOutlined } from "@ant-design/icons";
 import { login } from "../../../api/index";
 
