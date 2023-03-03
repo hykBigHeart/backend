@@ -33,6 +33,8 @@ export const MemberPage: React.FC = () => {
   const [size, setSize] = useState<number>(10);
   const [list, setList] = useState<any>([]);
   const [total, setTotal] = useState<number>(0);
+  const [refresh, setRefresh] = useState(false);
+
   const [nickname, setNickname] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [id_card, setIdCard] = useState<string>("");
@@ -85,17 +87,15 @@ export const MemberPage: React.FC = () => {
   ];
 
   useEffect(() => {
-    getData(1, size);
-  }, []);
+    getData();
+  }, [refresh, page, size]);
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     console.log("selectedRowKeys changed: ", newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
 
-  const getData = (page: number, size: number) => {
-    setSize(size);
-    setPage(page);
+  const getData = () => {
     setLoading(true);
     user
       .userList(page, size, {
@@ -117,9 +117,10 @@ export const MemberPage: React.FC = () => {
     setNickname("");
     setEmail("");
     setIdCard("");
-    setTimeout(() => {
-      getData(1, 10);
-    }, 1000);
+    setPage(1);
+    setSize(10);
+    setList([]);
+    setRefresh(!refresh);
   };
 
   const rowSelection = {
@@ -137,16 +138,15 @@ export const MemberPage: React.FC = () => {
   };
 
   const handlePageChange = (page: number, pageSize: number) => {
-    setTimeout(() => {
-      getData(page, pageSize);
-    }, 500);
+    setPage(page);
+    setSize(pageSize);
   };
 
   const delUser = (id: any) => {
     user.destroyUser(id).then((res: any) => {
       setTimeout(() => {
         message.success("操作成功");
-        getData(1, size);
+        setRefresh(!refresh);
       }, 1000);
     });
   };
@@ -208,7 +208,8 @@ export const MemberPage: React.FC = () => {
                 <Button
                   type="primary"
                   onClick={() => {
-                    getData(1, size);
+                    setPage(1);
+                    setRefresh(!refresh);
                   }}
                 >
                   查 询
@@ -233,7 +234,7 @@ export const MemberPage: React.FC = () => {
                   icon={<ReloadOutlined />}
                   style={{ color: "#333333" }}
                   onClick={() => {
-                    getData(page, size);
+                    setRefresh(!refresh);
                   }}
                 ></Button>
               </div>
