@@ -1,9 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Button, Row, Col, Modal, Image, Empty, message } from "antd";
+import {
+  Button,
+  Row,
+  Col,
+  Modal,
+  Image,
+  Empty,
+  message,
+  Pagination,
+} from "antd";
 import { resource, resourceCategory } from "../../api";
 import styles from "./index.module.less";
 import { CreateResourceCategory } from "../createResourceCategory";
 import { CloseOutlined } from "@ant-design/icons";
+import { UploadImageSub } from "./uploadImageSub";
 
 interface CategoryItem {
   id: number;
@@ -25,14 +35,20 @@ interface ImageItem {
   created_at: string;
 }
 
-export const UploadImageButton: React.FC = () => {
+interface PropsInterface {
+  onSelected: (url: string) => void;
+}
+
+export const UploadImageButton = (props: PropsInterface) => {
   const [showModal, setShowModal] = useState(false);
   const [categories, setCategories] = useState<CategoryItem[]>([]);
   const [defaultCid, setDefaultCid] = useState(0);
   const [refreshCategories, setRefreshCategories] = useState(1);
+
   const [imageList, setImageList] = useState<ImageItem[]>([]);
+  const [refresh, setRefresh] = useState(false);
   const [page, setPage] = useState(0);
-  const [size, setSize] = useState(10);
+  const [size, setSize] = useState(12);
   const [total, setTotal] = useState(0);
 
   const getCategories = () => {
@@ -51,11 +67,7 @@ export const UploadImageButton: React.FC = () => {
     });
   };
 
-  useEffect(() => {
-    getCategories();
-  }, [refreshCategories]);
-
-  useEffect(() => {
+  const getImageList = () => {
     if (defaultCid === 0) {
       return;
     }
@@ -68,7 +80,21 @@ export const UploadImageButton: React.FC = () => {
       .catch((err) => {
         console.log("错误,", err);
       });
-  }, [defaultCid]);
+  };
+
+  const resetImageList = () => {
+    setPage(1);
+    setImageList([]);
+    setRefresh(!refresh);
+  };
+
+  useEffect(() => {
+    getCategories();
+  }, [refreshCategories]);
+
+  useEffect(() => {
+    getImageList();
+  }, [defaultCid, refresh, page, size]);
 
   return (
     <>
@@ -83,10 +109,11 @@ export const UploadImageButton: React.FC = () => {
       {showModal && (
         <Modal
           title="图片素材库"
+          closable={false}
           onCancel={() => {
             setShowModal(false);
           }}
-          open={showModal}
+          open={true}
           width="1000px"
           maskClosable={false}
         >
@@ -139,7 +166,12 @@ export const UploadImageButton: React.FC = () => {
             <Col span={20}>
               <Row>
                 <Col span={24}>
-                  <Button type="primary">上传图片</Button>
+                  <UploadImageSub
+                    categoryId={defaultCid}
+                    onUpdate={() => {
+                      resetImageList();
+                    }}
+                  ></UploadImageSub>
                 </Col>
               </Row>
               <Row
@@ -155,10 +187,36 @@ export const UploadImageButton: React.FC = () => {
                 )}
 
                 {imageList.map((item) => (
-                  <Col span={6}>
-                    <Image src={item.url} />
+                  <Col
+                    key={item.id}
+                    span={6}
+                    onClick={() => {
+                      props.onSelected(item.url);
+                      setShowModal(false);
+                    }}
+                  >
+                    <Image
+                      preview={false}
+                      width={120}
+                      height={80}
+                      src={item.url}
+                    />
                   </Col>
                 ))}
+
+                {imageList.length > 0 && (
+                  <Col span={24}>
+                    <Pagination
+                      showSizeChanger
+                      onChange={(currentPage, currentSize) => {
+                        setPage(currentPage);
+                        setSize(currentSize);
+                      }}
+                      defaultCurrent={page}
+                      total={total}
+                    />
+                  </Col>
+                )}
               </Row>
             </Col>
           </Row>
