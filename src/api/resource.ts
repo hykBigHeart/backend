@@ -2,7 +2,7 @@ import client from "./internal/httpClient";
 
 export function resourceList(
   page: number,
-  size: null,
+  size: number,
   sortField: string,
   sortAlgo: string,
   name: string,
