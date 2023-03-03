@@ -1,14 +1,10 @@
 import React, { useEffect } from "react";
-import styles from "./HomePage.module.less";
+import styles from "./index.module.less";
 import { Outlet, useNavigate } from "react-router-dom";
 import { Header, LeftMenu, Footer } from "../../compenents";
-import { login } from "../../api/index";
-
 
 export const HomePage: React.FC = () => {
-  useEffect(() => {
-   
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <>

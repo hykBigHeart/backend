@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styles from "./Login.module.less";
+import styles from "./index.module.less";
 import { Typography, Spin, Input, Button, message } from "antd";
 import { login, system } from "../../api/index";
 import { setToken } from "../../utils/index";
@@ -10,6 +10,8 @@ import {
   SetPermisssionsActionCreator,
 } from "../../store/user/userActions";
 import { useNavigate } from "react-router-dom";
+import banner from "../../assets/images/login/banner.png";
+import icon from "../../assets/images/login/icon.png";
 
 export const Login: React.FC = () => {
   const dispatch = useDispatch();
@@ -81,8 +83,14 @@ export const Login: React.FC = () => {
 
   return (
     <div className={styles["login-content"]}>
+      <div className={styles["banner-box"]}>
+        <img className={styles["banner"]} src={banner} alt="" />
+      </div>
       <div className={styles["login-box"]}>
-        <div className="float-left c-flex">
+        <div className={styles["left-box"]}>
+          <img className={styles["icon"]} src={icon} alt="" />
+        </div>
+        <div className={styles["right-box"]}>
           <div className="d-flex mr-24">
             <Typography.Title>登录后台</Typography.Title>
           </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./Error.module.less";
+import styles from "./index.module.less";
 
 export const ErrorPage: React.FC<any> = () => {
   return (
