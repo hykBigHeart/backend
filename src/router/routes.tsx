@@ -6,6 +6,7 @@ import {
   ErrorPage,
   VodListPage,
   TestPage,
+  MemberPage,
 } from "../pages";
 
 const routes: RouteObject[] = [
@@ -20,6 +21,10 @@ const routes: RouteObject[] = [
       {
         path: "/vod",
         element: <VodListPage />,
+      },
+      {
+        path: "/member",
+        element: <MemberPage />,
       },
     ],
   },

@@ -33,7 +33,13 @@ const items = [
     ],
     null
   ),
-  getItem("学员管理", "3", <AppstoreOutlined />, [], null),
+  getItem(
+    "学员管理",
+    "3",
+    <AppstoreOutlined />,
+    [getItem("学员", "/member", null, null, null)],
+    null
+  ),
   getItem("证书管理", "4", <SettingOutlined />, [], null),
   getItem("系统设置", "5", <SettingOutlined />, [,], null),
 ];
