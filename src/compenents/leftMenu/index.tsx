@@ -24,7 +24,7 @@ const items = [
   getItem("网校装修", "/decoration", <SettingOutlined />, null, null),
   getItem(
     "课程内容",
-    "2",
+    "3",
     <MailOutlined />,
     [
       getItem("视频", "/vod", null, null, null),
@@ -35,16 +35,16 @@ const items = [
   ),
   getItem(
     "学员管理",
-    "3",
+    "4",
     <AppstoreOutlined />,
     [getItem("学员", "/member", null, null, null)],
     null
   ),
-  getItem("证书管理", "4", <SettingOutlined />, [], null),
-  getItem("系统设置", "5", <SettingOutlined />, [,], null),
+  getItem("证书管理", "5", <SettingOutlined />, [], null),
+  getItem("系统设置", "6", <SettingOutlined />, [,], null),
 ];
 
-const rootSubmenuKeys = ["2", "3", "4", "5"];
+const rootSubmenuKeys = ["3", "4", "5", "6"];
 
 export const LeftMenu: React.FC = () => {
   //展开的subMenu
