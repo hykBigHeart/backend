@@ -1,4 +1,3 @@
-import React from "react";
 import { RouteObject } from "react-router-dom";
 import { Login, HomePage, Dashboard, ErrorPage, VodListPage } from "../pages";
 

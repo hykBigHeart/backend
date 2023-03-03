@@ -1,6 +1,5 @@
-import React from "react";
 import styles from "./App.module.less";
-import { useLocation, useRoutes, useNavigate } from "react-router-dom";
+import { useRoutes } from "react-router-dom";
 import routes from "./router/routes";
 import { getToken } from "./utils/index";
 import { login } from "./api/index";
@@ -22,15 +21,7 @@ function App() {
       dispatch(SetPermisssionsActionCreator(data.permissions));
     });
   };
-  // const CheckLogin = () => {
-  //   const navigate = useNavigate();
-  //   const location = useLocation();
-  //   if (location.pathname !== "/login") {
-  //     navigate("/login");
-  //   }
-  // };
-  const token = getToken();
-  if (token) {
+  if (getToken()) {
     getUser();
   }
 

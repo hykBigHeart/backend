@@ -1,11 +1,11 @@
 import axios, { Axios, AxiosResponse } from "axios";
 import { message } from "antd";
 import { getToken, clearToken } from "../../utils/index";
-import { useNavigate } from "react-router-dom";
+import { redirect } from "react-router-dom";
 
 const GoLogin = () => {
-  const navigate = useNavigate();
-  navigate("/login");
+  clearToken();
+  redirect("/login");
 };
 
 export class HttpClient {
@@ -35,7 +35,6 @@ export class HttpClient {
 
     this.axios.interceptors.response.use(
       (response: AxiosResponse) => {
-        let status = response.data.status; //HTTP状态码
         let code = response.data.code; //业务返回代码
         let msg = response.data.msg; //错误消息
 
@@ -43,15 +42,14 @@ export class HttpClient {
           return Promise.resolve(response);
         } else {
           message.error(msg);
-          return Promise.reject(response);
         }
+        return Promise.reject(response);
       },
       // 当http的状态码非0
       (error) => {
         let status = error.response.status;
         if (status === 401) {
-          clearToken();
-          // 跳转到登录界面
+          message.error("请重新登录");
           GoLogin();
         } else if (status === 404) {
           // 跳转到404页面
