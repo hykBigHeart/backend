@@ -10,3 +10,4 @@ export * as department from "./department";
 export * as resourceCategory from "./resource-category";
 export * as resource from "./resource";
 export * as upload from "./upload";
+export * as user from "./user";
