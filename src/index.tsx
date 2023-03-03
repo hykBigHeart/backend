@@ -5,6 +5,8 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store/store";
+import { ConfigProvider } from "antd";
+import zhCN from "antd/locale/zh_CN";
 
 const basename = process.env.REACT_BASE_NAME || "";
 
@@ -13,9 +15,14 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <Provider store={store}>
-    <BrowserRouter basename={basename}>
-      <App />
-    </BrowserRouter>
+    <ConfigProvider
+      locale={zhCN}
+      theme={{ token: { colorPrimary: "#ff4d4f" } }}
+    >
+      <BrowserRouter basename={basename}>
+        <App />
+      </BrowserRouter>
+    </ConfigProvider>
   </Provider>
 );
 
