@@ -1,5 +1,12 @@
 import { RouteObject } from "react-router-dom";
-import { Login, HomePage, Dashboard, ErrorPage, VodListPage } from "../pages";
+import {
+  Login,
+  HomePage,
+  Dashboard,
+  ErrorPage,
+  VodListPage,
+  TestPage,
+} from "../pages";
 
 const routes: RouteObject[] = [
   {
@@ -19,6 +26,10 @@ const routes: RouteObject[] = [
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/test",
+    element: <TestPage />,
   },
   {
     path: "*",
