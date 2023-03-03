@@ -1,11 +1,10 @@
 import axios, { Axios, AxiosResponse } from "axios";
 import { message } from "antd";
 import { getToken, clearToken } from "../../utils/index";
-import { redirect } from "react-router-dom";
 
 const GoLogin = () => {
   clearToken();
-  redirect("/login");
+  window.location.href = "/login";
 };
 
 export class HttpClient {
