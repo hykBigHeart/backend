@@ -21,3 +21,10 @@ export function logout() {
 export function getUser() {
   return client.get("/backend/v1/auth/detail", {});
 }
+
+export function passwordChange(oldPassword: string, newPassword: string) {
+  return client.put("/backend/v1/auth/password", {
+    old_password: oldPassword,
+    new_password: newPassword,
+  });
+}
