@@ -1,6 +1,6 @@
 import React from "react";
-import styles from "./Header.module.less";
-import { Layout, Typography, Button, Dropdown, MenuProps } from "antd";
+import styles from "./index.less";
+import { Layout, Button, Dropdown, MenuProps } from "antd";
 import { useSelector } from "../../store/hooks";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";

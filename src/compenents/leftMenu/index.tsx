@@ -7,7 +7,7 @@ import {
 import { Menu } from "antd";
 //导出路由跳转hooks函数
 import { useNavigate, Link } from "react-router-dom";
-import styles from "./LeftMenu.module.less";
+import styles from "./index.less";
 import logo from "../../assets/logo.png";
 import "../../utils/index.less";
 
