@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./index.module.less";
-import { Typography, Spin, Input, Button, message } from "antd";
+import { Spin, Input, Button, message } from "antd";
 import { login, system } from "../../api/index";
 import { setToken } from "../../utils/index";
 import { useDispatch } from "react-redux";
@@ -91,33 +91,31 @@ export const Login: React.FC = () => {
           <img className={styles["icon"]} src={icon} alt="" />
         </div>
         <div className={styles["right-box"]}>
-          <div className="d-flex mr-24">
-            <Typography.Title>登录后台</Typography.Title>
-          </div>
-          <div className="d-flex mb-24">
+          <div className={styles["title"]}>后台登录</div>
+          <div className="d-flex mt-50">
             <Input
               value={email}
               onChange={(e) => {
                 setEmail(e.target.value);
               }}
-              style={{ width: 300 }}
+              style={{ width: 400, height: 54 }}
               placeholder="请输入账号"
             />
           </div>
-          <div className="d-flex mb-24">
+          <div className="d-flex mt-50">
             <Input.Password
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
               }}
-              style={{ width: 300 }}
+              style={{ width: 400, height: 54 }}
               placeholder="请输入密码"
             />
           </div>
-          <div className="d-flex mb-24">
+          <div className="d-flex mt-50">
             <Input
               value={captcha_val}
-              style={{ width: 160 }}
+              style={{ width: 260, height: 54 }}
               placeholder="请输入验证码"
               onChange={(e) => {
                 setCaptcha_val(e.target.value);
@@ -130,9 +128,14 @@ export const Login: React.FC = () => {
               alt=""
             />
           </div>
-          <div className="d-flex">
-            <Button type="primary" danger onClick={loginSubmit}>
-              登录
+          <div className="d-flex mt-50">
+            <Button
+              style={{ width: 400, height: 54 }}
+              type="primary"
+              danger
+              onClick={loginSubmit}
+            >
+              立即登录
             </Button>
           </div>
         </div>

@@ -28,18 +28,36 @@
     .left-box {
       width: 440px;
       height: 100%;
-      .icon{
-        
+      box-sizing: border-box;
+      padding: 80px 10px 80px 30px;
+      .icon {
+        width: 400px;
+        height: 400px;
       }
     }
     .right-box {
       width: 440px;
       height: 100%;
-      .captcha {
+      box-sizing: border-box;
+      padding: 50px 30px;
+      display: flex;
+      flex-direction: column;
+      .title {
         width: 120px;
-        height: 48px;
-        margin-left: 10px;
-        cursor: pointer;
+        height: auto;
+        font-size: 30px;
+        font-weight: 600;
+        color: #333333;
+        line-height: 30px;
+        border-bottom: 4px solid #ff4d4f;
+        box-sizing: border-box;
+        padding-bottom: 10px;
+      }
+      .captcha {
+        width: 125px;
+        height: 54px;
+        margin-left: 15px;
+        border: none;
         cursor: pointer;
       }
     }
