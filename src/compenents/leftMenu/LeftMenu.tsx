@@ -7,9 +7,9 @@ import {
 import { Menu } from "antd";
 //导出路由跳转hooks函数
 import { useNavigate, Link } from "react-router-dom";
-import styles from "./LeftMenu.module.css";
+import styles from "./LeftMenu.module.less";
 import logo from "../../assets/logo.png";
-import "../../utils/index.css";
+import "../../utils/index.less";
 
 function getItem(label: any, key: any, icon: any, children: any, type: any) {
   return {

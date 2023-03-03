@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./App.module.css";
+import styles from "./App.module.less";
 import { useLocation, useRoutes, useNavigate } from "react-router-dom";
 import routes from "./router/routes";
 import { getToken } from "./utils/index";

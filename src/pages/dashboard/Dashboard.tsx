@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./Dashboard.module.css";
+import styles from "./Dashboard.module.less";
 
 export const Dashboard: React.FC<any> = () => {
   return (

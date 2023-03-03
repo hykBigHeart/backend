@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./Header.module.css";
+import styles from "./Header.module.less";
 import { Layout, Typography, Button, Dropdown, MenuProps } from "antd";
 import { useSelector } from "../../store/hooks";
 import { useDispatch } from "react-redux";

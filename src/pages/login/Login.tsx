@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import styles from "./Login.module.css";
+import styles from "./Login.module.less";
 import { Typography, Spin, Input, Button, message } from "antd";
 import { login, system } from "../../api/index";
 import { setToken } from "../../utils/index";

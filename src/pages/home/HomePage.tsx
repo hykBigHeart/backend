@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import styles from "./HomePage.module.css";
+import styles from "./HomePage.module.less";
 import { Outlet, useNavigate } from "react-router-dom";
 import { Header, LeftMenu, Footer } from "../../compenents";
 import { login } from "../../api/index";

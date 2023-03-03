@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./Footer.module.css";
+import styles from "./Footer.module.less";
 import { Layout, Typography } from "antd";
 
 export const Footer: React.FC = () => {
