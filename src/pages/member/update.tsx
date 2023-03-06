@@ -39,6 +39,7 @@ export const MemberUpdatePage: React.FC = () => {
         nickname: user.nickname,
         avatar: user.avatar,
         idCard: user.id_card,
+        dep_ids: res.data.dep_ids,
       });
     });
   };
@@ -75,7 +76,7 @@ export const MemberUpdatePage: React.FC = () => {
         values.avatar,
         values.password,
         values.idCard,
-        values.depIds
+        values.dep_ids[0]
       )
       .then((res: any) => {
         message.success("保存成功！");

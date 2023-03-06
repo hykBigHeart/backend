@@ -54,7 +54,7 @@ export const MemberCreatePage: React.FC = () => {
         values.avatar,
         values.password,
         values.idCard,
-        values.depIds
+        values.dep_ids[0]
       )
       .then((res: any) => {
         message.success("保存成功！");
