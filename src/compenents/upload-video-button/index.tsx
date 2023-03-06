@@ -12,8 +12,8 @@ import {
 import Dragger from "antd/es/upload/Dragger";
 import { useEffect, useState } from "react";
 import { generateUUID, getToken } from "../../utils";
-import { minioToken } from "../../api/upload";
-import Resumable from "resumablejs";
+import { minioUploadId } from "../../api/upload";
+import { UploadChunk } from "../../js/minio-upload-chunk";
 
 interface PropsInterface {
   categoryId: number;
@@ -29,30 +29,24 @@ interface FileItem {
   file: File;
   resource_type: string;
   loading: boolean;
-  R: Resumable | undefined;
+  run: UploadChunk;
 }
 
 export const UploadVideoButton = (props: PropsInterface) => {
   const [showModal, setShowModal] = useState(false);
   const [fileList, setFileList] = useState<FileItem[]>([]);
 
-  const getMinioConfig = async () => {
-    let resp: any = await minioToken("mp4");
+  const getMinioUploadId = async () => {
+    let resp: any = await minioUploadId("mp4");
     return resp.data;
   };
-
-  const r = new Resumable({
-    chunkSize: 1 * 1024 * 1024,
-    fileParameterName: "file",
-    uploadMethod: "POST",
-  });
 
   const uploadProps = {
     multiple: true,
     beforeUpload: async (file: File) => {
       if (file.type === "video/mp4") {
         //添加到本地待上传
-        let data = await getMinioConfig();
+        let data = await getMinioUploadId();
         let item: FileItem = {
           id: generateUUID(),
           duration: 0,
@@ -62,38 +56,13 @@ export const UploadVideoButton = (props: PropsInterface) => {
           file: file,
           resource_type: data["resource_type"],
           loading: true,
-          R: undefined,
+          run: new UploadChunk(
+            file,
+            data["upload_id"],
+            data["filename"]
+          ),
         };
-
-        // 初始化上传对象
-        let r = new Resumable({
-          target: data["url"],
-          chunkSize: 6 * 1024 * 1024,
-          simultaneousUploads: 1,
-          uploadMethod: "PUT",
-          method: "octet",
-          testChunks: false, //不校验已上传的chunks
-          chunkNumberParameterName: "partNumber",
-          query: {
-            uploadId: item.id,
-          },
-        });
-        r.on("fileProgress", (file: Resumable.ResumableFile) => {
-          item.progress = file.progress(false) * 100;
-          console.log("进度", item.progress);
-        });
-        r.on("error", (e) => {
-          console.log("错误", e);
-        });
-        r.addFile(item.file);
-
-        item.R = r;
-        setTimeout(() => {
-          if (item.R) {
-            item.R.upload();
-          }
-        }, 500);
-
+        item.run.start();
         setFileList([item, ...fileList]);
       } else {
         message.error(`${file.name} 并不是 mp4 视频文件`);

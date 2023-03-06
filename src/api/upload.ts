@@ -7,8 +7,26 @@ export function image(categoryId: number, file: File) {
   });
 }
 
-export function minioToken(extension: string) {
-  return client.get("/backend/v1/upload/minio-token", {
+export function minioUploadId(extension: string) {
+  return client.get("/backend/v1/upload/minio-upload-id", {
     extension,
+  });
+}
+export function minioPreSignUrl(
+  uploadId: string,
+  filename: string,
+  partNumber: number
+) {
+  return client.get("/backend/v1/upload/minio-pre-sign-url", {
+    upload_id: uploadId,
+    filename,
+    part_number: partNumber,
+  });
+}
+
+export function minioMerge(filename: string, uploadId: string) {
+  return client.get("/backend/v1/upload/minio-merge", {
+    filename,
+    upload_id: uploadId,
   });
 }
