@@ -1,5 +1,5 @@
 export * from "./footer";
 export * from "./header";
 export * from "./leftMenu";
-export * from "./uploadImageButton";
+export * from "./upload-image-button";
 export * from ".//treeDepartment";

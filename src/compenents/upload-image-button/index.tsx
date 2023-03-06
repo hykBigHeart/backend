@@ -11,9 +11,9 @@ import {
 } from "antd";
 import { resource, resourceCategory } from "../../api";
 import styles from "./index.module.less";
-import { CreateResourceCategory } from "../createResourceCategory";
+import { CreateResourceCategory } from "../create-resource-category";
 import { CloseOutlined } from "@ant-design/icons";
-import { UploadImageSub } from "./uploadImageSub";
+import { UploadImageSub } from "./upload-image-sub";
 
 interface CategoryItem {
   id: number;
@@ -72,7 +72,7 @@ export const UploadImageButton = (props: PropsInterface) => {
       return;
     }
     resource
-      .resourceList(page, size, "", "", "", defaultCid + "")
+      .resourceList(page, size, "", "", "", "IMAGE", defaultCid + "")
       .then((res: any) => {
         setTotal(res.data.total);
         setImageList(res.data.data);
