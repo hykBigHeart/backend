@@ -15,6 +15,7 @@ export function resourceList(
     sort_field: sortField,
     sort_algo: sortAlgo,
     name,
+    type,
     category_ids: categoryIds,
   });
 }

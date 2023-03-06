@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Button,
   Row,
@@ -11,7 +11,7 @@ import {
 } from "antd";
 import { resource, resourceCategory } from "../../api";
 import styles from "./index.module.less";
-import { CreateResourceCategory } from "../create-resource-category";
+import { CreateResourceCategory } from "../create-rs-category";
 import { CloseOutlined } from "@ant-design/icons";
 import { UploadImageSub } from "./upload-image-sub";
 
@@ -41,25 +41,33 @@ interface PropsInterface {
 
 export const UploadImageButton = (props: PropsInterface) => {
   const [showModal, setShowModal] = useState(false);
-  const [categories, setCategories] = useState<CategoryItem[]>([]);
+  const [categories, setCategories] = useState<CategoryItem[]>([
+    {
+      id: 0,
+      type: "IMAGE",
+      name: "默认分类",
+      sort: 0,
+    },
+  ]);
   const [defaultCid, setDefaultCid] = useState(0);
   const [refreshCategories, setRefreshCategories] = useState(1);
 
   const [imageList, setImageList] = useState<ImageItem[]>([]);
   const [refresh, setRefresh] = useState(false);
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState(1);
   const [size, setSize] = useState(12);
   const [total, setTotal] = useState(0);
 
+  // 获取图片资源的分类
   const getCategories = () => {
     resourceCategory.resourceCategoryList("IMAGE").then((res: any) => {
       let data = res.data.data;
       if (data.length > 0) {
-        setDefaultCid(data[0].id);
-        setCategories(res.data.data);
+        setCategories([...categories, ...res.data.data]);
       }
     });
   };
+  // 删除资源分类
   const removeCategory = (id: number) => {
     resourceCategory.destroyResourceCategory(id).then(() => {
       message.success("删除成功");
@@ -67,10 +75,8 @@ export const UploadImageButton = (props: PropsInterface) => {
     });
   };
 
+  // 获取图片列表
   const getImageList = () => {
-    if (defaultCid === 0) {
-      return;
-    }
     resource
       .resourceList(page, size, "", "", "", "IMAGE", defaultCid + "")
       .then((res: any) => {
@@ -81,17 +87,19 @@ export const UploadImageButton = (props: PropsInterface) => {
         console.log("错误,", err);
       });
   };
-
+  // 重置列表
   const resetImageList = () => {
     setPage(1);
     setImageList([]);
     setRefresh(!refresh);
   };
 
+  // 初始化加载数据
   useEffect(() => {
     getCategories();
   }, [refreshCategories]);
 
+  // 加载图片列表
   useEffect(() => {
     getImageList();
   }, [defaultCid, refresh, page, size]);
