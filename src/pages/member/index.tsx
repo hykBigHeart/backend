@@ -74,8 +74,10 @@ export const MemberPage: React.FC = () => {
     {
       title: "操作",
       key: "action",
+      fixed: "right",
+      width: 160,
       render: (_, record) => (
-        <Space size="middle">
+        <Space size="small">
           <Button
             type="link"
             danger
