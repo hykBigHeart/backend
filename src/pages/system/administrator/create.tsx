@@ -67,21 +67,30 @@ export const AdministratorCreatePage: React.FC = () => {
             name="basic"
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 16 }}
-            style={{ maxWidth: 600 }}
+            style={{ width: 600 }}
             initialValues={{ remember: true }}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
           >
             <Form.Item label="角色" name="roleIds">
-              <Select
-                style={{ width: 300 }}
-                mode="multiple"
-                allowClear
-                placeholder="请选择角色"
-                onChange={handleChange}
-                options={roles}
-              />
+              <div className="d-flex">
+                <Select
+                  style={{ width: 300 }}
+                  mode="multiple"
+                  allowClear
+                  placeholder="请选择角色"
+                  onChange={handleChange}
+                  options={roles}
+                />
+                <Button
+                  type="link"
+                  danger
+                  onClick={() => navigate(`/system/adminroles`)}
+                >
+                  角色管理
+                </Button>
+              </div>
             </Form.Item>
             <Form.Item
               label="姓名"
