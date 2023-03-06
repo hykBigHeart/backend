@@ -5,6 +5,12 @@ import { user, department } from "../../api/index";
 import { useNavigate } from "react-router-dom";
 import { UploadImageButton } from "../../compenents";
 
+interface Option {
+  value: string | number;
+  label: string;
+  children?: Option[];
+}
+
 export const MemberCreatePage: React.FC = () => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
@@ -19,7 +25,7 @@ export const MemberCreatePage: React.FC = () => {
   const getParams = () => {
     department.departmentList().then((res: any) => {
       const departments = res.data.departments;
-      const new_arr = checkArr(departments, 0);
+      const new_arr: Option[] = checkArr(departments, 0);
       console.log(new_arr);
       setDepartments(new_arr);
     });
@@ -34,7 +40,7 @@ export const MemberCreatePage: React.FC = () => {
           value: departments[id][i].id,
         });
       } else {
-        const new_arr: any[] = checkArr(departments, departments[id][i].id);
+        const new_arr: Option[] = checkArr(departments, departments[id][i].id);
         arr.push({
           label: departments[id][i].name,
           value: departments[id][i].id,
@@ -97,15 +103,19 @@ export const MemberCreatePage: React.FC = () => {
               name="avatar"
               rules={[{ required: true, message: "请上传学员头像!" }]}
             >
-              <UploadImageButton
-                onSelected={(url) => {
-                  setAvatar(url);
-                  form.setFieldsValue({ avatar: url });
-                }}
-              ></UploadImageButton>
-              {avatar && (
-                <img className="form-avatar mt-10" src={avatar} alt="" />
-              )}
+              <div className="c-flex">
+                <div className="d-flex">
+                  <UploadImageButton
+                    onSelected={(url) => {
+                      setAvatar(url);
+                      form.setFieldsValue({ avatar: url });
+                    }}
+                  ></UploadImageButton>
+                </div>
+                {avatar && (
+                  <img className="form-avatar mt-10" src={avatar} alt="" />
+                )}
+              </div>
             </Form.Item>
             <Form.Item
               label="登录密码"
