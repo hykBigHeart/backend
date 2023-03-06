@@ -40,7 +40,7 @@ export function updateAdminUser(
   isBanLogin: number,
   roleIds: number[]
 ) {
-  return client.post(`/backend/v1/admin-user/${id}`, {
+  return client.put(`/backend/v1/admin-user/${id}`, {
     name: name,
     email: email,
     password: password,

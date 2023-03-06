@@ -79,7 +79,7 @@ export const SystemAdministratorPage: React.FC = () => {
             type="link"
             danger
             className="c-red"
-            onClick={() => navigate(`/system/administrator/${record.id}`)}
+            onClick={() => navigate(`/system/administrator/update/${record.id}`)}
           >
             详情
           </Button>
