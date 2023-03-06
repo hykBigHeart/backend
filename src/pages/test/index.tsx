@@ -1,15 +1,15 @@
-import { message } from "antd";
 import React from "react";
-import { UploadImageButton } from "../../compenents";
+import { UploadVideoButton } from "../../compenents/upload-video-button";
 
 export const TestPage: React.FC = () => {
   return (
     <div>
-      <UploadImageButton
-        onSelected={(url) => {
-          message.success("选择了:" + url);
+      <UploadVideoButton
+        categoryId={0}
+        onUpdate={() => {
+          console.log(123);
         }}
-      ></UploadImageButton>
+      ></UploadVideoButton>
     </div>
   );
 };
