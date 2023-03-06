@@ -15,12 +15,13 @@ import type { ColumnsType } from "antd/es/table";
 import styles from "./index.module.less";
 import { PlusOutlined, ReloadOutlined } from "@ant-design/icons";
 import { user } from "../../api/index";
-import { TreeDepartment } from "../../compenents";
 import { dateFormat } from "../../utils/index";
+import { Link, useNavigate } from "react-router-dom";
 
 interface DataType {
   id: React.Key;
   nickname: string;
+  name: string;
   email: string;
   created_at: string;
   credit1: number;
@@ -28,6 +29,7 @@ interface DataType {
 }
 
 export const MemberPage: React.FC = () => {
+  const navigate = useNavigate();
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [page, setPage] = useState<number>(1);
@@ -52,6 +54,11 @@ export const MemberPage: React.FC = () => {
       render: (text: string) => <span>{text}</span>,
     },
     {
+      title: "学员姓名",
+      dataIndex: "name",
+      render: (text: string) => <span>{text}</span>,
+    },
+    {
       title: "邮箱",
       dataIndex: "email",
     },
@@ -69,7 +76,12 @@ export const MemberPage: React.FC = () => {
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <Button type="link" danger className="c-red">
+          <Button
+            type="link"
+            danger
+            className="c-red"
+            onClick={() => navigate(`/member/update/${record.id}`)}
+          >
             详情
           </Button>
           <Popconfirm
@@ -157,78 +169,71 @@ export const MemberPage: React.FC = () => {
   return (
     <>
       <Row>
-        <Col span={4}>
-          <TreeDepartment
-            defaultExpandedKeys={["0-0-0", "0-0-1"]}
-            defaultSelectedKeys={["0-0-0", "0-0-1"]}
-            defaultCheckedKeys={["0-0-0", "0-0-1"]}
-            onUpdate={() => {
-              console.log(111);
-            }}
-          ></TreeDepartment>
-        </Col>
-        <Col span={20}>
-          <div className="playedu-main-body mb-24">
-            <div className="float-left d-flex">
-              <div className="d-flex mr-24">
-                <Typography.Text>昵称：</Typography.Text>
-                <Input
-                  value={nickname}
-                  onChange={(e) => {
-                    setNickname(e.target.value);
-                  }}
-                  style={{ width: 160 }}
-                  placeholder="请输入昵称"
-                />
-              </div>
-              <div className="d-flex mr-24">
-                <Typography.Text>邮箱：</Typography.Text>
-                <Input
-                  value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                  }}
-                  style={{ width: 160 }}
-                  placeholder="请输入邮箱"
-                />
-              </div>
-              <div className="d-flex mr-24">
-                <Typography.Text>身份证号：</Typography.Text>
-                <Input
-                  value={id_card}
-                  onChange={(e) => {
-                    setIdCard(e.target.value);
-                  }}
-                  style={{ width: 160 }}
-                  placeholder="请输入身份证号"
-                />
-              </div>
-              <div className="d-flex mr-24">
-                <Button className="mr-16" onClick={resetData}>
-                  重 置
-                </Button>
-                <Button
-                  type="primary"
-                  onClick={() => {
-                    setPage(1);
-                    setRefresh(!refresh);
-                  }}
-                >
-                  查 询
-                </Button>
-              </div>
+        <div className="playedu-main-body mb-24">
+          <div className="float-left d-flex">
+            <div className="d-flex mr-24">
+              <Typography.Text>昵称：</Typography.Text>
+              <Input
+                value={nickname}
+                onChange={(e) => {
+                  setNickname(e.target.value);
+                }}
+                style={{ width: 160 }}
+                placeholder="请输入昵称"
+              />
+            </div>
+            <div className="d-flex mr-24">
+              <Typography.Text>邮箱：</Typography.Text>
+              <Input
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
+                style={{ width: 160 }}
+                placeholder="请输入邮箱"
+              />
+            </div>
+            <div className="d-flex mr-24">
+              <Typography.Text>身份证号：</Typography.Text>
+              <Input
+                value={id_card}
+                onChange={(e) => {
+                  setIdCard(e.target.value);
+                }}
+                style={{ width: 160 }}
+                placeholder="请输入身份证号"
+              />
+            </div>
+            <div className="d-flex mr-24">
+              <Button className="mr-16" onClick={resetData}>
+                重 置
+              </Button>
+              <Button
+                type="primary"
+                onClick={() => {
+                  setPage(1);
+                  setRefresh(!refresh);
+                }}
+              >
+                查 询
+              </Button>
             </div>
           </div>
+        </div>
+        <Col span={4}></Col>
+        <Col span={20}>
           <div className="playedu-main-body">
             <div className="float-left j-b-flex mb-24">
               <div className="d-flex">
-                <Button
-                  icon={<PlusOutlined />}
-                  className="mr-16"
-                  type="primary"
-                >
-                  新建
-                </Button>
+                <Link style={{ textDecoration: "none" }} to={`/member/create`}>
+                  <Button
+                    icon={<PlusOutlined />}
+                    className="mr-16"
+                    type="primary"
+                  >
+                    新建
+                  </Button>
+                </Link>
               </div>
               <div className="d-flex">
                 <Button

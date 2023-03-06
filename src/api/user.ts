@@ -57,7 +57,7 @@ export function updateUser(
   idCard: string,
   depIds: number[]
 ) {
-  return client.post(`/backend/v1/user/${id}`, {
+  return client.put(`/backend/v1/user/${id}`, {
     email,
     nickname,
     name,

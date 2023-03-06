@@ -7,6 +7,8 @@ import {
   VodListPage,
   TestPage,
   MemberPage,
+  MemberCreatePage,
+  MemberUpdatePage
 } from "../pages";
 
 const routes: RouteObject[] = [
@@ -25,6 +27,14 @@ const routes: RouteObject[] = [
       {
         path: "/member",
         element: <MemberPage />,
+      },
+      {
+        path: "/member/create",
+        element: <MemberCreatePage />,
+      },
+      {
+        path: "/member/update/:memberId",
+        element: <MemberUpdatePage />,
       },
     ],
   },
