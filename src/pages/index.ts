@@ -7,3 +7,4 @@ export * from "./course/vod";
 export * from "./member/index"
 export * from "./member/create"
 export * from "./member/update"
+export * from "./system/administrator/index"

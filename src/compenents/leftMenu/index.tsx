@@ -41,7 +41,13 @@ const items = [
     null
   ),
   getItem("证书管理", "5", <SettingOutlined />, [], null),
-  getItem("系统设置", "6", <SettingOutlined />, [,], null),
+  getItem(
+    "系统设置",
+    "6",
+    <SettingOutlined />,
+    [getItem("管理人员", "/system/administrator", null, null, null)],
+    null
+  ),
 ];
 
 const rootSubmenuKeys = ["3", "4", "5", "6"];

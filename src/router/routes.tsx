@@ -8,7 +8,8 @@ import {
   TestPage,
   MemberPage,
   MemberCreatePage,
-  MemberUpdatePage
+  MemberUpdatePage,
+  SystemAdministratorPage
 } from "../pages";
 
 const routes: RouteObject[] = [
@@ -35,6 +36,10 @@ const routes: RouteObject[] = [
       {
         path: "/member/update/:memberId",
         element: <MemberUpdatePage />,
+      },
+      {
+        path: "/system/administrator",
+        element: <SystemAdministratorPage />,
       },
     ],
   },
