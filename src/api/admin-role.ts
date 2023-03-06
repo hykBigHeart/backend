@@ -24,7 +24,7 @@ export function updateAdminRole(
   name: string,
   permissionIds: number[]
 ) {
-  return client.post(`/backend/v1/admin-role/${id}`, {
+  return client.put(`/backend/v1/admin-role/${id}`, {
     name: name,
     permission_ids: permissionIds,
   });

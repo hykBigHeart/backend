@@ -79,13 +79,15 @@ export const SystemAdministratorPage: React.FC = () => {
             type="link"
             danger
             className="c-red"
-            onClick={() => navigate(`/system/administrator/update/${record.id}`)}
+            onClick={() =>
+              navigate(`/system/administrator/update/${record.id}`)
+            }
           >
             详情
           </Button>
           <Popconfirm
             title="警告"
-            description="即将删除此账号，确认操作？"
+            description="即将删除此人员，确认操作？"
             onConfirm={() => delUser(record.id)}
             okText="确定"
             cancelText="取消"
