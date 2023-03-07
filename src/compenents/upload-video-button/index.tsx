@@ -6,14 +6,13 @@ import {
   Modal,
   Progress,
   Row,
-  Space,
   Table,
   Tag,
   Upload,
 } from "antd";
 import Dragger from "antd/es/upload/Dragger";
-import { useEffect, useRef, useState } from "react";
-import { generateUUID, getToken } from "../../utils";
+import { useRef, useState } from "react";
+import { generateUUID } from "../../utils";
 import { minioUploadId } from "../../api/upload";
 import { UploadChunk } from "../../js/minio-upload-chunk";
 import { storeResource } from "../../api/resource";
@@ -150,9 +149,14 @@ export const UploadVideoButton = (props: PropsInterface) => {
           open={true}
           onCancel={() => {
             setShowModal(false);
+            props.onUpdate();
           }}
           maskClosable={false}
           closable={false}
+          onOk={() => {
+            setShowModal(false);
+            props.onUpdate();
+          }}
         >
           <Row gutter={[0, 10]}>
             <Col span={24}>
@@ -210,7 +214,7 @@ export const UploadVideoButton = (props: PropsInterface) => {
                           record.isSuc === false &&
                           record.isErr === false && (
                             <Button
-                              type="primary"
+                              type="link"
                               onClick={() => {
                                 record.run.cancel();
                               }}
