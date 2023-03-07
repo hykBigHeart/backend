@@ -17,6 +17,7 @@ import { PlusOutlined, ReloadOutlined } from "@ant-design/icons";
 import { user } from "../../api/index";
 import { dateFormat } from "../../utils/index";
 import { Link, useNavigate } from "react-router-dom";
+import { TreeDepartment } from "../../compenents";
 
 interface DataType {
   id: React.Key;
@@ -32,15 +33,16 @@ export const MemberPage: React.FC = () => {
   const navigate = useNavigate();
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [page, setPage] = useState<number>(1);
-  const [size, setSize] = useState<number>(10);
+  const [page, setPage] = useState(1);
+  const [size, setSize] = useState(10);
   const [list, setList] = useState<any>([]);
-  const [total, setTotal] = useState<number>(0);
+  const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
 
   const [nickname, setNickname] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [id_card, setIdCard] = useState<string>("");
+  const [dep_ids, setDepIds] = useState<any>([]);
 
   const columns: ColumnsType<DataType> = [
     {
@@ -104,7 +106,7 @@ export const MemberPage: React.FC = () => {
 
   useEffect(() => {
     getData();
-  }, [refresh, page, size]);
+  }, [refresh, page, size, dep_ids]);
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     console.log("selectedRowKeys changed: ", newSelectedRowKeys);
@@ -112,12 +114,14 @@ export const MemberPage: React.FC = () => {
   };
 
   const getData = () => {
+    let depIds = dep_ids.join(",");
     setLoading(true);
     user
       .userList(page, size, {
         nickname: nickname,
         email: email,
         id_card: id_card,
+        dep_ids: depIds,
       })
       .then((res: any) => {
         setList(res.data.data);
@@ -171,7 +175,11 @@ export const MemberPage: React.FC = () => {
   return (
     <>
       <Row>
-        <Col span={4}></Col>
+        <Col span={4}>
+          <div className="playedu-main-body" style={{ marginLeft: -24 }}>
+            <TreeDepartment onUpdate={(keys: any) => setDepIds(keys)} />
+          </div>
+        </Col>
         <Col span={20}>
           <div className="playedu-main-body mb-24">
             <div className="float-left d-flex">

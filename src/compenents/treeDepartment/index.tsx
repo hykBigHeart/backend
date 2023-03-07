@@ -1,12 +1,14 @@
 import { Button, Input, message, Tree } from "antd";
 import { useState, useEffect } from "react";
 import { department } from "../../api/index";
+interface Option {
+  key: string | number;
+  title: string;
+  children?: Option[];
+}
 
 interface PropInterface {
-  defaultExpandedKeys: any;
-  defaultSelectedKeys: any;
-  defaultCheckedKeys: any;
-  onUpdate: () => void;
+  onUpdate: (keys: any) => void;
 }
 
 export const TreeDepartment = (props: PropInterface) => {
@@ -15,23 +17,38 @@ export const TreeDepartment = (props: PropInterface) => {
   useEffect(() => {
     setLoading(true);
     department.departmentList().then((res: any) => {
-      setTreeData(res.data);
+      const departments = res.data.departments;
+      const new_arr: Option[] = checkArr(departments, 0);
+      setTreeData(new_arr);
       setTimeout(() => {
         setLoading(false);
       }, 1000);
     });
   }, []);
-  const onSelect = () => {};
-  const onCheck = () => {};
-  return (
-    <Tree
-      checkable
-      defaultExpandedKeys={props.defaultExpandedKeys}
-      defaultSelectedKeys={props.defaultSelectedKeys}
-      defaultCheckedKeys={props.defaultCheckedKeys}
-      onSelect={onSelect}
-      onCheck={onCheck}
-      treeData={treeData}
-    />
-  );
+
+  const checkArr = (departments: any[], id: number) => {
+    const arr = [];
+    for (let i = 0; i < departments[id].length; i++) {
+      if (!departments[departments[id][i].id]) {
+        arr.push({
+          title: departments[id][i].name,
+          key: departments[id][i].id,
+        });
+      } else {
+        const new_arr: Option[] = checkArr(departments, departments[id][i].id);
+        arr.push({
+          title: departments[id][i].name,
+          key: departments[id][i].id,
+          children: new_arr,
+        });
+      }
+    }
+    return arr;
+  };
+
+  const onSelect = (selectedKeys: any, info: any) => {
+    props.onUpdate(selectedKeys);
+  };
+
+  return <Tree onSelect={onSelect} treeData={treeData} />;
 };
