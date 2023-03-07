@@ -3,6 +3,7 @@ import { Row, Col, Form, Input, Select, Switch, Button, message } from "antd";
 import styles from "./create.module.less";
 import { adminUser } from "../../../api/index";
 import { useNavigate } from "react-router-dom";
+import { BackBartment } from "../../../compenents";
 
 export const AdministratorCreatePage: React.FC = () => {
   const navigate = useNavigate();
@@ -62,81 +63,86 @@ export const AdministratorCreatePage: React.FC = () => {
     <>
       <Row className="playedu-main-body">
         <Col>
-          <Form
-            form={form}
-            name="basic"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 16 }}
-            style={{ width: 600 }}
-            initialValues={{ remember: true }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            autoComplete="off"
-          >
-            <Form.Item label="角色" name="roleIds">
-              <div className="d-flex">
-                <Select
-                  style={{ width: 300 }}
-                  mode="multiple"
-                  allowClear
-                  placeholder="请选择角色"
-                  onChange={handleChange}
-                  options={roles}
-                />
-                <Button
-                  type="link"
-                  danger
-                  onClick={() => navigate(`/system/adminroles`)}
-                >
-                  角色管理
-                </Button>
-              </div>
-            </Form.Item>
-            <Form.Item
-              label="姓名"
-              name="name"
-              rules={[{ required: true, message: "请输入姓名!" }]}
+          <div className="float-left mb-24">
+            <BackBartment title="添加管理员" />
+          </div>
+          <div className="float-left">
+            <Form
+              form={form}
+              name="basic"
+              labelCol={{ span: 8 }}
+              wrapperCol={{ span: 16 }}
+              style={{ width: 600 }}
+              initialValues={{ remember: true }}
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+              autoComplete="off"
             >
-              <Input style={{ width: 300 }} placeholder="请输入姓名" />
-            </Form.Item>
-            <Form.Item
-              label="邮箱"
-              name="email"
-              rules={[{ required: true, message: "请输入学员邮箱!" }]}
-            >
-              <Input style={{ width: 300 }} placeholder="请输入学员邮箱" />
-            </Form.Item>
-            <Form.Item
-              label="密码"
-              name="password"
-              rules={[{ required: true, message: "请输入登录密码!" }]}
-            >
-              <Input.Password
-                style={{ width: 300 }}
-                placeholder="请输入登录密码"
-              />
-            </Form.Item>
-            <Form.Item
-              label="禁止登录"
-              name="is_ban_login"
-              valuePropName="checked"
-              rules={[{ required: true, message: "请选择禁止登录!" }]}
-            >
-              <Switch onChange={onChange} />
-            </Form.Item>
-            <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-              <Button type="primary" htmlType="submit">
-                保存
-              </Button>
-              <Button
-                className="ml-15"
-                htmlType="button"
-                onClick={() => navigate(-1)}
+              <Form.Item label="角色" name="roleIds">
+                <div className="d-flex">
+                  <Select
+                    style={{ width: 300 }}
+                    mode="multiple"
+                    allowClear
+                    placeholder="请选择角色"
+                    onChange={handleChange}
+                    options={roles}
+                  />
+                  <Button
+                    type="link"
+                    danger
+                    onClick={() => navigate(`/system/adminroles`)}
+                  >
+                    角色管理
+                  </Button>
+                </div>
+              </Form.Item>
+              <Form.Item
+                label="姓名"
+                name="name"
+                rules={[{ required: true, message: "请输入姓名!" }]}
               >
-                取消
-              </Button>
-            </Form.Item>
-          </Form>
+                <Input style={{ width: 300 }} placeholder="请输入姓名" />
+              </Form.Item>
+              <Form.Item
+                label="邮箱"
+                name="email"
+                rules={[{ required: true, message: "请输入学员邮箱!" }]}
+              >
+                <Input style={{ width: 300 }} placeholder="请输入学员邮箱" />
+              </Form.Item>
+              <Form.Item
+                label="密码"
+                name="password"
+                rules={[{ required: true, message: "请输入登录密码!" }]}
+              >
+                <Input.Password
+                  style={{ width: 300 }}
+                  placeholder="请输入登录密码"
+                />
+              </Form.Item>
+              <Form.Item
+                label="禁止登录"
+                name="is_ban_login"
+                valuePropName="checked"
+                rules={[{ required: true, message: "请选择禁止登录!" }]}
+              >
+                <Switch onChange={onChange} />
+              </Form.Item>
+              <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                <Button type="primary" htmlType="submit">
+                  保存
+                </Button>
+                <Button
+                  className="ml-15"
+                  htmlType="button"
+                  onClick={() => navigate(-1)}
+                >
+                  取消
+                </Button>
+              </Form.Item>
+            </Form>
+          </div>
         </Col>
       </Row>
     </>
