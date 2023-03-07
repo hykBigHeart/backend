@@ -46,7 +46,6 @@ const items = [
     [getItem("部门", "/department", null, null, null)],
     null
   ),
-  getItem("证书管理", "5", <SettingOutlined />, [], null),
   getItem(
     "系统设置",
     "6",
