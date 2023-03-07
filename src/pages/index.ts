@@ -15,3 +15,4 @@ export * from "./system/adminroles/create";
 export * from "./system/adminroles/update";
 export * from "./department";
 export * from "./department/create";
+export * from "./department/update";

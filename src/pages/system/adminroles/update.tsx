@@ -15,6 +15,7 @@ export const AdminrolesUpdatePage: React.FC = () => {
   useEffect(() => {
     getParams();
   }, []);
+  
   useEffect(() => {
     getDetail();
   }, [params.roleId]);

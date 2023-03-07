@@ -60,7 +60,7 @@ export const DepartmentPage: React.FC = () => {
             type="link"
             danger
             className="c-red"
-            onClick={() => navigate(`/system/adminroles/update/${record.id}`)}
+            onClick={() => navigate(`/department/update/${record.id}`)}
           >
             详情
           </Button>
