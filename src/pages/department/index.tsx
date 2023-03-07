@@ -3,9 +3,16 @@ import { Button, Space, Table, Popconfirm, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import styles from "./index.module.less";
 import { PlusOutlined, ReloadOutlined } from "@ant-design/icons";
-import { adminRole } from "../../api/index";
+import { department } from "../../api/index";
 import { dateFormat } from "../../utils/index";
 import { Link, useNavigate } from "react-router-dom";
+
+interface Option {
+  id: string | number;
+  name: string;
+  created_at: string;
+  children?: Option[];
+}
 
 interface DataType {
   id: React.Key;
@@ -21,14 +28,14 @@ export const DepartmentPage: React.FC = () => {
 
   const columns: ColumnsType<DataType> = [
     {
+      title: "部门名",
+      dataIndex: "name",
+      render: (text: string) => <span>{text}</span>,
+    },
+    {
       title: "ID",
       key: "id",
       dataIndex: "id",
-    },
-    {
-      title: "角色名",
-      dataIndex: "name",
-      render: (text: string) => <span>{text}</span>,
     },
     {
       title: "时间",
@@ -72,12 +79,36 @@ export const DepartmentPage: React.FC = () => {
 
   const getData = () => {
     setLoading(true);
-    adminRole.adminRoleList().then((res: any) => {
-      setList(res.data);
+    department.departmentList().then((res: any) => {
+      const departments = res.data.departments;
+      const new_arr: Option[] = checkArr(departments, 0);
+      setList(new_arr);
       setTimeout(() => {
         setLoading(false);
       }, 1000);
     });
+  };
+
+  const checkArr = (departments: any[], id: number) => {
+    const arr = [];
+    for (let i = 0; i < departments[id].length; i++) {
+      if (!departments[departments[id][i].id]) {
+        arr.push({
+          name: departments[id][i].name,
+          id: departments[id][i].id,
+          created_at: departments[id][i].created_at,
+        });
+      } else {
+        const new_arr: Option[] = checkArr(departments, departments[id][i].id);
+        arr.push({
+          name: departments[id][i].name,
+          id: departments[id][i].id,
+          created_at: departments[id][i].created_at,
+          children: new_arr,
+        });
+      }
+    }
+    return arr;
   };
 
   const resetData = () => {
@@ -86,7 +117,7 @@ export const DepartmentPage: React.FC = () => {
   };
 
   const delUser = (id: any) => {
-    adminRole.destroyAdminRole(id).then((res: any) => {
+    department.destroyDepartment(id).then((res: any) => {
       setTimeout(() => {
         message.success("操作成功");
         setRefresh(!refresh);

@@ -26,7 +26,7 @@ export function updateDepartment(
   parentId: number,
   sort: number
 ) {
-  return client.post(`/backend/v1/department/${id}`, {
+  return client.put(`/backend/v1/department/${id}`, {
     name,
     parent_id: parentId,
     sort,

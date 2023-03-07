@@ -171,59 +171,59 @@ export const MemberPage: React.FC = () => {
   return (
     <>
       <Row>
-        <div className="playedu-main-body mb-24">
-          <div className="float-left d-flex">
-            <div className="d-flex mr-24">
-              <Typography.Text>昵称：</Typography.Text>
-              <Input
-                value={nickname}
-                onChange={(e) => {
-                  setNickname(e.target.value);
-                }}
-                style={{ width: 160 }}
-                placeholder="请输入昵称"
-              />
-            </div>
-            <div className="d-flex mr-24">
-              <Typography.Text>邮箱：</Typography.Text>
-              <Input
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                }}
-                style={{ width: 160 }}
-                placeholder="请输入邮箱"
-              />
-            </div>
-            <div className="d-flex mr-24">
-              <Typography.Text>身份证号：</Typography.Text>
-              <Input
-                value={id_card}
-                onChange={(e) => {
-                  setIdCard(e.target.value);
-                }}
-                style={{ width: 160 }}
-                placeholder="请输入身份证号"
-              />
-            </div>
-            <div className="d-flex mr-24">
-              <Button className="mr-16" onClick={resetData}>
-                重 置
-              </Button>
-              <Button
-                type="primary"
-                onClick={() => {
-                  setPage(1);
-                  setRefresh(!refresh);
-                }}
-              >
-                查 询
-              </Button>
-            </div>
-          </div>
-        </div>
         <Col span={4}></Col>
         <Col span={20}>
+          <div className="playedu-main-body mb-24">
+            <div className="float-left d-flex">
+              <div className="d-flex mr-24">
+                <Typography.Text>昵称：</Typography.Text>
+                <Input
+                  value={nickname}
+                  onChange={(e) => {
+                    setNickname(e.target.value);
+                  }}
+                  style={{ width: 160 }}
+                  placeholder="请输入昵称"
+                />
+              </div>
+              <div className="d-flex mr-24">
+                <Typography.Text>邮箱：</Typography.Text>
+                <Input
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
+                  style={{ width: 160 }}
+                  placeholder="请输入邮箱"
+                />
+              </div>
+              <div className="d-flex mr-24">
+                <Typography.Text>身份证号：</Typography.Text>
+                <Input
+                  value={id_card}
+                  onChange={(e) => {
+                    setIdCard(e.target.value);
+                  }}
+                  style={{ width: 160 }}
+                  placeholder="请输入身份证号"
+                />
+              </div>
+              <div className="d-flex mr-24">
+                <Button className="mr-16" onClick={resetData}>
+                  重 置
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    setPage(1);
+                    setRefresh(!refresh);
+                  }}
+                >
+                  查 询
+                </Button>
+              </div>
+            </div>
+          </div>
           <div className="playedu-main-body">
             <div className="float-left j-b-flex mb-24">
               <div className="d-flex">
