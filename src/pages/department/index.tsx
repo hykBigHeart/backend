@@ -66,7 +66,7 @@ export const DepartmentPage: React.FC = () => {
           </Button>
           <Popconfirm
             title="警告"
-            description="即将删除此角色，确认操作？"
+            description="即将删除此部门，确认操作？"
             onConfirm={() => delUser(record.id)}
             okText="确定"
             cancelText="取消"
