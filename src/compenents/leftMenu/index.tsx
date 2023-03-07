@@ -21,7 +21,6 @@ function getItem(label: any, key: any, icon: any, children: any, type: any) {
 }
 const items = [
   getItem("首页概览", "/", <SettingOutlined />, null, null),
-  getItem("网校装修", "/decoration", <SettingOutlined />, null, null),
   getItem(
     "课程内容",
     "3",
