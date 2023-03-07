@@ -25,7 +25,6 @@ export function createResource(type: string) {
 }
 
 export function storeResource(
-  type: string,
   categoryId: number,
   name: string,
   extension: string,
@@ -33,18 +32,24 @@ export function storeResource(
   disk: string,
   fileId: string,
   path: string,
-  url: string
+  url: string,
+  extra: object
 ) {
-  return client.post("/backend/v1/resource/create", {
-    category_id: categoryId,
-    name,
-    extension,
-    size,
-    disk,
-    file_id: fileId,
-    path,
-    url,
-  });
+  let data = Object.assign(
+    {},
+    {
+      category_id: categoryId,
+      name,
+      extension,
+      size,
+      disk,
+      file_id: fileId,
+      path,
+      url,
+    },
+    extra
+  );
+  return client.post("/backend/v1/resource/create", data);
 }
 
 export function destroyResource(id: number) {

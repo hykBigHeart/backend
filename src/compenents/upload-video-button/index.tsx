@@ -6,14 +6,17 @@ import {
   Modal,
   Progress,
   Row,
+  Space,
   Table,
+  Tag,
   Upload,
 } from "antd";
 import Dragger from "antd/es/upload/Dragger";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { generateUUID, getToken } from "../../utils";
 import { minioUploadId } from "../../api/upload";
 import { UploadChunk } from "../../js/minio-upload-chunk";
+import { storeResource } from "../../api/resource";
 
 interface PropsInterface {
   categoryId: number;
@@ -27,13 +30,18 @@ interface FileItem {
   size: number;
   progress: number;
   file: File;
-  resource_type: string;
+  resourceType: string;
   loading: boolean;
   run: UploadChunk;
+  isSuc: boolean;
+  isErr: boolean;
+  errMsg: string;
+  remoteName: string;
 }
 
 export const UploadVideoButton = (props: PropsInterface) => {
   const [showModal, setShowModal] = useState(false);
+  const localFileList = useRef<FileItem[]>([]);
   const [fileList, setFileList] = useState<FileItem[]>([]);
 
   const getMinioUploadId = async () => {
@@ -47,6 +55,7 @@ export const UploadVideoButton = (props: PropsInterface) => {
       if (file.type === "video/mp4") {
         //添加到本地待上传
         let data = await getMinioUploadId();
+        let run = new UploadChunk(file, data["upload_id"], data["filename"]);
         let item: FileItem = {
           id: generateUUID(),
           duration: 0,
@@ -54,16 +63,54 @@ export const UploadVideoButton = (props: PropsInterface) => {
           size: file.size,
           progress: 0,
           file: file,
-          resource_type: data["resource_type"],
+          resourceType: data["resource_type"],
           loading: true,
-          run: new UploadChunk(
-            file,
-            data["upload_id"],
-            data["filename"]
-          ),
+          run: run,
+          isSuc: false,
+          isErr: false,
+          errMsg: "",
+          remoteName: data["filename"],
         };
-        item.run.start();
-        setFileList([item, ...fileList]);
+        item.run.on("success", (url: string) => {
+          item.isSuc = true;
+          setFileList([...localFileList.current]);
+
+          // 创建上传记录
+          storeResource(
+            props.categoryId,
+            item.file.name,
+            "mp4",
+            item.file.size,
+            "minio",
+            "",
+            item.remoteName,
+            url,
+            {
+              duration: item.duration,
+            }
+          ).then(() => {
+            message.success(`${item.file.name} 上传成功`);
+          });
+        });
+        item.run.on("retry", () => {
+          item.isErr = false;
+          item.errMsg = "";
+          setFileList([...localFileList.current]);
+        });
+        item.run.on("progress", (progress: number) => {
+          item.progress = progress;
+          setFileList([...localFileList.current]);
+        });
+        item.run.on("error", (msg: string) => {
+          item.isErr = true;
+          item.errMsg = msg;
+          setFileList([...localFileList.current]);
+        });
+        setTimeout(() => {
+          item.run.start();
+        }, 500);
+        localFileList.current.push(item);
+        setFileList([...localFileList.current]);
       } else {
         message.error(`${file.name} 并不是 mp4 视频文件`);
       }
@@ -104,6 +151,8 @@ export const UploadVideoButton = (props: PropsInterface) => {
           onCancel={() => {
             setShowModal(false);
           }}
+          maskClosable={false}
+          closable={false}
         >
           <Row gutter={[0, 10]}>
             <Col span={24}>
@@ -145,7 +194,7 @@ export const UploadVideoButton = (props: PropsInterface) => {
                         {record.progress > 0 && (
                           <Progress
                             size="small"
-                            steps={10}
+                            steps={20}
                             percent={record.progress}
                           />
                         )}
@@ -155,16 +204,33 @@ export const UploadVideoButton = (props: PropsInterface) => {
                   {
                     title: "操作",
                     key: "action",
-                    render: (index, record) => (
+                    render: (_, record) => (
                       <>
-                        {record.progress === 0 && (
-                          <Button
-                            onClick={() => {
-                              fileList.splice(index, 1);
-                            }}
-                          >
-                            删除
-                          </Button>
+                        {record.progress > 0 &&
+                          record.isSuc === false &&
+                          record.isErr === false && (
+                            <Button
+                              type="primary"
+                              onClick={() => {
+                                record.run.cancel();
+                              }}
+                            >
+                              取消
+                            </Button>
+                          )}
+
+                        {record.isErr && (
+                          <>
+                            <Tag color="red">{record.errMsg}</Tag>
+                            <Button
+                              type="link"
+                              onClick={() => {
+                                record.run.retry();
+                              }}
+                            >
+                              继续上传
+                            </Button>
+                          </>
                         )}
                       </>
                     ),
