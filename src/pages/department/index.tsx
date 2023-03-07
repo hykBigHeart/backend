@@ -161,6 +161,7 @@ export const DepartmentPage: React.FC = () => {
         </div>
         <div className="float-left">
           <Table
+            pagination={false}
             key={tableKey}
             columns={columns}
             dataSource={list}
