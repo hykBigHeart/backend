@@ -12,12 +12,14 @@ interface Option {
   name: string;
   created_at: string;
   children?: Option[];
+  sort: number;
 }
 
 interface DataType {
   id: React.Key;
   name: string;
   created_at: string;
+  sort: number;
 }
 
 export const DepartmentPage: React.FC = () => {
@@ -36,6 +38,11 @@ export const DepartmentPage: React.FC = () => {
       title: "ID",
       key: "id",
       dataIndex: "id",
+    },
+    {
+      title: "Sort",
+      key: "sort",
+      dataIndex: "sort",
     },
     {
       title: "时间",
@@ -96,6 +103,7 @@ export const DepartmentPage: React.FC = () => {
         arr.push({
           name: departments[id][i].name,
           id: departments[id][i].id,
+          sort: departments[id][i].sort,
           created_at: departments[id][i].created_at,
         });
       } else {
@@ -104,6 +112,7 @@ export const DepartmentPage: React.FC = () => {
           name: departments[id][i].name,
           id: departments[id][i].id,
           created_at: departments[id][i].created_at,
+          sort: departments[id][i].sort,
           children: new_arr,
         });
       }
@@ -130,10 +139,7 @@ export const DepartmentPage: React.FC = () => {
       <div className="playedu-main-body">
         <div className="float-left j-b-flex mb-24">
           <div className="d-flex">
-            <Link
-              style={{ textDecoration: "none" }}
-              to={`/system/adminroles/create`}
-            >
+            <Link style={{ textDecoration: "none" }} to={`/department/create`}>
               <Button icon={<PlusOutlined />} className="mr-16" type="primary">
                 新建
               </Button>

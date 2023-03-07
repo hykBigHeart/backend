@@ -78,7 +78,7 @@ export const MemberCreatePage: React.FC = () => {
       <Row className="playedu-main-body">
         <Col>
           <div className="float-left mb-24">
-            <BackBartment title="添加学员" />
+            <BackBartment title="新建学员" />
           </div>
           <div className="float-left">
             <Form

@@ -79,7 +79,7 @@ export const AdminrolesUpdatePage: React.FC = () => {
               autoComplete="off"
             >
               <Form.Item
-                label="姓名"
+                label="角色名"
                 name="name"
                 rules={[{ required: true, message: "请输入角色名!" }]}
               >

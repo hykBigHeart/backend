@@ -14,3 +14,4 @@ export * from "./system/adminroles/index";
 export * from "./system/adminroles/create";
 export * from "./system/adminroles/update";
 export * from "./department";
+export * from "./department/create";

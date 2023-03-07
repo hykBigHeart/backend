@@ -16,6 +16,7 @@ import {
   AdminrolesCreatePage,
   AdminrolesUpdatePage,
   DepartmentPage,
+  DepartmentCreatePage,
 } from "../pages";
 
 const routes: RouteObject[] = [
@@ -70,6 +71,10 @@ const routes: RouteObject[] = [
       {
         path: "/department",
         element: <DepartmentPage />,
+      },
+      {
+        path: "/department/create",
+        element: <DepartmentCreatePage />,
       },
     ],
   },

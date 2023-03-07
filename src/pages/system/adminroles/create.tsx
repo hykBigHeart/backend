@@ -49,7 +49,7 @@ export const AdminrolesCreatePage: React.FC = () => {
       <Row className="playedu-main-body">
         <Col>
           <div className="float-left mb-24">
-            <BackBartment title="添加管理员角色" />
+            <BackBartment title="新建管理员角色" />
           </div>
           <div className="float-left">
             <Form
@@ -64,7 +64,7 @@ export const AdminrolesCreatePage: React.FC = () => {
               autoComplete="off"
             >
               <Form.Item
-                label="姓名"
+                label="角色名"
                 name="name"
                 rules={[{ required: true, message: "请输入角色名!" }]}
               >

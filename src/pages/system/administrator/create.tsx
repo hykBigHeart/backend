@@ -64,7 +64,7 @@ export const AdministratorCreatePage: React.FC = () => {
       <Row className="playedu-main-body">
         <Col>
           <div className="float-left mb-24">
-            <BackBartment title="添加管理员" />
+            <BackBartment title="新建管理员" />
           </div>
           <div className="float-left">
             <Form
