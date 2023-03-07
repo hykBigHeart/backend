@@ -22,13 +22,12 @@ function getItem(label: any, key: any, icon: any, children: any, type: any) {
 const items = [
   getItem("首页概览", "/", <SettingOutlined />, null, null),
   getItem(
-    "课程内容",
+    "资源管理",
     "3",
     <MailOutlined />,
     [
-      getItem("视频", "/vod", null, null, null),
-      getItem("文章", "/topic", null, null, null),
-      getItem("试卷", "/paper", null, null, null),
+      getItem("视频", "/videos", null, null, null),
+      getItem("图片", "/images", null, null, null),
     ],
     null
   ),
