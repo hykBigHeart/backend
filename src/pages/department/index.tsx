@@ -27,6 +27,7 @@ export const DepartmentPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [list, setList] = useState<any>([]);
   const [refresh, setRefresh] = useState(false);
+  const [tableKey, setTableKey] = useState<number>(0);
 
   const columns: ColumnsType<DataType> = [
     {
@@ -89,9 +90,11 @@ export const DepartmentPage: React.FC = () => {
     department.departmentList().then((res: any) => {
       const departments = res.data.departments;
       const new_arr: Option[] = checkArr(departments, 0);
+      let num = tableKey;
       setList(new_arr);
       setTimeout(() => {
         setLoading(false);
+        setTableKey(num + 1);
       }, 1000);
     });
   };
@@ -158,10 +161,12 @@ export const DepartmentPage: React.FC = () => {
         </div>
         <div className="float-left">
           <Table
+            key={tableKey}
             columns={columns}
             dataSource={list}
             loading={loading}
             rowKey={(record) => record.id}
+            defaultExpandAllRows={true}
           />
         </div>
       </div>
