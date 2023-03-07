@@ -30,7 +30,6 @@ export const MemberUpdatePage: React.FC = () => {
     department.departmentList().then((res: any) => {
       const departments = res.data.departments;
       const new_arr: Option[] = checkArr(departments, 0);
-      console.log(new_arr);
       setDepartments(new_arr);
     });
   };
@@ -94,9 +93,7 @@ export const MemberUpdatePage: React.FC = () => {
     console.log("Failed:", errorInfo);
   };
 
-  const onChange = (value: any) => {
-    console.log(value);
-  };
+  const onChange = (value: any) => {};
 
   return (
     <>

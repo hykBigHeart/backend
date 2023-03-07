@@ -3,10 +3,9 @@ import { Button, Space, Table, Popconfirm, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import styles from "./index.module.less";
 import { PlusOutlined, ReloadOutlined } from "@ant-design/icons";
-import { adminRole } from "../../../api/index";
-import { dateFormat } from "../../../utils/index";
+import { adminRole } from "../../api/index";
+import { dateFormat } from "../../utils/index";
 import { Link, useNavigate } from "react-router-dom";
-import { BackBartment } from "../../../compenents";
 
 interface DataType {
   id: React.Key;
@@ -14,7 +13,7 @@ interface DataType {
   created_at: string;
 }
 
-export const SystemAdminrolesPage: React.FC = () => {
+export const DepartmentPage: React.FC = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(true);
   const [list, setList] = useState<any>([]);
@@ -98,9 +97,6 @@ export const SystemAdminrolesPage: React.FC = () => {
   return (
     <>
       <div className="playedu-main-body">
-        <div className="float-left mb-24">
-          <BackBartment title="管理员角色" />
-        </div>
         <div className="float-left j-b-flex mb-24">
           <div className="d-flex">
             <Link

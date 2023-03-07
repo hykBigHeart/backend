@@ -40,6 +40,13 @@ const items = [
     [getItem("学员", "/member", null, null, null)],
     null
   ),
+  getItem(
+    "部门管理",
+    "7",
+    <AppstoreOutlined />,
+    [getItem("部门", "/department", null, null, null)],
+    null
+  ),
   getItem("证书管理", "5", <SettingOutlined />, [], null),
   getItem(
     "系统设置",
@@ -50,7 +57,7 @@ const items = [
   ),
 ];
 
-const rootSubmenuKeys = ["3", "4", "5", "6"];
+const rootSubmenuKeys = ["3", "4", "5", "6", "7"];
 
 export const LeftMenu: React.FC = () => {
   //展开的subMenu
