@@ -75,7 +75,7 @@ export const DepartmentUpdatePage: React.FC = () => {
   const onFinish = (values: any) => {
     let id = Number(params.depId);
     department
-      .updateDepartment(id, values.name, parent_id, values.sort)
+      .updateDepartment(id, values.name, parent_id || 0, values.sort)
       .then((res: any) => {
         message.success("保存成功！");
         navigate(-1);
@@ -87,8 +87,12 @@ export const DepartmentUpdatePage: React.FC = () => {
   };
 
   const handleChange = (value: any) => {
-    let it = value[value.length - 1];
-    setParentId(it);
+    if (value !== undefined) {
+      let it = value[value.length - 1];
+      setParentId(it);
+    } else {
+      setParentId(0);
+    }
   };
 
   const displayRender = (label: any, selectedOptions: any) => {

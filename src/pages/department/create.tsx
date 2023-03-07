@@ -52,7 +52,7 @@ export const DepartmentCreatePage: React.FC = () => {
 
   const onFinish = (values: any) => {
     department
-      .storeDepartment(values.name, parent_id, values.sort)
+      .storeDepartment(values.name, parent_id || 0, values.sort)
       .then((res: any) => {
         message.success("保存成功！");
         navigate(-1);
@@ -64,8 +64,12 @@ export const DepartmentCreatePage: React.FC = () => {
   };
 
   const handleChange = (value: any) => {
-    let it = value[value.length - 1];
-    setParentId(it);
+    if (value !== undefined) {
+      let it = value[value.length - 1];
+      setParentId(it);
+    } else {
+      setParentId(0);
+    }
   };
 
   const displayRender = (label: any, selectedOptions: any) => {
