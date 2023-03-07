@@ -19,7 +19,6 @@ import { Link, useNavigate } from "react-router-dom";
 interface DataType {
   id: React.Key;
   name: string;
-  slug: string;
   created_at: string;
 }
 
@@ -39,10 +38,6 @@ export const SystemAdminrolesPage: React.FC = () => {
       title: "角色名",
       dataIndex: "name",
       render: (text: string) => <span>{text}</span>,
-    },
-    {
-      title: "Slug",
-      dataIndex: "slug",
     },
     {
       title: "时间",

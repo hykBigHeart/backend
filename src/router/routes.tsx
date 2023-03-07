@@ -13,6 +13,8 @@ import {
   AdministratorCreatePage,
   AdministratorUpdatePage,
   SystemAdminrolesPage,
+  AdminrolesCreatePage,
+  AdminrolesUpdatePage,
 } from "../pages";
 
 const routes: RouteObject[] = [
@@ -55,6 +57,14 @@ const routes: RouteObject[] = [
       {
         path: "/system/adminroles",
         element: <SystemAdminrolesPage />,
+      },
+      {
+        path: "/system/adminroles/create",
+        element: <AdminrolesCreatePage />,
+      },
+      {
+        path: "/system/adminroles/update/:roleId",
+        element: <AdminrolesUpdatePage />,
       },
     ],
   },
