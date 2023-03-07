@@ -13,7 +13,8 @@ export class UploadChunk {
   filename: string;
 
   onError: ((err: string) => void | undefined) | undefined;
-  onSuccess: (() => void | undefined) | undefined;
+  onSuccess: ((url: string) => void | undefined) | undefined;
+  onRetry: (() => void | undefined) | undefined;
   onProgress: ((progress: number) => void) | undefined;
 
   constructor(file: File, uploadId: string, filename: string) {
@@ -32,22 +33,41 @@ export class UploadChunk {
     this.filename = filename;
   }
 
+  on(event: string, handle: any) {
+    if (event === "error") {
+      this.onError = handle;
+    } else if (event === "success") {
+      this.onSuccess = handle;
+    } else if (event === "progress") {
+      this.onProgress = handle;
+    } else if (event === "retry") {
+      this.onRetry = handle;
+    }
+  }
+
   start() {
     if (this.isStop) {
       return;
     }
-    let start = (this.chunkIndex - 1) * this.chunkSize;
-    if (start > this.file.size) {
+    if (this.chunkIndex > this.chunkNumber) {
       //上传完成
       minioMerge(this.filename, this.uploadId)
-        .then((res) => {
-          console.log("合并成功", res);
+        .then((res: any) => {
+          let url = res.data.url;
+          this.onSuccess && this.onSuccess(url);
         })
         .catch((e) => {
-          console.error("合并失败", e);
+          console.error("文件合并失败", e);
+          this.onError && this.onError("失败.3");
         });
       return;
     }
+    this.onProgress &&
+      this.onProgress(
+        parseInt((this.chunkIndex / this.chunkNumber) * 100 + "")
+      );
+
+    let start = (this.chunkIndex - 1) * this.chunkSize;
     const chunkData = this.file.slice(start, start + this.chunkSize);
     const boolname = this.file.name + "-" + this.chunkIndex;
     const tmpFile = new File([chunkData], boolname);
@@ -65,16 +85,19 @@ export class UploadChunk {
         this.start();
       })
       .catch((e) => {
-        console.error("获取签名url失败", e);
+        console.error("文件分片上传失败", e);
+        this.onError && this.onError("失败.2");
       });
   }
 
-  stop() {
+  cancel() {
     this.isStop = true;
+    this.onError && this.onError("已取消");
   }
 
-  resume() {
+  retry() {
     this.isStop = false;
     this.start();
+    this.onRetry && this.onRetry();
   }
 }
