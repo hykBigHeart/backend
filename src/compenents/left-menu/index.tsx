@@ -72,7 +72,6 @@ export const LeftMenu: React.FC = () => {
   const navigate = useNavigate();
   //点击每一项
   const onClick = (e: any) => {
-    console.log("click ", e);
     navigate(e.key);
   };
   return (
