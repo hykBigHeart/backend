@@ -65,14 +65,9 @@ export function parseVideo(file: File): Promise<VideoParseInfo> {
       }
       ctx.drawImage(video, 0, 0, width, height); //绘制canvas
       let dataURL = canvas.toDataURL("image/png"); //转换为base64
-      const imageFile = transformBase64ToBlob(
-        dataURL,
-        "image/png",
-        file.name + ".png"
-      );
       video.remove();
       let info: VideoParseInfo = {
-        poster: imageFile,
+        poster: dataURL,
         duration: parseInt(video.duration + ""),
       };
       return resolve(info);

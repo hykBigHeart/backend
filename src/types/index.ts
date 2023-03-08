@@ -1,4 +1,4 @@
 export interface VideoParseInfo {
-    poster:File;
+    poster:string;
     duration:number;
 }
