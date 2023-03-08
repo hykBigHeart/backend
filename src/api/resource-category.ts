@@ -30,7 +30,7 @@ export function updateResourceCategory(
   parentId: number,
   sort: number
 ) {
-  return client.post(`/backend/v1/resource-category/${id}`, {
+  return client.put(`/backend/v1/resource-category/${id}`, {
     name,
     parent_id: parentId,
     sort,
