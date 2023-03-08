@@ -26,6 +26,7 @@ interface DataType {
   email: string;
   created_at: string;
   credit1: number;
+  id_card: string;
   is_lock: number;
 }
 
@@ -65,8 +66,8 @@ export const MemberPage: React.FC = () => {
       dataIndex: "email",
     },
     {
-      title: "积分",
-      dataIndex: "credit1",
+      title: "身份证号",
+      dataIndex: "id_card",
     },
     {
       title: "注册时间",
