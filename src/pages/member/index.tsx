@@ -132,9 +132,9 @@ export const MemberPage: React.FC = () => {
       .then((res: any) => {
         setList(res.data.data);
         setTotal(res.data.total);
+        setLoading(false);
         setTimeout(() => {
           setSelectedRowKeys([]);
-          setLoading(false);
         }, 1000);
       });
   };
