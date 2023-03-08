@@ -78,7 +78,7 @@ export const ResourceImagesPage = () => {
   // 获取图片列表
   const getImageList = () => {
     resource
-      .resourceList(page, size, "", "", "", "IMAGE", defaultCid + "")
+      .resourceList(page, size, "", "", "", "IMAGE", category_ids)
       .then((res: any) => {
         setTotal(res.data.result.total);
         setImageList(res.data.result.data);
@@ -102,7 +102,7 @@ export const ResourceImagesPage = () => {
   // 加载图片列表
   useEffect(() => {
     getImageList();
-  }, [defaultCid, refresh, page, size]);
+  }, [category_ids, refresh, page, size]);
 
   return (
     <>
@@ -115,53 +115,6 @@ export const ResourceImagesPage = () => {
         <Col span={20}>
           <div className="playedu-main-body">
             <Row gutter={16}>
-              <Col span={4}>
-                <>
-                  <div className={styles.categoryTitle}>
-                    <div>图片分类</div>
-                    <div className="ml-15">
-                      <CreateResourceCategory
-                        type="IMAGE"
-                        onUpdate={() => {
-                          setRefreshCategories(refreshCategories + 1);
-                        }}
-                      ></CreateResourceCategory>
-                    </div>
-                  </div>
-                  {categories.length === 0 && (
-                    <Empty
-                      description="暂无分类"
-                      image={Empty.PRESENTED_IMAGE_SIMPLE}
-                    ></Empty>
-                  )}
-
-                  {categories.map((item) => (
-                    <div
-                      key={item.id}
-                      className={`${styles.categoryItem} ${
-                        item.id === defaultCid ? "active" : ""
-                      }`}
-                      onClick={() => {
-                        setDefaultCid(item.id);
-                      }}
-                    >
-                      <div>{item.name}</div>
-                      {item.id !== 0 && (
-                        <Button
-                          className="ml-15"
-                          danger
-                          shape="circle"
-                          size="small"
-                          onClick={() => {
-                            removeCategory(item.id);
-                          }}
-                          icon={<CloseOutlined />}
-                        />
-                      )}
-                    </div>
-                  ))}
-                </>
-              </Col>
               <Col span={20}>
                 <Row style={{ marginBottom: 24 }}>
                   <Col span={24}>
