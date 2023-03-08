@@ -6,7 +6,7 @@ import { getToken } from "../../../utils";
 import { InboxOutlined } from "@ant-design/icons";
 
 interface PropsInterface {
-  categoryId: number;
+  categoryIds: number[];
   onUpdate: () => void;
 }
 
@@ -18,18 +18,19 @@ export const UploadImageSub = (props: PropsInterface) => {
     multiple: true,
     action:
       config.app_url +
-      "/backend/v1/upload/file?category_id=" +
-      props.categoryId,
+      "/backend/v1/upload/file?category_ids=" +
+      props.categoryIds.join(","),
     headers: {
       authorization: "Bearer " + getToken(),
     },
     onChange(info: any) {
-      const { status } = info.file;
-      if (status !== "uploading") {
-        console.log(info.file, info.fileList);
-      }
+      const { status, response } = info.file;
       if (status === "done") {
-        message.success(`${info.file.name} 上传成功`);
+        if (response.code == 0) {
+          message.success(`${info.file.name} 上传成功`);
+        } else {
+          message.error(response.msg);
+        }
       } else if (status === "error") {
         message.error(`${info.file.name} 上传失败`);
       }

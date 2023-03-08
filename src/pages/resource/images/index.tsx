@@ -13,7 +13,7 @@ import { resource } from "../../../api";
 import styles from "./index.module.less";
 import { CloseOutlined } from "@ant-design/icons";
 import { UploadImageSub } from "../../../compenents/upload-image-button/upload-image-sub";
-import { TreeCategory, PerButton } from "../../../compenents";
+import { TreeCategory } from "../../../compenents";
 
 interface CategoryItem {
   id: number;
@@ -92,7 +92,7 @@ export const ResourceImagesPage = () => {
             <Row gutter={16} style={{ marginBottom: 24 }}>
               <Col span={24}>
                 <UploadImageSub
-                  categoryId={Number(category_ids.join(","))}
+                  categoryIds={category_ids}
                   onUpdate={() => {
                     resetImageList();
                   }}

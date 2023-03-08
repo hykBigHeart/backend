@@ -175,7 +175,7 @@ export const UploadImageButton = (props: PropsInterface) => {
               <Row>
                 <Col span={24}>
                   <UploadImageSub
-                    categoryId={defaultCid}
+                    categoryIds={[]}
                     onUpdate={() => {
                       resetImageList();
                     }}
