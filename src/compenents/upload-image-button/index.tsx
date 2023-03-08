@@ -80,7 +80,7 @@ export const UploadImageButton = (props: PropsInterface) => {
     resource
       .resourceList(page, size, "", "", "", "IMAGE", defaultCid + "")
       .then((res: any) => {
-        setTotal(res.data.resul.total);
+        setTotal(res.data.result.total);
         setImageList(res.data.result.data);
       })
       .catch((err) => {
