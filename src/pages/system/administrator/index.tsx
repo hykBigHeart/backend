@@ -15,6 +15,7 @@ import { PlusOutlined, ReloadOutlined } from "@ant-design/icons";
 import { adminUser } from "../../../api/index";
 import { dateFormat } from "../../../utils/index";
 import { Link, useNavigate } from "react-router-dom";
+import { PerButton } from "../../../compenents";
 
 interface DataType {
   id: React.Key;
@@ -74,16 +75,16 @@ export const SystemAdministratorPage: React.FC = () => {
       width: 160,
       render: (_, record) => (
         <Space size="small">
-          <Button
+          <PerButton
             type="link"
-            danger
-            className="c-red"
+            text="详情"
+            class="c-red"
+            icon={null}
+            p="admin-user-update"
             onClick={() =>
               navigate(`/system/administrator/update/${record.id}`)
             }
-          >
-            详情
-          </Button>
+          />
           <Popconfirm
             title="警告"
             description="即将删除此人员，确认操作？"
@@ -91,9 +92,14 @@ export const SystemAdministratorPage: React.FC = () => {
             okText="确定"
             cancelText="取消"
           >
-            <Button type="link" danger className="c-red">
-              删除
-            </Button>
+            <PerButton
+              type="link"
+              text="删除"
+              class="c-red"
+              icon={null}
+              p="admin-user-destroy"
+              onClick={() => null}
+            />
           </Popconfirm>
         </Space>
       ),
@@ -122,7 +128,6 @@ export const SystemAdministratorPage: React.FC = () => {
     setList([]);
     setRefresh(!refresh);
   };
-
 
   const paginationProps = {
     current: page, //当前页码
@@ -186,9 +191,14 @@ export const SystemAdministratorPage: React.FC = () => {
               style={{ textDecoration: "none" }}
               to={`/system/administrator/create`}
             >
-              <Button icon={<PlusOutlined />} className="mr-16" type="primary">
-                新建
-              </Button>
+              <PerButton
+                type="primary"
+                text="新建"
+                class="mr-16"
+                icon={<PlusOutlined />}
+                p="admin-user-store"
+                onClick={() => null}
+              />
             </Link>
           </div>
           <div className="d-flex">

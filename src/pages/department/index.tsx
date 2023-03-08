@@ -155,7 +155,7 @@ export const DepartmentPage: React.FC = () => {
                 class="mr-16"
                 icon={<PlusOutlined />}
                 p="department-store"
-                onClick={() => console.log("ok")}
+                onClick={() => null}
               />
             </Link>
           </div>
