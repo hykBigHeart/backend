@@ -99,7 +99,7 @@ export const DepartmentCreatePage: React.FC = () => {
                 <Cascader
                   style={{ width: 300 }}
                   allowClear
-                  placeholder="请选择权限"
+                  placeholder="请选择部门"
                   onChange={handleChange}
                   options={categories}
                   changeOnSelect

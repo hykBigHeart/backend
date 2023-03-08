@@ -87,15 +87,29 @@ export const DepartmentUpdatePage: React.FC = () => {
   };
 
   const handleChange = (value: any) => {
+    let id = Number(params.depId);
     if (value !== undefined) {
       let it = value[value.length - 1];
-      setParentId(it);
+      if (it === id) {
+        setParentId(0);
+      } else {
+        setParentId(it);
+      }
     } else {
       setParentId(0);
     }
   };
 
   const displayRender = (label: any, selectedOptions: any) => {
+    let id = Number(params.depId);
+    if (selectedOptions && selectedOptions[0]) {
+      let current = selectedOptions[selectedOptions.length - 1].value;
+      if (current === id) {
+        message.error("不能选择自己作为父类");
+        return 0;
+      }
+    }
+
     return label[label.length - 1];
   };
 
@@ -122,7 +136,7 @@ export const DepartmentUpdatePage: React.FC = () => {
                 <Cascader
                   style={{ width: 300 }}
                   allowClear
-                  placeholder="请选择权限"
+                  placeholder="请选择部门"
                   onChange={handleChange}
                   options={categories}
                   changeOnSelect
