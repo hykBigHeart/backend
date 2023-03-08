@@ -37,7 +37,7 @@ export const MemberImportPage: React.FC = () => {
     jsonArr.splice(0, 1); // 去掉表头
     const jsonArrData = jsonArr.map((item: any, index: number) => {
       // console.log(item, index);
-      let arr = [];
+      let jsonObj = item;
       //在这写你需要的处理逻辑
       // jsonObj.id = data.length + index + 1;
       // jsonObj.key = data.length + index + 1 + '';
@@ -46,8 +46,7 @@ export const MemberImportPage: React.FC = () => {
       // jsonObj.profession = item[1];
       // jsonObj.pay = item[2];
       // jsonObj.work = item[3];
-      arr.push(item);
-      return arr;
+      return jsonObj;
     });
 
     // setData([...data, ...jsonArrData]);
