@@ -6,6 +6,7 @@ import { PlusOutlined, ReloadOutlined } from "@ant-design/icons";
 import { department } from "../../api/index";
 import { dateFormat } from "../../utils/index";
 import { Link, useNavigate } from "react-router-dom";
+import { PerButton } from "../../compenents";
 
 interface Option {
   id: string | number;
@@ -57,14 +58,14 @@ export const DepartmentPage: React.FC = () => {
       width: 160,
       render: (_, record) => (
         <Space size="small">
-          <Button
+          <PerButton
             type="link"
-            danger
-            className="c-red"
+            text="详情"
+            class="c-red"
+            icon={null}
+            p="department-update"
             onClick={() => navigate(`/department/update/${record.id}`)}
-          >
-            详情
-          </Button>
+          />
           <Popconfirm
             title="警告"
             description="即将删除此部门，确认操作？"
@@ -72,9 +73,14 @@ export const DepartmentPage: React.FC = () => {
             okText="确定"
             cancelText="取消"
           >
-            <Button type="link" danger className="c-red">
-              删除
-            </Button>
+            <PerButton
+              type="link"
+              text="删除"
+              class="c-red"
+              icon={null}
+              p="department-destroy"
+              onClick={() => null}
+            />
           </Popconfirm>
         </Space>
       ),
@@ -143,9 +149,14 @@ export const DepartmentPage: React.FC = () => {
         <div className="float-left j-b-flex mb-24">
           <div className="d-flex">
             <Link style={{ textDecoration: "none" }} to={`/department/create`}>
-              <Button icon={<PlusOutlined />} className="mr-16" type="primary">
-                新建
-              </Button>
+              <PerButton
+                type="primary"
+                text="新建"
+                class="mr-16"
+                icon={<PlusOutlined />}
+                p="department-store"
+                onClick={() => console.log("ok")}
+              />
             </Link>
           </div>
           <div className="d-flex">
