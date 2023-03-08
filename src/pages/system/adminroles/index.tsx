@@ -86,7 +86,7 @@ export const SystemAdminrolesPage: React.FC = () => {
       setTimeout(() => {
         message.success("操作成功");
         setRefresh(!refresh);
-      }, 1000);
+      }, 500);
     });
   };
 
