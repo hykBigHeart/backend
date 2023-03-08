@@ -3,7 +3,7 @@ import {
   Button,
   Row,
   Col,
-  Modal,
+  Popconfirm,
   Image,
   Empty,
   message,
@@ -11,7 +11,6 @@ import {
 } from "antd";
 import { resource, resourceCategory } from "../../../api";
 import styles from "./index.module.less";
-import { CreateResourceCategory } from "../../../compenents/create-rs-category";
 import { CloseOutlined } from "@ant-design/icons";
 import { UploadImageSub } from "../../../compenents/upload-image-button/upload-image-sub";
 import { TreeCategory, PerButton } from "../../../compenents";
@@ -45,7 +44,6 @@ export const ResourceImagesPage = () => {
       sort: 0,
     },
   ]);
-  const [defaultCid, setDefaultCid] = useState(0);
   const [refreshCategories, setRefreshCategories] = useState(1);
 
   const [imageList, setImageList] = useState<ImageItem[]>([]);
@@ -54,6 +52,7 @@ export const ResourceImagesPage = () => {
   const [size, setSize] = useState(12);
   const [total, setTotal] = useState(0);
   const [category_ids, setCategoryIds] = useState<any>([]);
+  const [selected, setSelected] = useState(0);
 
   // 获取图片资源的分类
   const getCategories = () => {
@@ -77,8 +76,9 @@ export const ResourceImagesPage = () => {
 
   // 获取图片列表
   const getImageList = () => {
+    let categoryIds = category_ids.join(",");
     resource
-      .resourceList(page, size, "", "", "", "IMAGE", category_ids)
+      .resourceList(page, size, "", "", "", "IMAGE", categoryIds)
       .then((res: any) => {
         setTotal(res.data.result.total);
         setImageList(res.data.result.data);
@@ -119,7 +119,7 @@ export const ResourceImagesPage = () => {
                 <Row style={{ marginBottom: 24 }}>
                   <Col span={24}>
                     <UploadImageSub
-                      categoryId={defaultCid}
+                      categoryId={Number(category_ids.join(","))}
                       onUpdate={() => {
                         resetImageList();
                       }}
@@ -139,19 +139,29 @@ export const ResourceImagesPage = () => {
                   )}
 
                   {imageList.map((item) => (
-                    <Col
-                      key={item.id}
-                      span={6}
-                      onClick={() => {
-                        console.log(item.url);
-                      }}
-                    >
-                      <Image
-                        preview={false}
-                        width={120}
-                        height={80}
-                        src={item.url}
-                      />
+                    <Col key={item.id} span={6}>
+                      <div className={styles.imageItem}>
+                        <Image
+                          preview={false}
+                          width={120}
+                          height={80}
+                          src={item.url}
+                        />
+                        <Popconfirm
+                          title="警告"
+                          description="即将删除此图片，确认操作？"
+                          onConfirm={() => removeCategory(item.id)}
+                          okText="确定"
+                          cancelText="取消"
+                        >
+                          <Button
+                            className={styles.closeButton}
+                            danger
+                            shape="circle"
+                            icon={<CloseOutlined />}
+                          />
+                        </Popconfirm>
+                      </div>
                     </Col>
                   ))}
 
