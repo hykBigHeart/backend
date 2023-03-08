@@ -5,7 +5,7 @@ export const TestPage: React.FC = () => {
   return (
     <div>
       <UploadVideoButton
-        categoryId={0}
+        categoryIds={[]}
         onUpdate={() => {
           console.log(123);
         }}
