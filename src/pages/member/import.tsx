@@ -4,6 +4,7 @@ import { Row, Col, Form, Input, Cascader, Button, Upload, message } from "antd";
 import { BackBartment } from "../../compenents";
 import { user } from "../../api/index";
 import { useNavigate } from "react-router-dom";
+import { getHost } from "../../utils/index";
 
 export const MemberImportPage: React.FC = () => {
   const navigate = useNavigate();
@@ -66,6 +67,11 @@ export const MemberImportPage: React.FC = () => {
       });
   };
 
+  const download = () => {
+    let url = getHost() + "template/学员批量导入模板.xlsx";
+    window.open(url);
+  };
+
   return (
     <>
       <Row className="playedu-main-body">
@@ -73,10 +79,13 @@ export const MemberImportPage: React.FC = () => {
           <div className="float-left mb-24">
             <BackBartment title="学员批量导入" />
           </div>
-          <div className="float-left">
+          <div className="float-left d-flex">
             <Upload {...uploadProps}>
               <Button type="primary">导入Excel</Button>
             </Upload>
+            <Button type="link" className="ml-15" danger onClick={download}>
+              下载「学员批量导入模板」
+            </Button>
           </div>
         </Col>
       </Row>

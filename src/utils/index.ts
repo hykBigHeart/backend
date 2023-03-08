@@ -79,3 +79,7 @@ export function parseVideo(file: File): Promise<VideoParseInfo> {
     });
   });
 }
+
+export function getHost() {
+  return window.location.protocol + "//" + window.location.host+"/";
+}
