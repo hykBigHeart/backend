@@ -9,7 +9,7 @@ import {
   message,
   Pagination,
 } from "antd";
-import { resource, resourceCategory } from "../../../api";
+import { resource } from "../../../api";
 import styles from "./index.module.less";
 import { CloseOutlined } from "@ant-design/icons";
 import { UploadImageSub } from "../../../compenents/upload-image-button/upload-image-sub";
@@ -36,41 +36,21 @@ interface ImageItem {
 }
 
 export const ResourceImagesPage = () => {
-  const [categories, setCategories] = useState<CategoryItem[]>([
-    {
-      id: 0,
-      type: "IMAGE",
-      name: "默认分类",
-      sort: 0,
-    },
-  ]);
-  const [refreshCategories, setRefreshCategories] = useState(1);
-
   const [imageList, setImageList] = useState<ImageItem[]>([]);
   const [refresh, setRefresh] = useState(false);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(12);
   const [total, setTotal] = useState(0);
   const [category_ids, setCategoryIds] = useState<any>([]);
-  const [selected, setSelected] = useState(0);
 
-  // 获取图片资源的分类
-  const getCategories = () => {
-    resourceCategory.resourceCategoryList().then((res: any) => {
-      let data = res.data.data;
-      if (data.length > 0) {
-        setCategories([...categories, ...res.data.data]);
-      }
-    });
-  };
-  // 删除资源分类
+  // 删除图片
   const removeCategory = (id: number) => {
     if (id === 0) {
       return;
     }
-    resourceCategory.destroyResourceCategory(id).then(() => {
+    resource.destroyResource(id).then(() => {
       message.success("删除成功");
-      setRefreshCategories(refreshCategories + 1);
+      resetImageList();
     });
   };
 
@@ -93,11 +73,6 @@ export const ResourceImagesPage = () => {
     setImageList([]);
     setRefresh(!refresh);
   };
-
-  // 初始化加载数据
-  useEffect(() => {
-    getCategories();
-  }, [refreshCategories]);
 
   // 加载图片列表
   useEffect(() => {
