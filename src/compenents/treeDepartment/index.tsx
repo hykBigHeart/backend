@@ -18,7 +18,13 @@ export const TreeDepartment = (props: PropInterface) => {
     setLoading(true);
     department.departmentList().then((res: any) => {
       const departments = res.data.departments;
-      const new_arr: Option[] = checkArr(departments, 0);
+      const new_arr: Option[] = [
+        {
+          key: "",
+          title: "全部",
+          children: checkArr(departments, 0),
+        },
+      ];
       setTreeData(new_arr);
       setTimeout(() => {
         setLoading(false);
