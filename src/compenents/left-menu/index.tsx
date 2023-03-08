@@ -26,6 +26,7 @@ const items = [
     "3",
     <MailOutlined />,
     [
+      getItem("资源分类", "/resource-category", null, null, null),
       getItem("视频", "/videos", null, null, null),
       getItem("图片", "/images", null, null, null),
     ],

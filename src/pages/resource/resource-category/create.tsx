@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col, Form, Input, Cascader, Button, message } from "antd";
 import styles from "./create.module.less";
-import { department } from "../../api/index";
-import { useParams, useNavigate } from "react-router-dom";
-import { BackBartment } from "../../compenents";
+import { resourceCategory } from "../../../api/index";
+import { useNavigate } from "react-router-dom";
+import { BackBartment } from "../../../compenents";
 
 interface Option {
   value: string | number;
@@ -11,8 +11,7 @@ interface Option {
   children?: Option[];
 }
 
-export const DepartmentUpdatePage: React.FC = () => {
-  const params = useParams();
+export const ResourceCategoryCreatePage: React.FC = () => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState<boolean>(true);
@@ -23,50 +22,29 @@ export const DepartmentUpdatePage: React.FC = () => {
     getParams();
   }, []);
 
-  useEffect(() => {
-    getDetail();
-  }, [params.depId]);
-
   const getParams = () => {
-    department.createDepartment().then((res: any) => {
-      const departments = res.data.departments;
-      if (JSON.stringify(departments) !== "{}") {
-        const new_arr: Option[] = checkArr(departments, 0);
+    resourceCategory.createResourceCategory().then((res: any) => {
+      const categories = res.data.categories;
+      if (JSON.stringify(categories) !== '{}') {
+        const new_arr: Option[] = checkArr(categories, 0);
         setCategories(new_arr);
       }
     });
   };
 
-  const getDetail = () => {
-    department.department(Number(params.depId)).then((res: any) => {
-      let data = res.data;
-      let arr = data.parent_chain.split(",");
-      let new_arr: any[] = [];
-      arr.map((num: any) => {
-        new_arr.push(Number(num));
-      });
-      form.setFieldsValue({
-        name: data.name,
-        sort: data.sort,
-        parent_id: new_arr,
-      });
-      setParentId(data.parent_id);
-    });
-  };
-
-  const checkArr = (departments: any[], id: number) => {
+  const checkArr = (categories: any[], id: number) => {
     const arr = [];
-    for (let i = 0; i < departments[id].length; i++) {
-      if (!departments[departments[id][i].id]) {
+    for (let i = 0; i < categories[id].length; i++) {
+      if (!categories[categories[id][i].id]) {
         arr.push({
-          label: departments[id][i].name,
-          value: departments[id][i].id,
+          label: categories[id][i].name,
+          value: categories[id][i].id,
         });
       } else {
-        const new_arr: Option[] = checkArr(departments, departments[id][i].id);
+        const new_arr: Option[] = checkArr(categories, categories[id][i].id);
         arr.push({
-          label: departments[id][i].name,
-          value: departments[id][i].id,
+          label: categories[id][i].name,
+          value: categories[id][i].id,
           children: new_arr,
         });
       }
@@ -75,9 +53,8 @@ export const DepartmentUpdatePage: React.FC = () => {
   };
 
   const onFinish = (values: any) => {
-    let id = Number(params.depId);
-    department
-      .updateDepartment(id, values.name, parent_id || 0, values.sort)
+    resourceCategory
+      .storeResourceCategory(values.name, parent_id || 0, values.sort)
       .then((res: any) => {
         message.success("保存成功！");
         navigate(-1);
@@ -89,29 +66,15 @@ export const DepartmentUpdatePage: React.FC = () => {
   };
 
   const handleChange = (value: any) => {
-    let id = Number(params.depId);
     if (value !== undefined) {
       let it = value[value.length - 1];
-      if (it === id) {
-        setParentId(0);
-      } else {
-        setParentId(it);
-      }
+      setParentId(it);
     } else {
       setParentId(0);
     }
   };
 
   const displayRender = (label: any, selectedOptions: any) => {
-    let id = Number(params.depId);
-    if (selectedOptions && selectedOptions[0]) {
-      let current = selectedOptions[selectedOptions.length - 1].value;
-      if (current === id) {
-        message.error("不能选择自己作为父类");
-        return 0;
-      }
-    }
-
     return label[label.length - 1];
   };
 
@@ -120,7 +83,7 @@ export const DepartmentUpdatePage: React.FC = () => {
       <Row className="playedu-main-body">
         <Col>
           <div className="float-left mb-24">
-            <BackBartment title="编辑部门" />
+            <BackBartment title="新建资源分类" />
           </div>
           <div className="float-left">
             <Form
@@ -138,7 +101,7 @@ export const DepartmentUpdatePage: React.FC = () => {
                 <Cascader
                   style={{ width: 300 }}
                   allowClear
-                  placeholder="请选择部门"
+                  placeholder="请选择分类"
                   onChange={handleChange}
                   options={categories}
                   changeOnSelect
@@ -147,11 +110,11 @@ export const DepartmentUpdatePage: React.FC = () => {
                 />
               </Form.Item>
               <Form.Item
-                label="部门名"
+                label="分类名"
                 name="name"
-                rules={[{ required: true, message: "请输入部门名!" }]}
+                rules={[{ required: true, message: "请输入分类名!" }]}
               >
-                <Input style={{ width: 300 }} placeholder="请输入部门名" />
+                <Input style={{ width: 300 }} placeholder="请输入分类名" />
               </Form.Item>
               <Form.Item
                 label="Sort"

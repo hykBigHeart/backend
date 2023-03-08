@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col, Form, Input, Cascader, Button, message } from "antd";
 import styles from "./create.module.less";
-import { department } from "../../api/index";
+import { resourceCategory } from "../../../api/index";
 import { useParams, useNavigate } from "react-router-dom";
-import { BackBartment } from "../../compenents";
+import { BackBartment } from "../../../compenents";
 
 interface Option {
   value: string | number;
@@ -11,7 +11,7 @@ interface Option {
   children?: Option[];
 }
 
-export const DepartmentUpdatePage: React.FC = () => {
+export const ResourceCategoryUpdatePage: React.FC = () => {
   const params = useParams();
   const navigate = useNavigate();
   const [form] = Form.useForm();
@@ -25,20 +25,20 @@ export const DepartmentUpdatePage: React.FC = () => {
 
   useEffect(() => {
     getDetail();
-  }, [params.depId]);
+  }, [params.catId]);
 
   const getParams = () => {
-    department.createDepartment().then((res: any) => {
-      const departments = res.data.departments;
-      if (JSON.stringify(departments) !== "{}") {
-        const new_arr: Option[] = checkArr(departments, 0);
+    resourceCategory.createResourceCategory().then((res: any) => {
+      const categories = res.data.categories;
+      if (JSON.stringify(categories) !== "{}") {
+        const new_arr: Option[] = checkArr(categories, 0);
         setCategories(new_arr);
       }
     });
   };
 
   const getDetail = () => {
-    department.department(Number(params.depId)).then((res: any) => {
+    resourceCategory.resourceCategory(Number(params.catId)).then((res: any) => {
       let data = res.data;
       let arr = data.parent_chain.split(",");
       let new_arr: any[] = [];
@@ -54,19 +54,19 @@ export const DepartmentUpdatePage: React.FC = () => {
     });
   };
 
-  const checkArr = (departments: any[], id: number) => {
+  const checkArr = (categories: any[], id: number) => {
     const arr = [];
-    for (let i = 0; i < departments[id].length; i++) {
-      if (!departments[departments[id][i].id]) {
+    for (let i = 0; i < categories[id].length; i++) {
+      if (!categories[categories[id][i].id]) {
         arr.push({
-          label: departments[id][i].name,
-          value: departments[id][i].id,
+          label: categories[id][i].name,
+          value: categories[id][i].id,
         });
       } else {
-        const new_arr: Option[] = checkArr(departments, departments[id][i].id);
+        const new_arr: Option[] = checkArr(categories, categories[id][i].id);
         arr.push({
-          label: departments[id][i].name,
-          value: departments[id][i].id,
+          label: categories[id][i].name,
+          value: categories[id][i].id,
           children: new_arr,
         });
       }
@@ -75,9 +75,9 @@ export const DepartmentUpdatePage: React.FC = () => {
   };
 
   const onFinish = (values: any) => {
-    let id = Number(params.depId);
-    department
-      .updateDepartment(id, values.name, parent_id || 0, values.sort)
+    let id = Number(params.catId);
+    resourceCategory
+      .updateResourceCategory(id, values.name, parent_id || 0, values.sort)
       .then((res: any) => {
         message.success("保存成功！");
         navigate(-1);
@@ -89,7 +89,7 @@ export const DepartmentUpdatePage: React.FC = () => {
   };
 
   const handleChange = (value: any) => {
-    let id = Number(params.depId);
+    let id = Number(params.catId);
     if (value !== undefined) {
       let it = value[value.length - 1];
       if (it === id) {
@@ -103,7 +103,7 @@ export const DepartmentUpdatePage: React.FC = () => {
   };
 
   const displayRender = (label: any, selectedOptions: any) => {
-    let id = Number(params.depId);
+    let id = Number(params.catId);
     if (selectedOptions && selectedOptions[0]) {
       let current = selectedOptions[selectedOptions.length - 1].value;
       if (current === id) {
@@ -120,7 +120,7 @@ export const DepartmentUpdatePage: React.FC = () => {
       <Row className="playedu-main-body">
         <Col>
           <div className="float-left mb-24">
-            <BackBartment title="编辑部门" />
+            <BackBartment title="编辑资源分类" />
           </div>
           <div className="float-left">
             <Form
@@ -138,7 +138,7 @@ export const DepartmentUpdatePage: React.FC = () => {
                 <Cascader
                   style={{ width: 300 }}
                   allowClear
-                  placeholder="请选择部门"
+                  placeholder="请选择分类"
                   onChange={handleChange}
                   options={categories}
                   changeOnSelect
@@ -147,11 +147,11 @@ export const DepartmentUpdatePage: React.FC = () => {
                 />
               </Form.Item>
               <Form.Item
-                label="部门名"
+                label="分类名"
                 name="name"
-                rules={[{ required: true, message: "请输入部门名!" }]}
+                rules={[{ required: true, message: "请输入分类名!" }]}
               >
-                <Input style={{ width: 300 }} placeholder="请输入部门名" />
+                <Input style={{ width: 300 }} placeholder="请输入分类名" />
               </Form.Item>
               <Form.Item
                 label="Sort"

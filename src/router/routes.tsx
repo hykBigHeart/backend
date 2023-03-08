@@ -21,6 +21,9 @@ import {
   DepartmentUpdatePage,
   ChangePasswordPage,
   ResourceImagesPage,
+  ResourceCategoryPage,
+  ResourceCategoryCreatePage,
+  ResourceCategoryUpdatePage,
 } from "../pages";
 
 const routes: RouteObject[] = [
@@ -35,6 +38,18 @@ const routes: RouteObject[] = [
       {
         path: "/change-password",
         element: <ChangePasswordPage />,
+      },
+      {
+        path: "/resource-category",
+        element: <ResourceCategoryPage />,
+      },
+      {
+        path: "/resource-category/create",
+        element: <ResourceCategoryCreatePage />,
+      },
+      {
+        path: "/resource-category/update/:catId",
+        element: <ResourceCategoryUpdatePage />,
       },
       {
         path: "/images",

@@ -18,7 +18,7 @@ export const CreateResourceCategory = (props: PropInterface) => {
       return;
     }
     resourceCategory
-      .storeResourceCategory(props.type, name, 0)
+      .storeResourceCategory(name, 0, 0)
       .then(() => {
         setName("");
         message.success("分类添加成功");

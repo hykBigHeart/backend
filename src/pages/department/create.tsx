@@ -25,8 +25,10 @@ export const DepartmentCreatePage: React.FC = () => {
   const getParams = () => {
     department.createDepartment().then((res: any) => {
       const departments = res.data.departments;
-      const new_arr: Option[] = checkArr(departments, 0);
-      setCategories(new_arr);
+      if (JSON.stringify(departments) !== "{}") {
+        const new_arr: Option[] = checkArr(departments, 0);
+        setCategories(new_arr);
+      }
     });
   };
 

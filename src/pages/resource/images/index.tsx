@@ -55,7 +55,7 @@ export const ResourceImagesPage = () => {
 
   // 获取图片资源的分类
   const getCategories = () => {
-    resourceCategory.resourceCategoryList("IMAGE").then((res: any) => {
+    resourceCategory.resourceCategoryList().then((res: any) => {
       let data = res.data.data;
       if (data.length > 0) {
         setCategories([...categories, ...res.data.data]);

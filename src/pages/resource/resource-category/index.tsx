@@ -3,10 +3,10 @@ import { Button, Space, Table, Popconfirm, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import styles from "./index.module.less";
 import { PlusOutlined, ReloadOutlined } from "@ant-design/icons";
-import { department } from "../../api/index";
-import { dateFormat } from "../../utils/index";
+import { resourceCategory } from "../../../api/index";
+import { dateFormat } from "../../../utils/index";
 import { Link, useNavigate } from "react-router-dom";
-import { PerButton } from "../../compenents";
+import { PerButton } from "../../../compenents";
 
 interface Option {
   id: string | number;
@@ -23,7 +23,7 @@ interface DataType {
   sort: number;
 }
 
-export const DepartmentPage: React.FC = () => {
+export const ResourceCategoryPage: React.FC = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(true);
   const [list, setList] = useState<any>([]);
@@ -32,7 +32,7 @@ export const DepartmentPage: React.FC = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "部门名",
+      title: "分类名",
       dataIndex: "name",
       render: (text: string) => <span>{text}</span>,
     },
@@ -64,11 +64,11 @@ export const DepartmentPage: React.FC = () => {
             class="c-red"
             icon={null}
             p="department-update"
-            onClick={() => navigate(`/department/update/${record.id}`)}
+            onClick={() => navigate(`/resource-category/update/${record.id}`)}
           />
           <Popconfirm
             title="警告"
-            description="即将删除此部门，确认操作？"
+            description="即将删除此分类，确认操作？"
             onConfirm={() => delUser(record.id)}
             okText="确定"
             cancelText="取消"
@@ -93,13 +93,13 @@ export const DepartmentPage: React.FC = () => {
 
   const getData = () => {
     setLoading(true);
-    department.departmentList().then((res: any) => {
-      const departments = res.data.departments;
-      if (JSON.stringify(departments) !== "{}") {
-        const new_arr: Option[] = checkArr(departments, 0);
+    resourceCategory.resourceCategoryList().then((res: any) => {
+      const categories = res.data.categories;
+      let num = tableKey;
+      if (JSON.stringify(categories) !== "{}") {
+        const new_arr: Option[] = checkArr(categories, 0);
         setList(new_arr);
       }
-      let num = tableKey;
 
       setTimeout(() => {
         setLoading(false);
@@ -108,23 +108,23 @@ export const DepartmentPage: React.FC = () => {
     });
   };
 
-  const checkArr = (departments: any[], id: number) => {
+  const checkArr = (categories: any[], id: number) => {
     const arr = [];
-    for (let i = 0; i < departments[id].length; i++) {
-      if (!departments[departments[id][i].id]) {
+    for (let i = 0; i < categories[id].length; i++) {
+      if (!categories[categories[id][i].id]) {
         arr.push({
-          name: departments[id][i].name,
-          id: departments[id][i].id,
-          sort: departments[id][i].sort,
-          created_at: departments[id][i].created_at,
+          name: categories[id][i].name,
+          id: categories[id][i].id,
+          sort: categories[id][i].sort,
+          created_at: categories[id][i].created_at,
         });
       } else {
-        const new_arr: Option[] = checkArr(departments, departments[id][i].id);
+        const new_arr: Option[] = checkArr(categories, categories[id][i].id);
         arr.push({
-          name: departments[id][i].name,
-          id: departments[id][i].id,
-          created_at: departments[id][i].created_at,
-          sort: departments[id][i].sort,
+          name: categories[id][i].name,
+          id: categories[id][i].id,
+          created_at: categories[id][i].created_at,
+          sort: categories[id][i].sort,
           children: new_arr,
         });
       }
@@ -138,7 +138,7 @@ export const DepartmentPage: React.FC = () => {
   };
 
   const delUser = (id: any) => {
-    department.destroyDepartment(id).then((res: any) => {
+    resourceCategory.destroyResourceCategory(id).then((res: any) => {
       setTimeout(() => {
         message.success("操作成功");
         setRefresh(!refresh);
@@ -151,7 +151,10 @@ export const DepartmentPage: React.FC = () => {
       <div className="playedu-main-body">
         <div className="float-left j-b-flex mb-24">
           <div className="d-flex">
-            <Link style={{ textDecoration: "none" }} to={`/department/create`}>
+            <Link
+              style={{ textDecoration: "none" }}
+              to={`/resource-category/create`}
+            >
               <PerButton
                 type="primary"
                 text="新建"

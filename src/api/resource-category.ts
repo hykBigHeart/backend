@@ -1,7 +1,7 @@
 import client from "./internal/httpClient";
 
-export function resourceCategoryList(type: string) {
-  return client.get("/backend/v1/resource-category/index", { type });
+export function resourceCategoryList() {
+  return client.get("/backend/v1/resource-category/index", {});
 }
 
 export function createResourceCategory() {
@@ -9,13 +9,13 @@ export function createResourceCategory() {
 }
 
 export function storeResourceCategory(
-  type: string,
   name: string,
+  parentId: number,
   sort: number
 ) {
   return client.post("/backend/v1/resource-category/create", {
-    type,
     name,
+    parent_id: parentId,
     sort,
   });
 }
@@ -26,13 +26,13 @@ export function resourceCategory(id: number) {
 
 export function updateResourceCategory(
   id: number,
-  type: string,
   name: string,
+  parentId: number,
   sort: number
 ) {
   return client.post(`/backend/v1/resource-category/${id}`, {
-    type,
     name,
+    parent_id: parentId,
     sort,
   });
 }
