@@ -7,6 +7,7 @@ export * from "./course/vod";
 export * from "./member/index";
 export * from "./member/create";
 export * from "./member/update";
+export * from "./member/import";
 export * from "./system/administrator/index";
 export * from "./system/administrator/create";
 export * from "./system/administrator/update";

@@ -245,6 +245,11 @@ export const MemberPage: React.FC = () => {
                     新建
                   </Button>
                 </Link>
+                <Link style={{ textDecoration: "none" }} to={`/member/import`}>
+                  <Button className="mr-16" type="primary">
+                    学员批量导入
+                  </Button>
+                </Link>
               </div>
               <div className="d-flex">
                 <Button

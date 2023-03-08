@@ -9,6 +9,7 @@ import {
   MemberPage,
   MemberCreatePage,
   MemberUpdatePage,
+  MemberImportPage,
   SystemAdministratorPage,
   AdministratorCreatePage,
   AdministratorUpdatePage,
@@ -17,7 +18,7 @@ import {
   AdminrolesUpdatePage,
   DepartmentPage,
   DepartmentCreatePage,
-  DepartmentUpdatePage
+  DepartmentUpdatePage,
 } from "../pages";
 
 const routes: RouteObject[] = [
@@ -44,6 +45,10 @@ const routes: RouteObject[] = [
       {
         path: "/member/update/:memberId",
         element: <MemberUpdatePage />,
+      },
+      {
+        path: "/member/import",
+        element: <MemberImportPage />,
       },
       {
         path: "/system/administrator",
@@ -81,7 +86,6 @@ const routes: RouteObject[] = [
         path: "/department/update/:depId",
         element: <DepartmentUpdatePage />,
       },
-      
     ],
   },
   {

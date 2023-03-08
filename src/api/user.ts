@@ -75,7 +75,7 @@ export function destroyUser(id: number) {
 //startline是表格真是数据的起始行号-用于提示哪一行数据存在问题
 //users是一个二维字符串数组，每个数组的元素如下：[部门ids字符串,邮箱,昵称,密码,姓名,身份证]
 export function storeBatch(startLine: number, users: string[][]) {
-  return client.post("/backend/v1/user/create", {
+  return client.post("/backend/v1/user/store-batch", {
     start_line: startLine,
     users: users,
   });
