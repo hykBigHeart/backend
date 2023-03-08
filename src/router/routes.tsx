@@ -19,6 +19,7 @@ import {
   DepartmentPage,
   DepartmentCreatePage,
   DepartmentUpdatePage,
+  ChangePasswordPage
 } from "../pages";
 
 const routes: RouteObject[] = [
@@ -29,6 +30,10 @@ const routes: RouteObject[] = [
       {
         path: "/",
         element: <Dashboard />,
+      },
+      {
+        path: "/change-password",
+        element: <ChangePasswordPage />,
       },
       {
         path: "/vod",

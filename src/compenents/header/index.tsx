@@ -14,15 +14,15 @@ export const Header: React.FC = () => {
     if (key === "login_out") {
       dispatch(LoginOutActionCreator());
       navigate("/login");
-    } else if (key === "edit_password") {
-      navigate("/editPasswor");
+    } else if (key === "change_password") {
+      navigate("/change-password");
     }
   };
 
   const items: MenuProps["items"] = [
     {
       label: "修改密码",
-      key: "edit_password",
+      key: "change_password",
     },
     {
       label: "退出登录",
