@@ -12,7 +12,7 @@ import {
 } from "antd";
 import Dragger from "antd/es/upload/Dragger";
 import { useRef, useState } from "react";
-import { generateUUID } from "../../utils";
+import { generateUUID, parseVideo } from "../../utils";
 import { minioUploadId } from "../../api/upload";
 import { UploadChunk } from "../../js/minio-upload-chunk";
 import { storeResource } from "../../api/resource";
@@ -52,12 +52,13 @@ export const UploadVideoButton = (props: PropsInterface) => {
     multiple: true,
     beforeUpload: async (file: File) => {
       if (file.type === "video/mp4") {
-        //添加到本地待上传
+        let videoInfo = await parseVideo(file);
+        // 添加到本地待上传
         let data = await getMinioUploadId();
         let run = new UploadChunk(file, data["upload_id"], data["filename"]);
         let item: FileItem = {
           id: generateUUID(),
-          duration: 0,
+          duration: videoInfo.duration,
           name: file.name,
           size: file.size,
           progress: 0,
@@ -127,20 +128,6 @@ export const UploadVideoButton = (props: PropsInterface) => {
       >
         上传视频
       </Button>
-
-      <div className="none">
-        {fileList.length > 0 &&
-          fileList.map((item) => (
-            <video
-              key={item.id}
-              src={URL.createObjectURL(item.file)}
-              onCanPlayThrough={(e: any) => {
-                item.duration = parseInt(e.target.duration);
-                item.loading = false;
-              }}
-            ></video>
-          ))}
-      </div>
 
       {showModal && (
         <Modal
