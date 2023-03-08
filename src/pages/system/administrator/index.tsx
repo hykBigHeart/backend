@@ -27,7 +27,6 @@ interface DataType {
 
 export const SystemAdministratorPage: React.FC = () => {
   const navigate = useNavigate();
-  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [page, setPage] = useState<number>(1);
   const [size, setSize] = useState<number>(10);
@@ -105,18 +104,12 @@ export const SystemAdministratorPage: React.FC = () => {
     getData();
   }, [refresh, page, size]);
 
-  const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
-    setSelectedRowKeys(newSelectedRowKeys);
-  };
-
   const getData = () => {
     setLoading(true);
     adminUser.adminUserList(page, size, name).then((res: any) => {
       setList(res.data.data);
       setTotal(res.data.total);
       setTimeout(() => {
-        setSelectedRowKeys([]);
         setLoading(false);
       }, 1000);
     });
@@ -130,10 +123,6 @@ export const SystemAdministratorPage: React.FC = () => {
     setRefresh(!refresh);
   };
 
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: onSelectChange,
-  };
 
   const paginationProps = {
     current: page, //当前页码
@@ -158,7 +147,6 @@ export const SystemAdministratorPage: React.FC = () => {
     });
   };
 
-  const hasSelected = selectedRowKeys.length > 0;
   return (
     <>
       <div className="playedu-main-body mb-24">
@@ -216,7 +204,6 @@ export const SystemAdministratorPage: React.FC = () => {
         </div>
         <div className="float-left">
           <Table
-            rowSelection={rowSelection}
             columns={columns}
             dataSource={list}
             loading={loading}

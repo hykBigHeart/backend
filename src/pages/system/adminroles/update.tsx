@@ -11,11 +11,12 @@ export const AdminrolesUpdatePage: React.FC = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState<boolean>(true);
   const [permissions, setPermissions] = useState<any>([]);
+  const [actions, setActions] = useState<any>([]);
 
   useEffect(() => {
     getParams();
   }, []);
-  
+
   useEffect(() => {
     getDetail();
   }, [params.roleId]);
@@ -23,14 +24,23 @@ export const AdminrolesUpdatePage: React.FC = () => {
   const getParams = () => {
     adminRole.createAdminRole().then((res: any) => {
       const arr = [];
-      let permissions = res.data.permissions;
+      const arr2 = [];
+      let actions = res.data.perm_action.action;
+      let permissions = res.data.perm_action.data;
       for (let i = 0; i < permissions.length; i++) {
         arr.push({
           label: permissions[i].name,
           value: permissions[i].id,
         });
       }
+      for (let j = 0; j < actions.length; j++) {
+        arr2.push({
+          label: actions[j].name,
+          value: actions[j].id,
+        });
+      }
       setPermissions(arr);
+      setActions(arr2);
     });
   };
 
@@ -39,19 +49,19 @@ export const AdminrolesUpdatePage: React.FC = () => {
       let role = res.data.role;
       form.setFieldsValue({
         name: role.name,
-        permission_ids: res.data.permission_ids,
+        permission_ids: res.data.perm_data,
+        action_ids: res.data.perm_action,
       });
     });
   };
 
   const onFinish = (values: any) => {
     let id = Number(params.roleId);
-    adminRole
-      .updateAdminRole(id, values.name, values.permission_ids)
-      .then((res: any) => {
-        message.success("保存成功！");
-        navigate(-1);
-      });
+    const arr = values.action_ids.concat(values.permission_ids);
+    adminRole.updateAdminRole(id, values.name, arr).then((res: any) => {
+      message.success("保存成功！");
+      navigate(-1);
+    });
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -86,13 +96,21 @@ export const AdminrolesUpdatePage: React.FC = () => {
               >
                 <Input style={{ width: 300 }} placeholder="请输入角色名" />
               </Form.Item>
-              <Form.Item label="权限" name="permission_ids">
+              <Form.Item label="操作权限" name="action_ids">
                 <Select
                   style={{ width: 300 }}
                   mode="multiple"
                   allowClear
                   placeholder="请选择权限"
-                  onChange={handleChange}
+                  options={actions}
+                />
+              </Form.Item>
+              <Form.Item label="数据权限" name="permission_ids">
+                <Select
+                  style={{ width: 300 }}
+                  mode="multiple"
+                  allowClear
+                  placeholder="请选择权限"
                   options={permissions}
                 />
               </Form.Item>

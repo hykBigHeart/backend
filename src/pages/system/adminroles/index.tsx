@@ -22,11 +22,6 @@ export const SystemAdminrolesPage: React.FC = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "ID",
-      key: "id",
-      dataIndex: "id",
-    },
-    {
       title: "角色名",
       dataIndex: "name",
       render: (text: string) => <span>{text}</span>,
