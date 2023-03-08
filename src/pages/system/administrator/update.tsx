@@ -4,6 +4,7 @@ import styles from "./update.module.less";
 import { adminUser } from "../../../api/index";
 import { useParams, useNavigate } from "react-router-dom";
 import { BackBartment } from "../../../compenents";
+import { PerButton } from "../../../compenents";
 
 export const AdministratorUpdatePage: React.FC = () => {
   const params = useParams();
@@ -106,13 +107,14 @@ export const AdministratorUpdatePage: React.FC = () => {
                     onChange={handleChange}
                     options={roles}
                   />
-                  <Button
+                  <PerButton
                     type="link"
-                    danger
+                    text="角色管理"
+                    class="c-red"
+                    icon={null}
+                    p="admin-role"
                     onClick={() => navigate(`/system/adminroles`)}
-                  >
-                    角色管理
-                  </Button>
+                  />
                 </div>
               </Form.Item>
               <Form.Item
