@@ -13,9 +13,8 @@ import {
 import Dragger from "antd/es/upload/Dragger";
 import { useRef, useState } from "react";
 import { generateUUID, parseVideo } from "../../utils";
-import { minioUploadId } from "../../api/upload";
+import { minioMergeVideo, minioUploadId } from "../../api/upload";
 import { UploadChunk } from "../../js/minio-upload-chunk";
-import { storeResource } from "../../api/resource";
 
 interface PropsInterface {
   categoryId: number;
@@ -24,6 +23,8 @@ interface PropsInterface {
 
 interface FileItem {
   id: string;
+  filename: string;
+  uploadId: string;
   name: string;
   duration: number;
   size: number;
@@ -36,6 +37,7 @@ interface FileItem {
   isErr: boolean;
   errMsg: string;
   remoteName: string;
+  poster: string;
 }
 
 export const UploadVideoButton = (props: PropsInterface) => {
@@ -52,6 +54,7 @@ export const UploadVideoButton = (props: PropsInterface) => {
     multiple: true,
     beforeUpload: async (file: File) => {
       if (file.type === "video/mp4") {
+        // 视频封面解析 || 视频时长解析
         let videoInfo = await parseVideo(file);
         // 添加到本地待上传
         let data = await getMinioUploadId();
@@ -59,6 +62,8 @@ export const UploadVideoButton = (props: PropsInterface) => {
         let item: FileItem = {
           id: generateUUID(),
           duration: videoInfo.duration,
+          filename: data["filename"],
+          uploadId: data["upload_id"],
           name: file.name,
           size: file.size,
           progress: 0,
@@ -70,25 +75,21 @@ export const UploadVideoButton = (props: PropsInterface) => {
           isErr: false,
           errMsg: "",
           remoteName: data["filename"],
+          poster: videoInfo.poster,
         };
-        item.run.on("success", (url: string) => {
-          item.isSuc = true;
-          setFileList([...localFileList.current]);
-
-          // 创建上传记录
-          storeResource(
+        item.run.on("success", () => {
+          minioMergeVideo(
+            item.filename,
+            item.uploadId,
             props.categoryId,
-            item.file.name,
+            item.name,
             "mp4",
-            item.file.size,
-            "minio",
-            "",
-            item.remoteName,
-            url,
-            {
-              duration: item.duration,
-            }
+            item.size,
+            item.duration,
+            item.poster
           ).then(() => {
+            item.isSuc = true;
+            setFileList([...localFileList.current]);
             message.success(`${item.file.name} 上传成功`);
           });
         });

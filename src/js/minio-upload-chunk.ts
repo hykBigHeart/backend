@@ -1,5 +1,5 @@
 import axios, { Axios } from "axios";
-import { minioMerge, minioPreSignUrl } from "../api/upload";
+import { minioPreSignUrl } from "../api/upload";
 
 export class UploadChunk {
   client: Axios;
@@ -13,7 +13,7 @@ export class UploadChunk {
   filename: string;
 
   onError: ((err: string) => void | undefined) | undefined;
-  onSuccess: ((url: string) => void | undefined) | undefined;
+  onSuccess: (() => void | undefined) | undefined;
   onRetry: (() => void | undefined) | undefined;
   onProgress: ((progress: number) => void) | undefined;
 
@@ -51,15 +51,7 @@ export class UploadChunk {
     }
     if (this.chunkIndex > this.chunkNumber) {
       //上传完成
-      minioMerge(this.filename, this.uploadId)
-        .then((res: any) => {
-          let url = res.data.url;
-          this.onSuccess && this.onSuccess(url);
-        })
-        .catch((e) => {
-          console.error("文件合并失败", e);
-          this.onError && this.onError("失败.3");
-        });
+      this.onSuccess && this.onSuccess();
       return;
     }
     this.onProgress &&

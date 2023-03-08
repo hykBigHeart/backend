@@ -1,14 +1,7 @@
 import client from "./internal/httpClient";
 
-export function image(categoryId: number, file: File) {
-  return client.post("/backend/v1/upload/image", {
-    category_id: categoryId,
-    file: file,
-  });
-}
-
 export function minioUploadId(extension: string) {
-  return client.get("/backend/v1/upload/minio-upload-id", {
+  return client.get("/backend/v1/upload/minio/upload-id", {
     extension,
   });
 }
@@ -17,16 +10,31 @@ export function minioPreSignUrl(
   filename: string,
   partNumber: number
 ) {
-  return client.get("/backend/v1/upload/minio-pre-sign-url", {
+  return client.get("/backend/v1/upload/minio/pre-sign-url", {
     upload_id: uploadId,
     filename,
     part_number: partNumber,
   });
 }
 
-export function minioMerge(filename: string, uploadId: string) {
-  return client.get("/backend/v1/upload/minio-merge", {
+export function minioMergeVideo(
+  filename: string,
+  uploadId: string,
+  categoryId: number,
+  originalFilename: string,
+  extension: string,
+  size: number,
+  duration: number,
+  poster: string
+) {
+  return client.post("/backend/v1/upload/minio/merge-video", {
     filename,
     upload_id: uploadId,
+    original_filename: originalFilename,
+    category_id: categoryId,
+    size,
+    duration,
+    extension,
+    poster,
   });
 }
