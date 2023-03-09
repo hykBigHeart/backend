@@ -84,7 +84,7 @@ export const MemberPage: React.FC = () => {
           <PerButton
             type="link"
             text="详情"
-            class="c-red"
+            class="b-link c-red"
             icon={null}
             p="user-update"
             onClick={() => navigate(`/member/update/${record.id}`)}
@@ -99,7 +99,7 @@ export const MemberPage: React.FC = () => {
             <PerButton
               type="link"
               text="删除"
-              class="c-red"
+              class="b-link c-red"
               icon={null}
               p="user-destroy"
               onClick={() => null}

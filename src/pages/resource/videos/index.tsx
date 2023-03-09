@@ -84,7 +84,7 @@ export const ResourceVideosPage = () => {
             okText="确定"
             cancelText="取消"
           >
-            <Button type="link" className="c-red" onClick={() => null}>
+            <Button type="link" className="b-link c-red" onClick={() => null}>
               删除
             </Button>
           </Popconfirm>

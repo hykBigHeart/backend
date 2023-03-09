@@ -61,7 +61,7 @@ export const ResourceCategoryPage: React.FC = () => {
           <PerButton
             type="link"
             text="详情"
-            class="c-red"
+            class="b-link c-red"
             icon={null}
             p="department-cud"
             onClick={() => navigate(`/resource-category/update/${record.id}`)}
@@ -76,7 +76,7 @@ export const ResourceCategoryPage: React.FC = () => {
             <PerButton
               type="link"
               text="删除"
-              class="c-red"
+              class="b-link c-red"
               icon={null}
               p="department-cud"
               onClick={() => null}

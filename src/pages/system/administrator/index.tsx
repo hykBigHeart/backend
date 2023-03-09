@@ -76,7 +76,7 @@ export const SystemAdministratorPage: React.FC = () => {
           <PerButton
             type="link"
             text="详情"
-            class="c-red"
+            class="b-link c-red"
             icon={null}
             p="admin-user-cud"
             onClick={() =>
@@ -93,7 +93,7 @@ export const SystemAdministratorPage: React.FC = () => {
             <PerButton
               type="link"
               text="删除"
-              class="c-red"
+              class="b-link c-red"
               icon={null}
               p="admin-user-cud"
               onClick={() => null}

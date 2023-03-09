@@ -61,7 +61,7 @@ export const DepartmentPage: React.FC = () => {
           <PerButton
             type="link"
             text="详情"
-            class="c-red"
+            class="b-link c-red"
             icon={null}
             p="department-cud"
             onClick={() => navigate(`/department/update/${record.id}`)}
@@ -76,7 +76,7 @@ export const DepartmentPage: React.FC = () => {
             <PerButton
               type="link"
               text="删除"
-              class="c-red"
+              class="b-link c-red"
               icon={null}
               p="department-cud"
               onClick={() => null}

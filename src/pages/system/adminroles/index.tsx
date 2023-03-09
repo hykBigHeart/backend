@@ -40,7 +40,7 @@ export const SystemAdminrolesPage: React.FC = () => {
           <Button
             type="link"
             danger
-            className="c-red"
+            className="b-link c-red"
             onClick={() => navigate(`/system/adminroles/update/${record.id}`)}
           >
             详情
@@ -52,7 +52,7 @@ export const SystemAdminrolesPage: React.FC = () => {
             okText="确定"
             cancelText="取消"
           >
-            <Button type="link" danger className="c-red">
+            <Button type="link" danger className="b-link c-red">
               删除
             </Button>
           </Popconfirm>
