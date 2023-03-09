@@ -18,7 +18,7 @@ export const UploadImageSub = (props: PropsInterface) => {
     multiple: true,
     action:
       config.app_url +
-      "/backend/v1/upload/file?category_ids=" +
+      "/backend/v1/upload/minio?category_ids=" +
       props.categoryIds.join(","),
     headers: {
       authorization: "Bearer " + getToken(),
