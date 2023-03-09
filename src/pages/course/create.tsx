@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Form, Input, Cascader, Button, message } from "antd";
+import { Row, Col, Form, Input, Cascader, Switch, Button, message } from "antd";
 import styles from "./create.module.less";
-import { user, department } from "../../api/index";
+import { course, department } from "../../api/index";
 import { useNavigate } from "react-router-dom";
 import { UploadImageButton, BackBartment } from "../../compenents";
+const { SHOW_CHILD } = Cascader;
 
 interface Option {
   value: string | number;
@@ -11,15 +12,17 @@ interface Option {
   children?: Option[];
 }
 
-export const MemberCreatePage: React.FC = () => {
+export const CourseCreatePage: React.FC = () => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState<boolean>(true);
   const [departments, setDepartments] = useState<any>([]);
-  const [avatar, setAvatar] = useState<string>("");
+  const [categories, setCategories] = useState<any>([]);
+  const [thumb, setThumb] = useState<string>("");
 
   useEffect(() => {
     getParams();
+    getCategory();
   }, []);
 
   const getParams = () => {
@@ -29,6 +32,17 @@ export const MemberCreatePage: React.FC = () => {
         const new_arr: Option[] = checkArr(departments, 0);
         setDepartments(new_arr);
       }
+    });
+  };
+
+  const getCategory = () => {
+    course.createCourse().then((res: any) => {
+      const categories = res.data.categories;
+      if (JSON.stringify(categories) !== "{}") {
+        const new_arr: Option[] = checkArr(categories, 0);
+        setCategories(new_arr);
+      }
+      form.setFieldsValue({ isShow: 1 });
     });
   };
 
@@ -54,14 +68,13 @@ export const MemberCreatePage: React.FC = () => {
 
   const onFinish = (values: any) => {
     console.log("Success:", values);
-    user
-      .storeUser(
-        values.email,
-        values.name,
-        values.avatar,
-        values.password,
-        values.idCard,
-        values.dep_ids[0]
+    course
+      .storeCourse(
+        values.title,
+        values.thumb,
+        values.isShow,
+        values.dep_ids,
+        values.category_ids
       )
       .then((res: any) => {
         message.success("保存成功！");
@@ -72,15 +85,20 @@ export const MemberCreatePage: React.FC = () => {
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
   };
-
-  const onChange = (value: any) => {};
+  const onChange = (checked: boolean) => {
+    if (checked) {
+      form.setFieldsValue({ isShow: 1 });
+    } else {
+      form.setFieldsValue({ isShow: 0 });
+    }
+  };
 
   return (
     <>
       <Row className="playedu-main-body">
         <Col>
           <div className="float-left mb-24">
-            <BackBartment title="新建学员" />
+            <BackBartment title="新建课程" />
           </div>
           <div className="float-left">
             <Form
@@ -95,51 +113,37 @@ export const MemberCreatePage: React.FC = () => {
               autoComplete="off"
             >
               <Form.Item
-                label="学员姓名"
-                name="name"
-                rules={[{ required: true, message: "请输入学员姓名!" }]}
+                label="课程标题"
+                name="title"
+                rules={[{ required: true, message: "请输入课程标题!" }]}
               >
-                <Input placeholder="请输入学员姓名" />
+                <Input placeholder="请输入课程标题" />
               </Form.Item>
               <Form.Item
-                label="学员头像"
-                name="avatar"
-                rules={[{ required: true, message: "请上传学员头像!" }]}
+                label="课程封面"
+                name="thumb"
+                rules={[{ required: true, message: "请上传课程封面!" }]}
               >
                 <div className="c-flex">
                   <div className="d-flex">
                     <UploadImageButton
                       onSelected={(url) => {
-                        setAvatar(url);
-                        form.setFieldsValue({ avatar: url });
+                        setThumb(url);
+                        form.setFieldsValue({ thumb: url });
                       }}
                     ></UploadImageButton>
                   </div>
-                  {avatar && (
-                    <img className="form-avatar mt-10" src={avatar} alt="" />
+                  {thumb && (
+                    <img
+                      className="form-course-thumb mt-10"
+                      src={thumb}
+                      alt=""
+                    />
                   )}
                 </div>
               </Form.Item>
-              <Form.Item
-                label="登录密码"
-                name="password"
-                rules={[{ required: true, message: "请输入登录密码!" }]}
-              >
-                <Input.Password placeholder="请输入登录密码" />
-              </Form.Item>
-              <Form.Item
-                label="学员邮箱"
-                name="email"
-                rules={[{ required: true, message: "请输入学员邮箱!" }]}
-              >
-                <Input placeholder="请输入学员邮箱" />
-              </Form.Item>
-              <Form.Item
-                label="身份证号"
-                name="idCard"
-                rules={[{ required: true, message: "请输入身份证号!" }]}
-              >
-                <Input placeholder="请输入身份证号" />
+              <Form.Item label="显示课程" name="isShow" valuePropName="checked">
+                <Switch onChange={onChange} />
               </Form.Item>
               <Form.Item
                 label="学员部门"
@@ -148,10 +152,23 @@ export const MemberCreatePage: React.FC = () => {
               >
                 <Cascader
                   options={departments}
-                  onChange={onChange}
                   multiple
                   maxTagCount="responsive"
                   placeholder="请选择学员部门"
+                  showCheckedStrategy={SHOW_CHILD}
+                />
+              </Form.Item>
+              <Form.Item
+                label="资源分类"
+                name="category_ids"
+                rules={[{ required: true, message: "请选择资源分类!" }]}
+              >
+                <Cascader
+                  options={categories}
+                  multiple
+                  maxTagCount="responsive"
+                  placeholder="请选择资源分类"
+                  showCheckedStrategy={SHOW_CHILD}
                 />
               </Form.Item>
               <Form.Item wrapperCol={{ offset: 8, span: 16 }}>

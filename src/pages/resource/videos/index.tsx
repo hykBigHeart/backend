@@ -23,7 +23,6 @@ interface DataType {
   id: React.Key;
   name: string;
   created_at: string;
-  duration: string;
 }
 
 export const ResourceVideosPage = () => {

@@ -36,7 +36,7 @@ export function storeCourse(
   return client.post("/backend/v1/course/create", {
     title: title,
     thumb: thumb,
-    isShow: isShow,
+    is_show: isShow,
     dep_ids: depIds,
     category_ids: categoryIds,
   });
@@ -54,10 +54,10 @@ export function updateCourse(
   depIds: number[],
   categoryIds: number[]
 ) {
-  return client.post(`/backend/v1/course/${id}`, {
+  return client.put(`/backend/v1/course/${id}`, {
     title: title,
     thumb: thumb,
-    isShow: isShow,
+    is_show: isShow,
     dep_ids: depIds,
     category_ids: categoryIds,
   });

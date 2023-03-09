@@ -29,8 +29,10 @@ export const MemberUpdatePage: React.FC = () => {
   const getParams = () => {
     department.departmentList().then((res: any) => {
       const departments = res.data.departments;
-      const new_arr: Option[] = checkArr(departments, 0);
-      setDepartments(new_arr);
+      if (JSON.stringify(departments) !== "{}") {
+        const new_arr: Option[] = checkArr(departments, 0);
+        setDepartments(new_arr);
+      }
     });
   };
 

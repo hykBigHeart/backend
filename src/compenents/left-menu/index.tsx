@@ -22,6 +22,13 @@ function getItem(label: any, key: any, icon: any, children: any, type: any) {
 const items = [
   getItem("首页概览", "/", <SettingOutlined />, null, null),
   getItem(
+    "课程内容",
+    "8",
+    <AppstoreOutlined />,
+    [getItem("课程", "/course", null, null, null)],
+    null
+  ),
+  getItem(
     "资源管理",
     "3",
     <MailOutlined />,
@@ -55,7 +62,7 @@ const items = [
   ),
 ];
 
-const rootSubmenuKeys = ["3", "4", "5", "6", "7"];
+const rootSubmenuKeys = ["3", "4", "5", "6", "7", "8"];
 
 export const LeftMenu: React.FC = () => {
   //展开的subMenu

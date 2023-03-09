@@ -78,7 +78,7 @@ export const SystemAdministratorPage: React.FC = () => {
             text="详情"
             class="c-red"
             icon={null}
-            p="admin-user-update"
+            p="admin-user-cud"
             onClick={() =>
               navigate(`/system/administrator/update/${record.id}`)
             }
@@ -95,7 +95,7 @@ export const SystemAdministratorPage: React.FC = () => {
               text="删除"
               class="c-red"
               icon={null}
-              p="admin-user-destroy"
+              p="admin-user-cud"
               onClick={() => null}
             />
           </Popconfirm>
@@ -190,7 +190,7 @@ export const SystemAdministratorPage: React.FC = () => {
                 text="新建"
                 class="mr-16"
                 icon={<PlusOutlined />}
-                p="admin-user-store"
+                p="admin-user-cud"
                 onClick={() => null}
               />
             </Link>

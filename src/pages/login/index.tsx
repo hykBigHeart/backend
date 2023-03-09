@@ -12,6 +12,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import banner from "../../assets/images/login/banner.png";
 import icon from "../../assets/images/login/icon.png";
+import "./login.less";
 
 export const Login: React.FC = () => {
   const dispatch = useDispatch();

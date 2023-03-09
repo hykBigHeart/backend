@@ -4,7 +4,9 @@ import {
   HomePage,
   Dashboard,
   ErrorPage,
-  VodListPage,
+  CoursePage,
+  CourseCreatePage,
+  CourseUpdatePage,
   TestPage,
   MemberPage,
   MemberCreatePage,
@@ -24,7 +26,7 @@ import {
   ResourceCategoryPage,
   ResourceCategoryCreatePage,
   ResourceCategoryUpdatePage,
-  ResourceVideosPage 
+  ResourceVideosPage,
 } from "../pages";
 
 const routes: RouteObject[] = [
@@ -61,9 +63,18 @@ const routes: RouteObject[] = [
         element: <ResourceVideosPage />,
       },
       {
-        path: "/vod",
-        element: <VodListPage />,
+        path: "/course",
+        element: <CoursePage />,
       },
+      {
+        path: "/course/create",
+        element: <CourseCreatePage />,
+      },
+      {
+        path: "/course/update/:cid",
+        element: <CourseUpdatePage />,
+      },
+
       {
         path: "/member",
         element: <MemberPage />,

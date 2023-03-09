@@ -63,7 +63,7 @@ export const DepartmentPage: React.FC = () => {
             text="详情"
             class="c-red"
             icon={null}
-            p="department-update"
+            p="department-cud"
             onClick={() => navigate(`/department/update/${record.id}`)}
           />
           <Popconfirm
@@ -78,7 +78,7 @@ export const DepartmentPage: React.FC = () => {
               text="删除"
               class="c-red"
               icon={null}
-              p="department-destroy"
+              p="department-cud"
               onClick={() => null}
             />
           </Popconfirm>
@@ -152,7 +152,7 @@ export const DepartmentPage: React.FC = () => {
                 text="新建"
                 class="mr-16"
                 icon={<PlusOutlined />}
-                p="department-store"
+                p="department-cud"
                 onClick={() => null}
               />
             </Link>
