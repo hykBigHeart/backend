@@ -100,11 +100,8 @@ export const DepartmentPage: React.FC = () => {
         setList(new_arr);
       }
       let num = tableKey;
-
-      setTimeout(() => {
-        setLoading(false);
-        setTableKey(num + 1);
-      }, 1000);
+      setLoading(false);
+      setTableKey(num + 1);
     });
   };
 
@@ -139,10 +136,8 @@ export const DepartmentPage: React.FC = () => {
 
   const delUser = (id: any) => {
     department.destroyDepartment(id).then((res: any) => {
-      setTimeout(() => {
-        message.success("操作成功");
-        setRefresh(!refresh);
-      }, 500);
+      message.success("操作成功");
+      setRefresh(!refresh);
     });
   };
 

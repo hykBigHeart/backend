@@ -70,9 +70,7 @@ export const SystemAdminrolesPage: React.FC = () => {
     setLoading(true);
     adminRole.adminRoleList().then((res: any) => {
       setList(res.data);
-      setTimeout(() => {
-        setLoading(false);
-      }, 1000);
+      setLoading(false);
     });
   };
 
@@ -83,10 +81,8 @@ export const SystemAdminrolesPage: React.FC = () => {
 
   const delUser = (id: any) => {
     adminRole.destroyAdminRole(id).then((res: any) => {
-      setTimeout(() => {
-        message.success("操作成功");
-        setRefresh(!refresh);
-      }, 500);
+      message.success("操作成功");
+      setRefresh(!refresh);
     });
   };
 

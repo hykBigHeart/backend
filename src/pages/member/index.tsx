@@ -133,9 +133,7 @@ export const MemberPage: React.FC = () => {
         setList(res.data.data);
         setTotal(res.data.total);
         setLoading(false);
-        setTimeout(() => {
-          setSelectedRowKeys([]);
-        }, 1000);
+        setSelectedRowKeys([]);
       });
   };
 
@@ -170,10 +168,8 @@ export const MemberPage: React.FC = () => {
 
   const delUser = (id: any) => {
     user.destroyUser(id).then((res: any) => {
-      setTimeout(() => {
-        message.success("操作成功");
-        setRefresh(!refresh);
-      }, 500);
+      message.success("操作成功");
+      setRefresh(!refresh);
     });
   };
 

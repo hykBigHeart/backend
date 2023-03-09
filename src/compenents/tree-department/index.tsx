@@ -26,9 +26,7 @@ export const TreeDepartment = (props: PropInterface) => {
         },
       ];
       setTreeData(new_arr);
-      setTimeout(() => {
-        setLoading(false);
-      }, 1000);
+      setLoading(false);
     });
   }, []);
 

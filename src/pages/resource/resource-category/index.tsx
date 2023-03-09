@@ -101,10 +101,8 @@ export const ResourceCategoryPage: React.FC = () => {
         setList(new_arr);
       }
 
-      setTimeout(() => {
-        setLoading(false);
-        setTableKey(num + 1);
-      }, 1000);
+      setLoading(false);
+      setTableKey(num + 1);
     });
   };
 
@@ -139,10 +137,8 @@ export const ResourceCategoryPage: React.FC = () => {
 
   const delUser = (id: any) => {
     resourceCategory.destroyResourceCategory(id).then((res: any) => {
-      setTimeout(() => {
-        message.success("操作成功");
-        setRefresh(!refresh);
-      }, 500);
+      message.success("操作成功");
+      setRefresh(!refresh);
     });
   };
 

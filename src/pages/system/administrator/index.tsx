@@ -113,9 +113,7 @@ export const SystemAdministratorPage: React.FC = () => {
     adminUser.adminUserList(page, size, name).then((res: any) => {
       setList(res.data.data);
       setTotal(res.data.total);
-      setTimeout(() => {
-        setLoading(false);
-      }, 1000);
+      setLoading(false);
     });
   };
 
@@ -143,10 +141,8 @@ export const SystemAdministratorPage: React.FC = () => {
 
   const delUser = (id: any) => {
     adminUser.destroyAdminUser(id).then((res: any) => {
-      setTimeout(() => {
-        message.success("操作成功");
-        setRefresh(!refresh);
-      }, 500);
+      message.success("操作成功");
+      setRefresh(!refresh);
     });
   };
 
