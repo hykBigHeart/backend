@@ -62,19 +62,12 @@ const items = [
   ),
 ];
 
-const rootSubmenuKeys = ["3", "4", "5", "6", "7", "8"];
-
 export const LeftMenu: React.FC = () => {
   //展开的subMenu
   const [openKeys, setOpenKeys] = useState(["1"]);
   //点击subMenu的回调函数
   const onOpenChange = (keys: any) => {
-    const latestOpenKey = keys.find((key: any) => openKeys.indexOf(key) === -1);
-    if (rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
-      setOpenKeys(keys);
-    } else {
-      setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
-    }
+    setOpenKeys(keys);
   };
   //路由跳转的函数
   const navigate = useNavigate();

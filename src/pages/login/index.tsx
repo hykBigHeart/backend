@@ -24,11 +24,9 @@ export const Login: React.FC = () => {
   const [captcha_val, setCaptcha_val] = useState<string>("");
   const [captcha_key, setCaptcha_key] = useState<string>("");
   const fetchData = () => {
-    setLoading(true);
     system.getImageCaptcha().then((res: any) => {
       setImage(res.data.image);
       setCaptcha_key(res.data.key);
-      setLoading(false);
     });
   };
 
@@ -94,7 +92,7 @@ export const Login: React.FC = () => {
         </div>
         <div className={styles["right-box"]}>
           <div className={styles["title"]}>后台登录</div>
-          <div className="d-flex mt-50">
+          <div className="login-box d-flex mt-50">
             <Input
               value={email}
               onChange={(e) => {
@@ -104,7 +102,7 @@ export const Login: React.FC = () => {
               placeholder="请输入管理员邮箱账号"
             />
           </div>
-          <div className="d-flex mt-50">
+          <div className="login-box d-flex mt-50">
             <Input.Password
               value={password}
               onChange={(e) => {
@@ -130,7 +128,7 @@ export const Login: React.FC = () => {
               alt=""
             />
           </div>
-          <div className="d-flex mt-50">
+          <div className="login-box d-flex mt-50">
             <Button
               style={{ width: 400, height: 54 }}
               type="primary"
