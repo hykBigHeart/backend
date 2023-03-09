@@ -42,7 +42,7 @@ export const Header: React.FC = () => {
         <Button.Group className={styles["button-group"]}>
           <Dropdown menu={{ items, onClick }} placement="bottomRight">
             <div className="d-flex">
-              <img style={{ width: 30, height: 30 }} src={avatar} />
+              {user && <img style={{ width: 30, height: 30 }} src={avatar} />}
               <Button type="link">
                 <span className="c-default">{user.name}</span>
               </Button>
