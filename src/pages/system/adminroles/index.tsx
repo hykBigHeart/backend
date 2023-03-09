@@ -81,7 +81,7 @@ export const SystemAdminrolesPage: React.FC = () => {
   const delUser = (id: any) => {
     adminRole.destroyAdminRole(id).then((res: any) => {
       message.success("操作成功");
-      setRefresh(!refresh);
+      resetData();
     });
   };
 

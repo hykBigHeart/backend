@@ -138,7 +138,7 @@ export const ResourceCategoryPage: React.FC = () => {
   const delUser = (id: any) => {
     resourceCategory.destroyResourceCategory(id).then((res: any) => {
       message.success("操作成功");
-      setRefresh(!refresh);
+      resetData();
     });
   };
 

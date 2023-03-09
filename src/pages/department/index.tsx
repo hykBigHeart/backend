@@ -137,7 +137,7 @@ export const DepartmentPage: React.FC = () => {
   const delUser = (id: any) => {
     department.destroyDepartment(id).then((res: any) => {
       message.success("操作成功");
-      setRefresh(!refresh);
+      resetData();
     });
   };
 
