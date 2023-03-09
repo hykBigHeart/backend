@@ -79,6 +79,12 @@ export const Login: React.FC = () => {
     });
   };
 
+  const keyUp = (e: any) => {
+    if (e.keyCode === 13) {
+      loginSubmit(e);
+    }
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
@@ -102,6 +108,7 @@ export const Login: React.FC = () => {
               }}
               style={{ width: 400, height: 54 }}
               placeholder="请输入管理员邮箱账号"
+              onKeyUp={(e) => keyUp(e)}
             />
           </div>
           <div className="login-box d-flex mt-50">
@@ -122,6 +129,7 @@ export const Login: React.FC = () => {
               onChange={(e) => {
                 setCaptcha_val(e.target.value);
               }}
+              onKeyUp={(e) => keyUp(e)}
             />
             <img
               className={styles["captcha"]}
