@@ -22,7 +22,6 @@ function getItem(label: any, key: any, icon: any, children: any, type: any) {
 const items = [
   getItem("首页概览", "/", <SettingOutlined />, null, null),
   getItem("分类管理", "/resource-category", <MailOutlined />, null, null),
-  getItem("课程管理", "/course", <AppstoreOutlined />, null, null),
   getItem(
     "资源管理",
     "3",
@@ -33,6 +32,7 @@ const items = [
     ],
     null
   ),
+  getItem("课程中心", "/course", <AppstoreOutlined />, null, null),
   getItem(
     "学员管理",
     "4",
