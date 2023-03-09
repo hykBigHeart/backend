@@ -35,7 +35,7 @@ export const MemberPage: React.FC = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [page, setPage] = useState(1);
-  const [size, setSize] = useState(12);
+  const [size, setSize] = useState(10);
   const [list, setList] = useState<any>([]);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
@@ -142,7 +142,7 @@ export const MemberPage: React.FC = () => {
     setEmail("");
     setIdCard("");
     setPage(1);
-    setSize(12);
+    setSize(10);
     setList([]);
     setRefresh(!refresh);
   };

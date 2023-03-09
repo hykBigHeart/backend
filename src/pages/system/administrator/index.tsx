@@ -28,7 +28,7 @@ export const SystemAdministratorPage: React.FC = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(true);
   const [page, setPage] = useState(1);
-  const [size, setSize] = useState(12);
+  const [size, setSize] = useState(10);
   const [list, setList] = useState<any>([]);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
@@ -120,7 +120,7 @@ export const SystemAdministratorPage: React.FC = () => {
   const resetData = () => {
     setName("");
     setPage(1);
-    setSize(12);
+    setSize(10);
     setList([]);
     setRefresh(!refresh);
   };
