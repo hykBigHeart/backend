@@ -37,7 +37,7 @@ export const ResourceImagesPage = () => {
   const [category_ids, setCategoryIds] = useState<any>([]);
 
   // 删除图片
-  const removeCategory = (id: number) => {
+  const removeResource = (id: number) => {
     if (id === 0) {
       return;
     }
@@ -116,7 +116,7 @@ export const ResourceImagesPage = () => {
                     <Popconfirm
                       title="警告"
                       description="即将删除此图片，确认操作？"
-                      onConfirm={() => removeCategory(item.id)}
+                      onConfirm={() => removeResource(item.id)}
                       okText="确定"
                       cancelText="取消"
                     >

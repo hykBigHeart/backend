@@ -27,10 +27,10 @@ interface DataType {
 export const SystemAdministratorPage: React.FC = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(true);
-  const [page, setPage] = useState<number>(1);
-  const [size, setSize] = useState<number>(10);
+  const [page, setPage] = useState(1);
+  const [size, setSize] = useState(12);
   const [list, setList] = useState<any>([]);
-  const [total, setTotal] = useState<number>(0);
+  const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
 
   const [name, setName] = useState<string>("");
@@ -120,7 +120,7 @@ export const SystemAdministratorPage: React.FC = () => {
   const resetData = () => {
     setName("");
     setPage(1);
-    setSize(10);
+    setSize(12);
     setList([]);
     setRefresh(!refresh);
   };

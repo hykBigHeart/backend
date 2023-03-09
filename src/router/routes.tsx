@@ -24,6 +24,7 @@ import {
   ResourceCategoryPage,
   ResourceCategoryCreatePage,
   ResourceCategoryUpdatePage,
+  ResourceVideosPage 
 } from "../pages";
 
 const routes: RouteObject[] = [
@@ -54,6 +55,10 @@ const routes: RouteObject[] = [
       {
         path: "/images",
         element: <ResourceImagesPage />,
+      },
+      {
+        path: "/videos",
+        element: <ResourceVideosPage />,
       },
       {
         path: "/vod",
