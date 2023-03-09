@@ -1,13 +1,11 @@
 import React from "react";
 import styles from "./index.module.less";
-import { Layout, Button, Dropdown, MenuProps, Image } from "antd";
+import { Button, Dropdown, MenuProps, Image } from "antd";
 import { useSelector } from "../../store/hooks";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { LoginOutActionCreator } from "../../store/user/userActions";
 import avatar from "../../assets/images/commen/avatar.png";
-import edit from "../../assets/images/commen/edit.png";
-import logout from "../../assets/images/commen/logout.png";
 import { PoweroffOutlined, UnlockOutlined } from "@ant-design/icons";
 
 export const Header: React.FC = () => {
@@ -37,7 +35,7 @@ export const Header: React.FC = () => {
   ];
   return (
     <div className={styles["app-header"]}>
-      <Layout.Header className={styles["main-header"]}>
+      <div className={styles["main-header"]}>
         <div></div>
         <Button.Group className={styles["button-group"]}>
           <Dropdown menu={{ items, onClick }} placement="bottomRight">
@@ -49,7 +47,7 @@ export const Header: React.FC = () => {
             </div>
           </Dropdown>
         </Button.Group>
-      </Layout.Header>
+      </div>
     </div>
   );
 };
