@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   MailOutlined,
   SettingOutlined,
@@ -6,7 +6,7 @@ import {
 } from "@ant-design/icons";
 import { Menu } from "antd";
 //导出路由跳转hooks函数
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import styles from "./index.module.less";
 import logo from "../../assets/logo.png";
 
@@ -56,18 +56,32 @@ const items = [
 ];
 
 export const LeftMenu: React.FC = () => {
-  //展开的subMenu
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // 默认展开的subMenu
   const [openKeys, setOpenKeys] = useState(["1"]);
+  // 默认选中的menu
+  const [selectedKeys, setSelectedKeys] = useState(["/"]);
   //点击subMenu的回调函数
   const onOpenChange = (keys: any) => {
     setOpenKeys(keys);
   };
-  //路由跳转的函数
-  const navigate = useNavigate();
-  //点击每一项
   const onClick = (e: any) => {
     navigate(e.key);
   };
+  const onSelect = (e: any) => {
+    setSelectedKeys(e.selectedKeys);
+  };
+
+  // 监听菜单变化如果通过非直接点击『主面板』菜单进入到首页的话
+  // 则重置菜单的选择状态
+  useEffect(() => {
+    if (location.pathname === "/") {
+      setSelectedKeys(["/"]);
+    }
+  }, [location]);
+
   return (
     <div className={styles["left-menu"]}>
       <Link style={{ textDecoration: "none" }} to={`/`}>
@@ -79,10 +93,13 @@ export const LeftMenu: React.FC = () => {
           width: 200,
           background: "#ffffff",
         }}
+        defaultSelectedKeys={["/"]}
+        selectedKeys={selectedKeys}
         openKeys={openKeys}
         onOpenChange={onOpenChange}
         mode="inline"
         items={items}
+        onSelect={onSelect}
       />
     </div>
   );
