@@ -31,7 +31,7 @@ export const ResourceVideosPage = () => {
   const [videosExtra, setVideoExtra] = useState<any>([]);
   const [refresh, setRefresh] = useState(false);
   const [page, setPage] = useState(1);
-  const [size, setSize] = useState(12);
+  const [size, setSize] = useState(10);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState<boolean>(true);
   const [category_ids, setCategoryIds] = useState<any>([]);
@@ -124,6 +124,7 @@ export const ResourceVideosPage = () => {
   // 重置列表
   const resetVideoList = () => {
     setPage(1);
+    setSize(10);
     setVideoList([]);
     setRefresh(!refresh);
   };
