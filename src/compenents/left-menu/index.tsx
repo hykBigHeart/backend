@@ -85,6 +85,7 @@ export const LeftMenu: React.FC = () => {
         style={{
           width: 200,
           background: "#ffffff",
+     
         }}
         openKeys={openKeys}
         onOpenChange={onOpenChange}
