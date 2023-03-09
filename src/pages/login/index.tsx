@@ -58,7 +58,7 @@ export const Login: React.FC = () => {
       .then((res: any) => {
         const token = res.data.token;
         setToken(token);
-        setLoading(false);
+
         getUser();
       })
       .catch((e) => {
@@ -74,6 +74,7 @@ export const Login: React.FC = () => {
       dispatch(IsLoginActionCreator());
       dispatch(SetUserActionCreator(data.user));
       dispatch(SetPermisssionsActionCreator(data.permissions));
+      setLoading(false);
       navigate("/");
     });
   };
@@ -134,6 +135,7 @@ export const Login: React.FC = () => {
               style={{ width: 400, height: 54 }}
               type="primary"
               onClick={loginSubmit}
+              loading={loading}
             >
               立即登录
             </Button>
