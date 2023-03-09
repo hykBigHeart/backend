@@ -14,12 +14,12 @@ import styles from "./index.module.less";
 import { CreateResourceCategory } from "../create-rs-category";
 import { CloseOutlined } from "@ant-design/icons";
 import { UploadImageSub } from "./upload-image-sub";
+import { TreeCategory } from "../../compenents";
 
-interface CategoryItem {
-  id: number;
-  type: string;
+interface Option {
+  id: string | number;
   name: string;
-  sort: number;
+  children?: Option[];
 }
 
 interface ImageItem {
@@ -41,16 +41,7 @@ interface PropsInterface {
 
 export const UploadImageButton = (props: PropsInterface) => {
   const [showModal, setShowModal] = useState(false);
-  const [categories, setCategories] = useState<CategoryItem[]>([
-    {
-      id: 0,
-      type: "IMAGE",
-      name: "默认分类",
-      sort: 0,
-    },
-  ]);
-  const [defaultCid, setDefaultCid] = useState(0);
-  const [refreshCategories, setRefreshCategories] = useState(1);
+  const [category_ids, setCategoryIds] = useState<any>([]);
 
   const [imageList, setImageList] = useState<ImageItem[]>([]);
   const [refresh, setRefresh] = useState(false);
@@ -58,27 +49,11 @@ export const UploadImageButton = (props: PropsInterface) => {
   const [size, setSize] = useState(12);
   const [total, setTotal] = useState(0);
 
-  // 获取图片资源的分类
-  const getCategories = () => {
-    resourceCategory.resourceCategoryList().then((res: any) => {
-      let data = res.data.data;
-      if (data.length > 0) {
-        setCategories([...categories, ...res.data.data]);
-      }
-    });
-  };
-  // 删除资源分类
-  const removeCategory = (id: number) => {
-    resourceCategory.destroyResourceCategory(id).then(() => {
-      message.success("删除成功");
-      setRefreshCategories(refreshCategories + 1);
-    });
-  };
-
   // 获取图片列表
   const getImageList = () => {
+    let categoryIds = category_ids.join(",");
     resource
-      .resourceList(page, size, "", "", "", "IMAGE", defaultCid + "")
+      .resourceList(page, size, "", "", "", "IMAGE", categoryIds)
       .then((res: any) => {
         setTotal(res.data.result.total);
         setImageList(res.data.result.data);
@@ -94,15 +69,10 @@ export const UploadImageButton = (props: PropsInterface) => {
     setRefresh(!refresh);
   };
 
-  // 初始化加载数据
-  useEffect(() => {
-    getCategories();
-  }, [refreshCategories]);
-
   // 加载图片列表
   useEffect(() => {
     getImageList();
-  }, [defaultCid, refresh, page, size]);
+  }, [category_ids, refresh, page, size]);
 
   return (
     <>
@@ -127,52 +97,10 @@ export const UploadImageButton = (props: PropsInterface) => {
         >
           <Row gutter={16}>
             <Col span={4}>
-              <>
-                <div className={styles.categoryTitle}>
-                  <div>图片分类</div>
-                  <div>
-                    <CreateResourceCategory
-                      type="IMAGE"
-                      onUpdate={() => {
-                        setRefreshCategories(refreshCategories + 1);
-                      }}
-                    ></CreateResourceCategory>
-                  </div>
-                </div>
-                {categories.length === 0 && (
-                  <Empty
-                    description="暂无分类"
-                    image={Empty.PRESENTED_IMAGE_SIMPLE}
-                  ></Empty>
-                )}
-
-                {categories.map((item) => (
-                  <div
-                    key={item.id}
-                    className={`${styles.categoryItem} ${
-                      item.id === defaultCid ? "active" : ""
-                    }`}
-                    onClick={() => {
-                      setDefaultCid(item.id);
-                    }}
-                  >
-                    <div>{item.name}</div>
-                    <div>
-                      <Button
-                        danger
-                        shape="circle"
-                        onClick={() => {
-                          removeCategory(item.id);
-                        }}
-                        icon={<CloseOutlined />}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </>
+              <TreeCategory onUpdate={(keys: any) => setCategoryIds(keys)} />
             </Col>
             <Col span={20}>
-              <Row>
+              <Row style={{ marginBottom: 24 }}>
                 <Col span={24}>
                   <UploadImageSub
                     categoryIds={[]}

@@ -18,17 +18,26 @@ export const TreeCategory = (props: PropInterface) => {
     setLoading(true);
     resourceCategory.resourceCategoryList().then((res: any) => {
       const categories = res.data.categories;
-      const new_arr: Option[] = [
-        {
-          key: "",
-          title: "全部",
-          children: checkArr(categories, 0),
-        },
-      ];
-      setTreeData(new_arr);
-      setTimeout(() => {
-        setLoading(false);
-      }, 1000);
+      if (JSON.stringify(categories) !== "{}") {
+        const new_arr: Option[] = [
+          {
+            key: "",
+            title: "全部",
+            children: checkArr(categories, 0),
+          },
+        ];
+        setTreeData(new_arr);
+      } else {
+        const new_arr: Option[] = [
+          {
+            key: "",
+            title: "全部",
+            children: [],
+          },
+        ];
+        setTreeData(new_arr);
+      }
+      setLoading(false);
     });
   }, []);
 

@@ -15,13 +15,6 @@ import { CloseOutlined } from "@ant-design/icons";
 import { UploadImageSub } from "../../../compenents/upload-image-button/upload-image-sub";
 import { TreeCategory } from "../../../compenents";
 
-interface CategoryItem {
-  id: number;
-  type: string;
-  name: string;
-  sort: number;
-}
-
 interface ImageItem {
   id: number;
   category_id: number;
