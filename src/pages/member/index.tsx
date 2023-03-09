@@ -183,7 +183,7 @@ export const MemberPage: React.FC = () => {
           </div>
         </Col>
         <Col span={20}>
-          <div className="playedu-main-body mb-24">
+          <div className="playedu-main-top mb-24">
             <div className="float-left d-flex">
               <div className="d-flex mr-24">
                 <Typography.Text>昵称：</Typography.Text>

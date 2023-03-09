@@ -148,7 +148,7 @@ export const SystemAdministratorPage: React.FC = () => {
 
   return (
     <>
-      <div className="playedu-main-body mb-24">
+      <div className="playedu-main-top mb-24">
         <div className="float-left d-flex">
           <div className="d-flex mr-24">
             <Typography.Text>姓名：</Typography.Text>

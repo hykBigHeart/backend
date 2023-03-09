@@ -32,10 +32,16 @@ const items = [
     ],
     null
   ),
-  getItem("课程中心", "/course", <AppstoreOutlined />, null, null),
+  getItem(
+    "课程中心",
+    "4",
+    <AppstoreOutlined />,
+    [getItem("线上课", "/course", null, null, null)],
+    null
+  ),
   getItem(
     "学员管理",
-    "4",
+    "5",
     <AppstoreOutlined />,
     [
       getItem("学员", "/member", null, null, null),
@@ -45,7 +51,7 @@ const items = [
   ),
   getItem(
     "系统设置",
-    "5",
+    "6",
     <SettingOutlined />,
     [
       getItem("管理人员", "/system/administrator", null, null, null),
@@ -61,9 +67,11 @@ const children2Parent: any = {
 
   "/member": ["4"],
   "/department": ["4"],
+  
+  "/course": ["5"],
 
-  "/system/administrator": ["5"],
-  "/system/adminroles": ["5"],
+  "/system/administrator": ["6"],
+  "/system/adminroles": ["6"],
 };
 
 export const LeftMenu: React.FC = () => {

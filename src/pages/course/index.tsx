@@ -166,7 +166,7 @@ export const CoursePage = () => {
     <>
       <Row>
         <Col span={4}>
-          <div className="playedu-main-body mb-24" style={{ marginLeft: -24 }}>
+          <div className="playedu-main-body" style={{ marginLeft: -24 }}>
             <div className="float-left mb-24">
               <div className="d-flex mb-24">
                 <Typography.Text>资源分类：</Typography.Text>
@@ -182,7 +182,7 @@ export const CoursePage = () => {
           </div>
         </Col>
         <Col span={20}>
-          <div className="playedu-main-body mb-24">
+          <div className="playedu-main-top mb-24">
             <div className="float-left d-flex">
               <div className="d-flex mr-24">
                 <Typography.Text>课程名称：</Typography.Text>
