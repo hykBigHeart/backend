@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   MailOutlined,
   SettingOutlined,
@@ -45,7 +45,7 @@ const items = [
   ),
   getItem(
     "系统设置",
-    "6",
+    "5",
     <SettingOutlined />,
     [
       getItem("管理人员", "/system/administrator", null, null, null),
@@ -55,51 +55,53 @@ const items = [
   ),
 ];
 
-export const LeftMenu: React.FC = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
+const children2Parent: any = {
+  "/videos": ["3"],
+  "/images": ["3"],
 
-  // 默认展开的subMenu
-  const [openKeys, setOpenKeys] = useState(["1"]);
-  // 默认选中的menu
-  const [selectedKeys, setSelectedKeys] = useState(["/"]);
-  //点击subMenu的回调函数
-  const onOpenChange = (keys: any) => {
-    setOpenKeys(keys);
-  };
+  "/member": ["4"],
+  "/department": ["4"],
+
+  "/system/administrator": ["5"],
+  "/system/adminroles": ["5"],
+};
+
+export const LeftMenu: React.FC = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  let defaultSelectedKeys: string[] = [location.pathname];
+  let defaultOpenKeys: string[] = [];
+  if (children2Parent[location.pathname]) {
+    defaultOpenKeys = children2Parent[location.pathname];
+  }
+
   const onClick = (e: any) => {
     navigate(e.key);
   };
-  const onSelect = (e: any) => {
-    setSelectedKeys(e.selectedKeys);
-  };
 
-  // 监听菜单变化如果通过非直接点击『主面板』菜单进入到首页的话
-  // 则重置菜单的选择状态
-  useEffect(() => {
-    if (location.pathname === "/") {
-      setSelectedKeys(["/"]);
-    }
-  }, [location]);
+  useEffect(() => {}, [location]);
 
   return (
     <div className={styles["left-menu"]}>
-      <Link style={{ textDecoration: "none" }} to={`/`}>
-        <img src={logo} alt="" className={styles["App-logo"]} />
-      </Link>
+      <div
+        style={{ textDecoration: "none", cursor: "pointer" }}
+        onClick={() => {
+          window.location.href = "/";
+        }}
+      >
+        <img src={logo} className={styles["App-logo"]} />
+      </div>
       <Menu
         onClick={onClick}
         style={{
           width: 200,
           background: "#ffffff",
         }}
-        defaultSelectedKeys={["/"]}
-        selectedKeys={selectedKeys}
-        openKeys={openKeys}
-        onOpenChange={onOpenChange}
+        defaultSelectedKeys={defaultSelectedKeys}
+        defaultOpenKeys={defaultOpenKeys}
         mode="inline"
         items={items}
-        onSelect={onSelect}
       />
     </div>
   );

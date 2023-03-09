@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import styles from "./index.module.less";
-import { Outlet, useNavigate } from "react-router-dom";
-import { Header, LeftMenu, Footer } from "../../compenents";
+import { Outlet } from "react-router-dom";
+import { Header, LeftMenu } from "../../compenents";
 
 export const HomePage: React.FC = () => {
   useEffect(() => {}, []);

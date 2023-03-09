@@ -76,5 +76,14 @@ export function parseVideo(file: File): Promise<VideoParseInfo> {
 }
 
 export function getHost() {
-  return window.location.protocol + "//" + window.location.host+"/";
+  return window.location.protocol + "//" + window.location.host + "/";
+}
+
+export function inStrArray(array: string[], value: string): boolean {
+  for (let i = 0; i < array.length; i++) {
+    if (array[i] === value) {
+      return true;
+    }
+  }
+  return false;
 }
