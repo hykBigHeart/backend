@@ -17,7 +17,7 @@ import "./login.less";
 export const Login: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const [image, setImage] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -50,13 +50,15 @@ export const Login: React.FC = () => {
   };
 
   const handleSubmit = () => {
+    if (loading) {
+      return;
+    }
     setLoading(true);
     login
       .login(email, password, captcha_key, captcha_val)
       .then((res: any) => {
         const token = res.data.token;
         setToken(token);
-
         getUser();
       })
       .catch((e) => {

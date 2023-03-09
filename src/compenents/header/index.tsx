@@ -1,10 +1,14 @@
 import React from "react";
 import styles from "./index.module.less";
-import { Layout, Button, Dropdown, MenuProps } from "antd";
+import { Layout, Button, Dropdown, MenuProps, Image } from "antd";
 import { useSelector } from "../../store/hooks";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { LoginOutActionCreator } from "../../store/user/userActions";
+import avatar from "../../assets/images/commen/avatar.png";
+import edit from "../../assets/images/commen/edit.png";
+import logout from "../../assets/images/commen/logout.png";
+import { PoweroffOutlined, UnlockOutlined } from "@ant-design/icons";
 
 export const Header: React.FC = () => {
   const dispatch = useDispatch();
@@ -23,10 +27,12 @@ export const Header: React.FC = () => {
     {
       label: "修改密码",
       key: "change_password",
+      icon: <UnlockOutlined style={{ color: "#ff4d4f" }} />,
     },
     {
       label: "退出登录",
       key: "login_out",
+      icon: <PoweroffOutlined style={{ color: "#ff4d4f" }} />,
     },
   ];
   return (
@@ -35,8 +41,14 @@ export const Header: React.FC = () => {
         <div></div>
         <Button.Group className={styles["button-group"]}>
           <Dropdown menu={{ items, onClick }} placement="bottomRight">
-            <Button type="link" danger>
-              {user.name}
+            <Button type="link">
+              <Image
+                preview={false}
+                width={30}
+                height={30}
+                src={avatar}
+              ></Image>
+              <span className="ml-8 c-default">{user.name}</span>
             </Button>
           </Dropdown>
         </Button.Group>

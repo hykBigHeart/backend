@@ -21,19 +21,13 @@ function getItem(label: any, key: any, icon: any, children: any, type: any) {
 }
 const items = [
   getItem("首页概览", "/", <SettingOutlined />, null, null),
-  getItem(
-    "课程内容",
-    "8",
-    <AppstoreOutlined />,
-    [getItem("课程", "/course", null, null, null)],
-    null
-  ),
+  getItem("分类管理", "/resource-category", <MailOutlined />, null, null),
+  getItem("课程管理", "/course", <AppstoreOutlined />, null, null),
   getItem(
     "资源管理",
     "3",
     <MailOutlined />,
     [
-      getItem("资源分类", "/resource-category", null, null, null),
       getItem("视频", "/videos", null, null, null),
       getItem("图片", "/images", null, null, null),
     ],
@@ -43,21 +37,20 @@ const items = [
     "学员管理",
     "4",
     <AppstoreOutlined />,
-    [getItem("学员", "/member", null, null, null)],
-    null
-  ),
-  getItem(
-    "部门管理",
-    "7",
-    <AppstoreOutlined />,
-    [getItem("部门", "/department", null, null, null)],
+    [
+      getItem("学员", "/member", null, null, null),
+      getItem("部门", "/department", null, null, null),
+    ],
     null
   ),
   getItem(
     "系统设置",
     "6",
     <SettingOutlined />,
-    [getItem("管理人员", "/system/administrator", null, null, null)],
+    [
+      getItem("管理人员", "/system/administrator", null, null, null),
+      getItem("角色配置", "/system/adminroles", null, null, null),
+    ],
     null
   ),
 ];
@@ -85,7 +78,6 @@ export const LeftMenu: React.FC = () => {
         style={{
           width: 200,
           background: "#ffffff",
-     
         }}
         openKeys={openKeys}
         onOpenChange={onOpenChange}

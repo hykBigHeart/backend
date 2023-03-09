@@ -4,7 +4,6 @@ import styles from "./create.module.less";
 import { adminUser } from "../../../api/index";
 import { useNavigate } from "react-router-dom";
 import { BackBartment } from "../../../compenents";
-import { PerButton } from "../../../compenents";
 
 export const AdministratorCreatePage: React.FC = () => {
   const navigate = useNavigate();
@@ -80,24 +79,14 @@ export const AdministratorCreatePage: React.FC = () => {
               autoComplete="off"
             >
               <Form.Item label="角色" name="roleIds">
-                <div className="d-flex">
-                  <Select
-                    style={{ width: 300 }}
-                    mode="multiple"
-                    allowClear
-                    placeholder="请选择角色"
-                    onChange={handleChange}
-                    options={roles}
-                  />
-                  <PerButton
-                    type="link"
-                    text="角色管理"
-                    class="c-red"
-                    icon={null}
-                    p="admin-role"
-                    onClick={() => navigate(`/system/adminroles`)}
-                  />
-                </div>
+                <Select
+                  style={{ width: 300 }}
+                  mode="multiple"
+                  allowClear
+                  placeholder="请选择角色"
+                  onChange={handleChange}
+                  options={roles}
+                />
               </Form.Item>
               <Form.Item
                 label="姓名"

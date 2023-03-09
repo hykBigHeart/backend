@@ -6,7 +6,6 @@ import { PlusOutlined, ReloadOutlined } from "@ant-design/icons";
 import { adminRole } from "../../../api/index";
 import { dateFormat } from "../../../utils/index";
 import { Link, useNavigate } from "react-router-dom";
-import { BackBartment } from "../../../compenents";
 
 interface DataType {
   id: React.Key;
@@ -89,9 +88,6 @@ export const SystemAdminrolesPage: React.FC = () => {
   return (
     <>
       <div className="playedu-main-body">
-        <div className="float-left mb-24">
-          <BackBartment title="管理员角色" />
-        </div>
         <div className="float-left j-b-flex mb-24">
           <div className="d-flex">
             <Link
