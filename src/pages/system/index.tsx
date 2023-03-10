@@ -1,92 +1,123 @@
 import React, { useState, useEffect } from "react";
-import { Button, Space, Col, Empty } from "antd";
-import type { ColumnsType } from "antd/es/table";
-import styles from "./index.module.less";
-import { PlusOutlined, ReloadOutlined } from "@ant-design/icons";
+import { Row, Col, Form, Input, Select, Button, message } from "antd";
+import styles from "./update.module.less";
 import { appConfig } from "../../api/index";
-import { dateFormat } from "../../utils/index";
-import { Link, useNavigate } from "react-router-dom";
-
-interface DataType {
-  id: React.Key;
-  name: string;
-  created_at: string;
-}
+import { useParams, useNavigate } from "react-router-dom";
+import { UploadImageButton } from "../../compenents";
 
 export const SystemIndexPage: React.FC = () => {
+  const params = useParams();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState<boolean>(true);
-  const [list, setList] = useState<any>([]);
-  const [refresh, setRefresh] = useState(false);
-
-  const columns: ColumnsType<DataType> = [
-    {
-      title: "角色名",
-      dataIndex: "name",
-      render: (text: string) => <span>{text}</span>,
-    },
-    {
-      title: "时间",
-      dataIndex: "created_at",
-      render: (text: string) => <span>{text && dateFormat(text)}</span>,
-    },
-    {
-      title: "操作",
-      key: "action",
-      fixed: "right",
-      width: 160,
-      render: (_, record) => (
-        <Space size="small">
-          <Button
-            type="link"
-            danger
-            className="b-link c-red"
-            onClick={() => navigate(`/system/adminroles/update/${record.id}`)}
-          >
-            详情
-          </Button>
-        </Space>
-      ),
-    },
-  ];
+  const [form] = Form.useForm();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [logo, setLogo] = useState<string>("");
 
   useEffect(() => {
-    getData();
-  }, [refresh]);
+    getDetail();
+  }, []);
 
-  const getData = () => {
-    setLoading(true);
+  const getDetail = () => {
     appConfig.appConfig().then((res: any) => {
-      setList(res.data);
-      setLoading(false);
+      let configData = res.data;
+      for (let i = 0; i < configData.length; i++) {
+        if (configData[i].key_name === "system.name") {
+          form.setFieldsValue({
+            "system.name": configData[i].key_value,
+          });
+        } else if (configData[i].key_name === "system.logo") {
+          form.setFieldsValue({
+            "system.logo": configData[i].key_value,
+          });
+        } else if (configData[i].key_name === "system.api_url") {
+          form.setFieldsValue({
+            "system.api_url": configData[i].key_value,
+          });
+        } else if (configData[i].key_name === "system.pc_url") {
+          form.setFieldsValue({
+            "system.pc_url": configData[i].key_value,
+          });
+        } else if (configData[i].key_name === "system.h5_url") {
+          form.setFieldsValue({
+            "system.h5_url": configData[i].key_value,
+          });
+        }
+      }
     });
   };
 
-  const resetData = () => {
-    setList([]);
-    setRefresh(!refresh);
+  const onFinish = (values: any) => {
+    if (loading) {
+      return;
+    }
+    setLoading(true);
+    appConfig.saveAppConfig(values).then((res: any) => {
+      message.success("保存成功！");
+      setLoading(false);
+      getDetail();
+    });
+  };
+
+  const onFinishFailed = (errorInfo: any) => {
+    console.log("Failed:", errorInfo);
   };
 
   return (
     <>
-      <div className="playedu-main-body">
-        <div className={styles["title"]}>基本配置</div>
-        {list.length === 0 && (
-          <Col span={24}>
-            <Empty description="暂无配置" />
-          </Col>
-        )}
-        <div className={styles["body"]}>
-          {list.map((item: any, index: number) => {
-            return (
-              <div key={index} className={styles["item"]}>
-                <img src={item.images} />
-                <span>{item.name}</span>
-              </div>
-            );
-          })}
-        </div>
-      </div>
+      <Row className="playedu-main-body">
+        <Col>
+          <div className="float-left">
+            <Form
+              form={form}
+              name="basic"
+              labelCol={{ span: 8 }}
+              wrapperCol={{ span: 16 }}
+              style={{ width: 600 }}
+              initialValues={{ remember: true }}
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+              autoComplete="off"
+            >
+              <Form.Item label="网站名" name="system.name">
+                <Input placeholder="请输入网站名" />
+              </Form.Item>
+              <Form.Item label="Logo" name="system.logo">
+                <div className="c-flex">
+                  <div className="d-flex">
+                    <UploadImageButton
+                      onSelected={(url) => {
+                        setLogo(url);
+                        form.setFieldsValue({ "system.logo": url });
+                      }}
+                    ></UploadImageButton>
+                  </div>
+                  {logo && (
+                    <img
+                      className="mt-10"
+                      style={{ width: "100%", height: "auto" }}
+                      src={logo}
+                      alt=""
+                    />
+                  )}
+                </div>
+              </Form.Item>
+              <Form.Item label="API访问地址" name="system.api_url">
+                <Input placeholder="请输入API访问地址" />
+              </Form.Item>
+              <Form.Item label="PC端口访问地址" name="system.pc_url">
+                <Input placeholder="请输入PC端口访问地址" />
+              </Form.Item>
+              <Form.Item label="H5端口访问地址" name="system.h5_url">
+                <Input placeholder="请输入H5端口访问地址" />
+              </Form.Item>
+              <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+                <Button type="primary" htmlType="submit" loading={loading}>
+                  保存
+                </Button>
+              </Form.Item>
+            </Form>
+          </div>
+        </Col>
+      </Row>
     </>
   );
 };
