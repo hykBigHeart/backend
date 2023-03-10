@@ -24,17 +24,6 @@ export const CourseUpdatePage: React.FC = () => {
     getCategory();
   }, [params.cid]);
 
-  const getParams = (cats: any) => {
-    department.departmentList().then((res: any) => {
-      const departments = res.data.departments;
-      if (JSON.stringify(departments) !== "{}") {
-        const new_arr: Option[] = checkArr(departments, 0);
-        setDepartments(new_arr);
-      }
-      getDetail(departments, cats);
-    });
-  };
-
   const getCategory = () => {
     course.createCourse().then((res: any) => {
       const categories = res.data.categories;
@@ -47,24 +36,15 @@ export const CourseUpdatePage: React.FC = () => {
     });
   };
 
-  const checkArr = (departments: any[], id: number) => {
-    const arr = [];
-    for (let i = 0; i < departments[id].length; i++) {
-      if (!departments[departments[id][i].id]) {
-        arr.push({
-          label: departments[id][i].name,
-          value: departments[id][i].id,
-        });
-      } else {
-        const new_arr: Option[] = checkArr(departments, departments[id][i].id);
-        arr.push({
-          label: departments[id][i].name,
-          value: departments[id][i].id,
-          children: new_arr,
-        });
+  const getParams = (cats: any) => {
+    department.departmentList().then((res: any) => {
+      const departments = res.data.departments;
+      if (JSON.stringify(departments) !== "{}") {
+        const new_arr: Option[] = checkArr(departments, 0);
+        setDepartments(new_arr);
       }
-    }
-    return arr;
+      getDetail(departments, cats);
+    });
   };
 
   const getDetail = (deps: any, cats: any) => {
@@ -130,6 +110,26 @@ export const CourseUpdatePage: React.FC = () => {
         }
       }
     }
+  };
+
+  const checkArr = (departments: any[], id: number) => {
+    const arr = [];
+    for (let i = 0; i < departments[id].length; i++) {
+      if (!departments[departments[id][i].id]) {
+        arr.push({
+          label: departments[id][i].name,
+          value: departments[id][i].id,
+        });
+      } else {
+        const new_arr: Option[] = checkArr(departments, departments[id][i].id);
+        arr.push({
+          label: departments[id][i].name,
+          value: departments[id][i].id,
+          children: new_arr,
+        });
+      }
+    }
+    return arr;
   };
 
   const onFinish = (values: any) => {
