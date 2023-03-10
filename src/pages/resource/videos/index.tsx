@@ -23,6 +23,7 @@ interface DataType {
   id: React.Key;
   name: string;
   created_at: string;
+  disk: string;
 }
 
 export const ResourceVideosPage = () => {
@@ -37,11 +38,6 @@ export const ResourceVideosPage = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "ID",
-      key: "id",
-      dataIndex: "id",
-    },
-    {
       title: "封面",
       dataIndex: "id",
       render: (id: string) => (
@@ -54,19 +50,23 @@ export const ResourceVideosPage = () => {
       ),
     },
     {
-      title: "名称",
+      title: "视频名称",
       dataIndex: "name",
       render: (text: string) => <span>{text}</span>,
     },
     {
-      title: "时长",
+      title: "视频时长",
       dataIndex: "id",
       render: (id: string) => (
         <DurationText duration={videosExtra[id].duration}></DurationText>
       ),
     },
     {
-      title: "注册时间",
+      title: "创建人",
+      dataIndex: "disk",
+    },
+    {
+      title: "视频时长",
       dataIndex: "created_at",
       render: (text: string) => <span>{dateFormat(text)}</span>,
     },
@@ -77,6 +77,9 @@ export const ResourceVideosPage = () => {
       width: 100,
       render: (_, record: any) => (
         <Space size="small">
+          <Button type="link" className="b-link c-red" onClick={() => null}>
+            编辑
+          </Button>
           <Popconfirm
             title="警告"
             description="即将删除此账号，确认操作？"
