@@ -140,13 +140,14 @@ export const CoursePage = () => {
     setPage(1);
     setSize(10);
     setList([]);
+    setTitle("");
     setRefresh(!refresh);
   };
 
-  // 加载视频列表
+  // 加载列表
   useEffect(() => {
     getList();
-  }, [category_ids, refresh, page, size]);
+  }, [category_ids, dep_ids, refresh, page, size]);
 
   const paginationProps = {
     current: page, //当前页码
