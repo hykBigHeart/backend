@@ -36,21 +36,7 @@ export const ResourceCategoryPage: React.FC = () => {
       dataIndex: "name",
       render: (text: string) => <span>{text}</span>,
     },
-    {
-      title: "ID",
-      key: "id",
-      dataIndex: "id",
-    },
-    {
-      title: "Sort",
-      key: "sort",
-      dataIndex: "sort",
-    },
-    {
-      title: "时间",
-      dataIndex: "created_at",
-      render: (text: string) => <span>{text && dateFormat(text)}</span>,
-    },
+    
     {
       title: "操作",
       key: "action",
