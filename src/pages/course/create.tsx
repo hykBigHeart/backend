@@ -68,13 +68,23 @@ export const CourseCreatePage: React.FC = () => {
 
   const onFinish = (values: any) => {
     console.log("Success:", values);
+    let dep_ids: any[] = [];
+    for (let i = 0; i < values.dep_ids.length; i++) {
+      dep_ids.push(values.dep_ids[i][values.dep_ids[i].length - 1]);
+    }
+    let category_ids: any[] = [];
+    for (let j = 0; j < values.category_ids.length; j++) {
+      category_ids.push(
+        values.category_ids[j][values.category_ids[j].length - 1]
+      );
+    }
     course
       .storeCourse(
         values.title,
         values.thumb,
         values.isShow,
-        values.dep_ids,
-        values.category_ids
+        dep_ids,
+        category_ids
       )
       .then((res: any) => {
         message.success("保存成功！");
