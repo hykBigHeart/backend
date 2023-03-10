@@ -81,7 +81,7 @@ export const MemberUpdatePage: React.FC = () => {
         values.name,
         values.nickname,
         values.avatar,
-        values.password,
+        values.password || "",
         values.idCard,
         values.dep_ids[0]
       )
@@ -149,11 +149,7 @@ export const MemberUpdatePage: React.FC = () => {
                   )}
                 </div>
               </Form.Item>
-              <Form.Item
-                label="登录密码"
-                name="password"
-                rules={[{ required: true, message: "请输入登录密码!" }]}
-              >
+              <Form.Item label="登录密码" name="password">
                 <Input.Password placeholder="请输入登录密码" />
               </Form.Item>
               <Form.Item
