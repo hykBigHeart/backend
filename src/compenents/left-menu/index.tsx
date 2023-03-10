@@ -19,7 +19,7 @@ const items = [
   getItem(
     "首页概览",
     "/",
-    <i className="iconfont icon-icon-home"  />,
+    <i className="iconfont icon-icon-home" />,
     null,
     null
   ),
