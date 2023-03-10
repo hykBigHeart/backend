@@ -55,6 +55,7 @@ const items = [
     <SettingOutlined />,
     [
       getItem("管理人员", "/system/administrator", null, null, null),
+      getItem("系统配置", "/system/index", null, null, null),
       getItem("角色配置", "/system/adminroles", null, null, null),
     ],
     null
@@ -72,6 +73,7 @@ const children2Parent: any = {
 
   "/system/administrator": ["6"],
   "/system/adminroles": ["6"],
+  "/system/index": ["6"],
 };
 
 export const LeftMenu: React.FC = () => {

@@ -27,6 +27,7 @@ import {
   ResourceCategoryCreatePage,
   ResourceCategoryUpdatePage,
   ResourceVideosPage,
+  SystemIndexPage
 } from "../pages";
 
 const routes: RouteObject[] = [
@@ -90,6 +91,10 @@ const routes: RouteObject[] = [
       {
         path: "/member/import",
         element: <MemberImportPage />,
+      },
+      {
+        path: "/system/index",
+        element: <SystemIndexPage />,
       },
       {
         path: "/system/administrator",

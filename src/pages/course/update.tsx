@@ -56,7 +56,9 @@ export const CourseUpdatePage: React.FC = () => {
         for (let i = 0; i < box.length; i++) {
           let item = checkChild(deps, box[i]);
           let arr: any[] = [];
-          if (item.parent_chain === "") {
+          if (item === undefined) {
+            arr.push(box[i]);
+          } else if (item.parent_chain === "") {
             arr.push(box[i]);
           } else {
             let new_arr = item.parent_chain.split(",");
@@ -76,7 +78,9 @@ export const CourseUpdatePage: React.FC = () => {
         for (let i = 0; i < box2.length; i++) {
           let item = checkChild(cats, box2[i]);
           let arr: any[] = [];
-          if (item.parent_chain === "") {
+          if (item === undefined) {
+            arr.push(box2[i]);
+          } else if (item.parent_chain === "") {
             arr.push(box2[i]);
           } else {
             let new_arr = item.parent_chain.split(",");

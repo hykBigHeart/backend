@@ -44,7 +44,9 @@ export const MemberUpdatePage: React.FC = () => {
         for (let i = 0; i < box.length; i++) {
           let item = checkChild(deps, box[i]);
           let arr: any[] = [];
-          if (item.parent_chain === "") {
+          if (item === undefined) {
+            arr.push(box[i]);
+          } else if (item.parent_chain === "") {
             arr.push(box[i]);
           } else {
             let new_arr = item.parent_chain.split(",");
@@ -78,7 +80,7 @@ export const MemberUpdatePage: React.FC = () => {
       }
     }
   };
-  
+
   const checkArr = (departments: any[], id: number) => {
     const arr = [];
     for (let i = 0; i < departments[id].length; i++) {
