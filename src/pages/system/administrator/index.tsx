@@ -178,7 +178,7 @@ export const SystemAdministratorPage: React.FC = () => {
         </div>
       </div>
 
-      <div className="playedu-main-body">
+      <div className="playedu-main-body only">
         <div className="float-left j-b-flex mb-24">
           <div className="d-flex">
             <Link
