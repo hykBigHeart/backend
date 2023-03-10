@@ -1,6 +1,8 @@
 import { Button, Input, message, Tree } from "antd";
 import { useState, useEffect } from "react";
 import { department } from "../../api/index";
+import type { TreeProps } from "antd/es/tree";
+
 interface Option {
   key: string | number;
   title: string;
@@ -54,5 +56,25 @@ export const TreeDepartment = (props: PropInterface) => {
     props.onUpdate(selectedKeys);
   };
 
-  return <Tree onSelect={onSelect} treeData={treeData} />;
+  const onDragEnter: TreeProps["onDragEnter"] = (info) => {
+    console.log(info);
+    // expandedKeys 需要受控时设置
+    // setExpandedKeys(info.expandedKeys)
+  };
+
+  const onDrop: TreeProps["onDrop"] = (info) => {
+    console.log(info);
+    // expandedKeys 需要受控时设置
+    // setExpandedKeys(info.expandedKeys)
+  };
+
+  return (
+    <Tree
+      onSelect={onSelect}
+      treeData={treeData}
+      draggable
+      onDragEnter={onDragEnter}
+      onDrop={onDrop}
+    />
+  );
 };
