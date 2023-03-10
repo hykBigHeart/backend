@@ -11,3 +11,4 @@ export * as resourceCategory from "./resource-category";
 export * as resource from "./resource";
 export * as upload from "./upload";
 export * as user from "./user";
+export * as appConfig from "./app-config";
