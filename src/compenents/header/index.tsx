@@ -25,12 +25,22 @@ export const Header: React.FC = () => {
     {
       label: "修改密码",
       key: "change_password",
-      icon: <i className="iconfont icon-icon-password c-red" />,
+      icon: (
+        <i
+          className="iconfont icon-icon-password c-red"
+          style={{ fontSize: 16 }}
+        />
+      ),
     },
     {
       label: "退出登录",
       key: "login_out",
-      icon: <i className="iconfont icon-a-icon-logout c-red" />,
+      icon: (
+        <i
+          className="iconfont icon-a-icon-logout c-red"
+          style={{ fontSize: 16 }}
+        />
+      ),
     },
   ];
   return (
