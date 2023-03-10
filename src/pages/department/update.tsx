@@ -57,7 +57,9 @@ export const DepartmentUpdatePage: React.FC = () => {
   const checkArr = (departments: any[], id: number) => {
     const arr = [];
     for (let i = 0; i < departments[id].length; i++) {
-      if (!departments[departments[id][i].id]) {
+      if (departments[id][i].id === Number(params.depId)) {
+        console.log("截断");
+      } else if (!departments[departments[id][i].id]) {
         arr.push({
           label: departments[id][i].name,
           value: departments[id][i].id,
