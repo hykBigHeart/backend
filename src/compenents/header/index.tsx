@@ -6,11 +6,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { LoginOutActionCreator } from "../../store/user/userActions";
 import avatar from "../../assets/images/commen/avatar.png";
-import { createFromIconfontCN } from "@ant-design/icons";
-
-const IconFont = createFromIconfontCN({
-  scriptUrl: "//at.alicdn.com/t/c/font_3943555_yvbihmb40xn.js",
-});
+import "../../assets/iconfont/iconfont.css";
 
 export const Header: React.FC = () => {
   const dispatch = useDispatch();
@@ -29,12 +25,12 @@ export const Header: React.FC = () => {
     {
       label: "修改密码",
       key: "change_password",
-      icon: <IconFont type="icon-icon-password" />,
+      icon: <i className="iconfont icon-icon-password c-red" />,
     },
     {
       label: "退出登录",
       key: "login_out",
-      icon: <IconFont type="icon-a-icon-logout" />,
+      icon: <i className="iconfont icon-a-icon-logout c-red" />,
     },
   ];
   return (

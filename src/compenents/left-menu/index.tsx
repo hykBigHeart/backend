@@ -1,14 +1,10 @@
 import React, { useEffect } from "react";
-import { createFromIconfontCN } from "@ant-design/icons";
 import { Menu } from "antd";
 //导出路由跳转hooks函数
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import styles from "./index.module.less";
 import logo from "../../assets/logo.png";
-
-const IconFont = createFromIconfontCN({
-  scriptUrl: "//at.alicdn.com/t/c/font_3943555_yvbihmb40xn.js",
-});
+import "../../assets/iconfont/iconfont.css";
 
 function getItem(label: any, key: any, icon: any, children: any, type: any) {
   return {
@@ -20,18 +16,24 @@ function getItem(label: any, key: any, icon: any, children: any, type: any) {
   };
 }
 const items = [
-  getItem("首页概览", "/", <IconFont type="icon-icon-home" />, null, null),
+  getItem(
+    "首页概览",
+    "/",
+    <i className="iconfont icon-icon-home"  />,
+    null,
+    null
+  ),
   getItem(
     "分类管理",
     "/resource-category",
-    <IconFont type="icon-icon-category" />,
+    <i className="iconfont icon-icon-category" />,
     null,
     null
   ),
   getItem(
     "资源管理",
     "3",
-    <IconFont type="icon-icon-file" />,
+    <i className="iconfont icon-icon-file" />,
     [
       getItem("视频", "/videos", null, null, null),
       getItem("图片", "/images", null, null, null),
@@ -41,14 +43,14 @@ const items = [
   getItem(
     "课程中心",
     "4",
-    <IconFont type="icon-icon-study" />,
+    <i className="iconfont icon-icon-study" />,
     [getItem("线上课", "/course", null, null, null)],
     null
   ),
   getItem(
     "学员管理",
     "5",
-    <IconFont type="icon-icon-user" />,
+    <i className="iconfont icon-icon-user" />,
     [
       getItem("学员", "/member", null, null, null),
       getItem("部门", "/department", null, null, null),
@@ -58,7 +60,7 @@ const items = [
   getItem(
     "系统设置",
     "6",
-    <IconFont type="icon-icon-setting" />,
+    <i className="iconfont icon-icon-setting" />,
     [
       getItem("管理人员", "/system/administrator", null, null, null),
       getItem("系统配置", "/system/index", null, null, null),
