@@ -10,24 +10,20 @@ interface Option {
 }
 
 interface PropInterface {
+  text: string;
   onUpdate: (keys: any) => void;
 }
 
 export const TreeCategory = (props: PropInterface) => {
   const [treeData, setTreeData] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [selectKey, setSelectKey] = useState<any>([]);
   useEffect(() => {
     setLoading(true);
     resourceCategory.resourceCategoryList().then((res: any) => {
       const categories = res.data.categories;
       if (JSON.stringify(categories) !== "{}") {
-        const new_arr: Option[] = [
-          {
-            key: "",
-            title: "全部",
-            children: checkArr(categories, 0),
-          },
-        ];
+        const new_arr: Option[] = checkArr(categories, 0);
         setTreeData(new_arr);
       } else {
         const new_arr: Option[] = [
@@ -65,6 +61,7 @@ export const TreeCategory = (props: PropInterface) => {
 
   const onSelect = (selectedKeys: any, info: any) => {
     props.onUpdate(selectedKeys);
+    setSelectKey(selectedKeys);
   };
 
   const onDragEnter: TreeProps["onDragEnter"] = (info) => {
@@ -80,12 +77,24 @@ export const TreeCategory = (props: PropInterface) => {
   };
 
   return (
-    <Tree
-      onSelect={onSelect}
-      treeData={treeData}
-      draggable
-      onDragEnter={onDragEnter}
-      onDrop={onDrop}
-    />
+    <div>
+      <div
+        className={
+          selectKey.length === 0
+            ? "mb-8 category-label active"
+            : "mb-8 category-label"
+        }
+        onClick={() => onSelect([], "")}
+      >
+        全部{props.text}
+      </div>
+      <Tree
+        onSelect={onSelect}
+        treeData={treeData}
+        draggable
+        onDragEnter={onDragEnter}
+        onDrop={onDrop}
+      />
+    </div>
   );
 };

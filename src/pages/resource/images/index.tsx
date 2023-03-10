@@ -74,79 +74,78 @@ export const ResourceImagesPage = () => {
 
   return (
     <>
-      <Row>
-        <Col span={4}>
-          <div className="playedu-main-body" style={{ marginLeft: -24 }}>
-            <TreeCategory onUpdate={(keys: any) => setCategoryIds(keys)} />
+      <div className="tree-main-body">
+        <div className="left-box">
+          <TreeCategory
+            text={"图片"}
+            onUpdate={(keys: any) => setCategoryIds(keys)}
+          />
+        </div>
+        <div className="right-box">
+          <div className="playedu-main-title float-left mb-24">
+            图片 / 全部图片
           </div>
-        </Col>
-        <Col span={20}>
-          <div className="playedu-main-body">
-            <div className="playedu-main-title float-left mb-24">
-              图片 / 全部图片
-            </div>
-            <Row gutter={16} style={{ marginBottom: 24 }}>
+          <Row gutter={16} style={{ marginBottom: 24 }}>
+            <Col span={24}>
+              <UploadImageSub
+                categoryIds={category_ids}
+                onUpdate={() => {
+                  resetImageList();
+                }}
+              ></UploadImageSub>
+            </Col>
+          </Row>
+          <Row gutter={[24, 24]}>
+            {imageList.length === 0 && (
               <Col span={24}>
-                <UploadImageSub
-                  categoryIds={category_ids}
-                  onUpdate={() => {
-                    resetImageList();
-                  }}
-                ></UploadImageSub>
+                <Empty description="暂无图片" />
               </Col>
-            </Row>
-            <Row gutter={[24, 24]}>
-              {imageList.length === 0 && (
-                <Col span={24}>
-                  <Empty description="暂无图片" />
-                </Col>
-              )}
+            )}
 
-              {imageList.map((item) => (
-                <Col key={item.id} span={3}>
-                  <div className={styles.imageItem}>
-                    <Image
-                      preview={true}
-                      width={150}
-                      height={150}
-                      src={item.url}
-                    />
-                    <Popconfirm
-                      title="警告"
-                      description="即将删除此图片，确认操作？"
-                      onConfirm={() => removeResource(item.id)}
-                      okText="确定"
-                      cancelText="取消"
-                    >
-                      <Button
-                        className={styles.closeButton}
-                        danger
-                        shape="circle"
-                        icon={<CloseOutlined />}
-                      />
-                    </Popconfirm>
-                  </div>
-                </Col>
-              ))}
-
-              {imageList.length > 0 && (
-                <Col span={24}>
-                  <Pagination
-                    showSizeChanger
-                    onChange={(currentPage, currentSize) => {
-                      setPage(currentPage);
-                      setSize(currentSize);
-                    }}
-                    defaultCurrent={page}
-                    total={total}
-                    pageSize={size}
+            {imageList.map((item) => (
+              <Col key={item.id} span={3}>
+                <div className={styles.imageItem}>
+                  <Image
+                    preview={true}
+                    width={150}
+                    height={150}
+                    src={item.url}
                   />
-                </Col>
-              )}
-            </Row>
-          </div>
-        </Col>
-      </Row>
+                  <Popconfirm
+                    title="警告"
+                    description="即将删除此图片，确认操作？"
+                    onConfirm={() => removeResource(item.id)}
+                    okText="确定"
+                    cancelText="取消"
+                  >
+                    <Button
+                      className={styles.closeButton}
+                      danger
+                      shape="circle"
+                      icon={<CloseOutlined />}
+                    />
+                  </Popconfirm>
+                </div>
+              </Col>
+            ))}
+
+            {imageList.length > 0 && (
+              <Col span={24}>
+                <Pagination
+                  showSizeChanger
+                  onChange={(currentPage, currentSize) => {
+                    setPage(currentPage);
+                    setSize(currentSize);
+                  }}
+                  defaultCurrent={page}
+                  total={total}
+                  pageSize={size}
+                />
+              </Col>
+            )}
+          </Row>
+        </div>
+      </div>
     </>
   );
 };

@@ -38,18 +38,18 @@ export const ResourceVideosPage = () => {
   const [category_ids, setCategoryIds] = useState<any>([]);
 
   const columns: ColumnsType<DataType> = [
-    {
-      title: "封面",
-      dataIndex: "id",
-      render: (id: string) => (
-        <Image
-          preview={false}
-          width={120}
-          height={80}
-          src={videosExtra[id].poster}
-        ></Image>
-      ),
-    },
+    // {
+    //   title: "封面",
+    //   dataIndex: "id",
+    //   render: (id: string) => (
+    //     <Image
+    //       preview={false}
+    //       width={120}
+    //       height={80}
+    //       src={videosExtra[id].poster}
+    //     ></Image>
+    //   ),
+    // },
     {
       title: "视频名称",
       dataIndex: "name",
@@ -158,37 +158,36 @@ export const ResourceVideosPage = () => {
 
   return (
     <>
-      <Row>
-        <Col span={4}>
-          <div className="playedu-main-body" style={{ marginLeft: -24 }}>
-            <TreeCategory onUpdate={(keys: any) => setCategoryIds(keys)} />
+      <div className="tree-main-body">
+        <div className="left-box">
+          <TreeCategory
+            text={"视频"}
+            onUpdate={(keys: any) => setCategoryIds(keys)}
+          />
+        </div>
+        <div className="right-box">
+          <div className="playedu-main-title float-left mb-24">
+            视频 / 后端课程
           </div>
-        </Col>
-        <Col span={20}>
-          <div className="playedu-main-body">
-            <div className="playedu-main-title float-left mb-24">
-              视频 / 后端课程
-            </div>
-            <div className="float-left mb-24">
-              <UploadVideoButton
-                categoryIds={category_ids}
-                onUpdate={() => {
-                  resetVideoList();
-                }}
-              ></UploadVideoButton>
-            </div>
-            <div className="float-left">
-              <Table
-                columns={columns}
-                dataSource={videoList}
-                loading={loading}
-                pagination={paginationProps}
-                rowKey={(record) => record.id}
-              />
-            </div>
+          <div className="float-left mb-24">
+            <UploadVideoButton
+              categoryIds={category_ids}
+              onUpdate={() => {
+                resetVideoList();
+              }}
+            ></UploadVideoButton>
           </div>
-        </Col>
-      </Row>
+          <div className="float-left">
+            <Table
+              columns={columns}
+              dataSource={videoList}
+              loading={loading}
+              pagination={paginationProps}
+              rowKey={(record) => record.id}
+            />
+          </div>
+        </div>
+      </div>
     </>
   );
 };

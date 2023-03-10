@@ -172,7 +172,10 @@ export const CoursePage = () => {
               <div className="d-flex mb-24">
                 <Typography.Text>资源分类：</Typography.Text>
               </div>
-              <TreeCategory onUpdate={(keys: any) => setCategoryIds(keys)} />
+              <TreeCategory
+                text={"资源"}
+                onUpdate={(keys: any) => setCategoryIds(keys)}
+              />
             </div>
             <div className="float-left">
               <div className="d-flex mb-24">
