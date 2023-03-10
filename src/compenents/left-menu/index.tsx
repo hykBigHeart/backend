@@ -67,7 +67,7 @@ const children2Parent: any = {
 
   "/member": ["4"],
   "/department": ["4"],
-  
+
   "/course": ["5"],
 
   "/system/administrator": ["6"],
@@ -93,7 +93,14 @@ export const LeftMenu: React.FC = () => {
   return (
     <div className={styles["left-menu"]}>
       <div
-        style={{ textDecoration: "none", cursor: "pointer" }}
+        style={{
+          textDecoration: "none",
+          cursor: "pointer",
+          position: "sticky",
+          top: 0,
+          zIndex: 10,
+          background: "#fff",
+        }}
         onClick={() => {
           window.location.href = "/";
         }}
