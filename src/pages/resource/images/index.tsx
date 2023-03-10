@@ -82,6 +82,9 @@ export const ResourceImagesPage = () => {
         </Col>
         <Col span={20}>
           <div className="playedu-main-body">
+            <div className="playedu-main-title float-left mb-24">
+              图片 / 全部图片
+            </div>
             <Row gutter={16} style={{ marginBottom: 24 }}>
               <Col span={24}>
                 <UploadImageSub
