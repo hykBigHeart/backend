@@ -6,7 +6,11 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { LoginOutActionCreator } from "../../store/user/userActions";
 import avatar from "../../assets/images/commen/avatar.png";
-import { PoweroffOutlined, UnlockOutlined } from "@ant-design/icons";
+import { createFromIconfontCN } from "@ant-design/icons";
+
+const IconFont = createFromIconfontCN({
+  scriptUrl: "//at.alicdn.com/t/c/font_3943555_yvbihmb40xn.js",
+});
 
 export const Header: React.FC = () => {
   const dispatch = useDispatch();
@@ -25,12 +29,12 @@ export const Header: React.FC = () => {
     {
       label: "修改密码",
       key: "change_password",
-      icon: <UnlockOutlined style={{ color: "#ff4d4f" }} />,
+      icon: <IconFont type="icon-icon-password" />,
     },
     {
       label: "退出登录",
       key: "login_out",
-      icon: <PoweroffOutlined style={{ color: "#ff4d4f" }} />,
+      icon: <IconFont type="icon-a-icon-logout" />,
     },
   ];
   return (
