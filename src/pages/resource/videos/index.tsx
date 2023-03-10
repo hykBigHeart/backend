@@ -160,6 +160,7 @@ export const ResourceVideosPage = () => {
         </Col>
         <Col span={20}>
           <div className="playedu-main-body">
+            <div className="playedu-main-title float-left mb-24">视频 / 后端课程</div>
             <div className="float-left mb-24">
               <UploadVideoButton
                 categoryIds={category_ids}
