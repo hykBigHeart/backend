@@ -60,10 +60,10 @@ export const ResourceCategoryPage: React.FC = () => {
         <Space size="small">
           <PerButton
             type="link"
-            text="详情"
+            text="编辑"
             class="b-link c-red"
             icon={null}
-            p="department-cud"
+            p="resource-category"
             onClick={() => navigate(`/resource-category/update/${record.id}`)}
           />
           <Popconfirm
@@ -78,7 +78,7 @@ export const ResourceCategoryPage: React.FC = () => {
               text="删除"
               class="b-link c-red"
               icon={null}
-              p="department-cud"
+              p="resource-category"
               onClick={() => null}
             />
           </Popconfirm>
@@ -156,7 +156,7 @@ export const ResourceCategoryPage: React.FC = () => {
                 text="新建"
                 class="mr-16"
                 icon={<PlusOutlined />}
-                p="department-cud"
+                p="resource-category"
                 onClick={() => null}
               />
             </Link>
