@@ -59,6 +59,16 @@ const items = [
     ],
     null
   ),
+  getItem(
+    "系统设置",
+    "7",
+    <SettingOutlined />,
+    [
+      getItem("管理人员", "/system/administrator", null, null, null),
+      getItem("角色配置", "/system/adminroles", null, null, null),
+    ],
+    null
+  ),
 ];
 
 const children2Parent: any = {
