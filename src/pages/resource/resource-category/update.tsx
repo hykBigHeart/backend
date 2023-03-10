@@ -57,7 +57,9 @@ export const ResourceCategoryUpdatePage: React.FC = () => {
   const checkArr = (categories: any[], id: number) => {
     const arr = [];
     for (let i = 0; i < categories[id].length; i++) {
-      if (!categories[categories[id][i].id]) {
+      if (categories[id][i].id === Number(params.catId)) {
+        console.log("截断");
+      } else if (!categories[categories[id][i].id]) {
         arr.push({
           label: categories[id][i].name,
           value: categories[id][i].id,
