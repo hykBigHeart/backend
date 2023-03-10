@@ -18,6 +18,7 @@ import type { ColumnsType } from "antd/es/table";
 import { dateFormat } from "../../../utils/index";
 import { TreeCategory, DurationText } from "../../../compenents";
 import { UploadVideoButton } from "../../../compenents/upload-video-button";
+import icon from "../../../assets/images/commen/icon-video.png";
 
 interface DataType {
   id: React.Key;
@@ -52,7 +53,12 @@ export const ResourceVideosPage = () => {
     {
       title: "视频名称",
       dataIndex: "name",
-      render: (text: string) => <span>{text}</span>,
+      render: (text: string) => (
+        <div className="d-flex">
+          <img style={{ width: 16, height: 16 }} src={icon} alt="" />
+          <span className="ml-8">{text}</span>
+        </div>
+      ),
     },
     {
       title: "视频时长",
@@ -160,7 +166,9 @@ export const ResourceVideosPage = () => {
         </Col>
         <Col span={20}>
           <div className="playedu-main-body">
-            <div className="playedu-main-title float-left mb-24">视频 / 后端课程</div>
+            <div className="playedu-main-title float-left mb-24">
+              视频 / 后端课程
+            </div>
             <div className="float-left mb-24">
               <UploadVideoButton
                 categoryIds={category_ids}
