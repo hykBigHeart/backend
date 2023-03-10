@@ -62,8 +62,11 @@ export const MemberImportPage: React.FC = () => {
         message.success("导入成功！");
         navigate(-1);
       })
-      .catch(() => {
+      .catch((e) => {
         setWageTableData([]);
+        if (e.code === -1) {
+          message.error(e.data);
+        }
       });
   };
 
