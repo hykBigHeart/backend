@@ -1,10 +1,8 @@
 import React, { useEffect } from "react";
 import { Menu } from "antd";
-//导出路由跳转hooks函数
-import { useNavigate, Link, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import styles from "./index.module.less";
 import logo from "../../assets/logo.png";
-import "../../assets/iconfont/iconfont.css";
 
 function getItem(label: any, key: any, icon: any, children: any, type: any) {
   return {
@@ -19,7 +17,7 @@ const items = [
   getItem(
     "首页概览",
     "/",
-    <i className="iconfont icon-icon-home" />,
+    <i className={`iconfont icon-icon-home`} />,
     null,
     null
   ),

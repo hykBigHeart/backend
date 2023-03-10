@@ -6,7 +6,6 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { LoginOutActionCreator } from "../../store/user/userActions";
 import avatar from "../../assets/images/commen/avatar.png";
-import "../../assets/iconfont/iconfont.css";
 
 export const Header: React.FC = () => {
   const dispatch = useDispatch();
