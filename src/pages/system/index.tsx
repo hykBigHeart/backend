@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Form, Input, Select, Button, message } from "antd";
+import { Row, Col, Form, Input, Image, Button, message } from "antd";
 import styles from "./update.module.less";
 import { appConfig } from "../../api/index";
 import { useParams, useNavigate } from "react-router-dom";
@@ -28,6 +28,9 @@ export const SystemIndexPage: React.FC = () => {
           form.setFieldsValue({
             "system.logo": configData[i].key_value,
           });
+          if (configData[i].key_value !== "") {
+            setLogo(configData[i].key_value);
+          }
         } else if (configData[i].key_name === "system.api_url") {
           form.setFieldsValue({
             "system.api_url": configData[i].key_value,
@@ -91,11 +94,12 @@ export const SystemIndexPage: React.FC = () => {
                     ></UploadImageButton>
                   </div>
                   {logo && (
-                    <img
+                    <Image
                       className="mt-10"
-                      style={{ width: "100%", height: "auto" }}
+                      preview={false}
+                      width={200}
+                      height={74}
                       src={logo}
-                      alt=""
                     />
                   )}
                 </div>
