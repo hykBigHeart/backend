@@ -139,7 +139,7 @@ export const ResourceCategoryPage: React.FC = () => {
             >
               <PerButton
                 type="primary"
-                text="新建"
+                text="新建分类"
                 class="mr-16"
                 icon={<PlusOutlined />}
                 p="resource-category"
