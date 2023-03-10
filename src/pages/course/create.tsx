@@ -4,7 +4,6 @@ import styles from "./create.module.less";
 import { course, department } from "../../api/index";
 import { useNavigate } from "react-router-dom";
 import { UploadImageButton, BackBartment } from "../../compenents";
-const { SHOW_CHILD } = Cascader;
 
 interface Option {
   value: string | number;
@@ -155,30 +154,20 @@ export const CourseCreatePage: React.FC = () => {
               <Form.Item label="显示课程" name="isShow" valuePropName="checked">
                 <Switch onChange={onChange} />
               </Form.Item>
-              <Form.Item
-                label="学员部门"
-                name="dep_ids"
-                rules={[{ required: true, message: "请选择学员部门!" }]}
-              >
+              <Form.Item label="学员部门" name="dep_ids">
                 <Cascader
                   options={departments}
                   multiple
                   maxTagCount="responsive"
                   placeholder="请选择学员部门"
-                  showCheckedStrategy={SHOW_CHILD}
                 />
               </Form.Item>
-              <Form.Item
-                label="资源分类"
-                name="category_ids"
-                rules={[{ required: true, message: "请选择资源分类!" }]}
-              >
+              <Form.Item label="资源分类" name="category_ids">
                 <Cascader
                   options={categories}
                   multiple
                   maxTagCount="responsive"
                   placeholder="请选择资源分类"
-                  showCheckedStrategy={SHOW_CHILD}
                 />
               </Form.Item>
               <Form.Item wrapperCol={{ offset: 8, span: 16 }}>

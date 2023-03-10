@@ -21,21 +21,17 @@ export const CourseUpdatePage: React.FC = () => {
   const [thumb, setThumb] = useState<string>("");
 
   useEffect(() => {
-    getParams();
     getCategory();
-  }, []);
-
-  useEffect(() => {
-    getDetail();
   }, [params.cid]);
 
-  const getParams = () => {
+  const getParams = (cats: any) => {
     department.departmentList().then((res: any) => {
       const departments = res.data.departments;
       if (JSON.stringify(departments) !== "{}") {
         const new_arr: Option[] = checkArr(departments, 0);
         setDepartments(new_arr);
       }
+      getDetail(departments, cats);
     });
   };
 
@@ -47,6 +43,7 @@ export const CourseUpdatePage: React.FC = () => {
         setCategories(new_arr);
       }
       form.setFieldsValue({ isShow: 1 });
+      getParams(categories);
     });
   };
 
@@ -70,22 +67,69 @@ export const CourseUpdatePage: React.FC = () => {
     return arr;
   };
 
-  const getDetail = () => {
+  const getDetail = (deps: any, cats: any) => {
     course.course(Number(params.cid)).then((res: any) => {
       let data = res.data.course;
-      // let depIds=res.data.dep_ids;
-      // for (let i = 0; i < depIds.length; i++) {
-      //   dep_ids.push(depIds[i]);
-      // }
+      let box = res.data.dep_ids;
+      let depIds: any[] = [];
+      if (box.length > 1) {
+        for (let i = 0; i < box.length; i++) {
+          let item = checkChild(deps, box[i]);
+          let arr: any[] = [];
+          if (item.parent_chain === "") {
+            arr.push(box[i]);
+          } else {
+            let new_arr = item.parent_chain.split(",");
+            new_arr.map((num: any) => {
+              arr.push(Number(num));
+            });
+            arr.push(box[i]);
+          }
+          depIds.push(arr);
+        }
+      } else {
+        depIds = res.data.dep_ids;
+      }
+      let box2 = res.data.category_ids;
+      let categoryIds: any[] = [];
+      if (box2.length > 1) {
+        for (let i = 0; i < box2.length; i++) {
+          let item = checkChild(cats, box2[i]);
+          let arr: any[] = [];
+          if (item.parent_chain === "") {
+            arr.push(box2[i]);
+          } else {
+            let new_arr = item.parent_chain.split(",");
+            new_arr.map((num: any) => {
+              arr.push(Number(num));
+            });
+            arr.push(box2[i]);
+          }
+          categoryIds.push(arr);
+        }
+      } else {
+        categoryIds = res.data.category_ids;
+      }
+
       form.setFieldsValue({
         title: data.title,
         thumb: data.thumb,
         isShow: data.is_show,
-        dep_ids: res.data.dep_ids,
-        category_ids: res.data.category_ids,
+        dep_ids: depIds,
+        category_ids: categoryIds,
       });
       setThumb(data.thumb);
     });
+  };
+
+  const checkChild = (departments: any[], id: number) => {
+    for (let key in departments) {
+      for (let i = 0; i < departments[key].length; i++) {
+        if (departments[key][i].id === id) {
+          return departments[key][i];
+        }
+      }
+    }
   };
 
   const onFinish = (values: any) => {
@@ -127,7 +171,6 @@ export const CourseUpdatePage: React.FC = () => {
       form.setFieldsValue({ isShow: 0 });
     }
   };
-
 
   return (
     <>
@@ -181,24 +224,15 @@ export const CourseUpdatePage: React.FC = () => {
               <Form.Item label="显示课程" name="isShow" valuePropName="checked">
                 <Switch onChange={onChange} />
               </Form.Item>
-              <Form.Item
-                label="学员部门"
-                name="dep_ids"
-                rules={[{ required: true, message: "请选择学员部门!" }]}
-              >
+              <Form.Item label="学员部门" name="dep_ids">
                 <Cascader
                   options={departments}
                   multiple
                   maxTagCount="responsive"
                   placeholder="请选择学员部门"
-                
                 />
               </Form.Item>
-              <Form.Item
-                label="资源分类"
-                name="category_ids"
-                rules={[{ required: true, message: "请选择资源分类!" }]}
-              >
+              <Form.Item label="资源分类" name="category_ids">
                 <Cascader
                   options={categories}
                   multiple

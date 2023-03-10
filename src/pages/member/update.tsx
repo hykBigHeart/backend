@@ -21,9 +21,6 @@ export const MemberUpdatePage: React.FC = () => {
 
   useEffect(() => {
     getParams();
-  }, []);
-  useEffect(() => {
-    getDetail();
   }, [params.memberId]);
 
   const getParams = () => {
@@ -33,24 +30,55 @@ export const MemberUpdatePage: React.FC = () => {
         const new_arr: Option[] = checkArr(departments, 0);
         setDepartments(new_arr);
       }
+      getDetail(departments);
     });
   };
 
-  const getDetail = () => {
+  const getDetail = (deps: any) => {
     user.user(Number(params.memberId)).then((res: any) => {
       let user = res.data.user;
       setAvatar(user.avatar);
+      let box = res.data.dep_ids;
+      let depIds: any[] = [];
+      if (box.length > 1) {
+        for (let i = 0; i < box.length; i++) {
+          let item = checkChild(deps, box[i]);
+          let arr: any[] = [];
+          if (item.parent_chain === "") {
+            arr.push(box[i]);
+          } else {
+            let new_arr = item.parent_chain.split(",");
+            new_arr.map((num: any) => {
+              arr.push(Number(num));
+            });
+            arr.push(box[i]);
+          }
+          depIds.push(arr);
+        }
+      } else {
+        depIds = res.data.dep_ids;
+      }
       form.setFieldsValue({
         email: user.email,
         name: user.name,
         nickname: user.nickname,
         avatar: user.avatar,
         idCard: user.id_card,
-        dep_ids: res.data.dep_ids,
+        dep_ids: depIds,
       });
     });
   };
 
+  const checkChild = (departments: any[], id: number) => {
+    for (let key in departments) {
+      for (let i = 0; i < departments[key].length; i++) {
+        if (departments[key][i].id === id) {
+          return departments[key][i];
+        }
+      }
+    }
+  };
+  
   const checkArr = (departments: any[], id: number) => {
     const arr = [];
     for (let i = 0; i < departments[id].length; i++) {
@@ -76,7 +104,11 @@ export const MemberUpdatePage: React.FC = () => {
     let id = Number(params.memberId);
     const arr = [];
     for (let i = 0; i < values.dep_ids.length; i++) {
-      arr.push(values.dep_ids[i][values.dep_ids[i].length - 1]);
+      if (Array.isArray(values.dep_ids[i])) {
+        arr.push(values.dep_ids[i][values.dep_ids[i].length - 1]);
+      } else {
+        arr.push(values.dep_ids[i]);
+      }
     }
     user
       .updateUser(
@@ -170,11 +202,7 @@ export const MemberUpdatePage: React.FC = () => {
               >
                 <Input placeholder="请输入身份证号" />
               </Form.Item>
-              <Form.Item
-                label="学员部门"
-                name="dep_ids"
-                rules={[{ required: true, message: "请选择学员部门!" }]}
-              >
+              <Form.Item label="学员部门" name="dep_ids">
                 <Cascader
                   options={departments}
                   onChange={onChange}

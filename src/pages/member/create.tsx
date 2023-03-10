@@ -145,11 +145,7 @@ export const MemberCreatePage: React.FC = () => {
               >
                 <Input placeholder="请输入身份证号" />
               </Form.Item>
-              <Form.Item
-                label="学员部门"
-                name="dep_ids"
-                rules={[{ required: true, message: "请选择学员部门!" }]}
-              >
+              <Form.Item label="学员部门" name="dep_ids">
                 <Cascader
                   options={departments}
                   onChange={onChange}

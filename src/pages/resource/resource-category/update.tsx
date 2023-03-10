@@ -53,6 +53,7 @@ export const ResourceCategoryUpdatePage: React.FC = () => {
       setParentId(data.parent_id);
     });
   };
+  
 
   const checkArr = (categories: any[], id: number) => {
     const arr = [];
