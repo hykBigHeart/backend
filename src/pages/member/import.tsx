@@ -9,6 +9,7 @@ import { getHost } from "../../utils/index";
 export const MemberImportPage: React.FC = () => {
   const navigate = useNavigate();
   const [tableData, setWageTableData] = useState<any>([]);
+  const [errorData, setErrorData] = useState<any>([]);
 
   const uploadProps = {
     accept: ".xls,.xlsx,application/vnd.ms-excel",
@@ -65,7 +66,7 @@ export const MemberImportPage: React.FC = () => {
       .catch((e) => {
         setWageTableData([]);
         if (e.code === -1) {
-          message.error(e.data);
+          setErrorData(e.data);
         }
       });
   };
@@ -82,13 +83,23 @@ export const MemberImportPage: React.FC = () => {
           <div className="float-left mb-24">
             <BackBartment title="学员批量导入" />
           </div>
-          <div className="float-left d-flex">
+          <div className="float-left d-flex  mb-24">
             <Upload {...uploadProps}>
               <Button type="primary">导入Excel</Button>
             </Upload>
             <Button type="link" className="ml-15" danger onClick={download}>
               下载「学员批量导入模板」
             </Button>
+          </div>
+          <div className="float-left c-flex">
+            {errorData &&
+              errorData.map((item: any, index: number) => {
+                return (
+                  <span key={index} className="c-red mb-10">
+                    {item}
+                  </span>
+                );
+              })}
           </div>
         </Col>
       </Row>
