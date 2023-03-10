@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { createFromIconfontCN } from '@ant-design/icons';
+import { createFromIconfontCN } from "@ant-design/icons";
 import { Menu } from "antd";
 //导出路由跳转hooks函数
 import { useNavigate, Link, useLocation } from "react-router-dom";
@@ -7,7 +7,7 @@ import styles from "./index.module.less";
 import logo from "../../assets/logo.png";
 
 const IconFont = createFromIconfontCN({
-  scriptUrl: '//at.alicdn.com/t/c/font_3943555_yvbihmb40xn.js',
+  scriptUrl: "//at.alicdn.com/t/c/font_3943555_yvbihmb40xn.js",
 });
 
 function getItem(label: any, key: any, icon: any, children: any, type: any) {
@@ -21,7 +21,13 @@ function getItem(label: any, key: any, icon: any, children: any, type: any) {
 }
 const items = [
   getItem("首页概览", "/", <IconFont type="icon-icon-home" />, null, null),
-  getItem("分类管理", "/resource-category", <IconFont type="icon-icon-category" />, null, null),
+  getItem(
+    "分类管理",
+    "/resource-category",
+    <IconFont type="icon-icon-category" />,
+    null,
+    null
+  ),
   getItem(
     "资源管理",
     "3",
