@@ -74,6 +74,10 @@ export const MemberUpdatePage: React.FC = () => {
   const onFinish = (values: any) => {
     console.log("Success:", values);
     let id = Number(params.memberId);
+    const arr = [];
+    for (let i = 0; i < values.dep_ids.length; i++) {
+      arr.push(values.dep_ids[i][values.dep_ids[i].length - 1]);
+    }
     user
       .updateUser(
         id,
@@ -83,7 +87,7 @@ export const MemberUpdatePage: React.FC = () => {
         values.avatar,
         values.password || "",
         values.idCard,
-        values.dep_ids[0]
+        arr
       )
       .then((res: any) => {
         message.success("保存成功！");
