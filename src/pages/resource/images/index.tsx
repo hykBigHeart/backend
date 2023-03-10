@@ -32,7 +32,7 @@ export const ResourceImagesPage = () => {
   const [imageList, setImageList] = useState<ImageItem[]>([]);
   const [refresh, setRefresh] = useState(false);
   const [page, setPage] = useState(1);
-  const [size, setSize] = useState(12);
+  const [size, setSize] = useState(32);
   const [total, setTotal] = useState(0);
   const [category_ids, setCategoryIds] = useState<any>([]);
 
@@ -92,12 +92,7 @@ export const ResourceImagesPage = () => {
                 ></UploadImageSub>
               </Col>
             </Row>
-            <Row
-              gutter={[
-                { xs: 8, sm: 16, md: 24, lg: 32 },
-                { xs: 4, sm: 8, md: 12, lg: 16 },
-              ]}
-            >
+            <Row gutter={[24, 24]}>
               {imageList.length === 0 && (
                 <Col span={24}>
                   <Empty description="暂无图片" />
@@ -105,12 +100,12 @@ export const ResourceImagesPage = () => {
               )}
 
               {imageList.map((item) => (
-                <Col key={item.id} span={6}>
+                <Col key={item.id} span={3}>
                   <div className={styles.imageItem}>
                     <Image
-                      preview={false}
-                      width={120}
-                      height={80}
+                      preview={true}
+                      width={150}
+                      height={150}
                       src={item.url}
                     />
                     <Popconfirm
@@ -141,6 +136,7 @@ export const ResourceImagesPage = () => {
                     }}
                     defaultCurrent={page}
                     total={total}
+                    pageSize={size}
                   />
                 </Col>
               )}
