@@ -82,6 +82,7 @@ export const SystemAdministratorPage: React.FC = () => {
             onClick={() =>
               navigate(`/system/administrator/update/${record.id}`)
             }
+            disabled={null}
           />
           <Popconfirm
             title="警告"
@@ -97,6 +98,7 @@ export const SystemAdministratorPage: React.FC = () => {
               icon={null}
               p="admin-user-cud"
               onClick={() => null}
+              disabled={null}
             />
           </Popconfirm>
         </Space>
@@ -192,6 +194,7 @@ export const SystemAdministratorPage: React.FC = () => {
                 icon={<PlusOutlined />}
                 p="admin-user-cud"
                 onClick={() => null}
+                disabled={null}
               />
             </Link>
           </div>

@@ -3,7 +3,7 @@ import {
   Button,
   Row,
   Col,
-  Popconfirm,
+  Modal,
   Image,
   Empty,
   message,
@@ -13,7 +13,10 @@ import { resource } from "../../../api";
 import styles from "./index.module.less";
 import { CloseOutlined } from "@ant-design/icons";
 import { UploadImageSub } from "../../../compenents/upload-image-button/upload-image-sub";
-import { TreeCategory } from "../../../compenents";
+import { TreeCategory, PerButton } from "../../../compenents";
+import { ExclamationCircleFilled, CheckOutlined } from "@ant-design/icons";
+
+const { confirm } = Modal;
 
 interface ImageItem {
   id: number;
@@ -41,9 +44,22 @@ export const ResourceImagesPage = () => {
     if (id === 0) {
       return;
     }
-    resource.destroyResource(id).then(() => {
-      message.success("删除成功");
-      resetImageList();
+    confirm({
+      title: "操作确认",
+      icon: <ExclamationCircleFilled />,
+      content: "确认删除此图片？",
+      okText: "确认",
+      okType: "danger",
+      cancelText: "取消",
+      onOk() {
+        resource.destroyResource(id).then(() => {
+          message.success("删除成功");
+          resetImageList();
+        });
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
     });
   };
 
@@ -53,8 +69,15 @@ export const ResourceImagesPage = () => {
     resource
       .resourceList(page, size, "", "", "", "IMAGE", categoryIds)
       .then((res: any) => {
+        let imageData = res.data.result.data;
+        if (imageData.length > 0) {
+          for (let i = 0; i < imageData.length; i++) {
+            imageData[i].isChecked = false;
+          }
+        }
         setTotal(res.data.result.total);
-        setImageList(res.data.result.data);
+        setImageList(imageData);
+        console.log(imageData);
       })
       .catch((err: any) => {
         console.log("错误,", err);
@@ -72,6 +95,10 @@ export const ResourceImagesPage = () => {
     getImageList();
   }, [category_ids, refresh, page, size]);
 
+  const onChange = () => {
+    console.log(111);
+  };
+
   return (
     <>
       <div className="tree-main-body">
@@ -87,12 +114,26 @@ export const ResourceImagesPage = () => {
           </div>
           <Row gutter={16} style={{ marginBottom: 24 }}>
             <Col span={24}>
-              <UploadImageSub
-                categoryIds={category_ids}
-                onUpdate={() => {
-                  resetImageList();
-                }}
-              ></UploadImageSub>
+              <div className="j-b-flex">
+                <UploadImageSub
+                  categoryIds={category_ids}
+                  onUpdate={() => {
+                    resetImageList();
+                  }}
+                ></UploadImageSub>
+                <div className="d-flex">
+                  <Button className="mr-16">全选</Button>
+                  <PerButton
+                    disabled={null}
+                    type="primary"
+                    text="删除"
+                    class=""
+                    icon={null}
+                    p="resource-destroy"
+                    onClick={() => null}
+                  />
+                </div>
+              </div>
             </Col>
           </Row>
           <Row gutter={[24, 24]}>
@@ -102,35 +143,38 @@ export const ResourceImagesPage = () => {
               </Col>
             )}
 
-            {imageList.map((item) => (
+            {imageList.map((item: any) => (
               <Col key={item.id} span={3}>
                 <div className={styles.imageItem}>
+                  <div
+                    className={
+                      item.isChecked ? styles.checked : styles.checkbox
+                    }
+                  >
+                    {item.isChecked && <CheckOutlined />}
+                  </div>
                   <Image
                     preview={true}
                     width={150}
                     height={150}
                     src={item.url}
                   />
-                  <Popconfirm
-                    title="警告"
-                    description="即将删除此图片，确认操作？"
-                    onConfirm={() => removeResource(item.id)}
-                    okText="确定"
-                    cancelText="取消"
-                  >
-                    <Button
-                      className={styles.closeButton}
-                      danger
-                      shape="circle"
-                      icon={<CloseOutlined />}
-                    />
-                  </Popconfirm>
+                  <Button
+                    className={styles.closeButton}
+                    danger
+                    shape="circle"
+                    icon={<CloseOutlined />}
+                    onClick={() => removeResource(item.id)}
+                  />
                 </div>
               </Col>
             ))}
 
             {imageList.length > 0 && (
-              <Col span={24}>
+              <Col
+                span={24}
+                style={{ display: "flex", flexDirection: "row-reverse" }}
+              >
                 <Pagination
                   showSizeChanger
                   onChange={(currentPage, currentSize) => {

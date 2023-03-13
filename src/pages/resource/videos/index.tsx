@@ -1,24 +1,15 @@
 import { useEffect, useState } from "react";
-import {
-  Button,
-  Row,
-  Col,
-  Popconfirm,
-  Image,
-  Empty,
-  Table,
-  message,
-  Space,
-} from "antd";
+import { Button, Modal, Table, message, Space } from "antd";
 import { resource } from "../../../api";
 import styles from "./index.module.less";
-import { CloseOutlined } from "@ant-design/icons";
-import { UploadImageSub } from "../../../compenents/upload-image-button/upload-image-sub";
+import { ExclamationCircleFilled } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import { dateFormat } from "../../../utils/index";
-import { TreeCategory, DurationText } from "../../../compenents";
+import { TreeCategory, DurationText, PerButton } from "../../../compenents";
 import { UploadVideoButton } from "../../../compenents/upload-video-button";
 import icon from "../../../assets/images/commen/icon-video.png";
+
+const { confirm } = Modal;
 
 interface DataType {
   id: React.Key;
@@ -86,17 +77,15 @@ export const ResourceVideosPage = () => {
           <Button type="link" className="b-link c-red" onClick={() => null}>
             编辑
           </Button>
-          <Popconfirm
-            title="警告"
-            description="即将删除此账号，确认操作？"
-            onConfirm={() => removeResource(record.id)}
-            okText="确定"
-            cancelText="取消"
-          >
-            <Button type="link" className="b-link c-red" onClick={() => null}>
-              删除
-            </Button>
-          </Popconfirm>
+          <PerButton
+            type="link"
+            text="删除"
+            class="b-link c-red"
+            icon={null}
+            p="resource-destroy"
+            onClick={() => removeResource(record.id)}
+            disabled={null}
+          />
         </Space>
       ),
     },
@@ -107,9 +96,22 @@ export const ResourceVideosPage = () => {
     if (id === 0) {
       return;
     }
-    resource.destroyResource(id).then(() => {
-      message.success("删除成功");
-      resetVideoList();
+    confirm({
+      title: "操作确认",
+      icon: <ExclamationCircleFilled />,
+      content: "确认删除此视频？",
+      okText: "确认",
+      okType: "danger",
+      cancelText: "取消",
+      onOk() {
+        resource.destroyResource(id).then(() => {
+          message.success("删除成功");
+          resetVideoList();
+        });
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
     });
   };
 

@@ -8,6 +8,7 @@ interface PropInterface {
   class: string;
   icon: any;
   onClick: () => void;
+  disabled: any;
 }
 
 export const PerButton = (props: PropInterface) => {
@@ -29,6 +30,7 @@ export const PerButton = (props: PropInterface) => {
           onClick={() => {
             props.onClick();
           }}
+          disabled={props.disabled}
         >
           {props.text}
         </Button>
@@ -41,6 +43,7 @@ export const PerButton = (props: PropInterface) => {
           onClick={() => {
             props.onClick();
           }}
+          disabled={props.disabled}
         >
           {props.text}
         </Button>

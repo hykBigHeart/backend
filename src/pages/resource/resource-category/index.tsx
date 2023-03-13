@@ -36,7 +36,7 @@ export const ResourceCategoryPage: React.FC = () => {
       dataIndex: "name",
       render: (text: string) => <span>{text}</span>,
     },
-    
+
     {
       title: "操作",
       key: "action",
@@ -51,6 +51,7 @@ export const ResourceCategoryPage: React.FC = () => {
             icon={null}
             p="resource-category"
             onClick={() => navigate(`/resource-category/update/${record.id}`)}
+            disabled={null}
           />
           <Popconfirm
             title="警告"
@@ -66,6 +67,7 @@ export const ResourceCategoryPage: React.FC = () => {
               icon={null}
               p="resource-category"
               onClick={() => null}
+              disabled={null}
             />
           </Popconfirm>
         </Space>
@@ -144,6 +146,7 @@ export const ResourceCategoryPage: React.FC = () => {
                 icon={<PlusOutlined />}
                 p="resource-category"
                 onClick={() => null}
+                disabled={null}
               />
             </Link>
           </div>

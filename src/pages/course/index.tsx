@@ -86,6 +86,7 @@ export const CoursePage = () => {
             icon={null}
             p="course"
             onClick={() => navigate(`/course/update/${record.id}`)}
+            disabled={null}
           />
           <Popconfirm
             title="警告"
@@ -101,6 +102,7 @@ export const CoursePage = () => {
               icon={null}
               p="course"
               onClick={() => null}
+              disabled={null}
             />
           </Popconfirm>
         </Space>
@@ -226,6 +228,7 @@ export const CoursePage = () => {
                     icon={<PlusOutlined />}
                     p="course"
                     onClick={() => null}
+                    disabled={null}
                   />
                 </Link>
               </div>

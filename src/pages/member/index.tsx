@@ -88,6 +88,7 @@ export const MemberPage: React.FC = () => {
             icon={null}
             p="user-update"
             onClick={() => navigate(`/member/update/${record.id}`)}
+            disabled={null}
           />
           <Popconfirm
             title="警告"
@@ -103,6 +104,7 @@ export const MemberPage: React.FC = () => {
               icon={null}
               p="user-destroy"
               onClick={() => null}
+              disabled={null}
             />
           </Popconfirm>
         </Space>
@@ -245,6 +247,7 @@ export const MemberPage: React.FC = () => {
                     icon={<PlusOutlined />}
                     p="user-store"
                     onClick={() => null}
+                    disabled={null}
                   />
                 </Link>
                 <Link style={{ textDecoration: "none" }} to={`/member/import`}>
@@ -255,6 +258,7 @@ export const MemberPage: React.FC = () => {
                     icon={null}
                     p="user-store"
                     onClick={() => null}
+                    disabled={null}
                   />
                 </Link>
               </div>

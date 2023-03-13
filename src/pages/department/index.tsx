@@ -65,6 +65,7 @@ export const DepartmentPage: React.FC = () => {
             icon={null}
             p="department-cud"
             onClick={() => navigate(`/department/update/${record.id}`)}
+            disabled={null}
           />
           <Popconfirm
             title="警告"
@@ -80,6 +81,7 @@ export const DepartmentPage: React.FC = () => {
               icon={null}
               p="department-cud"
               onClick={() => null}
+              disabled={null}
             />
           </Popconfirm>
         </Space>
@@ -154,6 +156,7 @@ export const DepartmentPage: React.FC = () => {
                 icon={<PlusOutlined />}
                 p="department-cud"
                 onClick={() => null}
+                disabled={null}
               />
             </Link>
           </div>
