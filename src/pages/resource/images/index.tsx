@@ -109,6 +109,11 @@ export const ResourceImagesPage = () => {
     setRefresh(!refresh);
   };
 
+  const cancelAll = () => {
+    setSelectKey([]);
+    setRefresh(!refresh);
+  };
+
   return (
     <>
       <div className="tree-main-body">
@@ -132,6 +137,11 @@ export const ResourceImagesPage = () => {
                   }}
                 ></UploadImageSub>
                 <div className="d-flex">
+                  {selectKey.length > 0 && (
+                    <Button className="mr-16" onClick={() => cancelAll()}>
+                      取消全选
+                    </Button>
+                  )}
                   <Button className="mr-16" onClick={() => selectAll()}>
                     全选
                   </Button>

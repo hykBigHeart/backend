@@ -61,9 +61,9 @@ export const ResourceVideosPage = () => {
     },
     {
       title: "创建人",
-      dataIndex: "id",
-      render: (id: string) =>
-        JSON.stringify(adminUsers) !== "{}" && <span>{adminUsers.id}</span>,
+      dataIndex: "admin_id",
+      render: (text: number) =>
+        JSON.stringify(adminUsers) !== "{}" && <span>{adminUsers[text]}</span>,
     },
     {
       title: "视频时长",
