@@ -88,15 +88,14 @@ export const ResourceImagesPage = () => {
     getImageList();
   }, [category_ids, refresh, page, size]);
 
-  const onChange = (item: any, index: number) => {
+  const onChange = (item: any) => {
     let arr = selectKey;
     if (arr.indexOf(item.id) === -1) {
       arr.push(item.id);
-      setSelectKey(arr);
     } else {
       arr.splice(arr.indexOf(item.id), 1);
-      setSelectKey(arr);
     }
+    setSelectKey(arr);
     setRefresh(!refresh);
   };
 
@@ -106,12 +105,10 @@ export const ResourceImagesPage = () => {
       arr.push(imageList[i].id);
     }
     setSelectKey(arr);
-    setRefresh(!refresh);
   };
 
   const cancelAll = () => {
     setSelectKey([]);
-    setRefresh(!refresh);
   };
 
   return (
@@ -165,32 +162,25 @@ export const ResourceImagesPage = () => {
               </Col>
             )}
 
-            {imageList.map((item: any, index: number) => (
+            {imageList.map((item: any) => (
               <Col key={item.id} span={3}>
                 <div className={styles.imageItem}>
-                  <div
+                  <i
                     className={
                       selectKey.indexOf(item.id) === -1
                         ? styles.checkbox
                         : styles.checked
                     }
-                    onClick={() => onChange(item, index)}
+                    onClick={() => onChange(item)}
                   >
                     {selectKey.indexOf(item.id) !== -1 && <CheckOutlined />}
-                  </div>
+                  </i>
                   <Image
                     preview={true}
                     width={150}
                     height={150}
                     src={item.url}
                   />
-                  {/* <Button
-                    className={styles.closeButton}
-                    danger
-                    shape="circle"
-                    icon={<CloseOutlined />}
-                    onClick={() => removeResource(item.id)}
-                  /> */}
                 </div>
               </Col>
             ))}

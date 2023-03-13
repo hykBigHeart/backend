@@ -77,9 +77,6 @@ export const ResourceVideosPage = () => {
       width: 100,
       render: (_, record: any) => (
         <Space size="small">
-          <Button type="link" className="b-link c-red" onClick={() => null}>
-            编辑
-          </Button>
           <PerButton
             type="link"
             text="删除"
