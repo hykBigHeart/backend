@@ -30,7 +30,7 @@ const items = [
   ),
   getItem(
     "资源管理",
-    "3",
+    "resource",
     <i className="iconfont icon-icon-file" />,
     [
       getItem("视频", "/videos", null, null, null),
@@ -40,14 +40,14 @@ const items = [
   ),
   getItem(
     "课程中心",
-    "4",
+    "courses",
     <i className="iconfont icon-icon-study" />,
     [getItem("线上课", "/course", null, null, null)],
     null
   ),
   getItem(
     "学员管理",
-    "5",
+    "user",
     <i className="iconfont icon-icon-user" />,
     [
       getItem("学员", "/member", null, null, null),
@@ -57,7 +57,7 @@ const items = [
   ),
   getItem(
     "系统设置",
-    "6",
+    "system",
     <i className="iconfont icon-icon-setting" />,
     [
       getItem("管理人员", "/system/administrator", null, null, null),
@@ -69,17 +69,12 @@ const items = [
 ];
 
 const children2Parent: any = {
-  "/videos": ["3"],
-  "/images": ["3"],
-
-  "/member": ["4"],
-  "/department": ["4"],
-
-  "/course": ["5"],
-
-  "/system/administrator": ["6"],
-  "/system/adminroles": ["6"],
-  "/system/index": ["6"],
+  "^/video": ["resource"],
+  "^/image": ["resource"],
+  "^/member": ["user"],
+  "^/department": ["user"],
+  "^/course": ["courses"],
+  "^/system": ["system"],
 };
 
 export const LeftMenu: React.FC = () => {
@@ -90,6 +85,12 @@ export const LeftMenu: React.FC = () => {
   let defaultOpenKeys: string[] = [];
   if (children2Parent[location.pathname]) {
     defaultOpenKeys = children2Parent[location.pathname];
+  }
+  for (let p in children2Parent) {
+    if (location.pathname.search(p) >= 0) {
+      defaultOpenKeys = children2Parent[p];
+      break;
+    }
   }
 
   const onClick = (e: any) => {
