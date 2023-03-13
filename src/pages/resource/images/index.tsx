@@ -176,8 +176,10 @@ export const ResourceImagesPage = () => {
                   </i>
                   <Image
                     preview={true}
-                    width={150}
-                    height={150}
+                    style={{
+                      width: "150px",
+                      height: "auto",
+                    }}
                     src={item.url}
                   />
                 </div>
