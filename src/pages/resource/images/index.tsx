@@ -100,6 +100,15 @@ export const ResourceImagesPage = () => {
     setRefresh(!refresh);
   };
 
+  const selectAll = () => {
+    let arr = [];
+    for (let i = 0; i < imageList.length; i++) {
+      arr.push(imageList[i].id);
+    }
+    setSelectKey(arr);
+    setRefresh(!refresh);
+  };
+
   return (
     <>
       <div className="tree-main-body">
@@ -123,7 +132,9 @@ export const ResourceImagesPage = () => {
                   }}
                 ></UploadImageSub>
                 <div className="d-flex">
-                  <Button className="mr-16">全选</Button>
+                  <Button className="mr-16" onClick={() => selectAll()}>
+                    全选
+                  </Button>
                   <PerButton
                     disabled={selectKey.length === 0}
                     type="primary"
