@@ -143,7 +143,7 @@ export const ResourceCategoryPage: React.FC = () => {
     confirm({
       title: "操作确认",
       icon: <ExclamationCircleFilled />,
-      content: "确认删除选中图片？",
+      content: "确认删除此分类？",
       okText: "确认",
       okType: "danger",
       cancelText: "取消",
