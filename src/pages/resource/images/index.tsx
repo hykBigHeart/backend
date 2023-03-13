@@ -38,6 +38,8 @@ export const ResourceImagesPage = () => {
   const [total, setTotal] = useState(0);
   const [category_ids, setCategoryIds] = useState<any>([]);
   const [selectKey, setSelectKey] = useState<any>([]);
+  const [visibleArr, setVisibleArr] = useState<any>([]);
+  const [hoverArr, setHoverArr] = useState<any>([]);
 
   // 删除图片
   const removeResource = () => {
@@ -71,6 +73,13 @@ export const ResourceImagesPage = () => {
       .then((res: any) => {
         setTotal(res.data.result.total);
         setImageList(res.data.result.data);
+        let data = res.data.result.data;
+        let arr = [];
+        for (let i = 0; i < data.length; i++) {
+          arr.push(false);
+        }
+        setVisibleArr(arr);
+        setHoverArr(arr);
       })
       .catch((err: any) => {
         console.log("错误,", err);
@@ -88,7 +97,9 @@ export const ResourceImagesPage = () => {
     getImageList();
   }, [category_ids, refresh, page, size]);
 
-  const onChange = (id: number) => {
+  const onChange = (e: any, id: number) => {
+    e.preventDefault();
+    e.stopPropagation();
     const arr = [...selectKey];
     if (arr.indexOf(id) === -1) {
       arr.push(id);
@@ -108,6 +119,21 @@ export const ResourceImagesPage = () => {
 
   const cancelAll = () => {
     setSelectKey([]);
+  };
+
+  const showImage = (index: number, value: boolean) => {
+    const arr = [...visibleArr];
+    arr[index] = value;
+    setVisibleArr(arr);
+  };
+
+  const showHover = (index: number, value: boolean) => {
+    const arr = [...hoverArr];
+    for (let i = 0; i < arr.length; i++) {
+      arr[i] = false;
+    }
+    arr[index] = value;
+    setHoverArr(arr);
   };
 
   return (
@@ -135,7 +161,7 @@ export const ResourceImagesPage = () => {
                 <div className="d-flex">
                   {selectKey.length > 0 && (
                     <Button className="mr-16" onClick={() => cancelAll()}>
-                      取消全选
+                      取消选择
                     </Button>
                   )}
                   <Button className="mr-16" onClick={() => selectAll()}>
@@ -154,56 +180,69 @@ export const ResourceImagesPage = () => {
               </div>
             </Col>
           </Row>
-          <Row gutter={[24, 24]}>
-            {imageList.length === 0 && (
+          {imageList.length === 0 && (
+            <div className="d-flex">
               <Col span={24}>
                 <Empty description="暂无图片" />
               </Col>
-            )}
-
-            {imageList.map((item: any) => (
-              <Col key={item.id} span={3}>
-                <div className={styles.imageItem}>
-                  <i
-                    className={
-                      selectKey.indexOf(item.id) === -1
-                        ? styles.checkbox
-                        : styles.checked
-                    }
-                    onClick={() => onChange(item.id)}
-                  >
-                    {selectKey.indexOf(item.id) !== -1 && <CheckOutlined />}
-                  </i>
-                  <Image
-                    preview={true}
-                    style={{
-                      width: "150px",
-                      height: "auto",
-                    }}
-                    src={item.url}
-                  />
-                </div>
-              </Col>
-            ))}
-
-            {imageList.length > 0 && (
-              <Col
-                span={24}
-                style={{ display: "flex", flexDirection: "row-reverse" }}
+            </div>
+          )}
+          <div className={styles["images-box"]}>
+            {imageList.map((item: any, index: number) => (
+              <div
+                key={item.id}
+                className={styles.imageItem}
+                style={{ backgroundImage: `url(${item.url})` }}
+                onClick={() => showImage(index, true)}
+                onMouseOver={() => showHover(index, true)}
+                onMouseOut={() => showHover(index, false)}
               >
-                <Pagination
-                  showSizeChanger
-                  onChange={(currentPage, currentSize) => {
-                    setPage(currentPage);
-                    setSize(currentSize);
+                {hoverArr[index] && (
+                  <i
+                    className={styles.checkbox}
+                    onClick={(e) => onChange(e, item.id)}
+                  ></i>
+                )}
+                {selectKey.indexOf(item.id) !== -1 && (
+                  <i
+                    className={styles.checked}
+                    onClick={(e) => onChange(e, item.id)}
+                  >
+                    <CheckOutlined />
+                  </i>
+                )}
+                <Image
+                  width={200}
+                  style={{ display: "none" }}
+                  src={item.url}
+                  preview={{
+                    visible: visibleArr[index],
+                    src: item.url,
+                    onVisibleChange: (value) => {
+                      showImage(index, value);
+                    },
                   }}
-                  defaultCurrent={page}
-                  total={total}
-                  pageSize={size}
                 />
-              </Col>
-            )}
-          </Row>
+              </div>
+            ))}
+          </div>
+          {imageList.length > 0 && (
+            <Col
+              span={24}
+              style={{ display: "flex", flexDirection: "row-reverse" }}
+            >
+              <Pagination
+                showSizeChanger
+                onChange={(currentPage, currentSize) => {
+                  setPage(currentPage);
+                  setSize(currentSize);
+                }}
+                defaultCurrent={page}
+                total={total}
+                pageSize={size}
+              />
+            </Col>
+          )}
         </div>
       </div>
     </>

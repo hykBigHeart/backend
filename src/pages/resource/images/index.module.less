@@ -42,9 +42,9 @@
 .checked {
   width: 20px;
   height: 20px;
-  background: #fff2f0;
+  background: #ff4d4f;
   border-radius: 3px;
-  border: 2px solid #fff2f0;
+  border: 2px solid #ff4d4f;
   position: absolute;
   left: 10px;
   top: 10px;
@@ -52,18 +52,27 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ff4d4f;
+  color: #ffffff;
   cursor: pointer;
 }
 
-.imageItem {
-  position: relative;
-  width: 150px;
-  height: 150px;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f4fafe;
-  border-radius: 6px;
+.images-box {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  .imageItem {
+    width: 100%;
+    height: 150px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center center;
+    background-color: #f6f6f6;
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    &:hover {
+      opacity: 0.8;
+    }
+  }
 }
