@@ -88,15 +88,14 @@ export const ResourceImagesPage = () => {
     getImageList();
   }, [category_ids, refresh, page, size]);
 
-  const onChange = (item: any) => {
-    let arr = selectKey;
-    if (arr.indexOf(item.id) === -1) {
-      arr.push(item.id);
+  const onChange = (id: number) => {
+    const arr = [...selectKey];
+    if (arr.indexOf(id) === -1) {
+      arr.push(id);
     } else {
-      arr.splice(arr.indexOf(item.id), 1);
+      arr.splice(arr.indexOf(id), 1);
     }
     setSelectKey(arr);
-    setRefresh(!refresh);
   };
 
   const selectAll = () => {
@@ -171,7 +170,7 @@ export const ResourceImagesPage = () => {
                         ? styles.checkbox
                         : styles.checked
                     }
-                    onClick={() => onChange(item)}
+                    onClick={() => onChange(item.id)}
                   >
                     {selectKey.indexOf(item.id) !== -1 && <CheckOutlined />}
                   </i>
