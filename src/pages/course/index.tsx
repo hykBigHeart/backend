@@ -205,69 +205,66 @@ export const CoursePage = () => {
 
   return (
     <>
-      <Row>
-        <Col span={4}>
-          <div className="playedu-main-body" style={{ marginLeft: -24 }}>
-            <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
-          </div>
-        </Col>
-        <Col span={20}>
-          <div className="playedu-main-body">
-            <div className="playedu-main-title float-left mb-24">后端课程</div>
-            <div className="float-left j-b-flex mb-24">
-              <div className="d-flex">
-                <Link style={{ textDecoration: "none" }} to={`/course/create`}>
-                  <PerButton
-                    type="primary"
-                    text="新建课程"
-                    class="mr-16"
-                    icon={<PlusOutlined />}
-                    p="course"
-                    onClick={() => null}
-                    disabled={null}
-                  />
-                </Link>
+      <div className="tree-main-body">
+        <div className="left-box">
+          <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
+        </div>
+
+        <div className="right-box">
+          <div className="playedu-main-title float-left mb-24">后端课程</div>
+          <div className="float-left j-b-flex mb-24">
+            <div className="d-flex">
+              <Link style={{ textDecoration: "none" }} to={`/course/create`}>
+                <PerButton
+                  type="primary"
+                  text="新建课程"
+                  class="mr-16"
+                  icon={<PlusOutlined />}
+                  p="course"
+                  onClick={() => null}
+                  disabled={null}
+                />
+              </Link>
+            </div>
+            <div className="d-flex">
+              <div className="d-flex mr-24">
+                <Typography.Text>课程名称：</Typography.Text>
+                <Input
+                  value={title}
+                  onChange={(e) => {
+                    setTitle(e.target.value);
+                  }}
+                  style={{ width: 160 }}
+                  placeholder="请输入名称关键字"
+                />
               </div>
               <div className="d-flex">
-                <div className="d-flex mr-24">
-                  <Typography.Text>课程名称：</Typography.Text>
-                  <Input
-                    value={title}
-                    onChange={(e) => {
-                      setTitle(e.target.value);
-                    }}
-                    style={{ width: 160 }}
-                    placeholder="请输入名称关键字"
-                  />
-                </div>
-                <div className="d-flex">
-                  <Button className="mr-16" onClick={resetList}>
-                    重 置
-                  </Button>
-                  <Button
-                    type="primary"
-                    onClick={() => {
-                      setPage(1);
-                      setRefresh(!refresh);
-                    }}
-                  >
-                    查 询
-                  </Button>
-                </div>
+                <Button className="mr-16" onClick={resetList}>
+                  重 置
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    setPage(1);
+                    setRefresh(!refresh);
+                  }}
+                >
+                  查 询
+                </Button>
               </div>
             </div>
-            <div className="float-left">
-              <Table
-                columns={columns}
-                dataSource={list}
-                loading={loading}
-                pagination={paginationProps}
-                rowKey={(record) => record.id}
-              />
-            </div>
           </div>
-        </Col>
-      </Row>
+          <div className="float-left">
+            <Table
+              columns={columns}
+              dataSource={list}
+              loading={loading}
+              pagination={paginationProps}
+              rowKey={(record) => record.id}
+            />
+          </div>
+        </div>
+      </div>
     </>
   );
 };
