@@ -21,6 +21,7 @@ interface DataType {
 export const ResourceVideosPage = () => {
   const [videoList, setVideoList] = useState<any>([]);
   const [videosExtra, setVideoExtra] = useState<any>([]);
+  const [adminUsers, setAdminUsers] = useState<any>({});
   const [refresh, setRefresh] = useState(false);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
@@ -60,7 +61,9 @@ export const ResourceVideosPage = () => {
     },
     {
       title: "创建人",
-      dataIndex: "disk",
+      dataIndex: "id",
+      render: (id: string) =>
+        JSON.stringify(adminUsers) !== "{}" && <span>{adminUsers.id}</span>,
     },
     {
       title: "视频时长",
@@ -125,6 +128,7 @@ export const ResourceVideosPage = () => {
         setTotal(res.data.result.total);
         setVideoList(res.data.result.data);
         setVideoExtra(res.data.videos_extra);
+        setAdminUsers(res.data.admin_users);
         setLoading(false);
       })
       .catch((err: any) => {

@@ -55,3 +55,9 @@ export function storeResource(
 export function destroyResource(id: number) {
   return client.destroy(`/backend/v1/resource/${id}`);
 }
+
+export function destroyResourceMulti(ids: number[]) {
+  return client.post(`/backend/v1/resource/destroy-multi`, {
+    ids: ids,
+  });
+}

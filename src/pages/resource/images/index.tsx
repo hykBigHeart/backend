@@ -11,7 +11,6 @@ import {
 } from "antd";
 import { resource } from "../../../api";
 import styles from "./index.module.less";
-import { CloseOutlined } from "@ant-design/icons";
 import { UploadImageSub } from "../../../compenents/upload-image-button/upload-image-sub";
 import { TreeCategory, PerButton } from "../../../compenents";
 import { ExclamationCircleFilled, CheckOutlined } from "@ant-design/icons";
@@ -38,21 +37,22 @@ export const ResourceImagesPage = () => {
   const [size, setSize] = useState(32);
   const [total, setTotal] = useState(0);
   const [category_ids, setCategoryIds] = useState<any>([]);
+  const [selectKey, setSelectKey] = useState<any>([]);
 
   // 删除图片
-  const removeResource = (id: number) => {
-    if (id === 0) {
+  const removeResource = () => {
+    if (selectKey.length === 0) {
       return;
     }
     confirm({
       title: "操作确认",
       icon: <ExclamationCircleFilled />,
-      content: "确认删除此图片？",
+      content: "确认删除选中图片？",
       okText: "确认",
       okType: "danger",
       cancelText: "取消",
       onOk() {
-        resource.destroyResource(id).then(() => {
+        resource.destroyResourceMulti(selectKey).then(() => {
           message.success("删除成功");
           resetImageList();
         });
@@ -69,15 +69,8 @@ export const ResourceImagesPage = () => {
     resource
       .resourceList(page, size, "", "", "", "IMAGE", categoryIds)
       .then((res: any) => {
-        let imageData = res.data.result.data;
-        if (imageData.length > 0) {
-          for (let i = 0; i < imageData.length; i++) {
-            imageData[i].isChecked = false;
-          }
-        }
         setTotal(res.data.result.total);
-        setImageList(imageData);
-        console.log(imageData);
+        setImageList(res.data.result.data);
       })
       .catch((err: any) => {
         console.log("错误,", err);
@@ -95,8 +88,16 @@ export const ResourceImagesPage = () => {
     getImageList();
   }, [category_ids, refresh, page, size]);
 
-  const onChange = () => {
-    console.log(111);
+  const onChange = (item: any, index: number) => {
+    let arr = selectKey;
+    if (arr.indexOf(item.id) === -1) {
+      arr.push(item.id);
+      setSelectKey(arr);
+    } else {
+      arr.splice(arr.indexOf(item.id), 1);
+      setSelectKey(arr);
+    }
+    setRefresh(!refresh);
   };
 
   return (
@@ -124,13 +125,13 @@ export const ResourceImagesPage = () => {
                 <div className="d-flex">
                   <Button className="mr-16">全选</Button>
                   <PerButton
-                    disabled={null}
+                    disabled={selectKey.length === 0}
                     type="primary"
                     text="删除"
                     class=""
                     icon={null}
                     p="resource-destroy"
-                    onClick={() => null}
+                    onClick={() => removeResource()}
                   />
                 </div>
               </div>
@@ -143,15 +144,18 @@ export const ResourceImagesPage = () => {
               </Col>
             )}
 
-            {imageList.map((item: any) => (
+            {imageList.map((item: any, index: number) => (
               <Col key={item.id} span={3}>
                 <div className={styles.imageItem}>
                   <div
                     className={
-                      item.isChecked ? styles.checked : styles.checkbox
+                      selectKey.indexOf(item.id) === -1
+                        ? styles.checkbox
+                        : styles.checked
                     }
+                    onClick={() => onChange(item, index)}
                   >
-                    {item.isChecked && <CheckOutlined />}
+                    {selectKey.indexOf(item.id) !== -1 && <CheckOutlined />}
                   </div>
                   <Image
                     preview={true}
@@ -159,13 +163,13 @@ export const ResourceImagesPage = () => {
                     height={150}
                     src={item.url}
                   />
-                  <Button
+                  {/* <Button
                     className={styles.closeButton}
                     danger
                     shape="circle"
                     icon={<CloseOutlined />}
                     onClick={() => removeResource(item.id)}
-                  />
+                  /> */}
                 </div>
               </Col>
             ))}
