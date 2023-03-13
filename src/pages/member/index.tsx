@@ -90,6 +90,7 @@ export const MemberPage: React.FC = () => {
             onClick={() => navigate(`/member/update/${record.id}`)}
             disabled={null}
           />
+          <div className="form-column"></div>
           <Popconfirm
             title="警告"
             description="即将删除此账号，确认操作？"
@@ -181,7 +182,10 @@ export const MemberPage: React.FC = () => {
       <Row>
         <Col span={4}>
           <div className="playedu-main-body" style={{ marginLeft: -24 }}>
-            <TreeDepartment onUpdate={(keys: any) => setDepIds(keys)} />
+            <TreeDepartment
+              text={"部门"}
+              onUpdate={(keys: any) => setDepIds(keys)}
+            />
           </div>
         </Col>
         <Col span={20}>
