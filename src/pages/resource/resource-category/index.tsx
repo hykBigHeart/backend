@@ -74,7 +74,7 @@ export const ResourceCategoryPage: React.FC = () => {
                   }
                   disabled={null}
                 />
-
+                <div className="form-column"></div>
                 <PerButton
                   type="link"
                   text="删除"
@@ -109,7 +109,7 @@ export const ResourceCategoryPage: React.FC = () => {
                   }
                   disabled={null}
                 />
-
+                <div className="form-column"></div>
                 <PerButton
                   type="link"
                   text="删除"
