@@ -23,7 +23,5 @@ export * from "./department/update";
 export * from "./change-password";
 export * from "./resource/images";
 export * from "./resource/resource-category/index";
-export * from "./resource/resource-category/create";
-export * from "./resource/resource-category/update";
 export * from "./resource/videos";
 

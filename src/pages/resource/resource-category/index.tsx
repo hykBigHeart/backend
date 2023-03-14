@@ -7,6 +7,8 @@ import { resourceCategory } from "../../../api/index";
 import { Link, useNavigate } from "react-router-dom";
 import { PerButton } from "../../../compenents";
 import type { DataNode, TreeProps } from "antd/es/tree";
+import { ResourceCategoryCreate } from "./compenents/create";
+import { ResourceCategoryUpdate } from "./compenents/update";
 
 const { confirm } = Modal;
 
@@ -29,6 +31,9 @@ export const ResourceCategoryPage: React.FC = () => {
   const [refresh, setRefresh] = useState(false);
   const [treeData, setTreeData] = useState<any>([]);
   const [selectKey, setSelectKey] = useState<any>([]);
+  const [createVisible, setCreateVisible] = useState<boolean>(false);
+  const [updateVisible, setUpdateVisible] = useState<boolean>(false);
+  const [cid, setCid] = useState<number>(0);
 
   useEffect(() => {
     getData();
@@ -36,7 +41,6 @@ export const ResourceCategoryPage: React.FC = () => {
 
   const onSelect = (selectedKeys: any, info: any) => {
     setSelectKey(selectedKeys);
-    console.log(selectedKeys);
   };
 
   const getData = () => {
@@ -66,11 +70,10 @@ export const ResourceCategoryPage: React.FC = () => {
                   class="b-link c-red"
                   icon={null}
                   p="resource-category"
-                  onClick={() =>
-                    navigate(
-                      `/resource-category/update/${categories[id][i].id}`
-                    )
-                  }
+                  onClick={() => {
+                    setCid(categories[id][i].id);
+                    setUpdateVisible(true);
+                  }}
                   disabled={null}
                 />
                 <div className="form-column"></div>
@@ -101,11 +104,10 @@ export const ResourceCategoryPage: React.FC = () => {
                   class="b-link c-red"
                   icon={null}
                   p="resource-category"
-                  onClick={() =>
-                    navigate(
-                      `/resource-category/update/${categories[id][i].id}`
-                    )
-                  }
+                  onClick={() => {
+                    setCid(categories[id][i].id);
+                    setUpdateVisible(true);
+                  }}
                   disabled={null}
                 />
                 <div className="form-column"></div>
@@ -138,7 +140,6 @@ export const ResourceCategoryPage: React.FC = () => {
     if (id === 0) {
       return;
     }
-
     confirm({
       title: "操作确认",
       icon: <ExclamationCircleFilled />,
@@ -234,20 +235,15 @@ export const ResourceCategoryPage: React.FC = () => {
     <>
       <div className="playedu-main-top mb-24">
         <div className="d-flex">
-          <Link
-            style={{ textDecoration: "none" }}
-            to={`/resource-category/create`}
-          >
-            <PerButton
-              type="primary"
-              text="新建分类"
-              class="mr-16"
-              icon={<PlusOutlined />}
-              p="resource-category"
-              onClick={() => null}
-              disabled={null}
-            />
-          </Link>
+          <PerButton
+            type="primary"
+            text="新建分类"
+            class="mr-16"
+            icon={<PlusOutlined />}
+            p="resource-category"
+            onClick={() => setCreateVisible(true)}
+            disabled={null}
+          />
         </div>
       </div>
       <div className="playedu-main-body">
@@ -258,6 +254,21 @@ export const ResourceCategoryPage: React.FC = () => {
           blockNode
           onDragEnter={onDragEnter}
           onDrop={onDrop}
+        />
+        <ResourceCategoryCreate
+          open={createVisible}
+          onCancel={() => {
+            setCreateVisible(false);
+            setRefresh(!refresh);
+          }}
+        />
+        <ResourceCategoryUpdate
+          id={cid}
+          open={updateVisible}
+          onCancel={() => {
+            setUpdateVisible(false);
+            setRefresh(!refresh);
+          }}
         />
       </div>
     </>
