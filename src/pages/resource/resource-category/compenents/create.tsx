@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from "react";
 import { Modal, Form, Input, Cascader, message } from "antd";
 import styles from "./create.module.less";
 import { resourceCategory } from "../../../../api/index";
-import type { FormInstance } from "antd/es/form";
 
 interface PropInterface {
   open: boolean;

@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Button, Space, Tree, Modal, message } from "antd";
-import type { ColumnsType } from "antd/es/table";
 import styles from "./index.module.less";
 import { PlusOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 import { department } from "../../api/index";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { PerButton } from "../../compenents";
 import type { DataNode, TreeProps } from "antd/es/tree";
+import { DepartmentCreate } from "./compenents/create";
+import { DepartmentUpdate } from "./compenents/update";
 
 const { confirm } = Modal;
 
@@ -29,6 +30,10 @@ export const DepartmentPage: React.FC = () => {
   const [refresh, setRefresh] = useState(false);
   const [treeData, setTreeData] = useState<any>([]);
   const [selectKey, setSelectKey] = useState<any>([]);
+
+  const [createVisible, setCreateVisible] = useState<boolean>(false);
+  const [updateVisible, setUpdateVisible] = useState<boolean>(false);
+  const [did, setDid] = useState<number>(0);
 
   const onSelect = (selectedKeys: any, info: any) => {
     setSelectKey(selectedKeys);
@@ -67,9 +72,10 @@ export const DepartmentPage: React.FC = () => {
                   class="b-link c-red"
                   icon={null}
                   p="department-cud"
-                  onClick={() =>
-                    navigate(`/department/update/${departments[id][i].id}`)
-                  }
+                  onClick={() => {
+                    setDid(departments[id][i].id);
+                    setUpdateVisible(true);
+                  }}
                   disabled={null}
                 />
                 <div className="form-column"></div>
@@ -100,9 +106,10 @@ export const DepartmentPage: React.FC = () => {
                   class="b-link c-red"
                   icon={null}
                   p="department-cud"
-                  onClick={() =>
-                    navigate(`/department/update/${departments[id][i].id}`)
-                  }
+                  onClick={() => {
+                    setDid(departments[id][i].id);
+                    setUpdateVisible(true);
+                  }}
                   disabled={null}
                 />
                 <div className="form-column"></div>
@@ -231,17 +238,15 @@ export const DepartmentPage: React.FC = () => {
     <>
       <div className="playedu-main-top mb-24">
         <div className="d-flex">
-          <Link style={{ textDecoration: "none" }} to={`/department/create`}>
-            <PerButton
-              type="primary"
-              text="新建"
-              class="mr-16"
-              icon={<PlusOutlined />}
-              p="department-cud"
-              onClick={() => null}
-              disabled={null}
-            />
-          </Link>
+          <PerButton
+            type="primary"
+            text="新建部门"
+            class="mr-16"
+            icon={<PlusOutlined />}
+            p="department-cud"
+            onClick={() => setCreateVisible(true)}
+            disabled={null}
+          />
         </div>
       </div>
       <div className="playedu-main-body">
@@ -252,6 +257,21 @@ export const DepartmentPage: React.FC = () => {
           blockNode
           onDragEnter={onDragEnter}
           onDrop={onDrop}
+        />
+        <DepartmentCreate
+          open={createVisible}
+          onCancel={() => {
+            setCreateVisible(false);
+            setRefresh(!refresh);
+          }}
+        />
+        <DepartmentUpdate
+          id={did}
+          open={updateVisible}
+          onCancel={() => {
+            setUpdateVisible(false);
+            setRefresh(!refresh);
+          }}
         />
       </div>
     </>

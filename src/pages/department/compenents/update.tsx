@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Modal, Form, Input, Cascader, message } from "antd";
 import styles from "./update.module.less";
-import { resourceCategory } from "../../../../api/index";
+import { department } from "../../../api/index";
 
 interface PropInterface {
   id: number;
@@ -15,14 +15,14 @@ interface Option {
   children?: Option[];
 }
 
-export const ResourceCategoryUpdate: React.FC<PropInterface> = ({
+export const DepartmentUpdate: React.FC<PropInterface> = ({
   id,
   open,
   onCancel,
 }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState<boolean>(true);
-  const [categories, setCategories] = useState<any>([]);
+  const [departments, setDepartments] = useState<any>([]);
   const [parent_id, setParentId] = useState<number>(0);
 
   useEffect(() => {
@@ -37,21 +37,21 @@ export const ResourceCategoryUpdate: React.FC<PropInterface> = ({
   }, [id]);
 
   const getParams = () => {
-    resourceCategory.createResourceCategory().then((res: any) => {
-      const categories = res.data.categories;
-      if (JSON.stringify(categories) !== "{}") {
-        const new_arr: Option[] = checkArr(categories, 0);
+    department.createDepartment().then((res: any) => {
+      const departments = res.data.departments;
+      if (JSON.stringify(departments) !== "{}") {
+        const new_arr: Option[] = checkArr(departments, 0);
         new_arr.unshift({
           label: "无",
           value: 0,
         });
-        setCategories(new_arr);
+        setDepartments(new_arr);
       }
     });
   };
 
   const getDetail = () => {
-    resourceCategory.resourceCategory(id).then((res: any) => {
+    department.department(id).then((res: any) => {
       let data = res.data;
       let arr = data.parent_chain.split(",");
       let new_arr: any[] = [];
@@ -66,19 +66,21 @@ export const ResourceCategoryUpdate: React.FC<PropInterface> = ({
     });
   };
 
-  const checkArr = (categories: any[], id: number) => {
+  const checkArr = (departments: any[], id: number) => {
     const arr = [];
-    for (let i = 0; i < categories[id].length; i++) {
-      if (!categories[categories[id][i].id]) {
+    for (let i = 0; i < departments[id].length; i++) {
+      if (departments[id][i].id === id) {
+        console.log("截断");
+      } else if (!departments[departments[id][i].id]) {
         arr.push({
-          label: categories[id][i].name,
-          value: categories[id][i].id,
+          label: departments[id][i].name,
+          value: departments[id][i].id,
         });
       } else {
-        const new_arr: Option[] = checkArr(categories, categories[id][i].id);
+        const new_arr: Option[] = checkArr(departments, departments[id][i].id);
         arr.push({
-          label: categories[id][i].name,
-          value: categories[id][i].id,
+          label: departments[id][i].name,
+          value: departments[id][i].id,
           children: new_arr,
         });
       }
@@ -87,8 +89,8 @@ export const ResourceCategoryUpdate: React.FC<PropInterface> = ({
   };
 
   const onFinish = (values: any) => {
-    resourceCategory
-      .updateResourceCategory(id, values.name, parent_id || 0, 0)
+    department
+      .updateDepartment(id, values.name, parent_id || 0, 0)
       .then((res: any) => {
         message.success("保存成功！");
         onCancel();
@@ -127,7 +129,7 @@ export const ResourceCategoryUpdate: React.FC<PropInterface> = ({
   return (
     <>
       <Modal
-        title="编辑分类"
+        title="编辑部门"
         centered
         forceRender
         open={open}
@@ -156,18 +158,18 @@ export const ResourceCategoryUpdate: React.FC<PropInterface> = ({
                 allowClear
                 placeholder="请选择所属上级"
                 onChange={handleChange}
-                options={categories}
+                options={departments}
                 changeOnSelect
                 expand-trigger="hover"
                 displayRender={displayRender}
               />
             </Form.Item>
             <Form.Item
-              label="分类名称"
+              label="部门名称"
               name="name"
-              rules={[{ required: true, message: "请输入分类名称!" }]}
+              rules={[{ required: true, message: "请输入部门名称!" }]}
             >
-              <Input style={{ width: 200 }} placeholder="请输入分类名称" />
+              <Input style={{ width: 200 }} placeholder="请输入部门名称" />
             </Form.Item>
           </Form>
         </div>

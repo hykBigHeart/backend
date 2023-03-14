@@ -1,10 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Modal, Form, Input, Cascader, message } from "antd";
-import styles from "./update.module.less";
-import { resourceCategory } from "../../../../api/index";
+import styles from "./create.module.less";
+import { department } from "../../../api/index";
 
 interface PropInterface {
-  id: number;
   open: boolean;
   onCancel: () => void;
 }
@@ -15,14 +14,13 @@ interface Option {
   children?: Option[];
 }
 
-export const ResourceCategoryUpdate: React.FC<PropInterface> = ({
-  id,
+export const DepartmentCreate: React.FC<PropInterface> = ({
   open,
   onCancel,
 }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState<boolean>(true);
-  const [categories, setCategories] = useState<any>([]);
+  const [departments, setDepartments] = useState<any>([]);
   const [parent_id, setParentId] = useState<number>(0);
 
   useEffect(() => {
@@ -30,55 +28,39 @@ export const ResourceCategoryUpdate: React.FC<PropInterface> = ({
   }, []);
 
   useEffect(() => {
-    if (id === 0) {
-      return;
-    }
-    getDetail();
-  }, [id]);
+    form.setFieldsValue({
+      name: "",
+      parent_id: [0],
+    });
+  }, [form, open]);
 
   const getParams = () => {
-    resourceCategory.createResourceCategory().then((res: any) => {
-      const categories = res.data.categories;
-      if (JSON.stringify(categories) !== "{}") {
-        const new_arr: Option[] = checkArr(categories, 0);
+    department.createDepartment().then((res: any) => {
+      const departments = res.data.departments;
+      if (JSON.stringify(departments) !== "{}") {
+        const new_arr: Option[] = checkArr(departments, 0);
         new_arr.unshift({
           label: "无",
           value: 0,
         });
-        setCategories(new_arr);
+        setDepartments(new_arr);
       }
     });
   };
 
-  const getDetail = () => {
-    resourceCategory.resourceCategory(id).then((res: any) => {
-      let data = res.data;
-      let arr = data.parent_chain.split(",");
-      let new_arr: any[] = [];
-      arr.map((num: any) => {
-        new_arr.push(Number(num));
-      });
-      form.setFieldsValue({
-        name: data.name,
-        parent_id: new_arr,
-      });
-      setParentId(data.parent_id);
-    });
-  };
-
-  const checkArr = (categories: any[], id: number) => {
+  const checkArr = (departments: any[], id: number) => {
     const arr = [];
-    for (let i = 0; i < categories[id].length; i++) {
-      if (!categories[categories[id][i].id]) {
+    for (let i = 0; i < departments[id].length; i++) {
+      if (!departments[departments[id][i].id]) {
         arr.push({
-          label: categories[id][i].name,
-          value: categories[id][i].id,
+          label: departments[id][i].name,
+          value: departments[id][i].id,
         });
       } else {
-        const new_arr: Option[] = checkArr(categories, categories[id][i].id);
+        const new_arr: Option[] = checkArr(departments, departments[id][i].id);
         arr.push({
-          label: categories[id][i].name,
-          value: categories[id][i].id,
+          label: departments[id][i].name,
+          value: departments[id][i].id,
           children: new_arr,
         });
       }
@@ -87,8 +69,8 @@ export const ResourceCategoryUpdate: React.FC<PropInterface> = ({
   };
 
   const onFinish = (values: any) => {
-    resourceCategory
-      .updateResourceCategory(id, values.name, parent_id || 0, 0)
+    department
+      .storeDepartment(values.name, parent_id || 0, 0)
       .then((res: any) => {
         message.success("保存成功！");
         onCancel();
@@ -102,32 +84,20 @@ export const ResourceCategoryUpdate: React.FC<PropInterface> = ({
   const handleChange = (value: any) => {
     if (value !== undefined) {
       let it = value[value.length - 1];
-      if (it === id) {
-        setParentId(0);
-      } else {
-        setParentId(it);
-      }
+      setParentId(it);
     } else {
       setParentId(0);
     }
   };
 
   const displayRender = (label: any, selectedOptions: any) => {
-    if (selectedOptions && selectedOptions[0]) {
-      let current = selectedOptions[selectedOptions.length - 1].value;
-      if (current === id) {
-        message.error("不能选择自己作为父类");
-        return "无";
-      }
-    }
-
     return label[label.length - 1];
   };
 
   return (
     <>
       <Modal
-        title="编辑分类"
+        title="新建部门"
         centered
         forceRender
         open={open}
@@ -156,18 +126,18 @@ export const ResourceCategoryUpdate: React.FC<PropInterface> = ({
                 allowClear
                 placeholder="请选择所属上级"
                 onChange={handleChange}
-                options={categories}
+                options={departments}
                 changeOnSelect
                 expand-trigger="hover"
                 displayRender={displayRender}
               />
             </Form.Item>
             <Form.Item
-              label="分类名称"
+              label="部门名称"
               name="name"
-              rules={[{ required: true, message: "请输入分类名称!" }]}
+              rules={[{ required: true, message: "请输入部门名称!" }]}
             >
-              <Input style={{ width: 200 }} placeholder="请输入分类名称" />
+              <Input style={{ width: 200 }} placeholder="请输入部门名称" />
             </Form.Item>
           </Form>
         </div>

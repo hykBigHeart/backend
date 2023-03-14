@@ -18,8 +18,6 @@ export * from "./system/adminroles/index";
 export * from "./system/adminroles/create";
 export * from "./system/adminroles/update";
 export * from "./department";
-export * from "./department/create";
-export * from "./department/update";
 export * from "./change-password";
 export * from "./resource/images";
 export * from "./resource/resource-category/index";

@@ -19,13 +19,11 @@ import {
   AdminrolesCreatePage,
   AdminrolesUpdatePage,
   DepartmentPage,
-  DepartmentCreatePage,
-  DepartmentUpdatePage,
   ChangePasswordPage,
   ResourceImagesPage,
   ResourceCategoryPage,
   ResourceVideosPage,
-  SystemIndexPage
+  SystemIndexPage,
 } from "../pages";
 
 const routes: RouteObject[] = [
@@ -113,14 +111,6 @@ const routes: RouteObject[] = [
       {
         path: "/department",
         element: <DepartmentPage />,
-      },
-      {
-        path: "/department/create",
-        element: <DepartmentCreatePage />,
-      },
-      {
-        path: "/department/update/:depId",
-        element: <DepartmentUpdatePage />,
       },
     ],
   },
