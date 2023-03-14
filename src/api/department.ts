@@ -36,3 +36,17 @@ export function updateDepartment(
 export function destroyDepartment(id: number) {
   return client.destroy(`/backend/v1/department/${id}`);
 }
+
+export function dropSameClass(ids: number[]) {
+  return client.put(`/backend/v1/department/update/sort`, {
+    ids: ids,
+  });
+}
+
+export function dropDiffClass(id: number, parent_id: number, ids: number[]) {
+  return client.put(`/backend/v1/department/update/parent`, {
+    id: id,
+    parent_id: parent_id,
+    ids: ids,
+  });
+}

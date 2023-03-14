@@ -192,6 +192,13 @@ export const DepartmentPage: React.FC = () => {
       }
     };
     const data = [...treeData];
+    let isTop = false;
+
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].key === dragKey) {
+        isTop = true;
+      }
+    }
 
     // Find dragObject
     let dragObj: DataNode;
@@ -233,6 +240,46 @@ export const DepartmentPage: React.FC = () => {
       }
     }
     setTreeData(data);
+    submitDrop(isTop, data, dragKey);
+  };
+
+  const submitDrop = (isTop: boolean, data: any, key: any) => {
+    let result = checkDropArr(data, key);
+    if (result) {
+      if (isTop) {
+        department.dropSameClass(result.ids).then((res: any) => {
+          console.log("ok");
+        });
+      } else {
+        submitChildDrop(key, 0, result);
+      }
+    }
+  };
+
+  const submitChildDrop = (key: any, pid: any, ids: any) => {
+    department.dropDiffClass(key, pid, ids.ids).then((res: any) => {
+      console.log("ok");
+    });
+  };
+
+  const checkDropArr = (data: any, key: any) => {
+    let ids = [];
+    let isSame = false;
+    for (let i = 0; i < data.length; i++) {
+      ids.push(data[i].key);
+      if (data[i].key === key) {
+        isSame = true;
+      }
+      if (data[i].children) {
+        let res: any = checkDropArr(data[i].children, key);
+        if (res) {
+          submitChildDrop(key, data[i].key, res);
+        }
+      }
+    }
+    if (isSame) {
+      return { key, ids };
+    }
   };
 
   return (
