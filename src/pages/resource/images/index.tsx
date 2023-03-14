@@ -40,6 +40,7 @@ export const ResourceImagesPage = () => {
   const [selectKey, setSelectKey] = useState<any>([]);
   const [visibleArr, setVisibleArr] = useState<any>([]);
   const [hoverArr, setHoverArr] = useState<any>([]);
+  const [selLabel, setLabel] = useState<string>("全部图片");
 
   // 删除图片
   const removeResource = () => {
@@ -142,12 +143,15 @@ export const ResourceImagesPage = () => {
         <div className="left-box">
           <TreeCategory
             text={"图片"}
-            onUpdate={(keys: any) => setCategoryIds(keys)}
+            onUpdate={(keys: any, title: any) => {
+              setCategoryIds(keys);
+              setLabel(title);
+            }}
           />
         </div>
         <div className="right-box">
           <div className="playedu-main-title float-left mb-24">
-            图片 / 全部图片
+            图片 / {selLabel}
           </div>
           <Row gutter={16} style={{ marginBottom: 24 }}>
             <Col span={24}>
@@ -164,18 +168,22 @@ export const ResourceImagesPage = () => {
                       取消选择
                     </Button>
                   )}
-                  <Button className="mr-16" onClick={() => selectAll()}>
-                    全选
-                  </Button>
-                  <PerButton
-                    disabled={selectKey.length === 0}
-                    type="primary"
-                    text="删除"
-                    class=""
-                    icon={null}
-                    p="resource-destroy"
-                    onClick={() => removeResource()}
-                  />
+                  {imageList.length !== 0 && (
+                    <>
+                      <Button className="mr-16" onClick={() => selectAll()}>
+                        全选
+                      </Button>
+                      <PerButton
+                        disabled={selectKey.length === 0}
+                        type="primary"
+                        text="删除"
+                        class=""
+                        icon={null}
+                        p="resource-destroy"
+                        onClick={() => removeResource()}
+                      />
+                    </>
+                  )}
                 </div>
               </div>
             </Col>

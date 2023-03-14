@@ -28,6 +28,7 @@ export const ResourceVideosPage = () => {
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState<boolean>(true);
   const [category_ids, setCategoryIds] = useState<any>([]);
+  const [selLabel, setLabel] = useState<string>("全部视频");
 
   const columns: ColumnsType<DataType> = [
     // {
@@ -165,12 +166,15 @@ export const ResourceVideosPage = () => {
         <div className="left-box">
           <TreeCategory
             text={"视频"}
-            onUpdate={(keys: any) => setCategoryIds(keys)}
+            onUpdate={(keys: any, title: any) => {
+              setCategoryIds(keys);
+              setLabel(title);
+            }}
           />
         </div>
         <div className="right-box">
           <div className="playedu-main-title float-left mb-24">
-            视频 / 后端课程
+            视频 / {selLabel}
           </div>
           <div className="float-left mb-24">
             <UploadVideoButton

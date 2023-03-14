@@ -10,7 +10,7 @@ interface Option {
 
 interface PropInterface {
   text: string;
-  onUpdate: (keys: any) => void;
+  onUpdate: (keys: any, title: any) => void;
 }
 
 export const TreeCategory = (props: PropInterface) => {
@@ -59,7 +59,11 @@ export const TreeCategory = (props: PropInterface) => {
   };
 
   const onSelect = (selectedKeys: any, info: any) => {
-    props.onUpdate(selectedKeys);
+    let label = "全部" + props.text;
+    if (info) {
+      label = info.node.title;
+    }
+    props.onUpdate(selectedKeys, label);
     setSelectKey(selectedKeys);
   };
 
@@ -75,7 +79,7 @@ export const TreeCategory = (props: PropInterface) => {
       >
         全部{props.text}
       </div>
-      <Tree  onSelect={onSelect} treeData={treeData} />
+      <Tree onSelect={onSelect} treeData={treeData} />
     </div>
   );
 };

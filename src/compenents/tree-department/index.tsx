@@ -10,7 +10,7 @@ interface Option {
 
 interface PropInterface {
   text: string;
-  onUpdate: (keys: any) => void;
+  onUpdate: (keys: any, title: any) => void;
 }
 
 export const TreeDepartment = (props: PropInterface) => {
@@ -60,7 +60,11 @@ export const TreeDepartment = (props: PropInterface) => {
   };
 
   const onSelect = (selectedKeys: any, info: any) => {
-    props.onUpdate(selectedKeys);
+    let label = "全部" + props.text;
+    if (info) {
+      label = info.node.title;
+    }
+    props.onUpdate(selectedKeys, label);
     setSelectKey(selectedKeys);
   };
 
