@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import {
+  Spin,
   Button,
   Row,
   Col,
@@ -41,6 +42,7 @@ export const ResourceImagesPage = () => {
   const [visibleArr, setVisibleArr] = useState<any>([]);
   const [hoverArr, setHoverArr] = useState<any>([]);
   const [selLabel, setLabel] = useState<string>("全部图片");
+  const [loading, setLoading] = useState<boolean>(false);
 
   // 删除图片
   const removeResource = () => {
@@ -69,6 +71,10 @@ export const ResourceImagesPage = () => {
 
   // 获取图片列表
   const getImageList = () => {
+    if (loading) {
+      return;
+    }
+    setLoading(true);
     let categoryIds = category_ids.join(",");
     resource
       .resourceList(page, size, "", "", "", "IMAGE", categoryIds)
@@ -82,8 +88,10 @@ export const ResourceImagesPage = () => {
         }
         setVisibleArr(arr);
         setHoverArr(arr);
+        setLoading(false);
       })
       .catch((err: any) => {
+        setLoading(false);
         console.log("错误,", err);
       });
   };
@@ -189,6 +197,11 @@ export const ResourceImagesPage = () => {
               </div>
             </Col>
           </Row>
+          {loading && (
+            <div className="float-left d-j-flex mt-24">
+              <Spin size="large" />
+            </div>
+          )}
           {imageList.length === 0 && (
             <div className="d-flex">
               <Col span={24}>
