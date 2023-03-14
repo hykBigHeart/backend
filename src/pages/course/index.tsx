@@ -43,6 +43,7 @@ export const CoursePage = () => {
   const [category_ids, setCategoryIds] = useState<any>([]);
   const [title, setTitle] = useState<string>("");
   const [dep_ids, setDepIds] = useState<any>([]);
+  const [selLabel, setLabel] = useState<string>("全部视频");
 
   const items: TabsProps["items"] = [
     {
@@ -52,7 +53,10 @@ export const CoursePage = () => {
         <div className="float-left">
           <TreeCategory
             text={"课程"}
-            onUpdate={(keys: any) => setCategoryIds(keys)}
+            onUpdate={(keys: any, title: any) => {
+              setCategoryIds(keys);
+              setLabel(title);
+            }}
           />
         </div>
       ),
@@ -64,7 +68,10 @@ export const CoursePage = () => {
         <div className="float-left">
           <TreeDepartment
             text={"部门"}
-            onUpdate={(keys: any) => setDepIds(keys)}
+            onUpdate={(keys: any, title: any) => {
+              setDepIds(keys);
+              setLabel(title);
+            }}
           />
         </div>
       ),
@@ -211,7 +218,7 @@ export const CoursePage = () => {
         </div>
 
         <div className="right-box">
-          <div className="playedu-main-title float-left mb-24">后端课程</div>
+          <div className="playedu-main-title float-left mb-24">{selLabel}</div>
           <div className="float-left j-b-flex mb-24">
             <div className="d-flex">
               <Link style={{ textDecoration: "none" }} to={`/course/create`}>
