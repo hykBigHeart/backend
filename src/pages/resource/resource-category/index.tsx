@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Button, Space, Tree, Modal, message } from "antd";
+import { Button, Tree, Modal, message } from "antd";
 import styles from "./index.module.less";
 import { PlusOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 import { resourceCategory } from "../../../api/index";
-import {  useNavigate } from "react-router-dom";
 import { PerButton } from "../../../compenents";
 import type { DataNode, TreeProps } from "antd/es/tree";
 import { ResourceCategoryCreate } from "./compenents/create";
 import { ResourceCategoryUpdate } from "./compenents/update";
+import { useSelector } from "../../../store/hooks";
 
 const { confirm } = Modal;
 
@@ -25,7 +25,7 @@ interface DataType {
 }
 
 export const ResourceCategoryPage: React.FC = () => {
-  const navigate = useNavigate();
+  const permisssions = useSelector((state: any) => state.permisssions);
   const [loading, setLoading] = useState<boolean>(true);
   const [refresh, setRefresh] = useState(false);
   const [treeData, setTreeData] = useState<any>([]);
@@ -40,6 +40,13 @@ export const ResourceCategoryPage: React.FC = () => {
 
   const onSelect = (selectedKeys: any, info: any) => {
     setSelectKey(selectedKeys);
+  };
+
+  const through = (p: string) => {
+    if (!permisssions) {
+      return false;
+    }
+    return typeof permisssions[p] !== "undefined";
   };
 
   const getData = () => {
@@ -62,30 +69,27 @@ export const ResourceCategoryPage: React.FC = () => {
           title: (
             <div className="d-flex">
               <div className="w-250px mr-24">{categories[id][i].name}</div>
-              <Space size="small">
-                <PerButton
-                  type="link"
-                  text="编辑"
-                  class="b-link c-red"
-                  icon={null}
-                  p="resource-category"
-                  onClick={() => {
-                    setCid(categories[id][i].id);
-                    setUpdateVisible(true);
-                  }}
-                  disabled={null}
-                />
-                <div className="form-column"></div>
-                <PerButton
-                  type="link"
-                  text="删除"
-                  class="b-link c-red"
-                  icon={null}
-                  p="resource-category"
-                  onClick={() => delUser(categories[id][i].id)}
-                  disabled={null}
-                />
-              </Space>
+              <i
+                className="iconfont icon-icon-drag mr-16"
+                style={{ fontSize: 24 }}
+              />
+              {through("resource-category") && (
+                <>
+                  <i
+                    className="iconfont icon-icon-edit mr-16"
+                    style={{ fontSize: 24 }}
+                    onClick={() => {
+                      setCid(categories[id][i].id);
+                      setUpdateVisible(true);
+                    }}
+                  />
+                  <i
+                    className="iconfont icon-icon-delete"
+                    style={{ fontSize: 24 }}
+                    onClick={() => delUser(categories[id][i].id)}
+                  />
+                </>
+              )}
             </div>
           ),
           key: categories[id][i].id,
@@ -96,30 +100,27 @@ export const ResourceCategoryPage: React.FC = () => {
           title: (
             <div className="d-flex">
               <div className="w-250px mr-24">{categories[id][i].name}</div>
-              <Space size="small">
-                <PerButton
-                  type="link"
-                  text="编辑"
-                  class="b-link c-red"
-                  icon={null}
-                  p="resource-category"
-                  onClick={() => {
-                    setCid(categories[id][i].id);
-                    setUpdateVisible(true);
-                  }}
-                  disabled={null}
-                />
-                <div className="form-column"></div>
-                <PerButton
-                  type="link"
-                  text="删除"
-                  class="b-link c-red"
-                  icon={null}
-                  p="resource-category"
-                  onClick={() => delUser(categories[id][i].id)}
-                  disabled={null}
-                />
-              </Space>
+              <i
+                className="iconfont icon-icon-drag mr-16"
+                style={{ fontSize: 24 }}
+              />
+              {through("resource-category") && (
+                <>
+                  <i
+                    className="iconfont icon-icon-edit mr-16"
+                    style={{ fontSize: 24 }}
+                    onClick={() => {
+                      setCid(categories[id][i].id);
+                      setUpdateVisible(true);
+                    }}
+                  />
+                  <i
+                    className="iconfont icon-icon-delete"
+                    style={{ fontSize: 24 }}
+                    onClick={() => delUser(categories[id][i].id)}
+                  />
+                </>
+              )}
             </div>
           ),
           key: categories[id][i].id,

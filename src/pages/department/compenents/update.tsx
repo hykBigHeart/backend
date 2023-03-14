@@ -24,6 +24,7 @@ export const DepartmentUpdate: React.FC<PropInterface> = ({
   const [loading, setLoading] = useState<boolean>(true);
   const [departments, setDepartments] = useState<any>([]);
   const [parent_id, setParentId] = useState<number>(0);
+  const [sort, setSort] = useState<number>(0);
 
   useEffect(() => {
     getParams();
@@ -63,6 +64,7 @@ export const DepartmentUpdate: React.FC<PropInterface> = ({
         parent_id: new_arr,
       });
       setParentId(data.parent_id);
+      setSort(data.sort);
     });
   };
 
@@ -90,7 +92,7 @@ export const DepartmentUpdate: React.FC<PropInterface> = ({
 
   const onFinish = (values: any) => {
     department
-      .updateDepartment(id, values.name, parent_id || 0, 0)
+      .updateDepartment(id, values.name, parent_id || 0, sort)
       .then((res: any) => {
         message.success("保存成功！");
         onCancel();

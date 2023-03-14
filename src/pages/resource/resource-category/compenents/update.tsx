@@ -24,6 +24,7 @@ export const ResourceCategoryUpdate: React.FC<PropInterface> = ({
   const [loading, setLoading] = useState<boolean>(true);
   const [categories, setCategories] = useState<any>([]);
   const [parent_id, setParentId] = useState<number>(0);
+  const [sort, setSort] = useState<number>(0);
 
   useEffect(() => {
     getParams();
@@ -63,6 +64,7 @@ export const ResourceCategoryUpdate: React.FC<PropInterface> = ({
         parent_id: new_arr,
       });
       setParentId(data.parent_id);
+      setSort(data.sort);
     });
   };
 
@@ -88,7 +90,7 @@ export const ResourceCategoryUpdate: React.FC<PropInterface> = ({
 
   const onFinish = (values: any) => {
     resourceCategory
-      .updateResourceCategory(id, values.name, parent_id || 0, 0)
+      .updateResourceCategory(id, values.name, parent_id || 0, sort)
       .then((res: any) => {
         message.success("保存成功！");
         onCancel();

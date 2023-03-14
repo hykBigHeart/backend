@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Button, Space, Tree, Modal, message } from "antd";
+import { Button, Tree, Modal, message } from "antd";
 import styles from "./index.module.less";
 import { PlusOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 import { department } from "../../api/index";
-import { useNavigate } from "react-router-dom";
 import { PerButton } from "../../compenents";
 import type { DataNode, TreeProps } from "antd/es/tree";
 import { DepartmentCreate } from "./compenents/create";
 import { DepartmentUpdate } from "./compenents/update";
+import { useSelector } from "../../store/hooks";
 
 const { confirm } = Modal;
 
@@ -25,7 +25,7 @@ interface DataType {
 }
 
 export const DepartmentPage: React.FC = () => {
-  const navigate = useNavigate();
+  const permisssions = useSelector((state: any) => state.permisssions);
   const [loading, setLoading] = useState<boolean>(true);
   const [refresh, setRefresh] = useState(false);
   const [treeData, setTreeData] = useState<any>([]);
@@ -38,6 +38,13 @@ export const DepartmentPage: React.FC = () => {
   const onSelect = (selectedKeys: any, info: any) => {
     setSelectKey(selectedKeys);
     console.log(selectedKeys);
+  };
+
+  const through = (p: string) => {
+    if (!permisssions) {
+      return false;
+    }
+    return typeof permisssions[p] !== "undefined";
   };
 
   useEffect(() => {
@@ -65,30 +72,27 @@ export const DepartmentPage: React.FC = () => {
           title: (
             <div className="d-flex">
               <div className="w-250px mr-24">{departments[id][i].name}</div>
-              <Space size="small">
-                <PerButton
-                  type="link"
-                  text="编辑"
-                  class="b-link c-red"
-                  icon={null}
-                  p="department-cud"
-                  onClick={() => {
-                    setDid(departments[id][i].id);
-                    setUpdateVisible(true);
-                  }}
-                  disabled={null}
-                />
-                <div className="form-column"></div>
-                <PerButton
-                  type="link"
-                  text="删除"
-                  class="b-link c-red"
-                  icon={null}
-                  p="department-cud"
-                  onClick={() => delUser(departments[id][i].id)}
-                  disabled={null}
-                />
-              </Space>
+              <i
+                className="iconfont icon-icon-drag mr-16"
+                style={{ fontSize: 24 }}
+              />
+              {through("department-cud") && (
+                <>
+                  <i
+                    className="iconfont icon-icon-edit mr-16"
+                    style={{ fontSize: 24 }}
+                    onClick={() => {
+                      setDid(departments[id][i].id);
+                      setUpdateVisible(true);
+                    }}
+                  />
+                  <i
+                    className="iconfont icon-icon-delete"
+                    style={{ fontSize: 24 }}
+                    onClick={() => delUser(departments[id][i].id)}
+                  />
+                </>
+              )}
             </div>
           ),
           key: departments[id][i].id,
@@ -99,30 +103,27 @@ export const DepartmentPage: React.FC = () => {
           title: (
             <div className="d-flex">
               <div className="w-250px mr-24">{departments[id][i].name}</div>
-              <Space size="small">
-                <PerButton
-                  type="link"
-                  text="编辑"
-                  class="b-link c-red"
-                  icon={null}
-                  p="department-cud"
-                  onClick={() => {
-                    setDid(departments[id][i].id);
-                    setUpdateVisible(true);
-                  }}
-                  disabled={null}
-                />
-                <div className="form-column"></div>
-                <PerButton
-                  type="link"
-                  text="删除"
-                  class="b-link c-red"
-                  icon={null}
-                  p="department-cud"
-                  onClick={() => delUser(departments[id][i].id)}
-                  disabled={null}
-                />
-              </Space>
+              <i
+                className="iconfont icon-icon-drag mr-16"
+                style={{ fontSize: 24 }}
+              />
+              {through("department-cud") && (
+                <>
+                  <i
+                    className="iconfont icon-icon-edit mr-16"
+                    style={{ fontSize: 24 }}
+                    onClick={() => {
+                      setDid(departments[id][i].id);
+                      setUpdateVisible(true);
+                    }}
+                  />
+                  <i
+                    className="iconfont icon-icon-delete"
+                    style={{ fontSize: 24 }}
+                    onClick={() => delUser(departments[id][i].id)}
+                  />
+                </>
+              )}
             </div>
           ),
           key: departments[id][i].id,
