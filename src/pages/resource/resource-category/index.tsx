@@ -36,7 +36,7 @@ export const ResourceCategoryPage: React.FC = () => {
 
   useEffect(() => {
     getData();
-  }, [refresh]);
+  }, [refresh, permisssions]);
 
   const onSelect = (selectedKeys: any, info: any) => {
     setSelectKey(selectedKeys);
@@ -74,21 +74,21 @@ export const ResourceCategoryPage: React.FC = () => {
                 style={{ fontSize: 24 }}
               />
               {through("resource-category") && (
-                <>
-                  <i
-                    className="iconfont icon-icon-edit mr-16"
-                    style={{ fontSize: 24 }}
-                    onClick={() => {
-                      setCid(categories[id][i].id);
-                      setUpdateVisible(true);
-                    }}
-                  />
-                  <i
-                    className="iconfont icon-icon-delete"
-                    style={{ fontSize: 24 }}
-                    onClick={() => delUser(categories[id][i].id)}
-                  />
-                </>
+                <i
+                  className="iconfont icon-icon-edit mr-16"
+                  style={{ fontSize: 24 }}
+                  onClick={() => {
+                    setCid(categories[id][i].id);
+                    setUpdateVisible(true);
+                  }}
+                />
+              )}
+              {through("resource-destroy") && (
+                <i
+                  className="iconfont icon-icon-delete"
+                  style={{ fontSize: 24 }}
+                  onClick={() => delUser(categories[id][i].id)}
+                />
               )}
             </div>
           ),
@@ -105,21 +105,21 @@ export const ResourceCategoryPage: React.FC = () => {
                 style={{ fontSize: 24 }}
               />
               {through("resource-category") && (
-                <>
-                  <i
-                    className="iconfont icon-icon-edit mr-16"
-                    style={{ fontSize: 24 }}
-                    onClick={() => {
-                      setCid(categories[id][i].id);
-                      setUpdateVisible(true);
-                    }}
-                  />
-                  <i
-                    className="iconfont icon-icon-delete"
-                    style={{ fontSize: 24 }}
-                    onClick={() => delUser(categories[id][i].id)}
-                  />
-                </>
+                <i
+                  className="iconfont icon-icon-edit mr-16"
+                  style={{ fontSize: 24 }}
+                  onClick={() => {
+                    setCid(categories[id][i].id);
+                    setUpdateVisible(true);
+                  }}
+                />
+              )}
+              {through("resource-destroy") && (
+                <i
+                  className="iconfont icon-icon-delete"
+                  style={{ fontSize: 24 }}
+                  onClick={() => delUser(categories[id][i].id)}
+                />
               )}
             </div>
           ),

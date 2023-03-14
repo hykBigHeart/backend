@@ -49,7 +49,7 @@ export const DepartmentPage: React.FC = () => {
 
   useEffect(() => {
     getData();
-  }, [refresh]);
+  }, [refresh, permisssions]);
 
   const getData = () => {
     setLoading(true);
