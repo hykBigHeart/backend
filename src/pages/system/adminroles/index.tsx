@@ -5,7 +5,9 @@ import styles from "./index.module.less";
 import { PlusOutlined, ReloadOutlined } from "@ant-design/icons";
 import { adminRole } from "../../../api/index";
 import { dateFormat } from "../../../utils/index";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { SystemAdminrolesCreate } from "./compenents/create";
+import { SystemAdminrolesUpdate } from "./compenents/update";
 
 interface DataType {
   id: React.Key;
@@ -18,6 +20,9 @@ export const SystemAdminrolesPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [list, setList] = useState<any>([]);
   const [refresh, setRefresh] = useState(false);
+  const [createVisible, setCreateVisible] = useState<boolean>(false);
+  const [updateVisible, setUpdateVisible] = useState<boolean>(false);
+  const [cid, setCid] = useState<number>(0);
 
   const columns: ColumnsType<DataType> = [
     {
@@ -41,7 +46,10 @@ export const SystemAdminrolesPage: React.FC = () => {
             type="link"
             danger
             className="b-link c-red"
-            onClick={() => navigate(`/system/adminroles/update/${record.id}`)}
+            onClick={() => {
+              setCid(Number(record.id));
+              setUpdateVisible(true);
+            }}
           >
             详情
           </Button>
@@ -90,14 +98,14 @@ export const SystemAdminrolesPage: React.FC = () => {
       <div className="playedu-main-body">
         <div className="float-left j-b-flex mb-24">
           <div className="d-flex">
-            <Link
-              style={{ textDecoration: "none" }}
-              to={`/system/adminroles/create`}
+            <Button
+              icon={<PlusOutlined />}
+              className="mr-16"
+              type="primary"
+              onClick={() => setCreateVisible(true)}
             >
-              <Button icon={<PlusOutlined />} className="mr-16" type="primary">
-                新建
-              </Button>
-            </Link>
+              新建角色
+            </Button>
           </div>
           <div className="d-flex">
             <Button
@@ -118,6 +126,21 @@ export const SystemAdminrolesPage: React.FC = () => {
             rowKey={(record) => record.id}
           />
         </div>
+        <SystemAdminrolesCreate
+          open={createVisible}
+          onCancel={() => {
+            setCreateVisible(false);
+            setRefresh(!refresh);
+          }}
+        />
+        <SystemAdminrolesUpdate
+          id={cid}
+          open={updateVisible}
+          onCancel={() => {
+            setUpdateVisible(false);
+            setRefresh(!refresh);
+          }}
+        />
       </div>
     </>
   );

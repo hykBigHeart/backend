@@ -15,8 +15,6 @@ export * from "./system/administrator/index";
 export * from "./system/administrator/create";
 export * from "./system/administrator/update";
 export * from "./system/adminroles/index";
-export * from "./system/adminroles/create";
-export * from "./system/adminroles/update";
 export * from "./department";
 export * from "./change-password";
 export * from "./resource/images";
