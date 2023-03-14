@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Button, Space, Table, Popconfirm, message } from "antd";
+import { Button, Space, Table, Modal, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import styles from "./index.module.less";
-import { PlusOutlined, ReloadOutlined } from "@ant-design/icons";
+import { PlusOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 import { adminRole } from "../../../api/index";
 import { dateFormat } from "../../../utils/index";
-import { useNavigate } from "react-router-dom";
 import { SystemAdminrolesCreate } from "./compenents/create";
 import { SystemAdminrolesUpdate } from "./compenents/update";
+import { PerButton } from "../../../compenents";
+
+const { confirm } = Modal;
 
 interface DataType {
   id: React.Key;
@@ -16,7 +18,6 @@ interface DataType {
 }
 
 export const SystemAdminrolesPage: React.FC = () => {
-  const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(true);
   const [list, setList] = useState<any>([]);
   const [refresh, setRefresh] = useState(false);
@@ -42,28 +43,28 @@ export const SystemAdminrolesPage: React.FC = () => {
       width: 160,
       render: (_, record) => (
         <Space size="small">
-          <Button
+          <PerButton
             type="link"
-            danger
-            className="b-link c-red"
+            text="编辑"
+            class="b-link c-red"
+            icon={null}
+            p="admin-role"
             onClick={() => {
               setCid(Number(record.id));
               setUpdateVisible(true);
             }}
-          >
-            详情
-          </Button>
-          <Popconfirm
-            title="警告"
-            description="即将删除此角色，确认操作？"
-            onConfirm={() => delUser(record.id)}
-            okText="确定"
-            cancelText="取消"
-          >
-            <Button type="link" danger className="b-link c-red">
-              删除
-            </Button>
-          </Popconfirm>
+            disabled={null}
+          />
+          <div className="form-column"></div>
+          <PerButton
+            type="link"
+            text="删除"
+            class="b-link c-red"
+            icon={null}
+            p="admin-role"
+            onClick={() => delUser(record.id)}
+            disabled={null}
+          />
         </Space>
       ),
     },
@@ -87,9 +88,26 @@ export const SystemAdminrolesPage: React.FC = () => {
   };
 
   const delUser = (id: any) => {
-    adminRole.destroyAdminRole(id).then((res: any) => {
-      message.success("操作成功");
-      resetData();
+    if (id === 0) {
+      return;
+    }
+    confirm({
+      title: "操作确认",
+      icon: <ExclamationCircleFilled />,
+      content: "确认删除此角色？",
+      centered: true,
+      okText: "确认",
+      okType: "danger",
+      cancelText: "取消",
+      onOk() {
+        adminRole.destroyAdminRole(id).then((res: any) => {
+          message.success("操作成功");
+          resetData();
+        });
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
     });
   };
 
@@ -107,16 +125,7 @@ export const SystemAdminrolesPage: React.FC = () => {
               新建角色
             </Button>
           </div>
-          <div className="d-flex">
-            <Button
-              type="link"
-              icon={<ReloadOutlined />}
-              style={{ color: "#333333" }}
-              onClick={() => {
-                setRefresh(!refresh);
-              }}
-            ></Button>
-          </div>
+          <div className="d-flex"></div>
         </div>
         <div className="float-left">
           <Table
@@ -125,22 +134,22 @@ export const SystemAdminrolesPage: React.FC = () => {
             loading={loading}
             rowKey={(record) => record.id}
           />
+          <SystemAdminrolesCreate
+            open={createVisible}
+            onCancel={() => {
+              setCreateVisible(false);
+              setRefresh(!refresh);
+            }}
+          />
+          <SystemAdminrolesUpdate
+            id={cid}
+            open={updateVisible}
+            onCancel={() => {
+              setUpdateVisible(false);
+              setRefresh(!refresh);
+            }}
+          />
         </div>
-        <SystemAdminrolesCreate
-          open={createVisible}
-          onCancel={() => {
-            setCreateVisible(false);
-            setRefresh(!refresh);
-          }}
-        />
-        <SystemAdminrolesUpdate
-          id={cid}
-          open={updateVisible}
-          onCancel={() => {
-            setUpdateVisible(false);
-            setRefresh(!refresh);
-          }}
-        />
       </div>
     </>
   );

@@ -24,6 +24,8 @@ export const SystemAdminrolesCreate: React.FC<PropInterface> = ({
   useEffect(() => {
     form.setFieldsValue({
       name: "",
+      permission_ids: [],
+      action_ids: [],
     });
   }, [form, open]);
 
@@ -51,7 +53,15 @@ export const SystemAdminrolesCreate: React.FC<PropInterface> = ({
   };
 
   const onFinish = (values: any) => {
-    const params = values.action_ids.concat(values.permission_ids);
+    let pids = [];
+    let aids = [];
+    if (values.permission_ids) {
+      pids = values.permission_ids;
+    }
+    if (values.action_ids) {
+      aids = values.action_ids;
+    }
+    const params = aids.concat(pids);
     adminRole.storeAdminRole(values.name, params).then((res: any) => {
       message.success("保存成功！");
       onCancel();

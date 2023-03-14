@@ -65,8 +65,16 @@ export const SystemAdminrolesUpdate: React.FC<PropInterface> = ({
   };
 
   const onFinish = (values: any) => {
-    const arr = values.action_ids.concat(values.permission_ids);
-    adminRole.updateAdminRole(id, values.name, arr).then((res: any) => {
+    let pids = [];
+    let aids = [];
+    if (values.permission_ids) {
+      pids = values.permission_ids;
+    }
+    if (values.action_ids) {
+      aids = values.action_ids;
+    }
+    const params = aids.concat(pids);
+    adminRole.updateAdminRole(id, values.name, params).then((res: any) => {
       message.success("保存成功！");
       onCancel();
     });
@@ -79,7 +87,7 @@ export const SystemAdminrolesUpdate: React.FC<PropInterface> = ({
   return (
     <>
       <Modal
-        title="编辑部门"
+        title="编辑角色"
         centered
         forceRender
         open={open}
