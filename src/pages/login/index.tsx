@@ -21,12 +21,16 @@ export const Login: React.FC = () => {
   const [image, setImage] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [captcha_val, setCaptcha_val] = useState<string>("");
-  const [captcha_key, setCaptcha_key] = useState<string>("");
-  const fetchData = () => {
+  const [captchaVal, setCaptchaVal] = useState<string>("");
+  const [captchaKey, setCaptchaKey] = useState<string>("");
+  const [captchaLoading, setCaptchaLoading] = useState(true);
+
+  const fetchImageCaptcha = () => {
+    setCaptchaLoading(true);
     system.getImageCaptcha().then((res: any) => {
       setImage(res.data.image);
-      setCaptcha_key(res.data.key);
+      setCaptchaKey(res.data.key);
+      setCaptchaLoading(false);
     });
   };
 
@@ -39,7 +43,7 @@ export const Login: React.FC = () => {
       message.error("请输入密码");
       return;
     }
-    if (!captcha_val) {
+    if (!captchaVal) {
       message.error("请输入图形验证码");
       return;
     }
@@ -55,7 +59,7 @@ export const Login: React.FC = () => {
     }
     setLoading(true);
     login
-      .login(email, password, captcha_key, captcha_val)
+      .login(email, password, captchaKey, captchaVal)
       .then((res: any) => {
         const token = res.data.token;
         setToken(token);
@@ -63,8 +67,8 @@ export const Login: React.FC = () => {
       })
       .catch((e) => {
         setLoading(false);
-        setCaptcha_val("");
-        fetchData();
+        setCaptchaVal("");
+        fetchImageCaptcha();
       });
   };
 
@@ -86,7 +90,7 @@ export const Login: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchData();
+    fetchImageCaptcha();
   }, []);
 
   return (
@@ -123,20 +127,29 @@ export const Login: React.FC = () => {
           </div>
           <div className="d-flex mt-50">
             <Input
-              value={captcha_val}
+              value={captchaVal}
               style={{ width: 260, height: 54 }}
               placeholder="请输入图形验证码"
               onChange={(e) => {
-                setCaptcha_val(e.target.value);
+                setCaptchaVal(e.target.value);
               }}
               onKeyUp={(e) => keyUp(e)}
             />
-            <img
-              className={styles["captcha"]}
-              onClick={fetchData}
-              src={image}
-              alt=""
-            />
+            <div className={styles["captcha-box"]}>
+              {captchaLoading && (
+                <div className={styles["catpcha-loading-box"]}>
+                  <Spin size="small" />
+                </div>
+              )}
+
+              {!captchaLoading && (
+                <img
+                  className={styles["captcha"]}
+                  onClick={fetchImageCaptcha}
+                  src={image}
+                />
+              )}
+            </div>
           </div>
           <div className="login-box d-flex mt-50">
             <Button
