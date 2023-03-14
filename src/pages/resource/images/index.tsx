@@ -241,7 +241,6 @@ export const ResourceImagesPage = () => {
               style={{ display: "flex", flexDirection: "row-reverse" }}
             >
               <Pagination
-                showSizeChanger
                 onChange={(currentPage, currentSize) => {
                   setPage(currentPage);
                   setSize(currentSize);
