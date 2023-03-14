@@ -199,7 +199,7 @@ export const ResourceImagesPage = () => {
             {imageList.map((item: any, index: number) => (
               <div
                 key={item.id}
-                className={styles.imageItem}
+                className={`${styles.imageItem} ref-image-item`}
                 style={{ backgroundImage: `url(${item.url})` }}
                 onClick={() => showImage(index, true)}
                 onMouseOver={() => showHover(index, true)}
