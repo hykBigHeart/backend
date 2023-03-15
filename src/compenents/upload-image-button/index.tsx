@@ -98,6 +98,7 @@ export const UploadImageButton = (props: PropsInterface) => {
           <Row gutter={16}>
             <Col span={4}>
               <TreeCategory
+                resourceTotal={0}
                 categoryCount={{}}
                 text={"图片"}
                 onUpdate={(keys: any) => setCategoryIds(keys)}

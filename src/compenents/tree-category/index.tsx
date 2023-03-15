@@ -1,4 +1,4 @@
-import { Button, Input, message, Tree } from "antd";
+import { Tree } from "antd";
 import { useState, useEffect } from "react";
 import { resourceCategory } from "../../api/index";
 
@@ -11,6 +11,7 @@ interface Option {
 interface PropInterface {
   text: string;
   categoryCount: any;
+  resourceTotal: number;
   onUpdate: (keys: any, title: any) => void;
 }
 
@@ -96,9 +97,7 @@ export const TreeCategory = (props: PropInterface) => {
         }}
       >
         全部{props.text}
-        {JSON.stringify(props.categoryCount) !== "{}" && (
-          <span className="tree-num">({props.categoryCount["0"]})</span>
-        )}
+        <span className="tree-num">({props.resourceTotal})</span>
       </div>
       <Tree
         onSelect={onSelect}
