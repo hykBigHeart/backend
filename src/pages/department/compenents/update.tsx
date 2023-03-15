@@ -28,7 +28,7 @@ export const DepartmentUpdate: React.FC<PropInterface> = ({
 
   useEffect(() => {
     getParams();
-  }, []);
+  }, [open]);
 
   useEffect(() => {
     if (id === 0) {

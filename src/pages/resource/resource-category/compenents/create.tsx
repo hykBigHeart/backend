@@ -25,7 +25,7 @@ export const ResourceCategoryCreate: React.FC<PropInterface> = ({
 
   useEffect(() => {
     getParams();
-  }, []);
+  }, [open]);
 
   useEffect(() => {
     form.setFieldsValue({
