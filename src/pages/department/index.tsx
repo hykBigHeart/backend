@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Tree, Modal, message } from "antd";
+import { Button, Tree, Modal, message, Tooltip } from "antd";
 import styles from "./index.module.less";
 import { PlusOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 import { department } from "../../api/index";
@@ -72,6 +72,12 @@ export const DepartmentPage: React.FC = () => {
           title: (
             <div className="d-flex">
               <div className="w-250px mr-24">{departments[id][i].name}</div>
+              <Tooltip placement="top" title="可拖拽和点击">
+                <i
+                  className="iconfont icon-icon-drag mr-16"
+                  style={{ fontSize: 24 }}
+                />
+              </Tooltip>
               {through("department-cud") && (
                 <>
                   <i
@@ -99,6 +105,12 @@ export const DepartmentPage: React.FC = () => {
           title: (
             <div className="d-flex">
               <div className="w-250px mr-24">{departments[id][i].name}</div>
+              <Tooltip placement="top" title="可拖拽和点击">
+                <i
+                  className="iconfont icon-icon-drag mr-16"
+                  style={{ fontSize: 24 }}
+                />
+              </Tooltip>
               {through("department-cud") && (
                 <>
                   <i

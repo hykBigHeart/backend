@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Tree, Modal, message } from "antd";
+import { Button, Tree, Modal, message, Tooltip } from "antd";
 import styles from "./index.module.less";
 import { PlusOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 import { resourceCategory } from "../../../api/index";
@@ -69,6 +69,12 @@ export const ResourceCategoryPage: React.FC = () => {
           title: (
             <div className="d-flex">
               <div className="w-250px mr-24">{categories[id][i].name}</div>
+              <Tooltip placement="top" title="可拖拽和点击">
+                <i
+                  className="iconfont icon-icon-drag mr-16"
+                  style={{ fontSize: 24 }}
+                />
+              </Tooltip>
               {through("resource-category") && (
                 <i
                   className="iconfont icon-icon-edit mr-16"
@@ -96,6 +102,12 @@ export const ResourceCategoryPage: React.FC = () => {
           title: (
             <div className="d-flex">
               <div className="w-250px mr-24">{categories[id][i].name}</div>
+              <Tooltip placement="top" title="可拖拽和点击">
+                <i
+                  className="iconfont icon-icon-drag mr-16"
+                  style={{ fontSize: 24 }}
+                />
+              </Tooltip>
               {through("resource-category") && (
                 <i
                   className="iconfont icon-icon-edit mr-16"
