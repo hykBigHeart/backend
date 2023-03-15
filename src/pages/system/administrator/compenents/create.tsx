@@ -76,7 +76,7 @@ export const SystemAdministratorCreate: React.FC<PropInterface> = ({
   return (
     <>
       <Modal
-        title="新建管理人员"
+        title="添加管理员"
         centered
         forceRender
         open={open}

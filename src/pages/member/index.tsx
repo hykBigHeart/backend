@@ -74,7 +74,7 @@ export const MemberPage: React.FC = () => {
         <Space size="small">
           <PerButton
             type="link"
-            text="详情"
+            text="编辑"
             class="b-link c-red"
             icon={null}
             p="user-update"
@@ -195,7 +195,7 @@ export const MemberPage: React.FC = () => {
               <Link style={{ textDecoration: "none" }} to={`/member/create`}>
                 <PerButton
                   type="primary"
-                  text="新建"
+                  text="添加学员"
                   class="mr-16"
                   icon={<PlusOutlined />}
                   p="user-store"

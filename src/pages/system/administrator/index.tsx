@@ -164,7 +164,7 @@ export const SystemAdministratorPage: React.FC = () => {
           <div className="d-flex">
             <PerButton
               type="primary"
-              text="新建管理人员"
+              text="添加管理员"
               class="mr-16"
               icon={<PlusOutlined />}
               p="admin-user-cud"
