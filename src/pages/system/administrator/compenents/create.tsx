@@ -96,16 +96,6 @@ export const SystemAdministratorCreate: React.FC<PropInterface> = ({
             onFinishFailed={onFinishFailed}
             autoComplete="off"
           >
-            <Form.Item label="角色" name="roleIds">
-              <Select
-                style={{ width: 200 }}
-                mode="multiple"
-                allowClear
-                placeholder="请选择角色"
-                onChange={handleChange}
-                options={roles}
-              />
-            </Form.Item>
             <Form.Item
               label="姓名"
               name="name"
@@ -130,11 +120,20 @@ export const SystemAdministratorCreate: React.FC<PropInterface> = ({
                 placeholder="请输入登录密码"
               />
             </Form.Item>
+            <Form.Item label="角色" name="roleIds">
+              <Select
+                style={{ width: 200 }}
+                mode="multiple"
+                allowClear
+                placeholder="请选择角色"
+                onChange={handleChange}
+                options={roles}
+              />
+            </Form.Item>
             <Form.Item
               label="禁止登录"
               name="is_ban_login"
               valuePropName="checked"
-              rules={[{ required: true, message: "请选择禁止登录!" }]}
             >
               <Switch onChange={onChange} />
             </Form.Item>

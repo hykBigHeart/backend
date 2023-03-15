@@ -67,7 +67,7 @@ export const SystemAdministratorUpdate: React.FC<PropInterface> = ({
         id,
         values.name,
         values.email,
-        values.password,
+        values.password || "",
         values.is_ban_login,
         values.roleIds
       )
@@ -114,16 +114,6 @@ export const SystemAdministratorUpdate: React.FC<PropInterface> = ({
             onFinishFailed={onFinishFailed}
             autoComplete="off"
           >
-            <Form.Item label="角色" name="roleIds">
-              <Select
-                style={{ width: 200 }}
-                mode="multiple"
-                allowClear
-                placeholder="请选择角色"
-                onChange={handleChange}
-                options={roles}
-              />
-            </Form.Item>
             <Form.Item
               label="姓名"
               name="name"
@@ -138,14 +128,20 @@ export const SystemAdministratorUpdate: React.FC<PropInterface> = ({
             >
               <Input style={{ width: 200 }} placeholder="请输入学员邮箱" />
             </Form.Item>
-            <Form.Item
-              label="密码"
-              name="password"
-              rules={[{ required: true, message: "请输入登录密码!" }]}
-            >
+            <Form.Item label="密码" name="password">
               <Input.Password
                 style={{ width: 200 }}
                 placeholder="请输入登录密码"
+              />
+            </Form.Item>
+            <Form.Item label="角色" name="roleIds">
+              <Select
+                style={{ width: 200 }}
+                mode="multiple"
+                allowClear
+                placeholder="请选择角色"
+                onChange={handleChange}
+                options={roles}
               />
             </Form.Item>
             <Form.Item
