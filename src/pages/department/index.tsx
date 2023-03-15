@@ -72,10 +72,6 @@ export const DepartmentPage: React.FC = () => {
           title: (
             <div className="d-flex">
               <div className="w-250px mr-24">{departments[id][i].name}</div>
-              <i
-                className="iconfont icon-icon-drag mr-16"
-                style={{ fontSize: 24 }}
-              />
               {through("department-cud") && (
                 <>
                   <i
@@ -103,10 +99,6 @@ export const DepartmentPage: React.FC = () => {
           title: (
             <div className="d-flex">
               <div className="w-250px mr-24">{departments[id][i].name}</div>
-              <i
-                className="iconfont icon-icon-drag mr-16"
-                style={{ fontSize: 24 }}
-              />
               {through("department-cud") && (
                 <>
                   <i

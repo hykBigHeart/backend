@@ -69,10 +69,6 @@ export const ResourceCategoryPage: React.FC = () => {
           title: (
             <div className="d-flex">
               <div className="w-250px mr-24">{categories[id][i].name}</div>
-              <i
-                className="iconfont icon-icon-drag mr-16"
-                style={{ fontSize: 24 }}
-              />
               {through("resource-category") && (
                 <i
                   className="iconfont icon-icon-edit mr-16"
@@ -100,10 +96,6 @@ export const ResourceCategoryPage: React.FC = () => {
           title: (
             <div className="d-flex">
               <div className="w-250px mr-24">{categories[id][i].name}</div>
-              <i
-                className="iconfont icon-icon-drag mr-16"
-                style={{ fontSize: 24 }}
-              />
               {through("resource-category") && (
                 <i
                   className="iconfont icon-icon-edit mr-16"
