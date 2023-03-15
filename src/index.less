@@ -416,8 +416,19 @@ textarea.ant-input {
   }
 }
 
-.ant-tree-switcher{
+.ant-tree-switcher {
   padding-left: 4px;
+  position: relative;
+}
+.ant-tree-switcher_open::before,
+.ant-tree-switcher_close::before {
+  z-index: 100;
+  content: "";
+  position: absolute;
+  right: -200px;
+  top: 0;
+  left: 0;
+  bottom: 0;
 }
 
 .ant-modal-confirm-btns > .ant-btn-default:hover {
