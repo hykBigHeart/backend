@@ -43,11 +43,8 @@ export const CoursePage = () => {
   const [dep_ids, setDepIds] = useState<any>([]);
   const [selLabel, setLabel] = useState<string>("全部课程");
   const [categoryCount, setCategoryCount] = useState<any>({});
-<<<<<<< HEAD
   const [tabKey, setTabKey] = useState(1);
-=======
   const [pureTotal, setPureTotal] = useState(0);
->>>>>>> fc90ddf2cc1481f6aa7fb80b7d2746f7bbc94fcd
 
   const items: TabsProps["items"] = [
     {
