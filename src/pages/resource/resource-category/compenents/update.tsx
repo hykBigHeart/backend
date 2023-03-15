@@ -43,7 +43,7 @@ export const ResourceCategoryUpdate: React.FC<PropInterface> = ({
       if (JSON.stringify(categories) !== "{}") {
         const new_arr: Option[] = checkArr(categories, 0);
         new_arr.unshift({
-          label: "无",
+          label: "作为一级分类",
           value: 0,
         });
         setCategories(new_arr);
