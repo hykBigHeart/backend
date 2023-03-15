@@ -31,7 +31,9 @@ export function storeCourse(
   thumb: string,
   isShow: number,
   depIds: number[],
-  categoryIds: number[]
+  categoryIds: number[],
+  chapters: number[],
+  hours: number[]
 ) {
   return client.post("/backend/v1/course/create", {
     title: title,
@@ -39,6 +41,8 @@ export function storeCourse(
     is_show: isShow,
     dep_ids: depIds,
     category_ids: categoryIds,
+    chapters: chapters,
+    hours: hours,
   });
 }
 
@@ -52,7 +56,9 @@ export function updateCourse(
   thumb: string,
   isShow: number,
   depIds: number[],
-  categoryIds: number[]
+  categoryIds: number[],
+  chapters: number[],
+  hours: number[]
 ) {
   return client.put(`/backend/v1/course/${id}`, {
     title: title,
@@ -60,6 +66,8 @@ export function updateCourse(
     is_show: isShow,
     dep_ids: depIds,
     category_ids: categoryIds,
+    chapters: chapters,
+    hours: hours,
   });
 }
 

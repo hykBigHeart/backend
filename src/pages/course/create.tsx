@@ -83,7 +83,9 @@ export const CourseCreatePage: React.FC = () => {
         values.thumb,
         values.isShow,
         dep_ids,
-        category_ids
+        category_ids,
+        [],
+        []
       )
       .then((res: any) => {
         message.success("保存成功！");

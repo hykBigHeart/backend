@@ -98,7 +98,7 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
       );
     }
     course
-      .storeCourse(values.title, values.thumb, 1, dep_ids, category_ids)
+      .storeCourse(values.title, values.thumb, 1, dep_ids, category_ids, [], [])
       .then((res: any) => {
         message.success("保存成功！");
         onCancel();
