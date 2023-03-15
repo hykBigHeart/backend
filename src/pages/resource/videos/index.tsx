@@ -29,6 +29,7 @@ export const ResourceVideosPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [category_ids, setCategoryIds] = useState<any>([]);
   const [selLabel, setLabel] = useState<string>("全部视频");
+  const [categoryCount, setCategoryCount] = useState<any>({});
 
   const columns: ColumnsType<DataType> = [
     // {
@@ -127,6 +128,7 @@ export const ResourceVideosPage = () => {
         setVideoList(res.data.result.data);
         setVideoExtra(res.data.videos_extra);
         setAdminUsers(res.data.admin_users);
+        setCategoryCount(res.data.category_count);
         setLoading(false);
       })
       .catch((err: any) => {
@@ -166,14 +168,19 @@ export const ResourceVideosPage = () => {
         <div className="left-box">
           <TreeCategory
             text={"视频"}
+            categoryCount={categoryCount}
             onUpdate={(keys: any, title: any) => {
               setCategoryIds(keys);
-              setLabel(title);
+              if (typeof title == "string") {
+                setLabel(title);
+              } else {
+                setLabel(title.props.children[0]);
+              }
             }}
           />
         </div>
         <div className="right-box">
-          <div className="playedu-main-title float-left mb-24">
+          <div className="d-flex playedu-main-title float-left mb-24">
             视频 / {selLabel}
           </div>
           <div className="float-left mb-24">

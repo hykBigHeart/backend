@@ -43,6 +43,7 @@ export const ResourceImagesPage = () => {
   const [hoverArr, setHoverArr] = useState<any>([]);
   const [selLabel, setLabel] = useState<string>("全部图片");
   const [loading, setLoading] = useState<boolean>(false);
+  const [categoryCount, setCategoryCount] = useState<any>({});
 
   // 删除图片
   const removeResource = () => {
@@ -87,6 +88,7 @@ export const ResourceImagesPage = () => {
         }
         setVisibleArr(arr);
         setHoverArr(arr);
+        setCategoryCount(res.data.category_count);
         setLoading(false);
       })
       .catch((err: any) => {
@@ -151,14 +153,19 @@ export const ResourceImagesPage = () => {
         <div className="left-box">
           <TreeCategory
             text={"图片"}
+            categoryCount={categoryCount}
             onUpdate={(keys: any, title: any) => {
               setCategoryIds(keys);
-              setLabel(title);
+              if (typeof title == "string") {
+                setLabel(title);
+              } else {
+                setLabel(title.props.children[0]);
+              }
             }}
           />
         </div>
         <div className="right-box">
-          <div className="playedu-main-title float-left mb-24">
+          <div className="d-flex playedu-main-title float-left mb-24">
             图片 / {selLabel}
           </div>
           <Row gutter={16} style={{ marginBottom: 24 }}>

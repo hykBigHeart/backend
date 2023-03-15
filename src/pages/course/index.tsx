@@ -44,6 +44,7 @@ export const CoursePage = () => {
   const [title, setTitle] = useState<string>("");
   const [dep_ids, setDepIds] = useState<any>([]);
   const [selLabel, setLabel] = useState<string>("全部视频");
+  const [categoryCount, setCategoryCount] = useState<any>({});
 
   const items: TabsProps["items"] = [
     {
@@ -53,9 +54,14 @@ export const CoursePage = () => {
         <div className="float-left">
           <TreeCategory
             text={"课程"}
+            categoryCount={categoryCount}
             onUpdate={(keys: any, title: any) => {
               setCategoryIds(keys);
-              setLabel(title);
+              if (typeof title == "string") {
+                setLabel(title);
+              } else {
+                setLabel(title.props.children[0]);
+              }
             }}
           />
         </div>
@@ -172,6 +178,7 @@ export const CoursePage = () => {
       .then((res: any) => {
         setTotal(res.data.total);
         setList(res.data.data);
+        setCategoryCount(res.data.category_count);
         setLoading(false);
       })
       .catch((err: any) => {
