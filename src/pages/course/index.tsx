@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import {
   Button,
-  Row,
-  Col,
   Modal,
   Image,
   Table,
@@ -12,7 +10,7 @@ import {
   Space,
   Tabs,
 } from "antd";
-import { course } from "../../api";
+import { course, department, resourceCategory } from "../../api";
 import styles from "./index.module.less";
 import { PlusOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
@@ -45,6 +43,7 @@ export const CoursePage = () => {
   const [dep_ids, setDepIds] = useState<any>([]);
   const [selLabel, setLabel] = useState<string>("全部课程");
   const [categoryCount, setCategoryCount] = useState<any>({});
+  const [tabKey, setTabKey] = useState(1);
 
   const items: TabsProps["items"] = [
     {
@@ -136,7 +135,7 @@ export const CoursePage = () => {
             class="b-link c-red"
             icon={null}
             p="course"
-            onClick={() => removeItem(record.id)}
+            onClick={() => delItem(record.id)}
             disabled={null}
           />
         </Space>
@@ -145,7 +144,7 @@ export const CoursePage = () => {
   ];
 
   // 删除课程
-  const removeItem = (id: number) => {
+  const delItem = (id: number) => {
     if (id === 0) {
       return;
     }
@@ -214,7 +213,7 @@ export const CoursePage = () => {
   };
 
   const onChange = (key: string) => {
-    console.log(key);
+    setTabKey(Number(key));
   };
 
   return (
@@ -228,7 +227,6 @@ export const CoursePage = () => {
             onChange={onChange}
           />
         </div>
-
         <div className="right-box">
           <div className="playedu-main-title float-left mb-24">{selLabel}</div>
           <div className="float-left j-b-flex mb-24">

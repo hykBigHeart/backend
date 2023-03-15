@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Tree, Modal, message, Tooltip } from "antd";
+import { Spin, Button, Tree, Modal, message, Tooltip } from "antd";
 import styles from "./index.module.less";
 import { PlusOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 import { department } from "../../api/index";
@@ -8,6 +8,7 @@ import type { DataNode, TreeProps } from "antd/es/tree";
 import { DepartmentCreate } from "./compenents/create";
 import { DepartmentUpdate } from "./compenents/update";
 import { useSelector } from "../../store/hooks";
+import { useNavigate } from "react-router-dom";
 
 const { confirm } = Modal;
 
@@ -25,6 +26,7 @@ interface DataType {
 }
 
 export const DepartmentPage: React.FC = () => {
+  const navigate = useNavigate();
   const permisssions = useSelector((state: any) => state.permisssions);
   const [loading, setLoading] = useState<boolean>(true);
   const [refresh, setRefresh] = useState(false);
@@ -34,11 +36,11 @@ export const DepartmentPage: React.FC = () => {
   const [createVisible, setCreateVisible] = useState<boolean>(false);
   const [updateVisible, setUpdateVisible] = useState<boolean>(false);
   const [did, setDid] = useState<number>(0);
+  const [modal, contextHolder] = Modal.useModal();
 
   const onSelect = (selectedKeys: any, info: any) => {
     setSelectKey(selectedKeys);
   };
-
 
   const through = (p: string) => {
     if (!permisssions) {
@@ -91,7 +93,7 @@ export const DepartmentPage: React.FC = () => {
                   <i
                     className="iconfont icon-icon-delete"
                     style={{ fontSize: 24 }}
-                    onClick={() => delUser(departments[id][i].id)}
+                    onClick={() => removeItem(departments[id][i].id)}
                   />
                 </>
               )}
@@ -124,7 +126,7 @@ export const DepartmentPage: React.FC = () => {
                   <i
                     className="iconfont icon-icon-delete"
                     style={{ fontSize: 24 }}
-                    onClick={() => delUser(departments[id][i].id)}
+                    onClick={() => removeItem(departments[id][i].id)}
                   />
                 </>
               )}
@@ -143,11 +145,83 @@ export const DepartmentPage: React.FC = () => {
     setRefresh(!refresh);
   };
 
-  const delUser = (id: any) => {
+  const removeItem = (id: number) => {
     if (id === 0) {
       return;
     }
+    const instance = modal.warning({
+      title: "操作确认",
+      centered: true,
+      content: (
+        <div className="j-flex">
+          <Spin tip="检查中" />
+        </div>
+      ),
+    });
+    department.checkDestroy(id).then((res: any) => {
+      setTimeout(() => {
+        instance.destroy();
+      }, 500);
+      if (
+        res.data.children.length === 0 &&
+        res.data.courses.length === 0 &&
+        res.data.users.length === 0
+      ) {
+        delUser(id);
+      } else {
+        if (res.data.children.length > 0) {
+          modal.warning({
+            title: "操作确认",
+            centered: true,
+            okText: "确认",
+            content: (
+              <p>
+                此部门下包含
+                <span className="c-red">
+                  （{res.data.children.length}个子部门）
+                </span>
+                ，请先解除关联再删除！
+              </p>
+            ),
+          });
+        } else {
+          modal.warning({
+            title: "操作确认",
+            centered: true,
+            okText: "确认",
+            content: (
+              <p>
+                此部门已关联
+                {res.data.courses.length > 0 && (
+                  <Button
+                    style={{ paddingLeft: 4, paddingRight: 4 }}
+                    type="link"
+                    danger
+                    onClick={() => navigate("/course")}
+                  >
+                    （{res.data.courses.length}个线上课程），
+                  </Button>
+                )}
+                {res.data.users.length > 0 && (
+                  <Button
+                    type="link"
+                    style={{ paddingLeft: 4, paddingRight: 4 }}
+                    danger
+                    onClick={() => navigate("/member")}
+                  >
+                    （{res.data.users.length}个学员），
+                  </Button>
+                )}
+                请先解除关联再删除！
+              </p>
+            ),
+          });
+        }
+      }
+    });
+  };
 
+  const delUser = (id: any) => {
     confirm({
       title: "操作确认",
       icon: <ExclamationCircleFilled />,
@@ -288,6 +362,7 @@ export const DepartmentPage: React.FC = () => {
   return (
     <>
       <div className="playedu-main-top mb-24">
+        {contextHolder}
         <div className="d-flex">
           <PerButton
             type="primary"
