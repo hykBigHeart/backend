@@ -43,7 +43,7 @@ export const DepartmentUpdate: React.FC<PropInterface> = ({
       if (JSON.stringify(departments) !== "{}") {
         const new_arr: Option[] = checkArr(departments, 0);
         new_arr.unshift({
-          label: "无",
+          label: "作为一级部门",
           value: 0,
         });
         setDepartments(new_arr);
