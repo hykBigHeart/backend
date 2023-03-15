@@ -152,7 +152,7 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
             autoComplete="off"
           >
             <Form.Item
-              label="*课程名称"
+              label="课程名称"
               name="title"
               rules={[{ required: true, message: "请在此处输入课程名称!" }]}
             >
