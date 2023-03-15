@@ -7,6 +7,8 @@ import { user } from "../../api/index";
 import { dateFormat } from "../../utils/index";
 import { Link, useNavigate } from "react-router-dom";
 import { TreeDepartment, PerButton } from "../../compenents";
+import { MemberCreate } from "./compenents/create";
+import { MemberUpdate } from "./compenents/update";
 const { confirm } = Modal;
 
 interface DataType {
@@ -35,6 +37,9 @@ export const MemberPage: React.FC = () => {
   const [id_card, setIdCard] = useState<string>("");
   const [dep_ids, setDepIds] = useState<any>([]);
   const [selLabel, setLabel] = useState<string>("全部部门");
+  const [createVisible, setCreateVisible] = useState<boolean>(false);
+  const [updateVisible, setUpdateVisible] = useState<boolean>(false);
+  const [mid, setMid] = useState<number>(0);
 
   const columns: ColumnsType<DataType> = [
     {
@@ -78,7 +83,10 @@ export const MemberPage: React.FC = () => {
             class="b-link c-red"
             icon={null}
             p="user-update"
-            onClick={() => navigate(`/member/update/${record.id}`)}
+            onClick={() => {
+              setMid(Number(record.id));
+              setUpdateVisible(true);
+            }}
             disabled={null}
           />
           <div className="form-column"></div>
@@ -192,17 +200,15 @@ export const MemberPage: React.FC = () => {
           <div className="playedu-main-title float-left mb-24">{selLabel}</div>
           <div className="float-left j-b-flex mb-24">
             <div className="d-flex">
-              <Link style={{ textDecoration: "none" }} to={`/member/create`}>
-                <PerButton
-                  type="primary"
-                  text="添加学员"
-                  class="mr-16"
-                  icon={<PlusOutlined />}
-                  p="user-store"
-                  onClick={() => null}
-                  disabled={null}
-                />
-              </Link>
+              <PerButton
+                type="primary"
+                text="添加学员"
+                class="mr-16"
+                icon={<PlusOutlined />}
+                p="user-store"
+                onClick={() => setCreateVisible(true)}
+                disabled={null}
+              />
               <Link style={{ textDecoration: "none" }} to={`/member/import`}>
                 <PerButton
                   type="primary"
@@ -273,6 +279,21 @@ export const MemberPage: React.FC = () => {
               loading={loading}
               pagination={paginationProps}
               rowKey={(record) => record.id}
+            />
+            <MemberCreate
+              open={createVisible}
+              onCancel={() => {
+                setCreateVisible(false);
+                setRefresh(!refresh);
+              }}
+            />
+            <MemberUpdate
+              id={mid}
+              open={updateVisible}
+              onCancel={() => {
+                setUpdateVisible(false);
+                setRefresh(!refresh);
+              }}
             />
           </div>
         </div>

@@ -7,8 +7,6 @@ export * from "./course/index";
 export * from "./course/create";
 export * from "./course/update";
 export * from "./member/index";
-export * from "./member/create";
-export * from "./member/update";
 export * from "./member/import";
 export * from "./system/index";
 export * from "./system/administrator/index";

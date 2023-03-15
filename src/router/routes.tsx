@@ -9,8 +9,6 @@ import {
   CourseUpdatePage,
   TestPage,
   MemberPage,
-  MemberCreatePage,
-  MemberUpdatePage,
   MemberImportPage,
   SystemAdministratorPage,
   SystemAdminrolesPage,
@@ -63,14 +61,6 @@ const routes: RouteObject[] = [
       {
         path: "/member",
         element: <MemberPage />,
-      },
-      {
-        path: "/member/create",
-        element: <MemberCreatePage />,
-      },
-      {
-        path: "/member/update/:memberId",
-        element: <MemberUpdatePage />,
       },
       {
         path: "/member/import",
