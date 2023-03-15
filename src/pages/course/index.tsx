@@ -45,6 +45,7 @@ export const CoursePage = () => {
   const [dep_ids, setDepIds] = useState<any>([]);
   const [selLabel, setLabel] = useState<string>("全部课程");
   const [categoryCount, setCategoryCount] = useState<any>({});
+  const [pureTotal, setPureTotal] = useState(0);
 
   const items: TabsProps["items"] = [
     {
@@ -53,6 +54,7 @@ export const CoursePage = () => {
       children: (
         <div className="float-left">
           <TreeCategory
+            resourceTotal={pureTotal}
             text={"课程"}
             categoryCount={categoryCount}
             onUpdate={(keys: any, title: any) => {
@@ -179,6 +181,7 @@ export const CoursePage = () => {
         setTotal(res.data.total);
         setList(res.data.data);
         setCategoryCount(res.data.category_count);
+        setPureTotal(res.data.pure_total);
         setLoading(false);
       })
       .catch((err: any) => {
