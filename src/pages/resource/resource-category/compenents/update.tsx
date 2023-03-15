@@ -136,6 +136,7 @@ export const ResourceCategoryUpdate: React.FC<PropInterface> = ({
         width={416}
         onOk={() => form.submit()}
         onCancel={() => onCancel()}
+        maskClosable={false}
       >
         <div className="float-left mt-24">
           <Form

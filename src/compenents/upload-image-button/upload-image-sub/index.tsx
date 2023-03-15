@@ -63,6 +63,7 @@ export const UploadImageSub = (props: PropsInterface) => {
             props.onUpdate();
             setShowModal(false);
           }}
+          maskClosable={false}
         >
           <Dragger {...uploadProps}>
             <p className="ant-upload-drag-icon">

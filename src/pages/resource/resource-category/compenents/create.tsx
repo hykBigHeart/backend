@@ -100,6 +100,7 @@ export const ResourceCategoryCreate: React.FC<PropInterface> = ({
         title="新建分类"
         centered
         forceRender
+        maskClosable={false}
         open={open}
         width={416}
         onOk={() => form.submit()}
