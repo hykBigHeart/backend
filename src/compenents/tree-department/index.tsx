@@ -89,7 +89,12 @@ export const TreeDepartment = (props: PropInterface) => {
       >
         全部{props.text}
       </div>
-      <Tree onSelect={onSelect} onExpand={onExpand} treeData={treeData} />
+      <Tree
+        selectedKeys={selectKey}
+        onSelect={onSelect}
+        onExpand={onExpand}
+        treeData={treeData}
+      />
     </div>
   );
 };

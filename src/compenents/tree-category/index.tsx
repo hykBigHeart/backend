@@ -20,14 +20,12 @@ export const TreeCategory = (props: PropInterface) => {
   const [selectKey, setSelectKey] = useState<any>([]);
 
   useEffect(() => {
-    setLoading(true);
     resourceCategory.resourceCategoryList().then((res: any) => {
       const categories = res.data.categories;
       if (JSON.stringify(categories) !== "{}") {
         const new_arr: Option[] = checkArr(categories, 0);
         setTreeData(new_arr);
       }
-      setLoading(false);
     });
   }, [props.categoryCount]);
 
@@ -93,14 +91,21 @@ export const TreeCategory = (props: PropInterface) => {
             ? "mb-8 category-label active"
             : "mb-8 category-label"
         }
-        onClick={() => onSelect([], "")}
+        onClick={() => {
+          onSelect([], "");
+        }}
       >
         全部{props.text}
         {JSON.stringify(props.categoryCount) !== "{}" && (
           <span className="tree-num">({props.categoryCount["0"]})</span>
         )}
       </div>
-      <Tree onSelect={onSelect} onExpand={onExpand} treeData={treeData} />
+      <Tree
+        onSelect={onSelect}
+        selectedKeys={selectKey}
+        onExpand={onExpand}
+        treeData={treeData}
+      />
     </div>
   );
 };

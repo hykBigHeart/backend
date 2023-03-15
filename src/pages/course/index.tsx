@@ -43,7 +43,7 @@ export const CoursePage = () => {
   const [category_ids, setCategoryIds] = useState<any>([]);
   const [title, setTitle] = useState<string>("");
   const [dep_ids, setDepIds] = useState<any>([]);
-  const [selLabel, setLabel] = useState<string>("全部视频");
+  const [selLabel, setLabel] = useState<string>("全部课程");
   const [categoryCount, setCategoryCount] = useState<any>({});
 
   const items: TabsProps["items"] = [

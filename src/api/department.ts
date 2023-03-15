@@ -50,3 +50,7 @@ export function dropDiffClass(id: number, parent_id: number, ids: number[]) {
     ids: ids,
   });
 }
+
+export function checkDestroy(id: number) {
+  return client.get(`/backend/v1/department/${id}/destroy`, {});
+}
