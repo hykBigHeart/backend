@@ -37,8 +37,8 @@ export const DepartmentPage: React.FC = () => {
 
   const onSelect = (selectedKeys: any, info: any) => {
     setSelectKey(selectedKeys);
-    console.log(selectedKeys);
   };
+
 
   const through = (p: string) => {
     if (!permisssions) {

@@ -68,6 +68,15 @@ export const TreeDepartment = (props: PropInterface) => {
     setSelectKey(selectedKeys);
   };
 
+  const onExpand = (selectedKeys: any, info: any) => {
+    let label = "全部" + props.text;
+    if (info) {
+      label = info.node.title;
+    }
+    props.onUpdate(selectedKeys, label);
+    setSelectKey(selectedKeys);
+  };
+
   return (
     <div>
       <div
@@ -80,7 +89,7 @@ export const TreeDepartment = (props: PropInterface) => {
       >
         全部{props.text}
       </div>
-      <Tree onSelect={onSelect} treeData={treeData} />
+      <Tree onSelect={onSelect} onExpand={onExpand} treeData={treeData} />
     </div>
   );
 };
