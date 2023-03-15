@@ -69,7 +69,7 @@ export const ResourceCategoryPage: React.FC = () => {
           title: (
             <div className="d-flex">
               <div className="w-250px mr-24">{categories[id][i].name}</div>
-              <Tooltip placement="top" title="可拖拽和点击">
+              <Tooltip placement="top" title="可拖拽排序">
                 <i
                   className="iconfont icon-icon-drag mr-16"
                   style={{ fontSize: 24 }}
@@ -102,7 +102,7 @@ export const ResourceCategoryPage: React.FC = () => {
           title: (
             <div className="d-flex">
               <div className="w-250px mr-24">{categories[id][i].name}</div>
-              <Tooltip placement="top" title="可拖拽和点击">
+              <Tooltip placement="top" title="可拖拽排序">
                 <i
                   className="iconfont icon-icon-drag mr-16"
                   style={{ fontSize: 24 }}

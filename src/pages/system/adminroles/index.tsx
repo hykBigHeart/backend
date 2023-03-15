@@ -97,7 +97,6 @@ export const SystemAdminrolesPage: React.FC = () => {
       content: "确认删除此角色？",
       centered: true,
       okText: "确认",
-      okType: "danger",
       cancelText: "取消",
       onOk() {
         adminRole.destroyAdminRole(id).then((res: any) => {

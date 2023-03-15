@@ -149,7 +149,6 @@ export const CoursePage = () => {
       content: "确认删除此课程？",
       centered: true,
       okText: "确认",
-      okType: "danger",
       cancelText: "取消",
       onOk() {
         course.destroyCourse(id).then(() => {

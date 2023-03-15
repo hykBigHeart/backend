@@ -162,7 +162,6 @@ export const MemberPage: React.FC = () => {
       content: "确认删除此视频？",
       centered: true,
       okText: "确认",
-      okType: "danger",
       cancelText: "取消",
       onOk() {
         user.destroyUser(id).then((res: any) => {

@@ -72,7 +72,7 @@ export const DepartmentPage: React.FC = () => {
           title: (
             <div className="d-flex">
               <div className="w-250px mr-24">{departments[id][i].name}</div>
-              <Tooltip placement="top" title="可拖拽和点击">
+              <Tooltip placement="top" title="可拖拽排序">
                 <i
                   className="iconfont icon-icon-drag mr-16"
                   style={{ fontSize: 24 }}
@@ -105,7 +105,7 @@ export const DepartmentPage: React.FC = () => {
           title: (
             <div className="d-flex">
               <div className="w-250px mr-24">{departments[id][i].name}</div>
-              <Tooltip placement="top" title="可拖拽和点击">
+              <Tooltip placement="top" title="可拖拽排序">
                 <i
                   className="iconfont icon-icon-drag mr-16"
                   style={{ fontSize: 24 }}
@@ -154,7 +154,6 @@ export const DepartmentPage: React.FC = () => {
       content: "确认删除此部门？",
       centered: true,
       okText: "确认",
-      okType: "danger",
       cancelText: "取消",
       onOk() {
         department.destroyDepartment(id).then((res: any) => {
