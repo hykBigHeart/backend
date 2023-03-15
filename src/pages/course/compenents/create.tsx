@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   Space,
-  Switch,
+  Radio,
   Button,
   Drawer,
   Form,
@@ -30,6 +30,8 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
   const [departments, setDepartments] = useState<any>([]);
   const [categories, setCategories] = useState<any>([]);
   const [thumb, setThumb] = useState<string>("");
+  const [type, setType] = useState<string>("open");
+  const [chapterType, setChapterType] = useState(0);
 
   useEffect(() => {
     getParams();
@@ -42,6 +44,9 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
       thumb: "",
       dep_ids: [],
       category_ids: [],
+      type: "open",
+      desc: "",
+      hasChapter: 0,
     });
     setThumb("");
   }, [form, open]);
@@ -109,6 +114,14 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
     console.log("Failed:", errorInfo);
   };
 
+  const getType = (e: any) => {
+    setType(e.target.value);
+  };
+
+  const getChapterType = (e: any) => {
+    setChapterType(e.target.value);
+  };
+
   return (
     <>
       <Drawer
@@ -162,9 +175,24 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
               />
             </Form.Item>
             <Form.Item
+              label="课程类型"
+              name="type"
+              rules={[{ required: true, message: "请选择课程类型!" }]}
+            >
+              <Radio.Group onChange={getType}>
+                <Radio value="open">公开课</Radio>
+                <Radio value="elective">部门课</Radio>
+              </Radio.Group>
+            </Form.Item>
+            <Form.Item
               label="指派部门"
               name="dep_ids"
-              rules={[{ required: true, message: "请选择课程指派部门!" }]}
+              rules={[
+                {
+                  required: type === "elective" ? true : false,
+                  message: "请选择课程指派部门!",
+                },
+              ]}
             >
               <Cascader
                 style={{ width: 424 }}
@@ -193,6 +221,32 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
                 )}
               </div>
             </Form.Item>
+            <Form.Item label="课程简介" name="desc">
+              <Input.TextArea
+                style={{ width: 424, height: 80 }}
+                allowClear
+                placeholder="请输入课程简介"
+              />
+            </Form.Item>
+            <Form.Item
+              label="课时列表"
+              name="hasChapter"
+              rules={[{ required: true, message: "请选择课时列表!" }]}
+            >
+              <Radio.Group onChange={getChapterType}>
+                <Radio value={0}>无章节</Radio>
+                <Radio value={1}>有章节</Radio>
+              </Radio.Group>
+            </Form.Item>
+            {chapterType === 0 && (
+              <Form.Item>
+                <div className="ml-120">
+                  <Button onClick={() => null} type="primary">
+                    添加课时
+                  </Button>
+                </div>
+              </Form.Item>
+            )}
           </Form>
         </div>
       </Drawer>
