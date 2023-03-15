@@ -18,6 +18,7 @@ import { dateFormat } from "../../utils/index";
 import { Link, useNavigate } from "react-router-dom";
 import { TreeDepartment, TreeCategory, PerButton } from "../../compenents";
 import type { TabsProps } from "antd";
+import { CourseCreate } from "./compenents/create";
 
 const { confirm } = Modal;
 
@@ -45,6 +46,10 @@ export const CoursePage = () => {
   const [categoryCount, setCategoryCount] = useState<any>({});
   const [tabKey, setTabKey] = useState(1);
   const [pureTotal, setPureTotal] = useState(0);
+
+  const [createVisible, setCreateVisible] = useState<boolean>(false);
+  const [updateVisible, setUpdateVisible] = useState<boolean>(false);
+  const [cid, setCid] = useState<number>(0);
 
   const items: TabsProps["items"] = [
     {
@@ -234,17 +239,15 @@ export const CoursePage = () => {
           <div className="playedu-main-title float-left mb-24">{selLabel}</div>
           <div className="float-left j-b-flex mb-24">
             <div className="d-flex">
-              <Link style={{ textDecoration: "none" }} to={`/course/create`}>
-                <PerButton
-                  type="primary"
-                  text="新建课程"
-                  class="mr-16"
-                  icon={<PlusOutlined />}
-                  p="course"
-                  onClick={() => null}
-                  disabled={null}
-                />
-              </Link>
+              <PerButton
+                type="primary"
+                text="新建课程"
+                class="mr-16"
+                icon={<PlusOutlined />}
+                p="course"
+                onClick={() => setCreateVisible(true)}
+                disabled={null}
+              />
             </div>
             <div className="d-flex">
               <div className="d-flex mr-24">
@@ -281,6 +284,13 @@ export const CoursePage = () => {
               loading={loading}
               pagination={paginationProps}
               rowKey={(record) => record.id}
+            />
+            <CourseCreate
+              open={createVisible}
+              onCancel={() => {
+                setCreateVisible(false);
+                setRefresh(!refresh);
+              }}
             />
           </div>
         </div>
