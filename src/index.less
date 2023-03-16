@@ -148,6 +148,12 @@ code {
   flex-direction: column;
 }
 
+.c-a-flex {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .flex-1 {
   flex: 1;
 }
@@ -499,5 +505,24 @@ textarea.ant-input {
   }
   .ant-tabs-ink-bar {
     height: 3px !important;
+  }
+}
+
+.list-select-column-box {
+  .ant-checkbox-wrapper {
+    margin-inline-start: 0px;
+    height: 38px;
+  }
+
+  .video-title {
+    width: 390px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .video-time {
+    width: 80px;
+    display: flex;
+    flex-direction: row-reverse;
   }
 }

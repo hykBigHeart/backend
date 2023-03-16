@@ -7,3 +7,5 @@ export * from "./back-bar";
 export * from "./permission-button";
 export * from "./tree-category";
 export * from "./duration-text";
+export * from "./upload-video-sub";
+export * from "./select-resource";

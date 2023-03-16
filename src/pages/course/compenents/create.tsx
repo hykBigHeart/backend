@@ -13,7 +13,7 @@ import {
 } from "antd";
 import styles from "./create.module.less";
 import { course, department } from "../../../api/index";
-import { UploadImageButton } from "../../../compenents";
+import { UploadImageButton, SelectResource } from "../../../compenents";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import { getHost } from "../../../utils/index";
 
@@ -41,6 +41,9 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
   const [thumb, setThumb] = useState<string>("");
   const [type, setType] = useState<string>("open");
   const [chapterType, setChapterType] = useState(0);
+  const [chapters, setChapters] = useState<any>([]);
+  const [hours, setHours] = useState<any>([]);
+  const [videoVisible, setVideoVisible] = useState<boolean>(false);
 
   useEffect(() => {
     getParams();
@@ -58,6 +61,8 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
       hasChapter: 0,
     });
     setThumb(defaultThumb1);
+    setChapters([]);
+    setHours([]);
   }, [form, open]);
 
   const getParams = () => {
@@ -137,6 +142,8 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
       cancelText: "取消",
       onOk() {
         setChapterType(e.target.value);
+        setChapters([]);
+        setHours([]);
       },
       onCancel() {
         form.setFieldsValue({
@@ -164,6 +171,16 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
         width={634}
       >
         <div className="float-left mt-24">
+          <SelectResource
+            open={videoVisible}
+            onCancel={() => {
+              setVideoVisible(false);
+            }}
+            onSelected={(arr: any, label: any) => {
+              console.log("sel", arr, label);
+              setVideoVisible(false);
+            }}
+          />
           <Form
             form={form}
             name="basic"
@@ -336,13 +353,24 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
               </Radio.Group>
             </Form.Item>
             {chapterType === 0 && (
-              <Form.Item>
-                <div className="ml-120">
-                  <Button onClick={() => null} type="primary">
-                    添加课时
-                  </Button>
+              <div className="c-flex">
+                <Form.Item>
+                  <div className="ml-120">
+                    <Button
+                      onClick={() => setVideoVisible(true)}
+                      type="primary"
+                    >
+                      添加课时
+                    </Button>
+                  </div>
+                </Form.Item>
+                <div className={styles["hous-box"]}>
+                  {hours.length === 0 && (
+                    <span className={styles["no-hours"]}>请添加课时内容</span>
+                  )}
+                  {hours.length > 0 && 13}
                 </div>
-              </Form.Item>
+              </div>
             )}
           </Form>
         </div>
