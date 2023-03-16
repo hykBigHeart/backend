@@ -41,7 +41,6 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
   const [thumb, setThumb] = useState<string>("");
   const [type, setType] = useState<string>("open");
   const [chapterType, setChapterType] = useState(0);
-  const [selThumb, setSelThumb] = useState(1);
 
   useEffect(() => {
     getParams();
@@ -154,7 +153,6 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
         onClose={onCancel}
         maskClosable={false}
         open={open}
-        bodyStyle={{ paddingBottom: 80 }}
         footer={
           <Space className="j-r-flex">
             <Button onClick={() => onCancel()}>取 消</Button>
@@ -244,12 +242,11 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
                   <div className="d-flex mb-28">
                     <div
                       className={
-                        selThumb === 1
+                        thumb === defaultThumb1
                           ? styles["thumb-item-avtive"]
                           : styles["thumb-item"]
                       }
                       onClick={() => {
-                        setSelThumb(1);
                         setThumb(defaultThumb1);
                         form.setFieldsValue({
                           thumb: defaultThumb1,
@@ -266,12 +263,11 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
                     </div>
                     <div
                       className={
-                        selThumb === 2
+                        thumb === defaultThumb2
                           ? styles["thumb-item-avtive"]
                           : styles["thumb-item"]
                       }
                       onClick={() => {
-                        setSelThumb(2);
                         setThumb(defaultThumb2);
                         form.setFieldsValue({
                           thumb: defaultThumb2,
@@ -288,12 +284,11 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
                     </div>
                     <div
                       className={
-                        selThumb === 3
+                        thumb === defaultThumb3
                           ? styles["thumb-item-avtive"]
                           : styles["thumb-item"]
                       }
                       onClick={() => {
-                        setSelThumb(3);
                         setThumb(defaultThumb3);
                         form.setFieldsValue({
                           thumb: defaultThumb3,
