@@ -9,11 +9,13 @@ import {
   Input,
   Modal,
   message,
+  Image,
 } from "antd";
 import styles from "./create.module.less";
 import { course, department } from "../../../api/index";
 import { UploadImageButton } from "../../../compenents";
 import { ExclamationCircleFilled } from "@ant-design/icons";
+import { getHost } from "../../../utils/index";
 
 const { confirm } = Modal;
 
@@ -30,12 +32,16 @@ interface Option {
 
 export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
   const [form] = Form.useForm();
+  const defaultThumb1 = getHost() + "thumb/thumb1.png";
+  const defaultThumb2 = getHost() + "thumb/thumb2.png";
+  const defaultThumb3 = getHost() + "thumb/thumb3.png";
   const [loading, setLoading] = useState<boolean>(true);
   const [departments, setDepartments] = useState<any>([]);
   const [categories, setCategories] = useState<any>([]);
   const [thumb, setThumb] = useState<string>("");
   const [type, setType] = useState<string>("open");
   const [chapterType, setChapterType] = useState(0);
+  const [selThumb, setSelThumb] = useState(1);
 
   useEffect(() => {
     getParams();
@@ -45,14 +51,14 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
   useEffect(() => {
     form.setFieldsValue({
       title: "",
-      thumb: "",
+      thumb: defaultThumb1,
       dep_ids: [],
       category_ids: [],
       type: "open",
       desc: "",
       hasChapter: 0,
     });
-    setThumb("");
+    setThumb(defaultThumb1);
   }, [form, open]);
 
   const getParams = () => {
@@ -226,18 +232,95 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
               name="thumb"
               rules={[{ required: true, message: "请上传课程封面!" }]}
             >
-              <div className="c-flex">
-                <div className="d-flex">
-                  <UploadImageButton
-                    onSelected={(url) => {
-                      setThumb(url);
-                      form.setFieldsValue({ thumb: url });
-                    }}
-                  ></UploadImageButton>
+              <div className="d-flex">
+                <Image
+                  src={thumb}
+                  width={160}
+                  height={120}
+                  style={{ borderRadius: 6 }}
+                  preview={false}
+                />
+                <div className="c-flex ml-8 flex-1">
+                  <div className="d-flex mb-28">
+                    <div
+                      className={
+                        selThumb === 1
+                          ? styles["thumb-item-avtive"]
+                          : styles["thumb-item"]
+                      }
+                      onClick={() => {
+                        setSelThumb(1);
+                        setThumb(defaultThumb1);
+                        form.setFieldsValue({
+                          thumb: defaultThumb1,
+                        });
+                      }}
+                    >
+                      <Image
+                        src={defaultThumb1}
+                        width={80}
+                        height={60}
+                        style={{ borderRadius: 6 }}
+                        preview={false}
+                      />
+                    </div>
+                    <div
+                      className={
+                        selThumb === 2
+                          ? styles["thumb-item-avtive"]
+                          : styles["thumb-item"]
+                      }
+                      onClick={() => {
+                        setSelThumb(2);
+                        setThumb(defaultThumb2);
+                        form.setFieldsValue({
+                          thumb: defaultThumb2,
+                        });
+                      }}
+                    >
+                      <Image
+                        src={defaultThumb2}
+                        width={80}
+                        height={60}
+                        style={{ borderRadius: 6 }}
+                        preview={false}
+                      />
+                    </div>
+                    <div
+                      className={
+                        selThumb === 3
+                          ? styles["thumb-item-avtive"]
+                          : styles["thumb-item"]
+                      }
+                      onClick={() => {
+                        setSelThumb(3);
+                        setThumb(defaultThumb3);
+                        form.setFieldsValue({
+                          thumb: defaultThumb3,
+                        });
+                      }}
+                    >
+                      <Image
+                        src={defaultThumb3}
+                        width={80}
+                        height={60}
+                        style={{ borderRadius: 6 }}
+                        preview={false}
+                      />
+                    </div>
+                  </div>
+                  <div className="d-flex">
+                    <UploadImageButton
+                      onSelected={(url) => {
+                        setThumb(url);
+                        form.setFieldsValue({ thumb: url });
+                      }}
+                    ></UploadImageButton>
+                    <span className="helper-text ml-16">
+                      （推荐尺寸:400x300px）
+                    </span>
+                  </div>
                 </div>
-                {thumb && (
-                  <img className="form-course-thumb mt-10" src={thumb} alt="" />
-                )}
               </div>
             </Form.Item>
             <Form.Item label="课程简介" name="desc">
