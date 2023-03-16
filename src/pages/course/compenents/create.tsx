@@ -7,11 +7,15 @@ import {
   Form,
   Cascader,
   Input,
+  Modal,
   message,
 } from "antd";
 import styles from "./create.module.less";
 import { course, department } from "../../../api/index";
 import { UploadImageButton } from "../../../compenents";
+import { ExclamationCircleFilled } from "@ant-design/icons";
+
+const { confirm } = Modal;
 
 interface PropInterface {
   open: boolean;
@@ -119,7 +123,22 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
   };
 
   const getChapterType = (e: any) => {
-    setChapterType(e.target.value);
+    confirm({
+      title: "操作确认",
+      icon: <ExclamationCircleFilled />,
+      content: "切换列表选项会清空已添加课时，确认切换？",
+      centered: true,
+      okText: "确认",
+      cancelText: "取消",
+      onOk() {
+        setChapterType(e.target.value);
+      },
+      onCancel() {
+        form.setFieldsValue({
+          hasChapter: chapterType,
+        });
+      },
+    });
   };
 
   return (
