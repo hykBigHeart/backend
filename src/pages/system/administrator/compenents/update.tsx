@@ -23,12 +23,6 @@ export const SystemAdministratorUpdate: React.FC<PropInterface> = ({
   }, []);
 
   useEffect(() => {
-    form.setFieldsValue({
-      is_ban_login: 0,
-    });
-  }, [form, open]);
-
-  useEffect(() => {
     if (id === 0) {
       return;
     }
