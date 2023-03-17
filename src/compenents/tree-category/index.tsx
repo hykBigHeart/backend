@@ -25,6 +25,15 @@ export const TreeCategory = (props: PropInterface) => {
       const categories = res.data.categories;
       if (JSON.stringify(categories) !== "{}") {
         const new_arr: Option[] = checkArr(categories, 0);
+        new_arr.unshift({
+          key: 0,
+          title: (
+            <div className="d-flex">
+              未分类
+              <span className="tree-num">({props.categoryCount[0] || 0})</span>
+            </div>
+          ),
+        });
         setTreeData(new_arr);
       }
     });
