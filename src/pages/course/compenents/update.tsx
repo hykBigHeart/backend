@@ -110,7 +110,7 @@ export const CourseUpdate: React.FC<PropInterface> = ({
       }
       let box2 = res.data.category_ids;
       let categoryIds: any[] = [];
-      if (box2.length > 1) {
+      if (box2.length > 0) {
         for (let i = 0; i < box2.length; i++) {
           let item = checkChild(cats, box2[i]);
           let arr: any[] = [];
@@ -222,14 +222,17 @@ export const CourseUpdate: React.FC<PropInterface> = ({
         dep_ids.push(values.dep_ids[i][values.dep_ids[i].length - 1]);
       }
     }
+
     let category_ids: any[] = [];
     for (let j = 0; j < values.category_ids.length; j++) {
       category_ids.push(
         values.category_ids[j][values.category_ids[j].length - 1]
       );
     }
+
     course
-      .storeCourse(
+      .updateCourse(
+        id,
         values.title,
         values.thumb,
         1,
