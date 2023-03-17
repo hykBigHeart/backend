@@ -190,6 +190,20 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
     }
   };
 
+  const transHour = (arr: any) => {
+    setHours(arr);
+    const data = [...treeData];
+    const newArr: any = [];
+    for (let i = 0; i < arr.length; i++) {
+      data.map((item: any) => {
+        if (item.rid === arr[i]) {
+          newArr.push(item);
+        }
+      });
+    }
+    setTreeData(newArr);
+  };
+
   return (
     <>
       <Drawer
@@ -414,6 +428,9 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
                       data={treeData}
                       onRemoveItem={(id: number) => {
                         delHour(id);
+                      }}
+                      onUpdate={(arr: any[]) => {
+                        transHour(arr);
                       }}
                     />
                   )}
