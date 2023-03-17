@@ -20,7 +20,7 @@ interface PropsInterface {
   defaultCheckedList: any[];
   label: string;
   open: boolean;
-  onSelected: (arr: any[], label: any) => void;
+  onSelected: (arr: any[], videos: []) => void;
 }
 
 export const UploadVideoSub = (props: PropsInterface) => {
@@ -36,9 +36,7 @@ export const UploadVideoSub = (props: PropsInterface) => {
   const [categoryCount, setCategoryCount] = useState<any>({});
 
   const [plainOptions, setPlainOptions] = useState<any>([]);
-  const [checkedList, setCheckedList] = useState<CheckboxValueType[]>(
-    props.defaultCheckedList
-  );
+  const [checkedList, setCheckedList] = useState<CheckboxValueType[]>([]);
   const [indeterminate, setIndeterminate] = useState(false);
   const [checkAll, setCheckAll] = useState(false);
 
@@ -89,6 +87,10 @@ export const UploadVideoSub = (props: PropsInterface) => {
     setVideoList([]);
     setRefresh(!refresh);
   };
+  //重置选中的key
+  useEffect(() => {
+    setCheckedList(props.defaultCheckedList);
+  }, [props.defaultCheckedList]);
 
   // 加载列表
   useEffect(() => {
@@ -99,16 +101,21 @@ export const UploadVideoSub = (props: PropsInterface) => {
     setCheckedList(list);
     setIndeterminate(!!list.length && list.length < plainOptions.length);
     setCheckAll(list.length === plainOptions.length);
-    let arrLabel: any = [];
+    let arrVideos: any = [];
     for (let i = 0; i < list.length; i++) {
       videoList.map((item: any) => {
         if (item.id === list[i]) {
-          arrLabel.push(item.name);
+          arrVideos.push({
+            name: item.name,
+            type: item.type,
+            rid: item.id,
+            duration: videosExtra[item.id].duration,
+          });
         }
       });
     }
 
-    props.onSelected(list, arrLabel);
+    props.onSelected(list, arrVideos);
   };
 
   const onCheckAllChange = (e: CheckboxChangeEvent) => {
@@ -116,9 +123,17 @@ export const UploadVideoSub = (props: PropsInterface) => {
     setCheckedList(e.target.checked ? arr : []);
     setIndeterminate(false);
     setCheckAll(e.target.checked);
-    const arrLabel = videoList.map((item: any) => item.name);
+    let arrVideos: any = [];
+    videoList.map((item: any) => {
+      arrVideos.push({
+        name: item.name,
+        type: item.type,
+        rid: item.id,
+        duration: videosExtra[item.id].duration,
+      });
+    });
     if (e.target.checked) {
-      props.onSelected(arr, arrLabel);
+      props.onSelected(arr, arrVideos);
     } else {
       props.onSelected([], []);
     }

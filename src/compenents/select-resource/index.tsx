@@ -12,8 +12,9 @@ interface VideoItem {
 }
 
 interface PropsInterface {
+  defaultKeys: any[];
   open: boolean;
-  onSelected: (arr: any[], label: any[]) => void;
+  onSelected: (arr: any[], videos: any[]) => void;
   onCancel: () => void;
 }
 
@@ -21,7 +22,7 @@ export const SelectResource = (props: PropsInterface) => {
   const [refresh, setRefresh] = useState(true);
   const [tabKey, setTabKey] = useState(1);
   const [selectKeys, setSelectKeys] = useState<any>([]);
-  const [selectLabel, setSelectLabel] = useState<any>([]);
+  const [selectVideos, setSelectVideos] = useState<any>([]);
 
   const items: TabsProps["items"] = [
     {
@@ -31,11 +32,11 @@ export const SelectResource = (props: PropsInterface) => {
         <div className="float-left">
           <UploadVideoSub
             label="视频"
-            defaultCheckedList={[]}
+            defaultCheckedList={props.defaultKeys}
             open={refresh}
-            onSelected={(arr: any[], label: any[]) => {
+            onSelected={(arr: any[], videos: any[]) => {
               setSelectKeys(arr);
-              setSelectLabel(label);
+              setSelectVideos(videos);
             }}
           />
         </div>
@@ -60,7 +61,7 @@ export const SelectResource = (props: PropsInterface) => {
         open={props.open}
         width={800}
         maskClosable={false}
-        onOk={() => props.onSelected(selectKeys, selectLabel)}
+        onOk={() => props.onSelected(selectKeys, selectVideos)}
       >
         <Row>
           <Tabs defaultActiveKey="1" items={items} onChange={onChange} />

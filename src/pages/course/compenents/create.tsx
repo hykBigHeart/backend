@@ -16,6 +16,7 @@ import { course, department } from "../../../api/index";
 import { UploadImageButton, SelectResource } from "../../../compenents";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import { getHost } from "../../../utils/index";
+import { TreeHours } from "./hours";
 
 const { confirm } = Modal;
 
@@ -44,6 +45,7 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
   const [chapters, setChapters] = useState<any>([]);
   const [hours, setHours] = useState<any>([]);
   const [videoVisible, setVideoVisible] = useState<boolean>(false);
+  const [treeData, setTreeData] = useState<any>([]);
 
   useEffect(() => {
     getParams();
@@ -61,8 +63,10 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
       hasChapter: 0,
     });
     setThumb(defaultThumb1);
+    setChapterType(0);
     setChapters([]);
     setHours([]);
+    setTreeData([]);
   }, [form, open]);
 
   const getParams = () => {
@@ -107,8 +111,10 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
 
   const onFinish = (values: any) => {
     let dep_ids: any[] = [];
-    for (let i = 0; i < values.dep_ids.length; i++) {
-      dep_ids.push(values.dep_ids[i][values.dep_ids[i].length - 1]);
+    if (type === "elective") {
+      for (let i = 0; i < values.dep_ids.length; i++) {
+        dep_ids.push(values.dep_ids[i][values.dep_ids[i].length - 1]);
+      }
     }
     let category_ids: any[] = [];
     for (let j = 0; j < values.category_ids.length; j++) {
@@ -117,7 +123,15 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
       );
     }
     course
-      .storeCourse(values.title, values.thumb, 1, dep_ids, category_ids, [], [])
+      .storeCourse(
+        values.title,
+        values.thumb,
+        1,
+        dep_ids,
+        category_ids,
+        chapters,
+        treeData
+      )
       .then((res: any) => {
         message.success("保存成功！");
         onCancel();
@@ -130,6 +144,12 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
 
   const getType = (e: any) => {
     setType(e.target.value);
+  };
+
+  const selectData = (arr: any, videos: any) => {
+    setHours(arr);
+    setTreeData(videos);
+    setVideoVisible(false);
   };
 
   const getChapterType = (e: any) => {
@@ -153,6 +173,22 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
     });
   };
 
+  const delHour = (id: number) => {
+    const data = [...treeData];
+    const index = data.findIndex((i: any) => i.id === id);
+    if (index >= 0) {
+      data.splice(index, 1);
+    }
+    if (data.length > 0) {
+      setTreeData(data);
+      const keys = data.map((item: any) => item.rid);
+      setHours(keys);
+    } else {
+      setTreeData([]);
+      setHours([]);
+    }
+  };
+
   return (
     <>
       <Drawer
@@ -172,13 +208,13 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
       >
         <div className="float-left mt-24">
           <SelectResource
+            defaultKeys={hours}
             open={videoVisible}
             onCancel={() => {
               setVideoVisible(false);
             }}
-            onSelected={(arr: any, label: any) => {
-              console.log("sel", arr, label);
-              setVideoVisible(false);
+            onSelected={(arr: any, videos: any) => {
+              selectData(arr, videos);
             }}
           />
           <Form
@@ -224,24 +260,28 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
                 <Radio value="elective">部门课</Radio>
               </Radio.Group>
             </Form.Item>
-            <Form.Item
-              label="指派部门"
-              name="dep_ids"
-              rules={[
-                {
-                  required: type === "elective" ? true : false,
-                  message: "请选择课程指派部门!",
-                },
-              ]}
-            >
-              <Cascader
-                style={{ width: 424 }}
-                options={departments}
-                multiple
-                maxTagCount="responsive"
-                placeholder="请选择课程指派部门"
-              />
-            </Form.Item>
+
+            {type === "elective" && (
+              <Form.Item
+                label="指派部门"
+                name="dep_ids"
+                rules={[
+                  {
+                    required: true,
+                    message: "请选择课程指派部门!",
+                  },
+                ]}
+              >
+                <Cascader
+                  style={{ width: 424 }}
+                  options={departments}
+                  multiple
+                  maxTagCount="responsive"
+                  placeholder="请选择课程指派部门"
+                />
+              </Form.Item>
+            )}
+
             <Form.Item
               label="课程封面"
               name="thumb"
@@ -365,10 +405,17 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
                   </div>
                 </Form.Item>
                 <div className={styles["hous-box"]}>
-                  {hours.length === 0 && (
+                  {treeData.length === 0 && (
                     <span className={styles["no-hours"]}>请添加课时内容</span>
                   )}
-                  {hours.length > 0 && 13}
+                  {treeData.length > 0 && (
+                    <TreeHours
+                      data={treeData}
+                      onRemoveItem={(id: number) => {
+                        delHour(id);
+                      }}
+                    />
+                  )}
                 </div>
               </div>
             )}
