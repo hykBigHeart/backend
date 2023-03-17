@@ -44,8 +44,10 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
   const [chapterType, setChapterType] = useState(0);
   const [chapters, setChapters] = useState<any>([]);
   const [hours, setHours] = useState<any>([]);
+  const [chapterHours, setChapterHours] = useState<any>([]);
   const [videoVisible, setVideoVisible] = useState<boolean>(false);
   const [treeData, setTreeData] = useState<any>([]);
+  const [addvideoCurrent, setAddvideoCurrent] = useState(0);
 
   useEffect(() => {
     getParams();
@@ -152,6 +154,16 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
     setVideoVisible(false);
   };
 
+  const selectChapterData = (arr: any, videos: any) => {
+    const data = [...chapters];
+    const keys = [...chapterHours];
+    keys[addvideoCurrent] = arr;
+    data[addvideoCurrent].hours = videos;
+    setChapters(data);
+    setChapterHours(keys);
+    setVideoVisible(false);
+  };
+
   const getChapterType = (e: any) => {
     confirm({
       title: "操作确认",
@@ -164,6 +176,7 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
         setChapterType(e.target.value);
         setChapters([]);
         setHours([]);
+        setChapterHours([]);
         setTreeData([]);
       },
       onCancel() {
@@ -176,7 +189,7 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
 
   const delHour = (id: number) => {
     const data = [...treeData];
-    const index = data.findIndex((i: any) => i.id === id);
+    const index = data.findIndex((i: any) => i.rid === id);
     if (index >= 0) {
       data.splice(index, 1);
     }
@@ -204,6 +217,84 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
     setTreeData(newArr);
   };
 
+  const addNewChapter = () => {
+    const arr = [...chapters];
+    const keys = [...chapterHours];
+    arr.push({
+      name: "",
+      hours: [],
+    });
+    keys.push([]);
+    setChapters(arr);
+    setChapterHours(keys);
+  };
+
+  const setChapterName = (index: number, value: string) => {
+    const arr = [...chapters];
+    arr[index].name = value;
+    setChapters(arr);
+  };
+
+  const delChapter = (index: number) => {
+    const arr = [...chapters];
+    const keys = [...chapterHours];
+    confirm({
+      title: "操作确认",
+      icon: <ExclamationCircleFilled />,
+      content: "删除章节会清空已添加课时，确认删除？",
+      centered: true,
+      okText: "确认",
+      cancelText: "取消",
+      onOk() {
+        arr.splice(index, 1);
+        keys.splice(index, 1);
+        setChapters(arr);
+        setChapterHours(keys);
+      },
+      onCancel() {},
+    });
+  };
+
+  const delChapterHour = (index: number, id: number) => {
+    console.log(index, id);
+    const keys = [...chapterHours];
+    const data = [...chapters];
+    const current = data[index].hours.findIndex((i: any) => i.rid === id);
+    console.log(current);
+
+    if (current >= 0) {
+      data[index].hours.splice(current, 1);
+    }
+    if (data[index].hours.length > 0) {
+      setChapters(data);
+      keys[index] = data[index].hours.map((item: any) => item.rid);
+      setChapterHours(keys);
+    } else {
+      keys[index] = [];
+      data[index].hours = [];
+      setChapters(data);
+      setChapterHours(keys);
+    }
+  };
+
+  const transChapterHour = (index: number, arr: any) => {
+    const keys = [...chapterHours];
+    keys[index] = arr;
+    setChapterHours(keys);
+
+    const data = [...chapters];
+    const newArr: any = [];
+    for (let i = 0; i < arr.length; i++) {
+      data[index].hours.map((item: any) => {
+        if (item.rid === arr[i]) {
+          newArr.push(item);
+        }
+      });
+    }
+    data[index].hours = newArr;
+    setChapters(data);
+  };
+
   return (
     <>
       <Drawer
@@ -223,13 +314,19 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
       >
         <div className="float-left mt-24">
           <SelectResource
-            defaultKeys={hours}
+            defaultKeys={
+              chapterType == 0 ? hours : chapterHours[addvideoCurrent]
+            }
             open={videoVisible}
             onCancel={() => {
               setVideoVisible(false);
             }}
             onSelected={(arr: any, videos: any) => {
-              selectData(arr, videos);
+              if (chapterType == 0) {
+                selectData(arr, videos);
+              } else {
+                selectChapterData(arr, videos);
+              }
             }}
           />
           <Form
@@ -435,6 +532,69 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
                     />
                   )}
                 </div>
+              </div>
+            )}
+            {chapterType === 1 && (
+              <div className="c-flex">
+                {chapters.length > 0 &&
+                  chapters.map((item: any, index: number) => {
+                    return (
+                      <div
+                        key={item.hours.length + "章节" + index}
+                        className={styles["chapter-item"]}
+                      >
+                        <div className="d-flex">
+                          <div className={styles["label"]}>
+                            章节{index + 1}：
+                          </div>
+                          <Input
+                            value={item.name}
+                            className={styles["input"]}
+                            onChange={(e) => {
+                              setChapterName(index, e.target.value);
+                            }}
+                            placeholder="请在此处输入章节名称"
+                          />
+                          <Button
+                            className="mr-16"
+                            type="primary"
+                            onClick={() => {
+                              setVideoVisible(true);
+                              setAddvideoCurrent(index);
+                            }}
+                          >
+                            添加课时
+                          </Button>
+                          <Button onClick={() => delChapter(index)}>
+                            删除章节
+                          </Button>
+                        </div>
+                        <div className={styles["chapter-hous-box"]}>
+                          {item.hours.length === 0 && (
+                            <span className={styles["no-hours"]}>
+                              请添加课时内容
+                            </span>
+                          )}
+                          {item.hours.length > 0 && (
+                            <TreeHours
+                              data={item.hours}
+                              onRemoveItem={(id: number) => {
+                                delChapterHour(index, id);
+                              }}
+                              onUpdate={(arr: any[]) => {
+                                transChapterHour(index, arr);
+                              }}
+                            />
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                <Form.Item>
+                  <div className="ml-120">
+                    <Button onClick={() => addNewChapter()}>添加章节</Button>
+                  </div>
+                </Form.Item>
               </div>
             )}
           </Form>
