@@ -18,12 +18,10 @@ export const TreeHours = (props: PropInterface) => {
   const [loading, setLoading] = useState<boolean>(true);
   useEffect(() => {
     const hours = props.data;
-
     if (hours.length === 0) {
       return;
     }
     checkTree(hours);
-    console.log(hours);
   }, [props.data]);
 
   const checkTree = (hours: any) => {
