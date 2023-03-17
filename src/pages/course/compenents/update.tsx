@@ -11,16 +11,18 @@ import {
   message,
   Image,
 } from "antd";
-import styles from "./create.module.less";
+import styles from "./update.module.less";
 import { course, department } from "../../../api/index";
 import { UploadImageButton, SelectResource } from "../../../compenents";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import { getHost } from "../../../utils/index";
 import { TreeHours } from "./hours";
+import { duration } from "moment";
 
 const { confirm } = Modal;
 
 interface PropInterface {
+  id: number;
   open: boolean;
   onCancel: () => void;
 }
@@ -31,7 +33,11 @@ interface Option {
   children?: Option[];
 }
 
-export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
+export const CourseUpdate: React.FC<PropInterface> = ({
+  id,
+  open,
+  onCancel,
+}) => {
   const [form] = Form.useForm();
   const defaultThumb1 = getHost() + "thumb/thumb1.png";
   const defaultThumb2 = getHost() + "thumb/thumb2.png";
@@ -50,36 +56,11 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
   const [addvideoCurrent, setAddvideoCurrent] = useState(0);
 
   useEffect(() => {
-    getParams();
+    if (id === 0) {
+      return;
+    }
     getCategory();
-  }, []);
-
-  useEffect(() => {
-    form.setFieldsValue({
-      title: "",
-      thumb: defaultThumb1,
-      dep_ids: [],
-      category_ids: [],
-      type: "open",
-      desc: "",
-      hasChapter: 0,
-    });
-    setThumb(defaultThumb1);
-    setChapterType(0);
-    setChapters([]);
-    setHours([]);
-    setTreeData([]);
-  }, [form, open]);
-
-  const getParams = () => {
-    department.departmentList().then((res: any) => {
-      const departments = res.data.departments;
-      if (JSON.stringify(departments) !== "{}") {
-        const new_arr: Option[] = checkArr(departments, 0);
-        setDepartments(new_arr);
-      }
-    });
-  };
+  }, [id]);
 
   const getCategory = () => {
     course.createCourse().then((res: any) => {
@@ -88,7 +69,130 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
         const new_arr: Option[] = checkArr(categories, 0);
         setCategories(new_arr);
       }
+
+      getParams(categories);
     });
+  };
+  const getParams = (cats: any) => {
+    department.departmentList().then((res: any) => {
+      const departments = res.data.departments;
+      if (JSON.stringify(departments) !== "{}") {
+        const new_arr: Option[] = checkArr(departments, 0);
+        setDepartments(new_arr);
+      }
+      getDetail(departments, cats);
+    });
+  };
+
+  const getDetail = (deps: any, cats: any) => {
+    course.course(id).then((res: any) => {
+      let box = res.data.dep_ids;
+      let depIds: any[] = [];
+      if (box.length > 1) {
+        for (let i = 0; i < box.length; i++) {
+          let item = checkChild(deps, box[i]);
+          let arr: any[] = [];
+          if (item === undefined) {
+            arr.push(box[i]);
+          } else if (item.parent_chain === "") {
+            arr.push(box[i]);
+          } else {
+            let new_arr = item.parent_chain.split(",");
+            new_arr.map((num: any) => {
+              arr.push(Number(num));
+            });
+            arr.push(box[i]);
+          }
+          depIds.push(arr);
+        }
+      } else {
+        depIds = res.data.dep_ids;
+      }
+      let box2 = res.data.category_ids;
+      let categoryIds: any[] = [];
+      if (box2.length > 1) {
+        for (let i = 0; i < box2.length; i++) {
+          let item = checkChild(cats, box2[i]);
+          let arr: any[] = [];
+          if (item === undefined) {
+            arr.push(box2[i]);
+          } else if (item.parent_chain === "") {
+            arr.push(box2[i]);
+          } else {
+            let new_arr = item.parent_chain.split(",");
+            new_arr.map((num: any) => {
+              arr.push(Number(num));
+            });
+            arr.push(box2[i]);
+          }
+          categoryIds.push(arr);
+        }
+      } else {
+        categoryIds = res.data.category_ids;
+      }
+      let chapterType = res.data.chapters.length > 0 ? 1 : 0;
+      form.setFieldsValue({
+        title: res.data.course.title,
+        thumb: res.data.course.thumb,
+        dep_ids: depIds,
+        category_ids: categoryIds,
+        type: "open",
+        desc: "",
+        hasChapter: chapterType,
+      });
+      setThumb(res.data.course.thumb);
+      setChapterType(chapterType);
+      if (chapterType === 1) {
+        setTreeData([]);
+        setHours([]);
+        let hours = res.data.hours;
+        let chapters = res.data.chapters;
+        const arr: any = [];
+        const keys: any = [];
+        for (let i = 0; i < chapters.length; i++) {
+          arr.push({
+            name: chapters[i].name,
+            hours: resetHours(hours[chapters[i].id]).arr,
+          });
+          keys.push(resetHours(hours[chapters[i].id]).keys);
+        }
+        setChapters(arr);
+        setChapterHours(keys);
+      } else {
+        setChapters([]);
+        setChapterHours([]);
+        let hours = res.data.hours;
+        const arr: any = resetHours(hours[0]).arr;
+        const keys: any = resetHours(hours[0]).keys;
+        setTreeData(arr);
+        setHours(keys);
+      }
+    });
+  };
+
+  const resetHours = (data: any) => {
+    const arr: any = [];
+    const keys: any = [];
+    for (let i = 0; i < data.length; i++) {
+      arr.push({
+        duration: data[i].duration,
+        type: data[i].type,
+        name: data[i].title,
+        rid: data[i].rid,
+      });
+      keys.push(data[i].rid);
+    }
+    return { arr, keys };
+  };
+
+  const checkChild = (departments: any[], id: number) => {
+    for (let key in departments) {
+      for (let i = 0; i < departments[key].length; i++) {
+        if (departments[key][i].id === id) {
+          return departments[key][i];
+        }
+      }
+    }
   };
 
   const checkArr = (departments: any[], id: number) => {
@@ -295,7 +399,7 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
   return (
     <>
       <Drawer
-        title="新建课程"
+        title="编辑课程"
         onClose={onCancel}
         maskClosable={false}
         open={open}

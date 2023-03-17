@@ -19,6 +19,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { TreeDepartment, TreeCategory, PerButton } from "../../compenents";
 import type { TabsProps } from "antd";
 import { CourseCreate } from "./compenents/create";
+import { CourseUpdate } from "./compenents/update";
 
 const { confirm } = Modal;
 
@@ -58,6 +59,7 @@ export const CoursePage = () => {
       children: (
         <div className="float-left">
           <TreeCategory
+            type=""
             resourceTotal={pureTotal}
             text={"课程"}
             categoryCount={categoryCount}
@@ -132,7 +134,10 @@ export const CoursePage = () => {
             class="b-link c-red"
             icon={null}
             p="course"
-            onClick={() => navigate(`/course/update/${record.id}`)}
+            onClick={() => {
+              setCid(Number(record.id));
+              setUpdateVisible(true);
+            }}
             disabled={null}
           />
           <div className="form-column"></div>
@@ -289,6 +294,14 @@ export const CoursePage = () => {
               open={createVisible}
               onCancel={() => {
                 setCreateVisible(false);
+                setRefresh(!refresh);
+              }}
+            />
+            <CourseUpdate
+              id={cid}
+              open={updateVisible}
+              onCancel={() => {
+                setUpdateVisible(false);
                 setRefresh(!refresh);
               }}
             />

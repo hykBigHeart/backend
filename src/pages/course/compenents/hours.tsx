@@ -38,9 +38,7 @@ export const TreeHours = (props: PropInterface) => {
                   color: "rgba(0,0,0,0.3)",
                 }}
               />
-              <div className="tree-video-title mr-24">
-                {hours[i].name} {hours[i].rid}
-              </div>
+              <div className="tree-video-title mr-24">{hours[i].name}</div>
             </div>
             <Tooltip placement="top" title="可拖拽排序">
               <i

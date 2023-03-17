@@ -149,6 +149,7 @@ export const UploadVideoSub = (props: PropsInterface) => {
       <Row style={{ width: 752, minHeight: 520 }}>
         <Col span={7}>
           <TreeCategory
+            type="no-cate"
             resourceTotal={pureTotal}
             categoryCount={{ categoryCount }}
             text={props.label}

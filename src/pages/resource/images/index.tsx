@@ -154,6 +154,7 @@ export const ResourceImagesPage = () => {
       <div className="tree-main-body">
         <div className="left-box">
           <TreeCategory
+            type="no-cate"
             text={"图片"}
             categoryCount={categoryCount}
             resourceTotal={pureTotal}

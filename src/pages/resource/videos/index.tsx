@@ -169,6 +169,7 @@ export const ResourceVideosPage = () => {
       <div className="tree-main-body">
         <div className="left-box">
           <TreeCategory
+            type="no-cate"
             resourceTotal={pureTotal}
             text={"视频"}
             categoryCount={categoryCount}

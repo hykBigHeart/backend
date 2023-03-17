@@ -98,6 +98,7 @@ export const UploadImageButton = (props: PropsInterface) => {
           <Row gutter={16}>
             <Col span={4}>
               <TreeCategory
+                type="no-cate"
                 resourceTotal={0}
                 categoryCount={{}}
                 text={"图片"}
