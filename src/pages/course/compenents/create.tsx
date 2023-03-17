@@ -164,6 +164,7 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
         setChapterType(e.target.value);
         setChapters([]);
         setHours([]);
+        setTreeData([]);
       },
       onCancel() {
         form.setFieldsValue({

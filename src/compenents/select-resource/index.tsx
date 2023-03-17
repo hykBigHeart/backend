@@ -56,6 +56,7 @@ export const SelectResource = (props: PropsInterface) => {
         closable={false}
         onCancel={() => {
           setSelectKeys([]);
+          setSelectVideos([]);
           props.onCancel();
         }}
         open={props.open}

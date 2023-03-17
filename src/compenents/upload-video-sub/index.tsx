@@ -89,7 +89,12 @@ export const UploadVideoSub = (props: PropsInterface) => {
   };
   //重置选中的key
   useEffect(() => {
-    setCheckedList(props.defaultCheckedList);
+    const arr = [...props.defaultCheckedList];
+    setCheckedList(arr);
+    if (arr.length === 0) {
+      setIndeterminate(false);
+      setCheckAll(false);
+    }
   }, [props.defaultCheckedList]);
 
   // 加载列表
