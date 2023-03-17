@@ -39,7 +39,7 @@ export const UploadVideoSub = (props: PropsInterface) => {
   const [checkedList, setCheckedList] = useState<CheckboxValueType[]>(
     props.defaultCheckedList
   );
-  const [indeterminate, setIndeterminate] = useState(true);
+  const [indeterminate, setIndeterminate] = useState(false);
   const [checkAll, setCheckAll] = useState(false);
 
   // 获取列表
@@ -113,10 +113,10 @@ export const UploadVideoSub = (props: PropsInterface) => {
 
   const onCheckAllChange = (e: CheckboxChangeEvent) => {
     const arr = plainOptions.map((item: any) => item.value);
-    const arrLabel = videoList.map((item: any) => item.name);
     setCheckedList(e.target.checked ? arr : []);
     setIndeterminate(false);
     setCheckAll(e.target.checked);
+    const arrLabel = videoList.map((item: any) => item.name);
     if (e.target.checked) {
       props.onSelected(arr, arrLabel);
     } else {
