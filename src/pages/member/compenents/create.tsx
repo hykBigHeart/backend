@@ -117,16 +117,16 @@ export const MemberCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
             autoComplete="off"
           >
             <Form.Item
-              label="学员姓名"
+              label="姓名"
               name="name"
-              rules={[{ required: true, message: "请输入学员姓名!" }]}
+              rules={[{ required: true, message: "请输入姓名!" }]}
             >
-              <Input style={{ width: 200 }} placeholder="请输入学员姓名" />
+              <Input style={{ width: 200 }} placeholder="请输入姓名" />
             </Form.Item>
             <Form.Item
-              label="学员头像"
+              label="头像"
               name="avatar"
-              rules={[{ required: true, message: "请上传学员头像!" }]}
+              rules={[{ required: true, message: "请上传头像!" }]}
             >
               <div className="c-flex">
                 <div className="d-flex">
@@ -153,11 +153,11 @@ export const MemberCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
               />
             </Form.Item>
             <Form.Item
-              label="学员邮箱"
+              label="邮箱"
               name="email"
-              rules={[{ required: true, message: "请输入学员邮箱!" }]}
+              rules={[{ required: true, message: "请输入邮箱!" }]}
             >
-              <Input style={{ width: 200 }} placeholder="请输入学员邮箱" />
+              <Input style={{ width: 200 }} placeholder="请输入邮箱" />
             </Form.Item>
             <Form.Item
               label="身份证号"
@@ -166,14 +166,18 @@ export const MemberCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
             >
               <Input style={{ width: 200 }} placeholder="请输入身份证号" />
             </Form.Item>
-            <Form.Item label="学员部门" name="dep_ids">
+            <Form.Item
+              label="部门"
+              name="dep_ids"
+              rules={[{ required: true, message: "请选择部门!" }]}
+            >
               <Cascader
                 style={{ width: 200 }}
                 options={departments}
                 onChange={onChange}
                 multiple
                 maxTagCount="responsive"
-                placeholder="请选择学员部门"
+                placeholder="请选择部门"
               />
             </Form.Item>
           </Form>

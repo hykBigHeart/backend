@@ -51,7 +51,6 @@ export function updateUser(
   id: number,
   email: string,
   name: string,
-  nickname: string,
   avatar: string,
   password: string,
   idCard: string,
@@ -59,7 +58,6 @@ export function updateUser(
 ) {
   return client.put(`/backend/v1/user/${id}`, {
     email,
-    nickname,
     name,
     avatar,
     password,

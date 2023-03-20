@@ -13,7 +13,6 @@ const { confirm } = Modal;
 
 interface DataType {
   id: React.Key;
-  nickname: string;
   name: string;
   email: string;
   created_at: string;
@@ -48,12 +47,7 @@ export const MemberPage: React.FC = () => {
       dataIndex: "id",
     },
     {
-      title: "学员昵称",
-      dataIndex: "nickname",
-      render: (text: string) => <span>{text}</span>,
-    },
-    {
-      title: "学员姓名",
+      title: "姓名",
       dataIndex: "name",
       render: (text: string) => <span>{text}</span>,
     },
@@ -118,7 +112,7 @@ export const MemberPage: React.FC = () => {
     setLoading(true);
     user
       .userList(page, size, {
-        nickname: nickname,
+        name: nickname,
         email: email,
         id_card: id_card,
         dep_ids: depIds,
@@ -223,14 +217,14 @@ export const MemberPage: React.FC = () => {
             </div>
             <div className="d-flex">
               <div className="d-flex mr-24">
-                <Typography.Text>昵称：</Typography.Text>
+                <Typography.Text>姓名：</Typography.Text>
                 <Input
                   value={nickname}
                   onChange={(e) => {
                     setNickname(e.target.value);
                   }}
                   style={{ width: 160 }}
-                  placeholder="请输入昵称"
+                  placeholder="请输入姓名"
                 />
               </div>
               <div className="d-flex mr-24">
