@@ -2,9 +2,6 @@ import React, { useState, useEffect } from "react";
 import styles from "./index.module.less";
 import { Row, Col, message } from "antd";
 import { useNavigate } from "react-router-dom";
-import { DepartmentCreate } from "../department/compenents/create";
-import { MemberCreate } from "../member/compenents/create";
-import { CourseCreate } from "../course/compenents/create";
 import banner from "../../assets/images/dashboard/img-a1.png";
 import icon from "../../assets/images/dashboard/icon-more.png";
 import iconN1 from "../../assets/images/dashboard/icon-n1.png";
@@ -13,10 +10,6 @@ import iconN3 from "../../assets/images/dashboard/icon-n3.png";
 
 export const Dashboard: React.FC<any> = () => {
   const navigate = useNavigate();
-  const [departmentVisible, setDepartmentVisible] = useState<boolean>(false);
-  const [memberVisible, setMembeVisible] = useState<boolean>(false);
-  const [uploadVideoVisible, setUploadVideoVisible] = useState<boolean>(false);
-  const [courseVisible, setCourseVisible] = useState<boolean>(false);
 
   useEffect(() => {
     renderPieView({
@@ -88,7 +81,7 @@ export const Dashboard: React.FC<any> = () => {
           label: {
             show: true,
             position: "center",
-            formatter: ("总资源数" + num), // 可以自定义，也可以{a}{b}{c}这种
+            formatter: "总资源数" + num, // 可以自定义，也可以{a}{b}{c}这种
             textStyle: {
               // 主标题样式
               fontSize: 14,
@@ -110,24 +103,6 @@ export const Dashboard: React.FC<any> = () => {
   return (
     <>
       <Row gutter={24}>
-        <DepartmentCreate
-          open={departmentVisible}
-          onCancel={() => {
-            setDepartmentVisible(false);
-          }}
-        />
-        <MemberCreate
-          open={memberVisible}
-          onCancel={() => {
-            setMembeVisible(false);
-          }}
-        />
-        <CourseCreate
-          open={courseVisible}
-          onCancel={() => {
-            setCourseVisible(false);
-          }}
-        />
         <Col span={12}>
           <div className="playedu-main-top">
             <div className="j-b-flex">
@@ -169,7 +144,7 @@ export const Dashboard: React.FC<any> = () => {
               <div
                 className={styles["link-mode"]}
                 onClick={() => {
-                  setMembeVisible(true);
+                  navigate("/member");
                 }}
               >
                 <i
@@ -178,7 +153,12 @@ export const Dashboard: React.FC<any> = () => {
                 ></i>
                 <span>添加学员</span>
               </div>
-              <div className={styles["link-mode"]}>
+              <div
+                className={styles["link-mode"]}
+                onClick={() => {
+                  navigate("/videos");
+                }}
+              >
                 <i
                   className="iconfont icon-upvideo"
                   style={{ color: "#419FFF", fontSize: 36 }}
@@ -188,19 +168,19 @@ export const Dashboard: React.FC<any> = () => {
               <div
                 className={styles["link-mode"]}
                 onClick={() => {
-                  setCourseVisible(true);
+                  navigate("/course");
                 }}
               >
                 <i
                   className="iconfont icon-onlinelesson"
                   style={{ color: "#B284FF", fontSize: 36 }}
                 ></i>
-                <span>新建线上课</span>
+                <span>线上课</span>
               </div>
               <div
                 className={styles["link-mode"]}
                 onClick={() => {
-                  setDepartmentVisible(true);
+                  navigate("/department");
                 }}
               >
                 <i

@@ -46,7 +46,7 @@ export const UploadImageButton = (props: PropsInterface) => {
   const [imageList, setImageList] = useState<ImageItem[]>([]);
   const [refresh, setRefresh] = useState(false);
   const [page, setPage] = useState(1);
-  const [size, setSize] = useState(12);
+  const [size, setSize] = useState(15);
   const [total, setTotal] = useState(0);
 
   // 获取图片列表
@@ -92,11 +92,11 @@ export const UploadImageButton = (props: PropsInterface) => {
             setShowModal(false);
           }}
           open={true}
-          width="1000px"
+          width={820}
           maskClosable={false}
         >
-          <Row gutter={16}>
-            <Col span={4}>
+          <Row style={{ width: 752, minHeight: 520, marginTop: 24 }}>
+            <Col span={7}>
               <TreeCategory
                 type="no-cate"
                 resourceTotal={0}
@@ -105,8 +105,8 @@ export const UploadImageButton = (props: PropsInterface) => {
                 onUpdate={(keys: any) => setCategoryIds(keys)}
               />
             </Col>
-            <Col span={20}>
-              <Row style={{ marginBottom: 24 }}>
+            <Col span={17}>
+              <Row style={{ marginBottom: 24, paddingLeft: 10 }}>
                 <Col span={24}>
                   <UploadImageSub
                     categoryIds={category_ids}
@@ -116,12 +116,7 @@ export const UploadImageButton = (props: PropsInterface) => {
                   ></UploadImageSub>
                 </Col>
               </Row>
-              <Row
-                gutter={[
-                  { xs: 8, sm: 16, md: 24, lg: 32 },
-                  { xs: 4, sm: 8, md: 12, lg: 16 },
-                ]}
-              >
+              <div className="image-list-box">
                 {imageList.length === 0 && (
                   <Col span={24}>
                     <Empty description="暂无图片" />
@@ -129,37 +124,33 @@ export const UploadImageButton = (props: PropsInterface) => {
                 )}
 
                 {imageList.map((item) => (
-                  <Col
+                  <div
                     key={item.id}
-                    span={6}
+                    className="image-item"
+                    style={{ backgroundImage: `url(${item.url})` }}
                     onClick={() => {
                       props.onSelected(item.url);
                       setShowModal(false);
                     }}
-                  >
-                    <Image
-                      preview={false}
-                      width={120}
-                      height={80}
-                      src={item.url}
-                    />
-                  </Col>
+                  ></div>
                 ))}
-
-                {imageList.length > 0 && (
-                  <Col span={24}>
-                    <Pagination
-                      showSizeChanger
-                      onChange={(currentPage, currentSize) => {
-                        setPage(currentPage);
-                        setSize(currentSize);
-                      }}
-                      defaultCurrent={page}
-                      total={total}
-                    />
-                  </Col>
-                )}
-              </Row>
+              </div>
+              {imageList.length > 0 && (
+                <Col
+                  span={24}
+                  style={{ display: "flex", flexDirection: "row-reverse" }}
+                >
+                  <Pagination
+                    showSizeChanger
+                    onChange={(currentPage, currentSize) => {
+                      setPage(currentPage);
+                      setSize(currentSize);
+                    }}
+                    defaultCurrent={page}
+                    total={total}
+                  />
+                </Col>
+              )}
             </Col>
           </Row>
         </Modal>

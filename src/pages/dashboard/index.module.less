@@ -67,13 +67,13 @@
   grid-template-columns: repeat(4, minmax(0, 1fr));
   margin-top: 24px;
   .link-mode {
-    width: 176px;
+    width: auto;
     height: 76px;
     border-radius: 7px;
     display: flex;
     align-items: center;
     box-sizing: border-box;
-    padding: 24px;
+    padding: 8%;
     cursor: pointer;
     &:hover {
       background: #fafafa;
@@ -99,18 +99,20 @@
   border-radius: 7px;
   display: flex;
   align-items: center;
+  flex-direction: row-reverse;
   margin-top: 24px;
   .banner {
     width: 130px;
     height: 130px;
     position: absolute;
     top: 22px;
-    left: 196px;
+    left: 20%;
     z-index: 10;
   }
 
   .link {
-    margin-left: 352px;
+    margin-right: 10%;
+    width: auto;
     height: 24px;
     font-size: 14px;
     font-weight: 400;
@@ -175,7 +177,7 @@
           margin-right: 8px;
         }
         .item-name {
-          width: 150px;
+          width: 100px;
           height: 24px;
           font-size: 14px;
           font-weight: 400;
