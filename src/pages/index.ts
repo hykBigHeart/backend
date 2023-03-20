@@ -4,8 +4,6 @@ export * from "./dashboard";
 export * from "./error";
 export * from "./test";
 export * from "./course/index";
-export * from "./course/create";
-export * from "./course/update";
 export * from "./member/index";
 export * from "./member/import";
 export * from "./system/index";

@@ -5,8 +5,6 @@ import {
   Dashboard,
   ErrorPage,
   CoursePage,
-  CourseCreatePage,
-  CourseUpdatePage,
   TestPage,
   MemberPage,
   MemberImportPage,
@@ -49,15 +47,6 @@ const routes: RouteObject[] = [
         path: "/course",
         element: <CoursePage />,
       },
-      {
-        path: "/course/create",
-        element: <CourseCreatePage />,
-      },
-      {
-        path: "/course/update/:cid",
-        element: <CourseUpdatePage />,
-      },
-
       {
         path: "/member",
         element: <MemberPage />,

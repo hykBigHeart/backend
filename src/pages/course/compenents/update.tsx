@@ -17,7 +17,6 @@ import { UploadImageButton, SelectResource } from "../../../compenents";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import { getHost } from "../../../utils/index";
 import { TreeHours } from "./hours";
-import { duration } from "moment";
 
 const { confirm } = Modal;
 
@@ -137,6 +136,7 @@ export const CourseUpdate: React.FC<PropInterface> = ({
         thumb: res.data.course.thumb,
         dep_ids: depIds,
         category_ids: categoryIds,
+        isRequired: res.data.course.isRequired,
         type: type,
         desc: "",
         hasChapter: chapterType,
@@ -164,10 +164,15 @@ export const CourseUpdate: React.FC<PropInterface> = ({
         setChapters([]);
         setChapterHours([]);
         let hours = res.data.hours;
-        const arr: any = resetHours(hours[0]).arr;
-        const keys: any = resetHours(hours[0]).keys;
-        setTreeData(arr);
-        setHours(keys);
+        if (JSON.stringify(hours) !== "{}") {
+          const arr: any = resetHours(hours[0]).arr;
+          const keys: any = resetHours(hours[0]).keys;
+          setTreeData(arr);
+          setHours(keys);
+        } else {
+          setTreeData([]);
+          setHours([]);
+        }
       }
     });
   };
@@ -238,6 +243,7 @@ export const CourseUpdate: React.FC<PropInterface> = ({
         values.title,
         values.thumb,
         1,
+        values.isRequired,
         dep_ids,
         category_ids,
         chapters,
@@ -467,6 +473,16 @@ export const CourseUpdate: React.FC<PropInterface> = ({
                 maxTagCount="responsive"
                 placeholder="请选择课程分类"
               />
+            </Form.Item>
+            <Form.Item
+              label="必修选修"
+              name="isRequired"
+              rules={[{ required: true, message: "请选择必修选修!" }]}
+            >
+              <Radio.Group>
+                <Radio value={1}>必修课</Radio>
+                <Radio value={0}>选修课</Radio>
+              </Radio.Group>
             </Form.Item>
             <Form.Item
               label="课程类型"

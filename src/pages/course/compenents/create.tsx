@@ -61,6 +61,7 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
       dep_ids: [],
       category_ids: [],
       type: "open",
+      isRequired: 1,
       desc: "",
       hasChapter: 0,
     });
@@ -129,6 +130,7 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
         values.title,
         values.thumb,
         1,
+        values.isRequired,
         dep_ids,
         category_ids,
         chapters,
@@ -358,6 +360,16 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
                 maxTagCount="responsive"
                 placeholder="请选择课程分类"
               />
+            </Form.Item>
+            <Form.Item
+              label="必修选修"
+              name="isRequired"
+              rules={[{ required: true, message: "请选择必修选修!" }]}
+            >
+              <Radio.Group>
+                <Radio value={1}>必修课</Radio>
+                <Radio value={0}>选修课</Radio>
+              </Radio.Group>
             </Form.Item>
             <Form.Item
               label="课程类型"

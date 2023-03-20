@@ -108,6 +108,13 @@ export const CoursePage = () => {
       ),
     },
     {
+      title: "类别",
+      dataIndex: "isRequired",
+      render: (isRequired: number) => (
+        <span>{isRequired === 1 ? "必修课" : "选修课"}</span>
+      ),
+    },
+    {
       title: "是否显示",
       dataIndex: "is_show",
       render: (is_show: number) => (
