@@ -111,7 +111,7 @@ export const CoursePage = () => {
       title: "是否显示",
       dataIndex: "is_show",
       render: (is_show: number) => (
-        <span className={is_show === 1 ? "c-green" : "c-red"}>
+        <span className={is_show === 1 ? "c-success" : "c-red"}>
           {is_show === 1 ? "· 显示" : "· 隐藏"}
         </span>
       ),

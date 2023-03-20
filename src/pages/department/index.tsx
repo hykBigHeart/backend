@@ -366,7 +366,7 @@ export const DepartmentPage: React.FC = () => {
         <div className="d-flex">
           <PerButton
             type="primary"
-            text="新建部门"
+            text="添加部门"
             class="mr-16"
             icon={<PlusOutlined />}
             p="department-cud"
