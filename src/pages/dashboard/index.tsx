@@ -88,7 +88,12 @@ export const Dashboard: React.FC<any> = () => {
           label: {
             show: true,
             position: "center",
-            formatter: "总资源数" + num, // 可以自定义，也可以{a}{b}{c}这种
+            formatter: ("总资源数" + num), // 可以自定义，也可以{a}{b}{c}这种
+            textStyle: {
+              // 主标题样式
+              fontSize: 14,
+              fontWeight: 600,
+            },
           },
           labelLine: {
             show: false,
