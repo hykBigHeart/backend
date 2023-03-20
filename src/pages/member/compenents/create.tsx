@@ -159,11 +159,7 @@ export const MemberCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
             >
               <Input style={{ width: 200 }} placeholder="请输入邮箱" />
             </Form.Item>
-            <Form.Item
-              label="身份证号"
-              name="idCard"
-              rules={[{ required: true, message: "请输入身份证号!" }]}
-            >
+            <Form.Item label="身份证号" name="idCard">
               <Input style={{ width: 200 }} placeholder="请输入身份证号" />
             </Form.Item>
             <Form.Item
