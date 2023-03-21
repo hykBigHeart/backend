@@ -97,6 +97,7 @@ export const CoursePage = () => {
   const columns: ColumnsType<DataType> = [
     {
       title: "课程名称",
+      width: 350,
       render: (_, record: any) => (
         <div className="d-flex">
           <Image
