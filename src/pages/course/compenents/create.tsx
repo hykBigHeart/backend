@@ -527,7 +527,9 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
                 </Form.Item>
                 <div className={styles["hous-box"]}>
                   {treeData.length === 0 && (
-                    <span className={styles["no-hours"]}>请添加课时内容</span>
+                    <span className={styles["no-hours"]}>
+                      请点击上方按钮添加课时
+                    </span>
                   )}
                   {treeData.length > 0 && (
                     <TreeHours
@@ -581,7 +583,7 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
                         <div className={styles["chapter-hous-box"]}>
                           {item.hours.length === 0 && (
                             <span className={styles["no-hours"]}>
-                              请添加课时内容
+                              请点击上方按钮添加课时
                             </span>
                           )}
                           {item.hours.length > 0 && (
