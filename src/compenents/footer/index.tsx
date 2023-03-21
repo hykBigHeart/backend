@@ -1,5 +1,6 @@
 import React from "react";
 import { Layout } from "antd";
+import { Link } from "react-router-dom";
 
 export const Footer: React.FC = () => {
   return (
@@ -12,10 +13,13 @@ export const Footer: React.FC = () => {
         textAlign: "center",
       }}
     >
-      <i
-        style={{ fontSize: 30, color: "#cccccc" }}
-        className="iconfont icon-waterprint"
-      ></i>
+      <Link to="https://www.playedu.xyz/">
+        <i
+          style={{ fontSize: 30, color: "#cccccc" }}
+          className="iconfont icon-waterprint footer-icon"
+          onClick={() => {}}
+        ></i>
+      </Link>
     </Layout.Footer>
   );
 };

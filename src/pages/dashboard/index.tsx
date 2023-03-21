@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./index.module.less";
 import { Row, Col, message } from "antd";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import banner from "../../assets/images/dashboard/img-a1.png";
 import icon from "../../assets/images/dashboard/icon-more.png";
 import iconN1 from "../../assets/images/dashboard/icon-n1.png";
@@ -53,24 +53,13 @@ export const Dashboard: React.FC<any> = () => {
       tooltip: {
         show: true, // 是否显示提示框
       },
-      title: {
-        text: "", //主标题
-        left: "center", // 水平对齐方式
-        bottom: 0,
-        itemGap: 4, // 主副标题相隔间距
-        textStyle: {
-          // 主标题样式
-          fontSize: 16,
-          fontWeight: 400,
-        },
-      },
       series: [
         {
           type: "pie",
           radius: ["40%", "60%"], // 环比 圈的大小
           center: ["50%", "40%"], // 图形在整个canvas中的位置
           color: ["#FE8650", "#FFB504"], // item的取色盘
-          avoidLabelOverlap: false,
+          avoidLabelOverlap: true,
           itemStyle: {
             borderColor: "#fff", // 白边
             borderWidth: 2,
@@ -80,16 +69,6 @@ export const Dashboard: React.FC<any> = () => {
             disabled: true,
           },
           label: {
-            show: true,
-            position: "center",
-            formatter: "总资源数" + num, // 可以自定义，也可以{a}{b}{c}这种
-            textStyle: {
-              // 主标题样式
-              fontSize: 14,
-              fontWeight: 600,
-            },
-          },
-          labelLine: {
             show: false,
           },
           data: data,
@@ -299,10 +278,10 @@ export const Dashboard: React.FC<any> = () => {
             <div className={styles["large-title"]}>使用指南</div>
             <div className={styles["usage-guide"]}>
               <img className={styles["banner"]} src={banner} alt="" />
-              <div className={styles["link"]}>
+              <Link to="https://www.playedu.xyz/" className={styles["link"]}>
                 点击查看产品手册，快速玩转Playedu！
                 <img className={styles["icon"]} src={icon} alt="" />
-              </div>
+              </Link>
             </div>
           </div>
           <div className="playedu-main-top mt-24">
