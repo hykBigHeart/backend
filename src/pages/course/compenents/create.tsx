@@ -10,6 +10,7 @@ import {
   Modal,
   message,
   Image,
+  Tooltip,
 } from "antd";
 import styles from "./create.module.less";
 import { course, department } from "../../../api/index";
@@ -66,6 +67,7 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
       hasChapter: 0,
     });
     setThumb(defaultThumb1);
+    setType("open");
     setChapterType(0);
     setChapters([]);
     setHours([]);
@@ -119,12 +121,6 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
         dep_ids.push(values.dep_ids[i][values.dep_ids[i].length - 1]);
       }
     }
-    let category_ids: any[] = [];
-    for (let j = 0; j < values.category_ids.length; j++) {
-      category_ids.push(
-        values.category_ids[j][values.category_ids[j].length - 1]
-      );
-    }
     course
       .storeCourse(
         values.title,
@@ -133,7 +129,7 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
         1,
         values.isRequired,
         dep_ids,
-        category_ids,
+        values.category_ids,
         chapters,
         treeData
       )
@@ -362,8 +358,7 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
               <Cascader
                 style={{ width: 424 }}
                 options={categories}
-                multiple
-                maxTagCount="responsive"
+                changeOnSelect
                 placeholder="请选择课程分类"
               />
             </Form.Item>
@@ -384,7 +379,10 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
             >
               <Radio.Group onChange={getType}>
                 <Radio value="open">
-                  公开课 <i className="iconfont icon-icon-tips c-gray ml-8" />
+                  公开课
+                  <Tooltip placement="top" title="公开课所有学员可见">
+                    <i className="iconfont icon-icon-tips c-gray ml-8" />
+                  </Tooltip>
                 </Radio>
                 <Radio value="elective">部门课</Radio>
               </Radio.Group>

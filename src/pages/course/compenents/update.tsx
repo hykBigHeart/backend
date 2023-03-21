@@ -10,6 +10,7 @@ import {
   Modal,
   message,
   Image,
+  Tooltip,
 } from "antd";
 import styles from "./update.module.less";
 import { course, department } from "../../../api/index";
@@ -99,34 +100,13 @@ export const CourseUpdate: React.FC<PropInterface> = ({
       } else {
         depIds = res.data.dep_ids;
       }
-      let box2 = res.data.category_ids;
-      let categoryIds: any[] = [];
-      if (box2.length > 0) {
-        for (let i = 0; i < box2.length; i++) {
-          let item = checkChild(cats, box2[i]);
-          let arr: any[] = [];
-          if (item === undefined) {
-            arr.push(box2[i]);
-          } else if (item.parent_chain === "") {
-            arr.push(box2[i]);
-          } else {
-            let new_arr = item.parent_chain.split(",");
-            new_arr.map((num: any) => {
-              arr.push(Number(num));
-            });
-            arr.push(box2[i]);
-          }
-          categoryIds.push(arr);
-        }
-      } else {
-        categoryIds = res.data.category_ids;
-      }
+
       let chapterType = res.data.chapters.length > 0 ? 1 : 0;
       form.setFieldsValue({
         title: res.data.course.title,
         thumb: res.data.course.thumb,
         dep_ids: depIds,
-        category_ids: categoryIds,
+        category_ids: res.data.category_ids,
         isRequired: res.data.course.isRequired,
         type: type,
         short_desc: res.data.course.short_desc,
@@ -175,13 +155,6 @@ export const CourseUpdate: React.FC<PropInterface> = ({
       }
     }
 
-    let category_ids: any[] = [];
-    for (let j = 0; j < values.category_ids.length; j++) {
-      category_ids.push(
-        values.category_ids[j][values.category_ids[j].length - 1]
-      );
-    }
-
     course
       .updateCourse(
         id,
@@ -191,7 +164,7 @@ export const CourseUpdate: React.FC<PropInterface> = ({
         1,
         values.isRequired,
         dep_ids,
-        category_ids,
+        values.category_ids,
         [],
         []
       )
@@ -255,8 +228,7 @@ export const CourseUpdate: React.FC<PropInterface> = ({
               <Cascader
                 style={{ width: 424 }}
                 options={categories}
-                multiple
-                maxTagCount="responsive"
+                changeOnSelect
                 placeholder="请选择课程分类"
               />
             </Form.Item>
@@ -278,7 +250,9 @@ export const CourseUpdate: React.FC<PropInterface> = ({
               <Radio.Group onChange={getType}>
                 <Radio value="open">
                   公开课
-                  <i className="iconfont icon-icon-tips c-gray ml-8" />
+                  <Tooltip placement="top" title="公开课所有学员可见">
+                    <i className="iconfont icon-icon-tips c-gray ml-8" />
+                  </Tooltip>
                 </Radio>
                 <Radio value="elective">部门课</Radio>
               </Radio.Group>

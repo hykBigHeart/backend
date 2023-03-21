@@ -114,7 +114,7 @@ export const CoursePage = () => {
       title: "课程分类",
       dataIndex: "id",
       render: (id: number) => (
-        <div className="d-flex">
+        <div className="float-left">
           {course_category_ids[id].map((item: any, index: number) => {
             return (
               <span key={index}>
@@ -131,7 +131,7 @@ export const CoursePage = () => {
       title: "指派部门",
       dataIndex: "id",
       render: (id: number) => (
-        <div className="d-flex">
+        <div className="float-left">
           {course_dep_ids[id] &&
             course_dep_ids[id].map((item: any, index: number) => {
               return (
