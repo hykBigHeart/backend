@@ -30,13 +30,6 @@ export const DepartmentUpdate: React.FC<PropInterface> = ({
     getParams();
   }, [open]);
 
-  useEffect(() => {
-    if (id === 0) {
-      return;
-    }
-    getDetail();
-  }, [id]);
-
   const getParams = () => {
     department.createDepartment().then((res: any) => {
       const departments = res.data.departments;
@@ -48,6 +41,10 @@ export const DepartmentUpdate: React.FC<PropInterface> = ({
         });
         setDepartments(new_arr);
       }
+      if (id === 0) {
+        return;
+      }
+      getDetail();
     });
   };
 

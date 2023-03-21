@@ -30,13 +30,6 @@ export const ResourceCategoryUpdate: React.FC<PropInterface> = ({
     getParams();
   }, [open]);
 
-  useEffect(() => {
-    if (id === 0) {
-      return;
-    }
-    getDetail();
-  }, [id]);
-
   const getParams = () => {
     resourceCategory.createResourceCategory().then((res: any) => {
       const categories = res.data.categories;
@@ -48,6 +41,10 @@ export const ResourceCategoryUpdate: React.FC<PropInterface> = ({
         });
         setCategories(new_arr);
       }
+      if (id === 0) {
+        return;
+      }
+      getDetail();
     });
   };
 
