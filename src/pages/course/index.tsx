@@ -148,6 +148,7 @@ export const CoursePage = () => {
     {
       title: "必修/选修",
       dataIndex: "isRequired",
+      width: 120,
       render: (isRequired: number) => (
         <span>{isRequired === 1 ? "必修课" : "选修课"}</span>
       ),
@@ -155,6 +156,7 @@ export const CoursePage = () => {
     {
       title: "创建时间",
       dataIndex: "created_at",
+      width: 200,
       render: (text: string) => <span>{dateFormat(text)}</span>,
     },
     {
