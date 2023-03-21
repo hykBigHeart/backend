@@ -3,6 +3,7 @@
   height: 94px;
   display: flex;
   flex-direction: column;
+
   .label {
     width: 84px;
     height: 24px;
@@ -11,6 +12,7 @@
     color: rgba(0, 0, 0, 0.88);
     line-height: 24px;
   }
+
   .info {
     min-width: 100px;
     width: auto;
@@ -19,6 +21,7 @@
     flex-direction: row;
     margin-top: 24px;
     align-items: center;
+
     .num {
       width: auto;
       height: 46px;
@@ -27,6 +30,7 @@
       color: rgba(0, 0, 0, 0.88);
       line-height: 46px;
     }
+
     .compare {
       width: auto;
       height: 24px;
@@ -38,6 +42,7 @@
       display: flex;
       flex-direction: row;
       align-items: center;
+
       .down {
         color: #00cc66;
         font-size: 10px;
@@ -59,6 +64,7 @@
   color: rgba(0, 0, 0, 0.88);
   line-height: 28px;
 }
+
 .mode-box {
   width: 100%;
   height: 76px;
@@ -66,6 +72,7 @@
   column-gap: 24px;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   margin-top: 24px;
+
   .link-mode {
     width: auto;
     height: 76px;
@@ -75,6 +82,7 @@
     box-sizing: border-box;
     padding: 8%;
     cursor: pointer;
+
     &:hover {
       background: #fafafa;
     }
@@ -101,6 +109,7 @@
   align-items: center;
   flex-direction: row-reverse;
   margin-top: 24px;
+
   .banner {
     width: 130px;
     height: 130px;
@@ -111,19 +120,23 @@
   }
 
   .link {
-    margin-right: 10%;
+    display: block;
+    position: absolute;
+    left: calc(20% + 150px);
     width: auto;
     height: 24px;
+    line-height: 24px;
     font-size: 14px;
     font-weight: 400;
     color: rgba(0, 0, 0, 0.45);
-    line-height: 24px;
     display: flex;
     align-items: center;
     cursor: pointer;
+
     &:hover {
       text-decoration: underline;
     }
+
     .icon {
       width: 16px;
       height: 16px;
@@ -139,11 +152,13 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   margin-top: 24px;
   margin-bottom: 12px;
+
   .half-list {
     width: 100%;
     height: auto;
     display: flex;
     flex-direction: column;
+
     .rank-item {
       width: 100%;
       height: 24px;
@@ -151,13 +166,16 @@
       align-items: center;
       margin-bottom: 36px;
       justify-content: space-between;
+
       &:last-child {
         margin-bottom: 0px;
       }
+
       .left-item {
         width: auto;
         display: flex;
         align-items: center;
+
         .item-num {
           width: 24px;
           height: 24px;
@@ -170,11 +188,13 @@
           justify-content: center;
           margin-right: 8px;
         }
+
         .item-icon {
           width: 24px;
           height: 24px;
           margin-right: 8px;
         }
+
         .item-name {
           width: 100px;
           height: 24px;
@@ -187,6 +207,7 @@
           text-overflow: ellipsis;
         }
       }
+
       .item-time {
         height: 24px;
         font-size: 12px;
