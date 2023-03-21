@@ -116,13 +116,12 @@ export const UploadImageButton = (props: PropsInterface) => {
                   ></UploadImageSub>
                 </Col>
               </Row>
+              {imageList.length === 0 && (
+                <Col span={24}>
+                  <Empty description="暂无图片" />
+                </Col>
+              )}
               <div className="image-list-box">
-                {imageList.length === 0 && (
-                  <Col span={24}>
-                    <Empty description="暂无图片" />
-                  </Col>
-                )}
-
                 {imageList.map((item) => (
                   <div
                     key={item.id}

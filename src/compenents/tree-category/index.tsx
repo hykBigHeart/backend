@@ -30,12 +30,7 @@ export const TreeCategory = (props: PropInterface) => {
         if (props.type === "no-cate") {
           new_arr.unshift({
             key: 0,
-            title: (
-              <>
-                <span>未分类</span>
-                <span className="tree-num">{props.categoryCount[0] || 0}</span>
-              </>
-            ),
+            title: "未分类",
           });
         }
 
@@ -51,9 +46,6 @@ export const TreeCategory = (props: PropInterface) => {
         let name = (
           <>
             <span className="tree-title-elli">{categories[id][i].name}</span>
-            <span className="tree-num">
-              {props.categoryCount[categories[id][i].id] || 0}
-            </span>
           </>
         );
         arr.push({
@@ -64,9 +56,6 @@ export const TreeCategory = (props: PropInterface) => {
         let name = (
           <>
             <span className="tree-title-elli">{categories[id][i].name}</span>
-            <span className="tree-num">
-              {props.categoryCount[categories[id][i].id] || 0}
-            </span>
           </>
         );
         const new_arr: Option[] = checkArr(categories, categories[id][i].id);
@@ -112,7 +101,6 @@ export const TreeCategory = (props: PropInterface) => {
       >
         <div className="j-b-flex">
           <span>全部{props.text}</span>
-          <span className="tree-num-total">{props.resourceTotal}</span>
         </div>
       </div>
       <Tree
