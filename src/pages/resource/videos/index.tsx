@@ -29,8 +29,6 @@ export const ResourceVideosPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [category_ids, setCategoryIds] = useState<any>([]);
   const [selLabel, setLabel] = useState<string>("全部视频");
-  const [categoryCount, setCategoryCount] = useState<any>({});
-  const [pureTotal, setPureTotal] = useState(0);
 
   const columns: ColumnsType<DataType> = [
     // {
@@ -129,8 +127,6 @@ export const ResourceVideosPage = () => {
         setVideoList(res.data.result.data);
         setVideoExtra(res.data.videos_extra);
         setAdminUsers(res.data.admin_users);
-        setCategoryCount(res.data.category_count);
-        setPureTotal(res.data.pure_total);
         setLoading(false);
       })
       .catch((err: any) => {
@@ -170,9 +166,7 @@ export const ResourceVideosPage = () => {
         <div className="left-box">
           <TreeCategory
             type="no-cate"
-            resourceTotal={pureTotal}
             text={"视频"}
-            categoryCount={categoryCount}
             onUpdate={(keys: any, title: any) => {
               setCategoryIds(keys);
               if (typeof title == "string") {

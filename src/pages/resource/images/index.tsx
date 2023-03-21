@@ -43,8 +43,6 @@ export const ResourceImagesPage = () => {
   const [hoverArr, setHoverArr] = useState<any>([]);
   const [selLabel, setLabel] = useState<string>("全部图片");
   const [loading, setLoading] = useState<boolean>(false);
-  const [categoryCount, setCategoryCount] = useState<any>({});
-  const [pureTotal, setPureTotal] = useState(0);
 
   // 删除图片
   const removeResource = () => {
@@ -89,8 +87,6 @@ export const ResourceImagesPage = () => {
         }
         setVisibleArr(arr);
         setHoverArr(arr);
-        setCategoryCount(res.data.category_count);
-        setPureTotal(res.data.pure_total);
         setLoading(false);
       })
       .catch((err: any) => {
@@ -156,8 +152,6 @@ export const ResourceImagesPage = () => {
           <TreeCategory
             type="no-cate"
             text={"图片"}
-            categoryCount={categoryCount}
-            resourceTotal={pureTotal}
             onUpdate={(keys: any, title: any) => {
               setCategoryIds(keys);
               if (typeof title == "string") {

@@ -45,9 +45,11 @@ export const CoursePage = () => {
   const [title, setTitle] = useState<string>("");
   const [dep_ids, setDepIds] = useState<any>([]);
   const [selLabel, setLabel] = useState<string>("全部课程");
-  const [categoryCount, setCategoryCount] = useState<any>({});
+  const [course_category_ids, setCourseCategoryIds] = useState<any>({});
+  const [course_dep_ids, setCourseDepIds] = useState<any>({});
+  const [categories, setCategories] = useState<any>({});
+  const [departments, setDepartments] = useState<any>({});
   const [tabKey, setTabKey] = useState(1);
-  const [pureTotal, setPureTotal] = useState(0);
 
   const [createVisible, setCreateVisible] = useState<boolean>(false);
   const [updateVisible, setUpdateVisible] = useState<boolean>(false);
@@ -62,9 +64,7 @@ export const CoursePage = () => {
         <div className="float-left">
           <TreeCategory
             type=""
-            resourceTotal={pureTotal}
             text={"课程"}
-            categoryCount={categoryCount}
             onUpdate={(keys: any, title: any) => {
               setCategoryIds(keys);
               if (typeof title == "string") {
@@ -111,19 +111,45 @@ export const CoursePage = () => {
       ),
     },
     {
-      title: "类别",
-      dataIndex: "isRequired",
-      render: (isRequired: number) => (
-        <span>{isRequired === 1 ? "必修课" : "选修课"}</span>
+      title: "课程分类",
+      dataIndex: "id",
+      render: (id: number) => (
+        <div className="d-flex">
+          {course_category_ids[id].map((item: any, index: number) => {
+            return (
+              <span key={index}>
+                {index === course_category_ids[id].length - 1
+                  ? categories[item]
+                  : categories[item] + "、"}
+              </span>
+            );
+          })}
+        </div>
       ),
     },
     {
-      title: "是否显示",
-      dataIndex: "is_show",
-      render: (is_show: number) => (
-        <span className={is_show === 1 ? "c-success" : "c-red"}>
-          {is_show === 1 ? "· 显示" : "· 隐藏"}
-        </span>
+      title: "指派部门",
+      dataIndex: "id",
+      render: (id: number) => (
+        <div className="d-flex">
+          {course_dep_ids[id] &&
+            course_dep_ids[id].map((item: any, index: number) => {
+              return (
+                <span key={index}>
+                  {index === course_dep_ids[id].length - 1
+                    ? departments[item]
+                    : departments[item] + "、"}
+                </span>
+              );
+            })}
+        </div>
+      ),
+    },
+    {
+      title: "必修/选修",
+      dataIndex: "isRequired",
+      render: (isRequired: number) => (
+        <span>{isRequired === 1 ? "必修课" : "选修课"}</span>
       ),
     },
     {
@@ -225,8 +251,10 @@ export const CoursePage = () => {
       .then((res: any) => {
         setTotal(res.data.total);
         setList(res.data.data);
-        setCategoryCount(res.data.category_count);
-        setPureTotal(res.data.pure_total);
+        setCourseCategoryIds(res.data.course_category_ids);
+        setCourseDepIds(res.data.course_dep_ids);
+        setCategories(res.data.categories);
+        setDepartments(res.data.departments);
         setLoading(false);
       })
       .catch((err: any) => {

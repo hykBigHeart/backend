@@ -32,8 +32,6 @@ export const UploadVideoSub = (props: PropsInterface) => {
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
   const [total, setTotal] = useState(0);
-  const [pureTotal, setPureTotal] = useState(0);
-  const [categoryCount, setCategoryCount] = useState<any>({});
 
   const [plainOptions, setPlainOptions] = useState<any>([]);
   const [checkedList, setCheckedList] = useState<CheckboxValueType[]>([]);
@@ -48,8 +46,6 @@ export const UploadVideoSub = (props: PropsInterface) => {
       .then((res: any) => {
         setTotal(res.data.result.total);
         setVideoExtra(res.data.videos_extra);
-        setCategoryCount(res.data.category_count);
-        setPureTotal(res.data.pure_total);
         setVideoList(res.data.result.data);
         let data = res.data.result.data;
         const arr = [];
@@ -150,8 +146,6 @@ export const UploadVideoSub = (props: PropsInterface) => {
         <Col span={7}>
           <TreeCategory
             type="no-cate"
-            resourceTotal={pureTotal}
-            categoryCount={{ categoryCount }}
             text={props.label}
             onUpdate={(keys: any) => setCategoryIds(keys)}
           />

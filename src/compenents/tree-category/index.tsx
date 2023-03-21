@@ -11,8 +11,6 @@ interface Option {
 interface PropInterface {
   type: string;
   text: string;
-  categoryCount: any;
-  resourceTotal: number;
 
   onUpdate: (keys: any, title: any) => void;
 }
@@ -37,7 +35,7 @@ export const TreeCategory = (props: PropInterface) => {
         setTreeData(new_arr);
       }
     });
-  }, [props.categoryCount]);
+  }, []);
 
   const checkArr = (categories: any[], id: number) => {
     const arr = [];
