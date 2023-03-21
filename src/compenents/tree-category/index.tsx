@@ -31,12 +31,10 @@ export const TreeCategory = (props: PropInterface) => {
           new_arr.unshift({
             key: 0,
             title: (
-              <div className="d-flex">
-                未分类
-                <span className="tree-num">
-                  ({props.categoryCount[0] || 0})
-                </span>
-              </div>
+              <>
+                <span>未分类</span>
+                <span className="tree-num">{props.categoryCount[0] || 0}</span>
+              </>
             ),
           });
         }
@@ -51,12 +49,12 @@ export const TreeCategory = (props: PropInterface) => {
     for (let i = 0; i < categories[id].length; i++) {
       if (!categories[categories[id][i].id]) {
         let name = (
-          <div className="d-flex">
-            {categories[id][i].name}
+          <>
+            <span className="tree-title-elli">{categories[id][i].name}</span>
             <span className="tree-num">
-              ({props.categoryCount[categories[id][i].id] || 0})
+              {props.categoryCount[categories[id][i].id] || 0}
             </span>
-          </div>
+          </>
         );
         arr.push({
           title: name,
@@ -64,12 +62,12 @@ export const TreeCategory = (props: PropInterface) => {
         });
       } else {
         let name = (
-          <div className="d-flex">
-            {categories[id][i].name}
+          <>
+            <span className="tree-title-elli">{categories[id][i].name}</span>
             <span className="tree-num">
-              ({props.categoryCount[categories[id][i].id] || 0})
+              {props.categoryCount[categories[id][i].id] || 0}
             </span>
-          </div>
+          </>
         );
         const new_arr: Option[] = checkArr(categories, categories[id][i].id);
         arr.push({
@@ -112,8 +110,10 @@ export const TreeCategory = (props: PropInterface) => {
           onSelect([], "");
         }}
       >
-        全部{props.text}
-        <span className="tree-num">({props.resourceTotal})</span>
+        <div className="j-b-flex">
+          <span>全部{props.text}</span>
+          <span className="tree-num-total">{props.resourceTotal}</span>
+        </div>
       </div>
       <Tree
         onSelect={onSelect}

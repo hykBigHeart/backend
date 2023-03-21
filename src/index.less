@@ -58,6 +58,10 @@ code {
   margin-left: 8px;
 }
 
+.mr-8 {
+  margin-right: 8px;
+}
+
 .mt-10 {
   margin-top: 10px;
 }
@@ -450,6 +454,10 @@ textarea.ant-input {
 }
 
 .ant-tree-title {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   .iconfont {
     color: rgba(0, 0, 0, 0.2);
     cursor: pointer;
@@ -462,20 +470,6 @@ textarea.ant-input {
 .ant-tree-switcher {
   padding-left: 4px;
   position: relative;
-}
-.ant-tree-switcher_open::before,
-.ant-tree-switcher_close::before {
-  z-index: 100;
-  content: "";
-  position: absolute;
-  right: -200px;
-  top: 0;
-  left: 0;
-  bottom: 0;
-}
-.ant-tree-switcher_open::after,
-.ant-tree-switcher_close::after {
-  z-index: 0;
 }
 
 .ant-modal-confirm-btns > .ant-btn-default:hover {
@@ -504,7 +498,24 @@ textarea.ant-input {
 }
 
 .tree-num {
+  width: auto;
+  display: block;
   color: rgba(0, 0, 0, 0.45);
+  margin-right: 4px;
+}
+
+.tree-num-total {
+  width: auto;
+  display: block;
+  color: rgba(0, 0, 0, 0.45);
+  margin-right: 8px;
+}
+
+.tree-title-elli {
+  max-width:100px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .ant-tabs {
