@@ -147,19 +147,7 @@ export const ResourceCategoryPage: React.FC = () => {
     if (id === 0) {
       return;
     }
-    const instance = modal.warning({
-      title: "操作确认",
-      centered: true,
-      content: (
-        <div className="j-flex">
-          <Spin tip="检查中" />
-        </div>
-      ),
-    });
     resourceCategory.checkDestroy(id).then((res: any) => {
-      setTimeout(() => {
-        instance.destroy();
-      }, 500);
       if (
         res.data.children.length === 0 &&
         res.data.courses.length === 0 &&
