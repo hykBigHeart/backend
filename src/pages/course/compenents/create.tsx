@@ -62,7 +62,7 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
       category_ids: [],
       type: "open",
       isRequired: 1,
-      desc: "",
+      short_desc: "",
       hasChapter: 0,
     });
     setThumb(defaultThumb1);
@@ -129,6 +129,7 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
       .storeCourse(
         values.title,
         values.thumb,
+        values.short_desc,
         1,
         values.isRequired,
         dep_ids,
@@ -496,7 +497,7 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
                 </div>
               </div>
             </Form.Item>
-            <Form.Item label="课程简介" name="desc">
+            <Form.Item label="课程简介" name="short_desc">
               <Input.TextArea
                 style={{ width: 424, height: 80 }}
                 allowClear

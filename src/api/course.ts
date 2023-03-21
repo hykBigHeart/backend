@@ -29,6 +29,7 @@ export function createCourse() {
 export function storeCourse(
   title: string,
   thumb: string,
+  shortDesc: string,
   isShow: number,
   isRequired: number,
   depIds: number[],
@@ -39,6 +40,7 @@ export function storeCourse(
   return client.post("/backend/v1/course/create", {
     title: title,
     thumb: thumb,
+    short_desc: shortDesc,
     is_show: isShow,
     is_required: isRequired,
     dep_ids: depIds,
@@ -56,6 +58,7 @@ export function updateCourse(
   id: number,
   title: string,
   thumb: string,
+  shortDesc: string,
   isShow: number,
   isRequired: number,
   depIds: number[],
@@ -66,6 +69,7 @@ export function updateCourse(
   return client.put(`/backend/v1/course/${id}`, {
     title: title,
     thumb: thumb,
+    short_desc: shortDesc,
     is_show: isShow,
     is_required: isRequired,
     dep_ids: depIds,

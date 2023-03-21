@@ -138,7 +138,7 @@ export const CourseUpdate: React.FC<PropInterface> = ({
         category_ids: categoryIds,
         isRequired: res.data.course.isRequired,
         type: type,
-        desc: "",
+        short_desc: res.data.course.short_desc,
         hasChapter: chapterType,
       });
       setType(type);
@@ -242,6 +242,7 @@ export const CourseUpdate: React.FC<PropInterface> = ({
         id,
         values.title,
         values.thumb,
+        values.short_desc,
         1,
         values.isRequired,
         dep_ids,
@@ -609,7 +610,7 @@ export const CourseUpdate: React.FC<PropInterface> = ({
                 </div>
               </div>
             </Form.Item>
-            <Form.Item label="课程简介" name="desc">
+            <Form.Item label="课程简介" name="short_desc">
               <Input.TextArea
                 style={{ width: 424, height: 80 }}
                 allowClear
