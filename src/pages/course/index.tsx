@@ -101,6 +101,7 @@ export const CoursePage = () => {
             preview={false}
             width={80}
             height={60}
+            style={{ borderRadius: 6 }}
             src={record.thumb}
           ></Image>
           <span className="ml-8">{record.title}</span>
