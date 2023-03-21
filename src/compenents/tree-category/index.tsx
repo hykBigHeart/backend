@@ -120,6 +120,7 @@ export const TreeCategory = (props: PropInterface) => {
         selectedKeys={selectKey}
         onExpand={onExpand}
         treeData={treeData}
+        switcherIcon={<i className="iconfont icon-icon-fold c-gray" />}
       />
     </div>
   );

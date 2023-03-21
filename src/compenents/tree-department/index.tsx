@@ -94,6 +94,7 @@ export const TreeDepartment = (props: PropInterface) => {
         onSelect={onSelect}
         onExpand={onExpand}
         treeData={treeData}
+        switcherIcon={<i className="iconfont icon-icon-fold c-gray" />}
       />
     </div>
   );

@@ -70,32 +70,34 @@ export const ResourceCategoryPage: React.FC = () => {
       if (!categories[categories[id][i].id]) {
         arr.push({
           title: (
-            <div className="d-flex">
-              <div className="w-250px mr-24">{categories[id][i].name}</div>
-              <Tooltip placement="top" title="可拖拽排序">
-                <i
-                  className="iconfont icon-icon-drag mr-16"
-                  style={{ fontSize: 24 }}
-                />
-              </Tooltip>
-              {through("resource-category") && (
-                <i
-                  className="iconfont icon-icon-edit mr-16"
-                  style={{ fontSize: 24 }}
-                  onClick={() => {
-                    setCid(categories[id][i].id);
-                    setUpdateVisible(true);
-                  }}
-                />
-              )}
-              {through("resource-destroy") && (
-                <i
-                  className="iconfont icon-icon-delete"
-                  style={{ fontSize: 24 }}
-                  onClick={() => removeItem(categories[id][i].id)}
-                />
-              )}
-            </div>
+            <>
+              <div className="w-174px mr-24">{categories[id][i].name}</div>
+              <div className="d-flex">
+                <Tooltip placement="top" title="可拖拽排序">
+                  <i
+                    className="iconfont icon-icon-drag mr-16"
+                    style={{ fontSize: 24 }}
+                  />
+                </Tooltip>
+                {through("resource-category") && (
+                  <i
+                    className="iconfont icon-icon-edit mr-16"
+                    style={{ fontSize: 24 }}
+                    onClick={() => {
+                      setCid(categories[id][i].id);
+                      setUpdateVisible(true);
+                    }}
+                  />
+                )}
+                {through("resource-destroy") && (
+                  <i
+                    className="iconfont icon-icon-delete"
+                    style={{ fontSize: 24 }}
+                    onClick={() => removeItem(categories[id][i].id)}
+                  />
+                )}
+              </div>
+            </>
           ),
           key: categories[id][i].id,
         });
@@ -103,32 +105,34 @@ export const ResourceCategoryPage: React.FC = () => {
         const new_arr: Option[] = checkArr(categories, categories[id][i].id);
         arr.push({
           title: (
-            <div className="d-flex">
-              <div className="w-250px mr-24">{categories[id][i].name}</div>
-              <Tooltip placement="top" title="可拖拽排序">
-                <i
-                  className="iconfont icon-icon-drag mr-16"
-                  style={{ fontSize: 24 }}
-                />
-              </Tooltip>
-              {through("resource-category") && (
-                <i
-                  className="iconfont icon-icon-edit mr-16"
-                  style={{ fontSize: 24 }}
-                  onClick={() => {
-                    setCid(categories[id][i].id);
-                    setUpdateVisible(true);
-                  }}
-                />
-              )}
-              {through("resource-destroy") && (
-                <i
-                  className="iconfont icon-icon-delete"
-                  style={{ fontSize: 24 }}
-                  onClick={() => removeItem(categories[id][i].id)}
-                />
-              )}
-            </div>
+            <>
+              <div className="w-174px mr-24">{categories[id][i].name}</div>
+              <div className="d-flex">
+                <Tooltip placement="top" title="可拖拽排序">
+                  <i
+                    className="iconfont icon-icon-drag mr-16"
+                    style={{ fontSize: 24 }}
+                  />
+                </Tooltip>
+                {through("resource-category") && (
+                  <i
+                    className="iconfont icon-icon-edit mr-16"
+                    style={{ fontSize: 24 }}
+                    onClick={() => {
+                      setCid(categories[id][i].id);
+                      setUpdateVisible(true);
+                    }}
+                  />
+                )}
+                {through("resource-destroy") && (
+                  <i
+                    className="iconfont icon-icon-delete"
+                    style={{ fontSize: 24 }}
+                    onClick={() => removeItem(categories[id][i].id)}
+                  />
+                )}
+              </div>
+            </>
           ),
           key: categories[id][i].id,
           children: new_arr,
@@ -372,14 +376,17 @@ export const ResourceCategoryPage: React.FC = () => {
         </div>
       </div>
       <div className="playedu-main-body">
-        <Tree
-          onSelect={onSelect}
-          treeData={treeData}
-          draggable
-          blockNode
-          onDragEnter={onDragEnter}
-          onDrop={onDrop}
-        />
+        <div style={{ width: 366 }}>
+          <Tree
+            onSelect={onSelect}
+            treeData={treeData}
+            draggable
+            blockNode
+            onDragEnter={onDragEnter}
+            onDrop={onDrop}
+            switcherIcon={<i className="iconfont icon-icon-fold c-gray" />}
+          />
+        </div>
         <ResourceCategoryCreate
           open={createVisible}
           onCancel={() => {

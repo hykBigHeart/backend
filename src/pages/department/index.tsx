@@ -72,32 +72,34 @@ export const DepartmentPage: React.FC = () => {
       if (!departments[departments[id][i].id]) {
         arr.push({
           title: (
-            <div className="d-flex">
-              <div className="w-250px mr-24">{departments[id][i].name}</div>
-              <Tooltip placement="top" title="可拖拽排序">
-                <i
-                  className="iconfont icon-icon-drag mr-16"
-                  style={{ fontSize: 24 }}
-                />
-              </Tooltip>
-              {through("department-cud") && (
-                <>
+            <>
+              <div className="w-174px mr-24">{departments[id][i].name}</div>
+              <div className="d-flex">
+                <Tooltip placement="top" title="可拖拽排序">
                   <i
-                    className="iconfont icon-icon-edit mr-16"
+                    className="iconfont icon-icon-drag mr-16"
                     style={{ fontSize: 24 }}
-                    onClick={() => {
-                      setDid(departments[id][i].id);
-                      setUpdateVisible(true);
-                    }}
                   />
-                  <i
-                    className="iconfont icon-icon-delete"
-                    style={{ fontSize: 24 }}
-                    onClick={() => removeItem(departments[id][i].id)}
-                  />
-                </>
-              )}
-            </div>
+                </Tooltip>
+                {through("department-cud") && (
+                  <>
+                    <i
+                      className="iconfont icon-icon-edit mr-16"
+                      style={{ fontSize: 24 }}
+                      onClick={() => {
+                        setDid(departments[id][i].id);
+                        setUpdateVisible(true);
+                      }}
+                    />
+                    <i
+                      className="iconfont icon-icon-delete"
+                      style={{ fontSize: 24 }}
+                      onClick={() => removeItem(departments[id][i].id)}
+                    />
+                  </>
+                )}
+              </div>
+            </>
           ),
           key: departments[id][i].id,
         });
@@ -105,32 +107,34 @@ export const DepartmentPage: React.FC = () => {
         const new_arr: Option[] = checkArr(departments, departments[id][i].id);
         arr.push({
           title: (
-            <div className="d-flex">
-              <div className="w-250px mr-24">{departments[id][i].name}</div>
-              <Tooltip placement="top" title="可拖拽排序">
-                <i
-                  className="iconfont icon-icon-drag mr-16"
-                  style={{ fontSize: 24 }}
-                />
-              </Tooltip>
-              {through("department-cud") && (
-                <>
+            <>
+              <div className="w-174px mr-24">{departments[id][i].name}</div>
+              <div className="d-flex">
+                <Tooltip placement="top" title="可拖拽排序">
                   <i
-                    className="iconfont icon-icon-edit mr-16"
+                    className="iconfont icon-icon-drag mr-16"
                     style={{ fontSize: 24 }}
-                    onClick={() => {
-                      setDid(departments[id][i].id);
-                      setUpdateVisible(true);
-                    }}
                   />
-                  <i
-                    className="iconfont icon-icon-delete"
-                    style={{ fontSize: 24 }}
-                    onClick={() => removeItem(departments[id][i].id)}
-                  />
-                </>
-              )}
-            </div>
+                </Tooltip>
+                {through("department-cud") && (
+                  <>
+                    <i
+                      className="iconfont icon-icon-edit mr-16"
+                      style={{ fontSize: 24 }}
+                      onClick={() => {
+                        setDid(departments[id][i].id);
+                        setUpdateVisible(true);
+                      }}
+                    />
+                    <i
+                      className="iconfont icon-icon-delete"
+                      style={{ fontSize: 24 }}
+                      onClick={() => removeItem(departments[id][i].id)}
+                    />
+                  </>
+                )}
+              </div>
+            </>
           ),
           key: departments[id][i].id,
           children: new_arr,
@@ -364,14 +368,17 @@ export const DepartmentPage: React.FC = () => {
         </div>
       </div>
       <div className="playedu-main-body">
-        <Tree
-          onSelect={onSelect}
-          treeData={treeData}
-          draggable
-          blockNode
-          onDragEnter={onDragEnter}
-          onDrop={onDrop}
-        />
+        <div style={{ width: 366 }}>
+          <Tree
+            onSelect={onSelect}
+            treeData={treeData}
+            draggable
+            blockNode
+            onDragEnter={onDragEnter}
+            onDrop={onDrop}
+            switcherIcon={<i className="iconfont icon-icon-fold c-gray" />}
+          />
+        </div>
         <DepartmentCreate
           open={createVisible}
           onCancel={() => {

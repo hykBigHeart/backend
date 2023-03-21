@@ -22,6 +22,13 @@ code {
     monospace;
 }
 
+.w-174px {
+  max-width: 174px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 .w-250px {
   width: 250px;
 }
@@ -447,7 +454,6 @@ textarea.ant-input {
     }
   }
   .ant-tree-switcher {
-    padding-left: 9px;
     height: 40px !important;
     display: flex;
     align-items: center;
@@ -469,7 +475,7 @@ textarea.ant-input {
 }
 
 .ant-tree-switcher {
-  padding-left: 4px;
+  padding-left: 6px;
   position: relative;
 }
 
@@ -513,7 +519,7 @@ textarea.ant-input {
 }
 
 .tree-title-elli {
-  max-width:100px;
+  max-width: 100px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -584,5 +590,18 @@ textarea.ant-input {
   cursor: pointer;
   &:hover {
     opacity: 0.8;
+  }
+}
+
+.ant-tree-switcher_close {
+  .c-gray {
+    color: rgba(0, 0, 0, 0.3);
+  }
+}
+
+.ant-tree-switcher_open {
+  .c-gray {
+    color: rgba(0, 0, 0, 0.3);
+    transform: rotate(90deg);
   }
 }
