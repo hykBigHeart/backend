@@ -89,14 +89,30 @@ export const LeftMenu: React.FC = () => {
     }
     return [];
   };
+  const openKeyMerge = (pathname: string): string[] => {
+    let newOpenKeys = hit(pathname);
+    for (let i = 0; i < openKeys.length; i++) {
+      let isIn = false;
+      for (let j = 0; j < newOpenKeys.length; j++) {
+        if (newOpenKeys[j] === openKeys[i]) {
+          isIn = true;
+          break;
+        }
+      }
+      if (isIn) {
+        continue;
+      }
+      newOpenKeys.push(openKeys[i]);
+    }
+    return newOpenKeys;
+  };
 
-  // 默认选中的菜单
-  let defaultSelectedKeys: string[] = [location.pathname];
-  // 默认打开的子菜单
-  let defaultOpenKeys: string[] = hit(location.pathname);
   // 选中的菜单
-  const [selectedKeys, setSelectedKeys] =
-    useState<string[]>(defaultSelectedKeys);
+  const [selectedKeys, setSelectedKeys] = useState<string[]>([
+    location.pathname,
+  ]);
+  // 展开菜单
+  const [openKeys, setOpenKeys] = useState<string[]>(hit(location.pathname));
 
   const onClick = (e: any) => {
     navigate(e.key);
@@ -104,6 +120,7 @@ export const LeftMenu: React.FC = () => {
 
   useEffect(() => {
     setSelectedKeys([location.pathname]);
+    setOpenKeys(openKeyMerge(location.pathname));
   }, [location.pathname]);
 
   return (
@@ -129,13 +146,15 @@ export const LeftMenu: React.FC = () => {
           width: 200,
           background: "#ffffff",
         }}
-        defaultSelectedKeys={defaultSelectedKeys}
-        defaultOpenKeys={defaultOpenKeys}
         selectedKeys={selectedKeys}
+        openKeys={openKeys}
         mode="inline"
         items={items}
         onSelect={(data: any) => {
           setSelectedKeys(data.selectedKeys);
+        }}
+        onOpenChange={(keys: any) => {
+          setOpenKeys(keys);
         }}
       />
     </div>
