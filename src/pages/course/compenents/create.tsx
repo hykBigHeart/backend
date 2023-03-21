@@ -168,26 +168,31 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
   };
 
   const getChapterType = (e: any) => {
-    confirm({
-      title: "操作确认",
-      icon: <ExclamationCircleFilled />,
-      content: "切换列表选项会清空已添加课时，确认切换？",
-      centered: true,
-      okText: "确认",
-      cancelText: "取消",
-      onOk() {
-        setChapterType(e.target.value);
-        setChapters([]);
-        setHours([]);
-        setChapterHours([]);
-        setTreeData([]);
-      },
-      onCancel() {
-        form.setFieldsValue({
-          hasChapter: chapterType,
-        });
-      },
-    });
+    const arr = [...chapters];
+    if (arr.length > 0) {
+      confirm({
+        title: "操作确认",
+        icon: <ExclamationCircleFilled />,
+        content: "切换列表选项会清空已添加课时，确认切换？",
+        centered: true,
+        okText: "确认",
+        cancelText: "取消",
+        onOk() {
+          setChapterType(e.target.value);
+          setChapters([]);
+          setHours([]);
+          setChapterHours([]);
+          setTreeData([]);
+        },
+        onCancel() {
+          form.setFieldsValue({
+            hasChapter: chapterType,
+          });
+        },
+      });
+    } else {
+      setChapterType(e.target.value);
+    }
   };
 
   const delHour = (id: number) => {
@@ -378,7 +383,9 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
               rules={[{ required: true, message: "请选择课程类型!" }]}
             >
               <Radio.Group onChange={getType}>
-                <Radio value="open">公开课</Radio>
+                <Radio value="open">
+                  公开课 <i className="iconfont icon-icon-tips c-gray ml-8" />
+                </Radio>
                 <Radio value="elective">部门课</Radio>
               </Radio.Group>
             </Form.Item>

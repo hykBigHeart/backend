@@ -1,11 +1,11 @@
 import client from "./internal/httpClient";
 
 export function courseChapterList(courseId: number) {
-  return client.get(`/backend/v1/course/${courseId}/course-chapter/index`, {});
+  return client.get(`/backend/v1/course/${courseId}/chapter/index`, {});
 }
 
 export function createCourseChapter(courseId: number) {
-  return client.get(`/backend/v1/course/${courseId}/course-chapter/create`, {});
+  return client.get(`/backend/v1/course/${courseId}/chapter/create`, {});
 }
 
 export function storeCourseChapter(
@@ -13,7 +13,7 @@ export function storeCourseChapter(
   name: string,
   sort: number
 ) {
-  return client.post(`/backend/v1/course/${courseId}/course-chapter/create`, {
+  return client.post(`/backend/v1/course/${courseId}/chapter/create`, {
     name: name,
     sort: sort,
   });
@@ -29,12 +29,18 @@ export function updateCourseChapter(
   name: string,
   sort: number
 ) {
-  return client.post(`/backend/v1/course/${courseId}/course-chapter/${id}`, {
+  return client.put(`/backend/v1/course/${courseId}/chapter/${id}`, {
     name: name,
     sort: sort,
   });
 }
 
 export function destroyCourseChapter(courseId: number, id: number) {
-  return client.destroy(`/backend/v1/course/${courseId}/course-chapter/${id}`);
+  return client.destroy(`/backend/v1/course/${courseId}/chapter/${id}`);
+}
+
+export function transCourseChapter(courseId: number, ids: number[]) {
+  return client.put(`/backend/v1/course/${courseId}/chapter/update/sort`, {
+    ids: ids,
+  });
 }

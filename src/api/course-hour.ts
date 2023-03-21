@@ -1,11 +1,11 @@
 import client from "./internal/httpClient";
 
 export function courseHourList(courseId: number) {
-  return client.get(`/backend/v1/course/${courseId}/course-hour/index`, {});
+  return client.get(`/backend/v1/course/${courseId}/hour/index`, {});
 }
 
 export function createCourseHour(courseId: number) {
-  return client.get(`/backend/v1/course/${courseId}/course-hour/create`, {});
+  return client.get(`/backend/v1/course/${courseId}/hour/create`, {});
 }
 
 export function storeCourseHour(
@@ -14,19 +14,26 @@ export function storeCourseHour(
   title: string,
   type: string,
   druation: number,
-  publishedAt: string
+  rid: number
 ) {
-  return client.post(`/backend/v1/course/${courseId}/course-hour/create`, {
+  return client.post(`/backend/v1/course/${courseId}/hour/create`, {
     chapter_id: chapterId,
     title,
     type,
     druation,
-    published_at: publishedAt,
+    sort: 0,
+    rid,
+  });
+}
+
+export function storeCourseHourMulti(courseId: number, hours: number[]) {
+  return client.post(`/backend/v1/course/${courseId}/hour/create-batch`, {
+    hours: hours,
   });
 }
 
 export function courseHour(courseId: number, id: number) {
-  return client.get(`/backend/v1/course/${courseId}/course-hour/${id}`, {});
+  return client.get(`/backend/v1/course/${courseId}/hour/${id}`, {});
 }
 
 export function updateCourseHour(
@@ -36,17 +43,24 @@ export function updateCourseHour(
   title: string,
   type: string,
   druation: number,
-  publishedAt: string
+  rid: number
 ) {
-  return client.post(`/backend/v1/course/${courseId}/course-hour/${id}`, {
+  return client.put(`/backend/v1/course/${courseId}/hour/${id}`, {
     chapter_id: chapterId,
     title,
     type,
     druation,
-    published_at: publishedAt,
+    sort: 0,
+    rid,
   });
 }
 
 export function destroyCourseHour(courseId: number, id: number) {
-  return client.destroy(`/backend/v1/course/${courseId}/course-hour/${id}`);
+  return client.destroy(`/backend/v1/course/${courseId}/hour/${id}`);
+}
+
+export function transCourseHour(courseId: number, ids: number[]) {
+  return client.put(`/backend/v1/course/${courseId}/hour/update/sort`, {
+    ids: ids,
+  });
 }

@@ -10,7 +10,7 @@ import {
   Space,
   Tabs,
 } from "antd";
-import { course, department, resourceCategory } from "../../api";
+import { course } from "../../api";
 import styles from "./index.module.less";
 import { PlusOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
@@ -20,6 +20,7 @@ import { TreeDepartment, TreeCategory, PerButton } from "../../compenents";
 import type { TabsProps } from "antd";
 import { CourseCreate } from "./compenents/create";
 import { CourseUpdate } from "./compenents/update";
+import { CourseHourUpdate } from "./compenents/hour-update";
 
 const { confirm } = Modal;
 
@@ -50,6 +51,7 @@ export const CoursePage = () => {
 
   const [createVisible, setCreateVisible] = useState<boolean>(false);
   const [updateVisible, setUpdateVisible] = useState<boolean>(false);
+  const [updateHourVisible, setHourUpdateVisible] = useState<boolean>(false);
   const [cid, setCid] = useState<number>(0);
 
   const items: TabsProps["items"] = [
@@ -133,9 +135,35 @@ export const CoursePage = () => {
       title: "操作",
       key: "action",
       fixed: "right",
-      width: 100,
+      width: 210,
       render: (_, record: any) => (
         <Space size="small">
+          <PerButton
+            type="link"
+            text="学员"
+            class="b-link c-red"
+            icon={null}
+            p="course"
+            onClick={() => {
+              setCid(Number(record.id));
+              console.log("学员" + record.id);
+            }}
+            disabled={null}
+          />
+          <div className="form-column"></div>
+          <PerButton
+            type="link"
+            text="课时"
+            class="b-link c-red"
+            icon={null}
+            p="course"
+            onClick={() => {
+              setCid(Number(record.id));
+              setHourUpdateVisible(true);
+            }}
+            disabled={null}
+          />
+          <div className="form-column"></div>
           <PerButton
             type="link"
             text="编辑"
@@ -302,6 +330,14 @@ export const CoursePage = () => {
               open={createVisible}
               onCancel={() => {
                 setCreateVisible(false);
+                setRefresh(!refresh);
+              }}
+            />
+            <CourseHourUpdate
+              id={cid}
+              open={updateHourVisible}
+              onCancel={() => {
+                setHourUpdateVisible(false);
                 setRefresh(!refresh);
               }}
             />

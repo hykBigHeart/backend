@@ -13,10 +13,8 @@ import {
 } from "antd";
 import styles from "./update.module.less";
 import { course, department } from "../../../api/index";
-import { UploadImageButton, SelectResource } from "../../../compenents";
-import { ExclamationCircleFilled } from "@ant-design/icons";
+import { UploadImageButton } from "../../../compenents";
 import { getHost } from "../../../utils/index";
-import { TreeHours } from "./hours";
 
 const { confirm } = Modal;
 
@@ -46,13 +44,6 @@ export const CourseUpdate: React.FC<PropInterface> = ({
   const [categories, setCategories] = useState<any>([]);
   const [thumb, setThumb] = useState<string>("");
   const [type, setType] = useState<string>("open");
-  const [chapterType, setChapterType] = useState(0);
-  const [chapters, setChapters] = useState<any>([]);
-  const [hours, setHours] = useState<any>([]);
-  const [chapterHours, setChapterHours] = useState<any>([]);
-  const [videoVisible, setVideoVisible] = useState<boolean>(false);
-  const [treeData, setTreeData] = useState<any>([]);
-  const [addvideoCurrent, setAddvideoCurrent] = useState(0);
 
   useEffect(() => {
     if (id === 0) {
@@ -143,53 +134,7 @@ export const CourseUpdate: React.FC<PropInterface> = ({
       });
       setType(type);
       setThumb(res.data.course.thumb);
-      setChapterType(chapterType);
-      if (chapterType === 1) {
-        setTreeData([]);
-        setHours([]);
-        let hours = res.data.hours;
-        let chapters = res.data.chapters;
-        const arr: any = [];
-        const keys: any = [];
-        for (let i = 0; i < chapters.length; i++) {
-          arr.push({
-            name: chapters[i].name,
-            hours: resetHours(hours[chapters[i].id]).arr,
-          });
-          keys.push(resetHours(hours[chapters[i].id]).keys);
-        }
-        setChapters(arr);
-        setChapterHours(keys);
-      } else {
-        setChapters([]);
-        setChapterHours([]);
-        let hours = res.data.hours;
-        if (JSON.stringify(hours) !== "{}") {
-          const arr: any = resetHours(hours[0]).arr;
-          const keys: any = resetHours(hours[0]).keys;
-          setTreeData(arr);
-          setHours(keys);
-        } else {
-          setTreeData([]);
-          setHours([]);
-        }
-      }
     });
-  };
-
-  const resetHours = (data: any) => {
-    const arr: any = [];
-    const keys: any = [];
-    for (let i = 0; i < data.length; i++) {
-      arr.push({
-        duration: data[i].duration,
-        type: data[i].type,
-        name: data[i].title,
-        rid: data[i].rid,
-      });
-      keys.push(data[i].rid);
-    }
-    return { arr, keys };
   };
 
   const checkChild = (departments: any[], id: number) => {
@@ -247,8 +192,8 @@ export const CourseUpdate: React.FC<PropInterface> = ({
         values.isRequired,
         dep_ids,
         category_ids,
-        chapters,
-        treeData
+        [],
+        []
       )
       .then((res: any) => {
         message.success("保存成功！");
@@ -262,150 +207,6 @@ export const CourseUpdate: React.FC<PropInterface> = ({
 
   const getType = (e: any) => {
     setType(e.target.value);
-  };
-
-  const selectData = (arr: any, videos: any) => {
-    setHours(arr);
-    setTreeData(videos);
-    setVideoVisible(false);
-  };
-
-  const selectChapterData = (arr: any, videos: any) => {
-    const data = [...chapters];
-    const keys = [...chapterHours];
-    keys[addvideoCurrent] = arr;
-    data[addvideoCurrent].hours = videos;
-    setChapters(data);
-    setChapterHours(keys);
-    setVideoVisible(false);
-  };
-
-  const getChapterType = (e: any) => {
-    confirm({
-      title: "操作确认",
-      icon: <ExclamationCircleFilled />,
-      content: "切换列表选项会清空已添加课时，确认切换？",
-      centered: true,
-      okText: "确认",
-      cancelText: "取消",
-      onOk() {
-        setChapterType(e.target.value);
-        setChapters([]);
-        setHours([]);
-        setChapterHours([]);
-        setTreeData([]);
-      },
-      onCancel() {
-        form.setFieldsValue({
-          hasChapter: chapterType,
-        });
-      },
-    });
-  };
-
-  const delHour = (id: number) => {
-    const data = [...treeData];
-    const index = data.findIndex((i: any) => i.rid === id);
-    if (index >= 0) {
-      data.splice(index, 1);
-    }
-    if (data.length > 0) {
-      setTreeData(data);
-      const keys = data.map((item: any) => item.rid);
-      setHours(keys);
-    } else {
-      setTreeData([]);
-      setHours([]);
-    }
-  };
-
-  const transHour = (arr: any) => {
-    setHours(arr);
-    const data = [...treeData];
-    const newArr: any = [];
-    for (let i = 0; i < arr.length; i++) {
-      data.map((item: any) => {
-        if (item.rid === arr[i]) {
-          newArr.push(item);
-        }
-      });
-    }
-    setTreeData(newArr);
-  };
-
-  const addNewChapter = () => {
-    const arr = [...chapters];
-    const keys = [...chapterHours];
-    arr.push({
-      name: "",
-      hours: [],
-    });
-    keys.push([]);
-    setChapters(arr);
-    setChapterHours(keys);
-  };
-
-  const setChapterName = (index: number, value: string) => {
-    const arr = [...chapters];
-    arr[index].name = value;
-    setChapters(arr);
-  };
-
-  const delChapter = (index: number) => {
-    const arr = [...chapters];
-    const keys = [...chapterHours];
-    confirm({
-      title: "操作确认",
-      icon: <ExclamationCircleFilled />,
-      content: "删除章节会清空已添加课时，确认删除？",
-      centered: true,
-      okText: "确认",
-      cancelText: "取消",
-      onOk() {
-        arr.splice(index, 1);
-        keys.splice(index, 1);
-        setChapters(arr);
-        setChapterHours(keys);
-      },
-      onCancel() {},
-    });
-  };
-
-  const delChapterHour = (index: number, id: number) => {
-    const keys = [...chapterHours];
-    const data = [...chapters];
-    const current = data[index].hours.findIndex((i: any) => i.rid === id);
-    if (current >= 0) {
-      data[index].hours.splice(current, 1);
-    }
-    if (data[index].hours.length > 0) {
-      setChapters(data);
-      keys[index] = data[index].hours.map((item: any) => item.rid);
-      setChapterHours(keys);
-    } else {
-      keys[index] = [];
-      data[index].hours = [];
-      setChapters(data);
-      setChapterHours(keys);
-    }
-  };
-
-  const transChapterHour = (index: number, arr: any) => {
-    const keys = [...chapterHours];
-    keys[index] = arr;
-    setChapterHours(keys);
-
-    const data = [...chapters];
-    const newArr: any = [];
-    for (let i = 0; i < arr.length; i++) {
-      data[index].hours.map((item: any) => {
-        if (item.rid === arr[i]) {
-          newArr.push(item);
-        }
-      });
-    }
-    data[index].hours = newArr;
-    setChapters(data);
   };
 
   return (
@@ -426,22 +227,6 @@ export const CourseUpdate: React.FC<PropInterface> = ({
         width={634}
       >
         <div className="float-left mt-24">
-          <SelectResource
-            defaultKeys={
-              chapterType == 0 ? hours : chapterHours[addvideoCurrent]
-            }
-            open={videoVisible}
-            onCancel={() => {
-              setVideoVisible(false);
-            }}
-            onSelected={(arr: any, videos: any) => {
-              if (chapterType == 0) {
-                selectData(arr, videos);
-              } else {
-                selectChapterData(arr, videos);
-              }
-            }}
-          />
           <Form
             form={form}
             name="basic"
@@ -491,7 +276,10 @@ export const CourseUpdate: React.FC<PropInterface> = ({
               rules={[{ required: true, message: "请选择课程类型!" }]}
             >
               <Radio.Group onChange={getType}>
-                <Radio value="open">公开课</Radio>
+                <Radio value="open">
+                  公开课
+                  <i className="iconfont icon-icon-tips c-gray ml-8" />
+                </Radio>
                 <Radio value="elective">部门课</Radio>
               </Radio.Group>
             </Form.Item>
@@ -617,111 +405,6 @@ export const CourseUpdate: React.FC<PropInterface> = ({
                 placeholder="请输入课程简介"
               />
             </Form.Item>
-            <Form.Item
-              label="课时列表"
-              name="hasChapter"
-              rules={[{ required: true, message: "请选择课时列表!" }]}
-            >
-              <Radio.Group onChange={getChapterType}>
-                <Radio value={0}>无章节</Radio>
-                <Radio value={1}>有章节</Radio>
-              </Radio.Group>
-            </Form.Item>
-            {chapterType === 0 && (
-              <div className="c-flex">
-                <Form.Item>
-                  <div className="ml-120">
-                    <Button
-                      onClick={() => setVideoVisible(true)}
-                      type="primary"
-                    >
-                      添加课时
-                    </Button>
-                  </div>
-                </Form.Item>
-                <div className={styles["hous-box"]}>
-                  {treeData.length === 0 && (
-                    <span className={styles["no-hours"]}>
-                      请点击上方按钮添加课时
-                    </span>
-                  )}
-                  {treeData.length > 0 && (
-                    <TreeHours
-                      data={treeData}
-                      onRemoveItem={(id: number) => {
-                        delHour(id);
-                      }}
-                      onUpdate={(arr: any[]) => {
-                        transHour(arr);
-                      }}
-                    />
-                  )}
-                </div>
-              </div>
-            )}
-            {chapterType === 1 && (
-              <div className="c-flex">
-                {chapters.length > 0 &&
-                  chapters.map((item: any, index: number) => {
-                    return (
-                      <div
-                        key={item.hours.length + "章节" + index}
-                        className={styles["chapter-item"]}
-                      >
-                        <div className="d-flex">
-                          <div className={styles["label"]}>
-                            章节{index + 1}：
-                          </div>
-                          <Input
-                            value={item.name}
-                            className={styles["input"]}
-                            onChange={(e) => {
-                              setChapterName(index, e.target.value);
-                            }}
-                            placeholder="请在此处输入章节名称"
-                          />
-                          <Button
-                            className="mr-16"
-                            type="primary"
-                            onClick={() => {
-                              setVideoVisible(true);
-                              setAddvideoCurrent(index);
-                            }}
-                          >
-                            添加课时
-                          </Button>
-                          <Button onClick={() => delChapter(index)}>
-                            删除章节
-                          </Button>
-                        </div>
-                        <div className={styles["chapter-hous-box"]}>
-                          {item.hours.length === 0 && (
-                            <span className={styles["no-hours"]}>
-                              请点击上方按钮添加课时
-                            </span>
-                          )}
-                          {item.hours.length > 0 && (
-                            <TreeHours
-                              data={item.hours}
-                              onRemoveItem={(id: number) => {
-                                delChapterHour(index, id);
-                              }}
-                              onUpdate={(arr: any[]) => {
-                                transChapterHour(index, arr);
-                              }}
-                            />
-                          )}
-                        </div>
-                      </div>
-                    );
-                  })}
-                <Form.Item>
-                  <div className="ml-120">
-                    <Button onClick={() => addNewChapter()}>添加章节</Button>
-                  </div>
-                </Form.Item>
-              </div>
-            )}
           </Form>
         </div>
       </Drawer>
