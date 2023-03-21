@@ -160,7 +160,7 @@ export const ResourceCategoryPage: React.FC = () => {
           modal.warning({
             title: "操作确认",
             centered: true,
-            okText: "确认",
+            okText: "好的",
             content: (
               <p>
                 此分类下包含
@@ -175,7 +175,7 @@ export const ResourceCategoryPage: React.FC = () => {
           modal.warning({
             title: "操作确认",
             centered: true,
-            okText: "确认",
+            okText: "好的",
             content: (
               <p>
                 此分类已关联

@@ -161,7 +161,7 @@ export const DepartmentPage: React.FC = () => {
           modal.warning({
             title: "操作确认",
             centered: true,
-            okText: "确认",
+            okText: "好的",
             content: (
               <p>
                 此部门下包含
@@ -176,7 +176,7 @@ export const DepartmentPage: React.FC = () => {
           modal.warning({
             title: "操作确认",
             centered: true,
-            okText: "确认",
+            okText: "好的",
             content: (
               <p>
                 此部门已关联
