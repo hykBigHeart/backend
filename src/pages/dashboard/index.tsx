@@ -37,6 +37,26 @@ export const Dashboard: React.FC<any> = () => {
     var echarts = require("echarts");
     let myChart = echarts.init(document.getElementById("chartCircle"));
     myChart.setOption({
+      title: {
+        textAlign: "center",
+        x: "49.5%",
+        y: "29%",
+        text: num, //主标题
+        subtext: "总资源数", //副标题
+        textStyle: {
+          //标题样式
+          fontSize: 24,
+          fontWeight: "bolder",
+          color: "#333",
+        },
+        subtextStyle: {
+          //副标题样式
+          fontSize: 14,
+          fontWeight: "bolder",
+          color: "rgba(0, 0, 0, 0.45)",
+          formatter: "",
+        },
+      },
       legend: [
         {
           selectedMode: true, // 图例选择的模式，控制是否可以通过点击图例改变系列的显示状态。默认开启图例选择，可以设成 false 关闭。
@@ -51,7 +71,16 @@ export const Dashboard: React.FC<any> = () => {
         },
       ],
       tooltip: {
-        show: true, // 是否显示提示框
+        trigger: "item",
+        formatter: " {b}: {c} ",
+      },
+      label: {
+        formatter: " {b}: {c} ",
+        rich: {
+          per: {
+            color: "#000",
+          },
+        },
       },
       series: [
         {
@@ -69,7 +98,22 @@ export const Dashboard: React.FC<any> = () => {
             disabled: true,
           },
           label: {
-            show: false,
+            normal: {
+              show: true,
+              color: "#4c4a4a",
+              formatter: "{active|{c}}" + "\n\r" + "{total| {b} }",
+              rich: {
+                total: {
+                  fontSize: 15,
+                  color: "#454c5c",
+                },
+                active: {
+                  fontSize: 15,
+                  color: "#6c7a89",
+                  lineHeight: 30,
+                },
+              },
+            },
           },
           data: data,
         },
@@ -289,7 +333,7 @@ export const Dashboard: React.FC<any> = () => {
             <div className={styles["charts"]}>
               <div
                 id="chartCircle"
-                style={{ width: "100%", height: 280 }}
+                style={{ width: "100%", height: 280, position: "relative" }}
               ></div>
             </div>
           </div>
