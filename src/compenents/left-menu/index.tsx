@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Menu } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import styles from "./index.module.less";
@@ -81,23 +81,30 @@ export const LeftMenu: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  let defaultSelectedKeys: string[] = [location.pathname];
-  let defaultOpenKeys: string[] = [];
-  if (children2Parent[location.pathname]) {
-    defaultOpenKeys = children2Parent[location.pathname];
-  }
-  for (let p in children2Parent) {
-    if (location.pathname.search(p) >= 0) {
-      defaultOpenKeys = children2Parent[p];
-      break;
+  const hit = (pathname: string): string[] => {
+    for (let p in children2Parent) {
+      if (pathname.search(p) >= 0) {
+        return children2Parent[p];
+      }
     }
-  }
+    return [];
+  };
+
+  // 默认选中的菜单
+  let defaultSelectedKeys: string[] = [location.pathname];
+  // 默认打开的子菜单
+  let defaultOpenKeys: string[] = hit(location.pathname);
+  // 选中的菜单
+  const [selectedKeys, setSelectedKeys] =
+    useState<string[]>(defaultSelectedKeys);
 
   const onClick = (e: any) => {
     navigate(e.key);
   };
 
-  useEffect(() => {}, [location]);
+  useEffect(() => {
+    setSelectedKeys([location.pathname]);
+  }, [location.pathname]);
 
   return (
     <div className={styles["left-menu"]}>
@@ -124,8 +131,12 @@ export const LeftMenu: React.FC = () => {
         }}
         defaultSelectedKeys={defaultSelectedKeys}
         defaultOpenKeys={defaultOpenKeys}
+        selectedKeys={selectedKeys}
         mode="inline"
         items={items}
+        onSelect={(data: any) => {
+          setSelectedKeys(data.selectedKeys);
+        }}
       />
     </div>
   );
