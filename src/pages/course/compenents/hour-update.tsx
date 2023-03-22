@@ -105,15 +105,18 @@ export const CourseHourUpdate: React.FC<PropInterface> = ({
 
   const selectData = (arr: any, videos: any) => {
     const hours: any = [];
+    console.log(videos);
     for (let i = 0; i < videos.length; i++) {
-      hours.push({
-        chapter_id: 0,
-        sort: i,
-        title: videos[i].name,
-        type: videos[i].type,
-        duration: videos[i].duration,
-        rid: videos[i].rid,
-      });
+      if (videos[i].disabled === false) {
+        hours.push({
+          chapter_id: 0,
+          sort: i,
+          title: videos[i].name,
+          type: videos[i].type,
+          duration: videos[i].duration,
+          rid: videos[i].rid,
+        });
+      }
     }
     courseHour
       .storeCourseHourMulti(id, hours)
@@ -135,14 +138,16 @@ export const CourseHourUpdate: React.FC<PropInterface> = ({
     }
     const hours: any = [];
     for (let i = 0; i < videos.length; i++) {
-      hours.push({
-        chapter_id: data[addvideoCurrent].id,
-        sort: i,
-        title: videos[i].name,
-        type: videos[i].type,
-        duration: videos[i].duration,
-        rid: videos[i].rid,
-      });
+      if (videos[i].disabled === false) {
+        hours.push({
+          chapter_id: data[addvideoCurrent].id,
+          sort: i,
+          title: videos[i].name,
+          type: videos[i].type,
+          duration: videos[i].duration,
+          rid: videos[i].rid,
+        });
+      }
     }
     courseHour
       .storeCourseHourMulti(id, hours)

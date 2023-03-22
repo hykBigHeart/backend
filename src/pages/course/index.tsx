@@ -157,7 +157,6 @@ export const CoursePage = () => {
     {
       title: "必修/选修",
       dataIndex: "isRequired",
-      width: 120,
       render: (isRequired: number) => (
         <span>{isRequired === 1 ? "必修课" : "选修课"}</span>
       ),

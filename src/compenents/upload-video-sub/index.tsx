@@ -25,7 +25,7 @@ interface PropsInterface {
 
 export const UploadVideoSub = (props: PropsInterface) => {
   const [category_ids, setCategoryIds] = useState<any>([]);
-
+  const [loading, setLoading] = useState<boolean>(false);
   const [videoList, setVideoList] = useState<VideoItem[]>([]);
   const [videosExtra, setVideoExtra] = useState<any>([]);
   const [refresh, setRefresh] = useState(false);
@@ -39,7 +39,7 @@ export const UploadVideoSub = (props: PropsInterface) => {
   const [checkAll, setCheckAll] = useState(false);
 
   // 获取列表
-  const getvideoList = () => {
+  const getvideoList = (defaultKeys: any[]) => {
     let categoryIds = category_ids.join(",");
     resource
       .resourceList(page, size, "", "", "", "VIDEO", categoryIds)
@@ -69,7 +69,17 @@ export const UploadVideoSub = (props: PropsInterface) => {
               </div>
             ),
             value: data[i].id,
+            disabled: false,
           });
+        }
+        if (defaultKeys.length > 0 && arr.length > 0) {
+          for (let i = 0; i < defaultKeys.length; i++) {
+            for (let j = 0; j < arr.length; j++) {
+              if (arr[j].value === defaultKeys[i]) {
+                arr[j].disabled = true;
+              }
+            }
+          }
         }
         setPlainOptions(arr);
       })
@@ -83,7 +93,8 @@ export const UploadVideoSub = (props: PropsInterface) => {
     setVideoList([]);
     setRefresh(!refresh);
   };
-  //重置选中的key
+
+  // 加载列表
   useEffect(() => {
     const arr = [...props.defaultCheckedList];
     setCheckedList(arr);
@@ -91,12 +102,8 @@ export const UploadVideoSub = (props: PropsInterface) => {
       setIndeterminate(false);
       setCheckAll(false);
     }
-  }, [props.defaultCheckedList]);
-
-  // 加载列表
-  useEffect(() => {
-    getvideoList();
-  }, [props.open, category_ids, refresh, page, size]);
+    getvideoList(arr);
+  }, [props.open, props.defaultCheckedList, category_ids, refresh, page, size]);
 
   const onChange = (list: CheckboxValueType[]) => {
     setCheckedList(list);
@@ -104,13 +111,14 @@ export const UploadVideoSub = (props: PropsInterface) => {
     setCheckAll(list.length === plainOptions.length);
     let arrVideos: any = [];
     for (let i = 0; i < list.length; i++) {
-      videoList.map((item: any) => {
+      videoList.map((item: any, index: number) => {
         if (item.id === list[i]) {
           arrVideos.push({
             name: item.name,
             type: item.type,
             rid: item.id,
             duration: videosExtra[item.id].duration,
+            disabled: plainOptions[index].disabled,
           });
         }
       });
@@ -125,12 +133,13 @@ export const UploadVideoSub = (props: PropsInterface) => {
     setIndeterminate(false);
     setCheckAll(e.target.checked);
     let arrVideos: any = [];
-    videoList.map((item: any) => {
+    videoList.map((item: any, index: number) => {
       arrVideos.push({
         name: item.name,
         type: item.type,
         rid: item.id,
         duration: videosExtra[item.id].duration,
+        disabled: plainOptions[index].disabled,
       });
     });
     if (e.target.checked) {
@@ -184,11 +193,6 @@ export const UploadVideoSub = (props: PropsInterface) => {
                 />
               </div>
             )}
-            {/* {videoList.map((item) => (
-              <div className={styles["video-item"]} key={item.id}>
-                {item.name}
-              </div>
-            ))} */}
           </div>
           <Row
             style={{

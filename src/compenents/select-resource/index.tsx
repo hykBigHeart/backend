@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Row, Col, Modal, message, Tabs } from "antd";
+import { Button, Row, Modal, message, Tabs } from "antd";
 import styles from "./index.module.less";
 import { UploadVideoSub } from "../../compenents";
 import type { TabsProps } from "antd";

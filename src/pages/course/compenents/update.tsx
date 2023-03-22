@@ -80,7 +80,7 @@ export const CourseUpdate: React.FC<PropInterface> = ({
       let box = res.data.dep_ids;
       let depIds: any[] = [];
       let type = res.data.dep_ids.length > 0 ? "elective" : "open";
-      if (box.length > 1) {
+      if (box.length > 0) {
         for (let i = 0; i < box.length; i++) {
           let item = checkChild(deps, box[i]);
           let arr: any[] = [];
