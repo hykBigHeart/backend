@@ -108,7 +108,7 @@ export const MemberCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
         <div className="float-left mt-24">
           <Form
             form={form}
-            name="basic"
+            name="create-basic"
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 16 }}
             initialValues={{ remember: true }}

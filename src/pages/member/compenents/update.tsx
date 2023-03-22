@@ -162,7 +162,7 @@ export const MemberUpdate: React.FC<PropInterface> = ({
         <div className="float-left mt-24">
           <Form
             form={form}
-            name="basic"
+            name="update-basic"
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 16 }}
             initialValues={{ remember: true }}
