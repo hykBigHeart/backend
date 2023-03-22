@@ -60,30 +60,22 @@ export const CourseCreate: React.FC<PropInterface> = ({
   useEffect(() => {
     getParams();
     getCategory();
-  }, []);
+  }, [open, cateIds, depIds]);
 
   useEffect(() => {
-    let type = "open";
-    if (depIds.length !== 0 && depIds[0] !== 0) {
-      type = "elective";
-    }
     form.setFieldsValue({
       title: "",
       thumb: defaultThumb1,
-      dep_ids: depIds,
-      category_ids: cateIds,
-      type: type,
       isRequired: 1,
       short_desc: "",
       hasChapter: 0,
     });
     setThumb(defaultThumb1);
-    setType(type);
     setChapterType(0);
     setChapters([]);
     setHours([]);
     setTreeData([]);
-  }, [form, open, cateIds, depIds]);
+  }, [form, open]);
 
   const getParams = () => {
     department.departmentList().then((res: any) => {
@@ -92,7 +84,45 @@ export const CourseCreate: React.FC<PropInterface> = ({
         const new_arr: Option[] = checkArr(departments, 0);
         setDepartments(new_arr);
       }
+      let type = "open";
+      if (depIds.length !== 0 && depIds[0] !== 0) {
+        type = "elective";
+        let item = checkChild(res.data.departments, depIds[0]);
+        let arr: any[] = [];
+        if (item === undefined) {
+          arr.push(depIds[0]);
+        } else if (item.parent_chain === "") {
+          arr.push(depIds[0]);
+        } else {
+          let new_arr = item.parent_chain.split(",");
+          new_arr.map((num: any) => {
+            arr.push(Number(num));
+          });
+          arr.push(depIds[0]);
+        }
+        form.setFieldsValue({
+          dep_ids: arr,
+        });
+      } else {
+        form.setFieldsValue({
+          dep_ids: depIds,
+        });
+      }
+      form.setFieldsValue({
+        type: type,
+      });
+      setType(type);
     });
+  };
+
+  const checkChild = (departments: any[], id: number) => {
+    for (let key in departments) {
+      for (let i = 0; i < departments[key].length; i++) {
+        if (departments[key][i].id === id) {
+          return departments[key][i];
+        }
+      }
+    }
   };
 
   const getCategory = () => {
@@ -101,6 +131,29 @@ export const CourseCreate: React.FC<PropInterface> = ({
       if (JSON.stringify(categories) !== "{}") {
         const new_arr: Option[] = checkArr(categories, 0);
         setCategories(new_arr);
+      }
+
+      if (cateIds.length !== 0 && cateIds[0] !== 0) {
+        let item = checkChild(res.data.categories, cateIds[0]);
+        let arr: any[] = [];
+        if (item === undefined) {
+          arr.push(cateIds[0]);
+        } else if (item.parent_chain === "") {
+          arr.push(cateIds[0]);
+        } else {
+          let new_arr = item.parent_chain.split(",");
+          new_arr.map((num: any) => {
+            arr.push(Number(num));
+          });
+          arr.push(cateIds[0]);
+        }
+        form.setFieldsValue({
+          category_ids: arr,
+        });
+      } else {
+        form.setFieldsValue({
+          category_ids: cateIds,
+        });
       }
     });
   };
