@@ -216,6 +216,7 @@ export const CourseUpdate: React.FC<PropInterface> = ({
               rules={[{ required: true, message: "请选择课程分类!" }]}
             >
               <Cascader
+                expandTrigger="hover"
                 style={{ width: 424 }}
                 options={categories}
                 changeOnSelect
