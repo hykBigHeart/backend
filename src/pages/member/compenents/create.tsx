@@ -115,7 +115,7 @@ export const MemberCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
             form={form}
             name="create-basic"
             labelCol={{ span: 7 }}
-            wrapperCol={{ span: 16 }}
+            wrapperCol={{ span: 17 }}
             initialValues={{ remember: true }}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}

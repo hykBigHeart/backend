@@ -168,8 +168,8 @@ export const MemberUpdate: React.FC<PropInterface> = ({
           <Form
             form={form}
             name="update-basic"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 16 }}
+            labelCol={{ span: 7 }}
+            wrapperCol={{ span: 17 }}
             initialValues={{ remember: true }}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
