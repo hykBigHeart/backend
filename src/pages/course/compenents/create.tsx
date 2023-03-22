@@ -369,7 +369,9 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
             >
               <Radio.Group>
                 <Radio value={1}>必修课</Radio>
-                <Radio value={0} style={{marginLeft:22}}>选修课</Radio>
+                <Radio value={0} style={{ marginLeft: 22 }}>
+                  选修课
+                </Radio>
               </Radio.Group>
             </Form.Item>
             <Form.Item
@@ -519,7 +521,9 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
             >
               <Radio.Group onChange={getChapterType}>
                 <Radio value={0}>无章节</Radio>
-                <Radio value={1}>有章节</Radio>
+                <Radio value={1} style={{ marginLeft: 22 }}>
+                  有章节
+                </Radio>
               </Radio.Group>
             </Form.Item>
             {chapterType === 0 && (
