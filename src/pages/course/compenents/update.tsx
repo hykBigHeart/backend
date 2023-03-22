@@ -239,7 +239,9 @@ export const CourseUpdate: React.FC<PropInterface> = ({
             >
               <Radio.Group>
                 <Radio value={1}>必修课</Radio>
-                <Radio value={0}>选修课</Radio>
+                <Radio value={0} style={{ marginLeft: 22 }}>
+                  选修课
+                </Radio>
               </Radio.Group>
             </Form.Item>
             <Form.Item
