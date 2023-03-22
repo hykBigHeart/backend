@@ -158,24 +158,37 @@ export const CourseHourUpdate: React.FC<PropInterface> = ({
 
   const delHour = (hid: number) => {
     const data = [...treeData];
-    const index = data.findIndex((i: any) => i.rid === hid);
-    let delId = data[index].id;
-    if (index >= 0) {
-      data.splice(index, 1);
-    }
-    if (data.length > 0) {
-      setTreeData(data);
-      const keys = data.map((item: any) => item.rid);
-      setHours(keys);
-    } else {
-      setTreeData([]);
-      setHours([]);
-    }
-    if (delId) {
-      courseHour.destroyCourseHour(id, delId).then((res: any) => {
-        console.log("ok");
-      });
-    }
+    confirm({
+      title: "操作确认",
+      icon: <ExclamationCircleFilled />,
+      content: "确认删除此课时？",
+      centered: true,
+      okText: "确认",
+      cancelText: "取消",
+      onOk() {
+        const index = data.findIndex((i: any) => i.rid === hid);
+        let delId = data[index].id;
+        if (index >= 0) {
+          data.splice(index, 1);
+        }
+        if (data.length > 0) {
+          setTreeData(data);
+          const keys = data.map((item: any) => item.rid);
+          setHours(keys);
+        } else {
+          setTreeData([]);
+          setHours([]);
+        }
+        if (delId) {
+          courseHour.destroyCourseHour(id, delId).then((res: any) => {
+            console.log("ok");
+          });
+        }
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
   };
 
   const transHour = (arr: any) => {
@@ -270,27 +283,40 @@ export const CourseHourUpdate: React.FC<PropInterface> = ({
   const delChapterHour = (index: number, hid: number) => {
     const keys = [...chapterHours];
     const data = [...chapters];
-    const current = data[index].hours.findIndex((i: any) => i.rid === hid);
-    let delId = data[index].hours.map((item: any) => item.id);
-    if (current >= 0) {
-      data[index].hours.splice(current, 1);
-    }
-    if (data[index].hours.length > 0) {
-      setChapters(data);
-      keys[index] = data[index].hours.map((item: any) => item.rid);
-      setChapterHours(keys);
-    } else {
-      keys[index] = [];
-      data[index].hours = [];
-      setChapters(data);
-      setChapterHours(keys);
-    }
+    confirm({
+      title: "操作确认",
+      icon: <ExclamationCircleFilled />,
+      content: "确认删除此课时？",
+      centered: true,
+      okText: "确认",
+      cancelText: "取消",
+      onOk() {
+        const current = data[index].hours.findIndex((i: any) => i.rid === hid);
+        let delId = data[index].hours.map((item: any) => item.id);
+        if (current >= 0) {
+          data[index].hours.splice(current, 1);
+        }
+        if (data[index].hours.length > 0) {
+          setChapters(data);
+          keys[index] = data[index].hours.map((item: any) => item.rid);
+          setChapterHours(keys);
+        } else {
+          keys[index] = [];
+          data[index].hours = [];
+          setChapters(data);
+          setChapterHours(keys);
+        }
 
-    if (delId) {
-      courseHour.destroyCourseHour(id, delId).then((res: any) => {
-        console.log("ok");
-      });
-    }
+        if (delId) {
+          courseHour.destroyCourseHour(id, delId).then((res: any) => {
+            console.log("ok");
+          });
+        }
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
   };
 
   const transChapterHour = (index: number, arr: any) => {
@@ -359,7 +385,7 @@ export const CourseHourUpdate: React.FC<PropInterface> = ({
             {chapterType === 0 && (
               <div className="c-flex">
                 <Form.Item>
-                  <div className="ml-120">
+                  <div className="ml-42">
                     <Button
                       onClick={() => setVideoVisible(true)}
                       type="primary"
@@ -448,7 +474,7 @@ export const CourseHourUpdate: React.FC<PropInterface> = ({
                     );
                   })}
                 <Form.Item>
-                  <div className="ml-120">
+                  <div className="ml-42">
                     <Button onClick={() => addNewChapter()}>添加章节</Button>
                   </div>
                 </Form.Item>
