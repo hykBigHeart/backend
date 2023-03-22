@@ -105,7 +105,6 @@ export const CourseHourUpdate: React.FC<PropInterface> = ({
 
   const selectData = (arr: any, videos: any) => {
     const hours: any = [];
-    console.log(videos);
     for (let i = 0; i < videos.length; i++) {
       if (videos[i].disabled === false) {
         hours.push({
