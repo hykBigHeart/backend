@@ -50,7 +50,7 @@ export const CoursePage = () => {
   const [category_ids, setCategoryIds] = useState<any>([]);
   const [title, setTitle] = useState<string>("");
   const [dep_ids, setDepIds] = useState<any>([]);
-  const [selLabel, setLabel] = useState<string>("全部课程");
+  const [selLabel, setLabel] = useState<string>("全部分类");
   const [course_category_ids, setCourseCategoryIds] = useState<any>({});
   const [course_dep_ids, setCourseDepIds] = useState<any>({});
   const [categories, setCategories] = useState<any>({});
@@ -70,7 +70,7 @@ export const CoursePage = () => {
         <div className="float-left">
           <TreeCategory
             type=""
-            text={"课程"}
+            text={"分类"}
             onUpdate={(keys: any, title: any) => {
               setCategoryIds(keys);
               if (typeof title == "string") {
@@ -341,7 +341,9 @@ export const CoursePage = () => {
           />
         </div>
         <div className="right-box">
-          <div className="playedu-main-title float-left mb-24">{selLabel}</div>
+          <div className="playedu-main-title float-left mb-24">
+            课程/{selLabel}
+          </div>
           <div className="float-left j-b-flex mb-24">
             <div className="d-flex">
               <PerButton

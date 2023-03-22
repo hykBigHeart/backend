@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Typography, Input, Modal, Button, Space, Table, message } from "antd";
+import {
+  Typography,
+  Input,
+  Modal,
+  Button,
+  Space,
+  Table,
+  message,
+  Image,
+} from "antd";
 import type { ColumnsType } from "antd/es/table";
 import styles from "./index.module.less";
 import { PlusOutlined, ExclamationCircleFilled } from "@ant-design/icons";
@@ -23,7 +32,6 @@ interface DataType {
 
 export const MemberPage: React.FC = () => {
   const navigate = useNavigate();
-  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
@@ -33,34 +41,55 @@ export const MemberPage: React.FC = () => {
 
   const [nickname, setNickname] = useState<string>("");
   const [email, setEmail] = useState<string>("");
-  const [id_card, setIdCard] = useState<string>("");
   const [dep_ids, setDepIds] = useState<any>([]);
   const [selLabel, setLabel] = useState<string>("全部部门");
   const [createVisible, setCreateVisible] = useState<boolean>(false);
   const [updateVisible, setUpdateVisible] = useState<boolean>(false);
   const [mid, setMid] = useState<number>(0);
+  const [course_dep_ids, setCourseDepIds] = useState<any>({});
+  const [departments, setDepartments] = useState<any>({});
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "ID",
-      key: "id",
-      dataIndex: "id",
-    },
-    {
-      title: "姓名",
+      title: "学员姓名",
       dataIndex: "name",
-      render: (text: string) => <span>{text}</span>,
+      render: (_, record: any) => (
+        <>
+          <Image
+            style={{ borderRadius: "50%" }}
+            src={record.avatar}
+            preview={false}
+            width={40}
+            height={40}
+          />
+          <span className="ml-8">{record.name}</span>
+        </>
+      ),
     },
     {
-      title: "邮箱",
+      title: "所属部门",
+      dataIndex: "id",
+      render: (id: number) => (
+        <div className="float-left">
+          {course_dep_ids[id] &&
+            course_dep_ids[id].map((item: any, index: number) => {
+              return (
+                <span key={index}>
+                  {index === course_dep_ids[id].length - 1
+                    ? departments[item]
+                    : departments[item] + "、"}
+                </span>
+              );
+            })}
+        </div>
+      ),
+    },
+    {
+      title: "登录邮箱",
       dataIndex: "email",
     },
     {
-      title: "身份证号",
-      dataIndex: "id_card",
-    },
-    {
-      title: "注册时间",
+      title: "加入时间",
       dataIndex: "created_at",
       render: (text: string) => <span>{dateFormat(text)}</span>,
     },
@@ -102,11 +131,6 @@ export const MemberPage: React.FC = () => {
     getData();
   }, [refresh, page, size, dep_ids]);
 
-  const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
-    setSelectedRowKeys(newSelectedRowKeys);
-  };
-
   const getData = () => {
     let depIds = dep_ids.join(",");
     setLoading(true);
@@ -114,30 +138,23 @@ export const MemberPage: React.FC = () => {
       .userList(page, size, {
         name: nickname,
         email: email,
-        id_card: id_card,
+        id_card: "",
         dep_ids: depIds,
       })
       .then((res: any) => {
         setList(res.data.data);
         setTotal(res.data.total);
         setLoading(false);
-        setSelectedRowKeys([]);
       });
   };
 
   const resetData = () => {
     setNickname("");
     setEmail("");
-    setIdCard("");
     setPage(1);
     setSize(10);
     setList([]);
     setRefresh(!refresh);
-  };
-
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: onSelectChange,
   };
 
   const paginationProps = {
@@ -177,7 +194,6 @@ export const MemberPage: React.FC = () => {
     });
   };
 
-  const hasSelected = selectedRowKeys.length > 0;
   return (
     <>
       <div className="tree-main-body">
@@ -192,7 +208,9 @@ export const MemberPage: React.FC = () => {
           />
         </div>
         <div className="right-box">
-          <div className="playedu-main-title float-left mb-24">{selLabel}</div>
+          <div className="playedu-main-title float-left mb-24">
+            学员/{selLabel}
+          </div>
           <div className="float-left j-b-flex mb-24">
             <div className="d-flex">
               <PerButton
@@ -206,8 +224,8 @@ export const MemberPage: React.FC = () => {
               />
               <Link style={{ textDecoration: "none" }} to={`/member/import`}>
                 <PerButton
-                  type="primary"
-                  text="学员批量导入"
+                  type="default"
+                  text="批量导入学员"
                   class="mr-16"
                   icon={null}
                   p="user-store"
@@ -225,7 +243,7 @@ export const MemberPage: React.FC = () => {
                     setNickname(e.target.value);
                   }}
                   style={{ width: 160 }}
-                  placeholder="请输入姓名"
+                  placeholder="请输入姓名关键字"
                 />
               </div>
               <div className="d-flex mr-24">
@@ -236,21 +254,10 @@ export const MemberPage: React.FC = () => {
                     setEmail(e.target.value);
                   }}
                   style={{ width: 160 }}
-                  placeholder="请输入邮箱"
+                  placeholder="请输入邮箱账号"
                 />
               </div>
-              <div className="d-flex mr-24">
-                <Typography.Text>身份证号：</Typography.Text>
-                <Input
-                  value={id_card}
-                  onChange={(e) => {
-                    setIdCard(e.target.value);
-                  }}
-                  style={{ width: 160 }}
-                  placeholder="请输入身份证号"
-                />
-              </div>
-              <div className="d-flex mr-24">
+              <div className="d-flex">
                 <Button className="mr-16" onClick={resetData}>
                   重 置
                 </Button>
@@ -268,7 +275,6 @@ export const MemberPage: React.FC = () => {
           </div>
           <div className="float-left">
             <Table
-              rowSelection={rowSelection}
               columns={columns}
               dataSource={list}
               loading={loading}
