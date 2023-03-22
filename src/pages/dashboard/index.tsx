@@ -305,13 +305,13 @@ export const Dashboard: React.FC<any> = () => {
                 </div>
               </div>
               <div className={styles["label-item"]}>
-                <div className={styles["label"]}>超级管理员</div>
+                <div className={styles["label"]}>分类数</div>
                 <div className={styles["info"]}>
                   <div className={styles["num"]}>2</div>
                 </div>
               </div>
               <div className={styles["label-item"]}>
-                <div className={styles["label"]}>子管理员</div>
+                <div className={styles["label"]}>管理员</div>
                 <div className={styles["info"]}>
                   <div className={styles["num"]}>8</div>
                 </div>

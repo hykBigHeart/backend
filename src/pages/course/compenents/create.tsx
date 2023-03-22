@@ -381,7 +381,10 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
                 <Radio value="open">
                   公开课
                   <Tooltip placement="top" title="公开课所有学员可见">
-                    <i className="iconfont icon-icon-tips c-gray ml-8" />
+                    <i
+                      style={{ fontSize: 14 }}
+                      className="iconfont icon-icon-tips c-gray ml-8"
+                    />
                   </Tooltip>
                 </Radio>
                 <Radio value="elective">部门课</Radio>
