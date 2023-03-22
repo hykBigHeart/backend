@@ -9,10 +9,16 @@ import {
   message,
   Space,
   Tabs,
+  Dropdown,
 } from "antd";
 import { course } from "../../api";
 import styles from "./index.module.less";
-import { PlusOutlined, ExclamationCircleFilled } from "@ant-design/icons";
+import {
+  PlusOutlined,
+  DownOutlined,
+  ExclamationCircleFilled,
+} from "@ant-design/icons";
+import type { MenuProps } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { dateFormat } from "../../utils/index";
 import { Link, useNavigate } from "react-router-dom";
@@ -164,59 +170,89 @@ export const CoursePage = () => {
       title: "操作",
       key: "action",
       fixed: "right",
-      width: 210,
-      render: (_, record: any) => (
-        <Space size="small">
-          <PerButton
-            type="link"
-            text="学员"
-            class="b-link c-red"
-            icon={null}
-            p="course"
-            onClick={() => {
-              setCid(Number(record.id));
-              console.log("学员" + record.id);
-            }}
-            disabled={null}
-          />
-          <div className="form-column"></div>
-          <PerButton
-            type="link"
-            text="课时"
-            class="b-link c-red"
-            icon={null}
-            p="course"
-            onClick={() => {
-              setCid(Number(record.id));
-              setHourUpdateVisible(true);
-            }}
-            disabled={null}
-          />
-          <div className="form-column"></div>
-          <PerButton
-            type="link"
-            text="编辑"
-            class="b-link c-red"
-            icon={null}
-            p="course"
-            onClick={() => {
-              setCid(Number(record.id));
-              setUpdateVisible(true);
-            }}
-            disabled={null}
-          />
-          <div className="form-column"></div>
-          <PerButton
-            type="link"
-            text="删除"
-            class="b-link c-red"
-            icon={null}
-            p="course"
-            onClick={() => delItem(record.id)}
-            disabled={null}
-          />
-        </Space>
-      ),
+      width: 160,
+      render: (_, record: any) => {
+        const items: MenuProps["items"] = [
+          {
+            key: "1",
+            label: (
+              <PerButton
+                type="link"
+                text="课时"
+                class="b-link c-red"
+                icon={null}
+                p="course"
+                onClick={() => {
+                  setCid(Number(record.id));
+                  setHourUpdateVisible(true);
+                }}
+                disabled={null}
+              />
+            ),
+          },
+          {
+            key: "2",
+            label: (
+              <PerButton
+                type="link"
+                text="编辑"
+                class="b-link c-red"
+                icon={null}
+                p="course"
+                onClick={() => {
+                  setCid(Number(record.id));
+                  setUpdateVisible(true);
+                }}
+                disabled={null}
+              />
+            ),
+          },
+          {
+            key: "3",
+            label: (
+              <PerButton
+                type="link"
+                text="删除"
+                class="b-link c-red"
+                icon={null}
+                p="course"
+                onClick={() => delItem(record.id)}
+                disabled={null}
+              />
+            ),
+          },
+        ];
+
+        return (
+          <Space size="small">
+            <PerButton
+              type="link"
+              text="学员"
+              class="b-link c-red"
+              icon={null}
+              p="course"
+              onClick={() => {
+                setCid(Number(record.id));
+                console.log("学员" + record.id);
+              }}
+              disabled={null}
+            />
+            <div className="form-column"></div>
+            <Dropdown menu={{ items }}>
+              <Button
+                type="link"
+                className="b-link c-red"
+                onClick={(e) => e.preventDefault()}
+              >
+                <Space>
+                  更多
+                  <DownOutlined />
+                </Space>
+              </Button>
+            </Dropdown>
+          </Space>
+        );
+      },
     },
   ];
 
