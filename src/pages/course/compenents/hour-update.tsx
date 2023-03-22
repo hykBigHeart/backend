@@ -39,7 +39,7 @@ export const CourseHourUpdate: React.FC<PropInterface> = ({
       return;
     }
     getDetail();
-  }, [id]);
+  }, [id, open]);
 
   const getDetail = () => {
     course.course(id).then((res: any) => {

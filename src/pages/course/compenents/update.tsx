@@ -51,7 +51,7 @@ export const CourseUpdate: React.FC<PropInterface> = ({
       return;
     }
     getCategory();
-  }, [id]);
+  }, [id, open]);
 
   const getCategory = () => {
     course.createCourse().then((res: any) => {

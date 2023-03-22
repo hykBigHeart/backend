@@ -27,7 +27,7 @@ export const SystemAdministratorUpdate: React.FC<PropInterface> = ({
       return;
     }
     getDetail();
-  }, [id]);
+  }, [id, open]);
 
   const getParams = () => {
     adminUser.createAdminUser().then((res: any) => {

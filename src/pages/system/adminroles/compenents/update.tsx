@@ -28,7 +28,7 @@ export const SystemAdminrolesUpdate: React.FC<PropInterface> = ({
       return;
     }
     getDetail();
-  }, [id]);
+  }, [id, open]);
 
   const getParams = () => {
     adminRole.createAdminRole().then((res: any) => {

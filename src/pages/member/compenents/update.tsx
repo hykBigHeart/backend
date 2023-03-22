@@ -29,7 +29,7 @@ export const MemberUpdate: React.FC<PropInterface> = ({
 
   useEffect(() => {
     getParams();
-  }, [id]);
+  }, [id, open]);
 
   useEffect(() => {
     form.setFieldsValue({
