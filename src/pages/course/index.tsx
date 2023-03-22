@@ -232,7 +232,6 @@ export const CoursePage = () => {
               p="course"
               onClick={() => {
                 setCid(Number(record.id));
-                console.log("学员" + record.id);
               }}
               disabled={null}
             />
