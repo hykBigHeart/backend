@@ -3,6 +3,7 @@ import { Modal, Form, Cascader, Input, message } from "antd";
 import styles from "./create.module.less";
 import { user, department } from "../../../api/index";
 import { UploadImageButton } from "../../../compenents";
+import { ValidataCredentials, getHost } from "../../../utils/index";
 
 interface PropInterface {
   id: number;
@@ -24,7 +25,7 @@ export const MemberUpdate: React.FC<PropInterface> = ({
   const [form] = Form.useForm();
   const [loading, setLoading] = useState<boolean>(true);
   const [departments, setDepartments] = useState<any>([]);
-  const [avatar, setAvatar] = useState<string>("");
+  const [avatar, setAvatar] = useState<string>(getHost() + "avatar/avatar.png");
 
   useEffect(() => {
     getParams();
@@ -117,6 +118,10 @@ export const MemberUpdate: React.FC<PropInterface> = ({
   };
 
   const onFinish = (values: any) => {
+    if (!ValidataCredentials(values.idCard)) {
+      message.error("请输入正确的身份证号！");
+      return;
+    }
     const arr = [];
     for (let i = 0; i < values.dep_ids.length; i++) {
       if (Array.isArray(values.dep_ids[i])) {
@@ -154,7 +159,7 @@ export const MemberUpdate: React.FC<PropInterface> = ({
         centered
         forceRender
         open={open}
-        width={416}
+        width={484}
         onOk={() => form.submit()}
         onCancel={() => onCancel()}
         maskClosable={false}
@@ -171,18 +176,15 @@ export const MemberUpdate: React.FC<PropInterface> = ({
             autoComplete="off"
           >
             <Form.Item
-              label="姓名"
-              name="name"
-              rules={[{ required: true, message: "请输入姓名!" }]}
-            >
-              <Input style={{ width: 200 }} placeholder="请输入姓名" />
-            </Form.Item>
-            <Form.Item
-              label="头像"
+              label="学员头像"
+              labelCol={{ style: { marginTop: 15, marginLeft: 46 } }}
               name="avatar"
-              rules={[{ required: true, message: "请上传头像!" }]}
+              rules={[{ required: true, message: "请上传学员头像!" }]}
             >
-              <div className="c-flex">
+              <div className="d-flex">
+                {avatar && (
+                  <img className="form-avatar mr-16" src={avatar} alt="" />
+                )}
                 <div className="d-flex">
                   <UploadImageButton
                     onSelected={(url) => {
@@ -191,40 +193,44 @@ export const MemberUpdate: React.FC<PropInterface> = ({
                     }}
                   ></UploadImageButton>
                 </div>
-                {avatar && (
-                  <img className="form-avatar mt-10" src={avatar} alt="" />
-                )}
               </div>
+            </Form.Item>
+            <Form.Item
+              label="学员姓名"
+              name="name"
+              rules={[{ required: true, message: "请输入学员姓名!" }]}
+            >
+              <Input style={{ width: 274 }} placeholder="请填写学员姓名" />
+            </Form.Item>
+            <Form.Item
+              label="登录邮箱"
+              name="email"
+              rules={[{ required: true, message: "请输入登录邮箱!" }]}
+            >
+              <Input style={{ width: 274 }} placeholder="请输入学员登录邮箱" />
             </Form.Item>
             <Form.Item label="登录密码" name="password">
               <Input.Password
-                style={{ width: 200 }}
+                style={{ width: 274 }}
                 placeholder="请输入登录密码"
               />
             </Form.Item>
             <Form.Item
-              label="邮箱"
-              name="email"
-              rules={[{ required: true, message: "请输入邮箱!" }]}
-            >
-              <Input style={{ width: 200 }} placeholder="请输入邮箱" />
-            </Form.Item>
-            <Form.Item label="身份证号" name="idCard">
-              <Input style={{ width: 200 }} placeholder="请输入身份证号" />
-            </Form.Item>
-            <Form.Item
-              label="部门"
+              label="所属部门"
               name="dep_ids"
-              rules={[{ required: true, message: "请选择部门!" }]}
+              rules={[{ required: true, message: "请选择学员所属部门!" }]}
             >
               <Cascader
-                style={{ width: 200 }}
+                style={{ width: 274 }}
                 options={departments}
                 onChange={onChange}
                 multiple
                 maxTagCount="responsive"
-                placeholder="请选择部门"
+                placeholder="请选择学员所属部门"
               />
+            </Form.Item>
+            <Form.Item label="身份证号" name="idCard">
+              <Input style={{ width: 274 }} placeholder="请填写学员身份证号" />
             </Form.Item>
           </Form>
         </div>

@@ -3,6 +3,7 @@ import { Modal, Form, Cascader, Input, message } from "antd";
 import styles from "./create.module.less";
 import { user, department } from "../../../api/index";
 import { UploadImageButton } from "../../../compenents";
+import { ValidataCredentials, getHost } from "../../../utils/index";
 
 interface PropInterface {
   open: boolean;
@@ -19,7 +20,7 @@ export const MemberCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState<boolean>(true);
   const [departments, setDepartments] = useState<any>([]);
-  const [avatar, setAvatar] = useState<string>("");
+  const [avatar, setAvatar] = useState<string>(getHost() + "avatar/avatar.png");
 
   useEffect(() => {
     getParams();
@@ -30,11 +31,11 @@ export const MemberCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
       email: "",
       name: "",
       password: "",
-      avatar: "",
+      avatar: getHost() + "avatar/avatar.png",
       idCard: "",
       dep_ids: [],
     });
-    setAvatar("");
+    setAvatar(getHost() + "avatar/avatar.png");
   }, [form, open]);
 
   const getParams = () => {
@@ -68,6 +69,10 @@ export const MemberCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
   };
 
   const onFinish = (values: any) => {
+    if (!ValidataCredentials(values.idCard)) {
+      message.error("请输入正确的身份证号！");
+      return;
+    }
     const arr = [];
     for (let i = 0; i < values.dep_ids.length; i++) {
       arr.push(values.dep_ids[i][values.dep_ids[i].length - 1]);
@@ -100,16 +105,16 @@ export const MemberCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
         centered
         forceRender
         open={open}
-        width={416}
+        width={484}
         onOk={() => form.submit()}
         onCancel={() => onCancel()}
         maskClosable={false}
       >
-        <div className="float-left mt-24">
+        <div className="member-form float-left mt-24">
           <Form
             form={form}
             name="create-basic"
-            labelCol={{ span: 8 }}
+            labelCol={{ span: 7 }}
             wrapperCol={{ span: 16 }}
             initialValues={{ remember: true }}
             onFinish={onFinish}
@@ -117,18 +122,15 @@ export const MemberCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
             autoComplete="off"
           >
             <Form.Item
-              label="姓名"
-              name="name"
-              rules={[{ required: true, message: "请输入姓名!" }]}
-            >
-              <Input style={{ width: 200 }} placeholder="请输入姓名" />
-            </Form.Item>
-            <Form.Item
-              label="头像"
+              label="学员头像"
+              labelCol={{ style: { marginTop: 15, marginLeft: 46 } }}
               name="avatar"
-              rules={[{ required: true, message: "请上传头像!" }]}
+              rules={[{ required: true, message: "请上传学员头像!" }]}
             >
-              <div className="c-flex">
+              <div className="d-flex">
+                {avatar && (
+                  <img className="form-avatar mr-16" src={avatar} alt="" />
+                )}
                 <div className="d-flex">
                   <UploadImageButton
                     onSelected={(url) => {
@@ -137,10 +139,21 @@ export const MemberCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
                     }}
                   ></UploadImageButton>
                 </div>
-                {avatar && (
-                  <img className="form-avatar mt-10" src={avatar} alt="" />
-                )}
               </div>
+            </Form.Item>
+            <Form.Item
+              label="学员姓名"
+              name="name"
+              rules={[{ required: true, message: "请输入学员姓名!" }]}
+            >
+              <Input style={{ width: 274 }} placeholder="请填写学员姓名" />
+            </Form.Item>
+            <Form.Item
+              label="登录邮箱"
+              name="email"
+              rules={[{ required: true, message: "请输入登录邮箱!" }]}
+            >
+              <Input style={{ width: 274 }} placeholder="请输入学员登录邮箱" />
             </Form.Item>
             <Form.Item
               label="登录密码"
@@ -148,33 +161,26 @@ export const MemberCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
               rules={[{ required: true, message: "请输入登录密码!" }]}
             >
               <Input.Password
-                style={{ width: 200 }}
+                style={{ width: 274 }}
                 placeholder="请输入登录密码"
               />
             </Form.Item>
             <Form.Item
-              label="邮箱"
-              name="email"
-              rules={[{ required: true, message: "请输入邮箱!" }]}
-            >
-              <Input style={{ width: 200 }} placeholder="请输入邮箱" />
-            </Form.Item>
-            <Form.Item label="身份证号" name="idCard">
-              <Input style={{ width: 200 }} placeholder="请输入身份证号" />
-            </Form.Item>
-            <Form.Item
-              label="部门"
+              label="所属部门"
               name="dep_ids"
-              rules={[{ required: true, message: "请选择部门!" }]}
+              rules={[{ required: true, message: "请选择学员所属部门!" }]}
             >
               <Cascader
-                style={{ width: 200 }}
+                style={{ width: 274 }}
                 options={departments}
                 onChange={onChange}
                 multiple
                 maxTagCount="responsive"
-                placeholder="请选择部门"
+                placeholder="请选择学员所属部门"
               />
+            </Form.Item>
+            <Form.Item label="身份证号" name="idCard">
+              <Input style={{ width: 274 }} placeholder="请填写学员身份证号" />
             </Form.Item>
           </Form>
         </div>
