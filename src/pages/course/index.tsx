@@ -149,6 +149,7 @@ export const CoursePage = () => {
                 </span>
               );
             })}
+          {!course_dep_ids[id] && <span>公开课</span>}
         </div>
       ),
     },
