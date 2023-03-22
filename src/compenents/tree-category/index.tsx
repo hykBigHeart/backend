@@ -70,20 +70,14 @@ export const TreeCategory = (props: PropInterface) => {
   const onSelect = (selectedKeys: any, info: any) => {
     let label = "全部" + props.text;
     if (info) {
-      label = info.node.title;
+      label = info.node.title.props.children.props.children;
     }
+    console.log(info);
     props.onUpdate(selectedKeys, label);
     setSelectKey(selectedKeys);
   };
 
-  const onExpand = (selectedKeys: any, info: any) => {
-    let label = "全部" + props.text;
-    if (info) {
-      label = info.node.title;
-    }
-    props.onUpdate(selectedKeys, label);
-    setSelectKey(selectedKeys);
-  };
+  const onExpand = (selectedKeys: any, info: any) => {};
 
   return (
     <div>
