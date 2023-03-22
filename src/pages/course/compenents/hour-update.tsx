@@ -362,14 +362,14 @@ export const CourseHourUpdate: React.FC<PropInterface> = ({
         <div className="float-left mt-24">
           <SelectResource
             defaultKeys={
-              chapterType == 0 ? hours : chapterHours[addvideoCurrent]
+              chapterType === 0 ? hours : chapterHours[addvideoCurrent]
             }
             open={videoVisible}
             onCancel={() => {
               setVideoVisible(false);
             }}
             onSelected={(arr: any, videos: any) => {
-              if (chapterType == 0) {
+              if (chapterType === 0) {
                 selectData(arr, videos);
               } else {
                 selectChapterData(arr, videos);

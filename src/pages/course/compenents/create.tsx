@@ -387,7 +387,7 @@ export const CourseCreate: React.FC<PropInterface> = ({
               setVideoVisible(false);
             }}
             onSelected={(arr: any, videos: any) => {
-              if (chapterType == 0) {
+              if (chapterType === 0) {
                 selectData(arr, videos);
               } else {
                 selectChapterData(arr, videos);

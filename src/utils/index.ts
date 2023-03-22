@@ -92,7 +92,7 @@ export function ValidataCredentials(value: any) {
   let regIdCard =
     /^(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)|(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])((\d{4})|\d{3}[Xx])$)$/;
   if (regIdCard.test(value)) {
-    if (value.length == 18) {
+    if (value.length === 18) {
       var idCardWi = new Array(
         7,
         9,
@@ -120,15 +120,15 @@ export function ValidataCredentials(value: any) {
       var idCardMod = idCardWiSum % 11; //计算出校验码所在数组的位置
       var idCardLast = value.substring(17); //得到最后一位身份证号码
       //如果等于2，则说明校验码是10，身份证号码最后一位应该是X
-      if (idCardMod == 2) {
-        if (idCardLast == "X" || idCardLast == "x") {
+      if (idCardMod === 2) {
+        if (idCardLast === "X" || idCardLast === "x") {
           return true;
         } else {
           return false;
         }
       } else {
         //用计算出的验证码与最后一位身份证号码匹配，如果一致，说明通过，否则是无效的身份证号码
-        if (idCardLast == idCardY[idCardMod]) {
+        if (idCardLast === idCardY[idCardMod]) {
           return true;
         } else {
           return false;

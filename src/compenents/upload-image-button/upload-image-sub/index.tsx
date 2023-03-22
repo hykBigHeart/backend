@@ -26,7 +26,7 @@ export const UploadImageSub = (props: PropsInterface) => {
     onChange(info: any) {
       const { status, response } = info.file;
       if (status === "done") {
-        if (response.code == 0) {
+        if (response.code === 0) {
           message.success(`${info.file.name} 上传成功`);
         } else {
           message.error(response.msg);

@@ -154,7 +154,7 @@ export const ResourceImagesPage = () => {
             text={"图片"}
             onUpdate={(keys: any, title: any) => {
               setCategoryIds(keys);
-              if (typeof title == "string") {
+              if (typeof title === "string") {
                 setLabel(title);
               } else {
                 setLabel(title.props.children[0]);
