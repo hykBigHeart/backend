@@ -178,49 +178,48 @@ export const CoursePage = () => {
           {
             key: "1",
             label: (
-              <PerButton
-                type="link"
-                text="课时"
-                class="b-link c-red"
-                icon={null}
-                p="course"
-                onClick={() => {
-                  setCid(Number(record.id));
-                  setHourUpdateVisible(true);
-                }}
-                disabled={null}
-              />
+              <Space size="small" style={{ width: 60 }}>
+                <Button
+                  type="link"
+                  size="small"
+                  className="b-link c-red"
+                  onClick={() => {
+                    setCid(Number(record.id));
+                    setHourUpdateVisible(true);
+                  }}
+                >
+                  课时
+                </Button>
+              </Space>
             ),
           },
           {
             key: "2",
             label: (
-              <PerButton
+              <Button
                 type="link"
-                text="编辑"
-                class="b-link c-red"
-                icon={null}
-                p="course"
+                size="small"
+                className="b-link c-red"
                 onClick={() => {
                   setCid(Number(record.id));
                   setUpdateVisible(true);
                 }}
-                disabled={null}
-              />
+              >
+                编辑
+              </Button>
             ),
           },
           {
             key: "3",
             label: (
-              <PerButton
+              <Button
                 type="link"
-                text="删除"
-                class="b-link c-red"
-                icon={null}
-                p="course"
+                size="small"
+                className="b-link c-red"
                 onClick={() => delItem(record.id)}
-                disabled={null}
-              />
+              >
+                删除
+              </Button>
             ),
           },
         ];
