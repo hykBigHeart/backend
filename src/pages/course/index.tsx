@@ -89,6 +89,7 @@ export const CoursePage = () => {
       children: (
         <div className="float-left">
           <TreeDepartment
+            type="no-course"
             text={"部门"}
             onUpdate={(keys: any, title: any) => {
               setDepIds(keys);

@@ -9,6 +9,7 @@ interface Option {
 }
 
 interface PropInterface {
+  type: string;
   text: string;
   onUpdate: (keys: any, title: any) => void;
 }
@@ -24,6 +25,12 @@ export const TreeDepartment = (props: PropInterface) => {
 
       if (JSON.stringify(departments) !== "{}") {
         const new_arr: Option[] = checkArr(departments, 0);
+        if (props.type === "no-course") {
+          new_arr.unshift({
+            key: 0,
+            title: "公开课",
+          });
+        }
         setTreeData(new_arr);
       } else {
         const new_arr: Option[] = [
@@ -33,6 +40,12 @@ export const TreeDepartment = (props: PropInterface) => {
             children: [],
           },
         ];
+        if (props.type === "no-course") {
+          new_arr.unshift({
+            key: 0,
+            title: "公开课",
+          });
+        }
         setTreeData(new_arr);
       }
       setLoading(false);

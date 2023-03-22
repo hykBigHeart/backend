@@ -183,6 +183,7 @@ export const MemberPage: React.FC = () => {
       <div className="tree-main-body">
         <div className="left-box">
           <TreeDepartment
+            type=""
             text={"部门"}
             onUpdate={(keys: any, title: any) => {
               setDepIds(keys);

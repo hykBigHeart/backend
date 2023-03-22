@@ -11,7 +11,6 @@ interface Option {
 interface PropInterface {
   type: string;
   text: string;
-
   onUpdate: (keys: any, title: any) => void;
 }
 
