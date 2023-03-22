@@ -28,7 +28,7 @@ export const TreeCategory = (props: PropInterface) => {
         if (props.type === "no-cate") {
           new_arr.unshift({
             key: 0,
-            title: "未分类",
+            title: <span className="tree-title-elli">未分类</span>,
           });
         }
 
@@ -42,9 +42,7 @@ export const TreeCategory = (props: PropInterface) => {
     for (let i = 0; i < categories[id].length; i++) {
       if (!categories[categories[id][i].id]) {
         let name = (
-          <>
-            <span className="tree-title-elli">{categories[id][i].name}</span>
-          </>
+          <span className="tree-title-elli">{categories[id][i].name}</span>
         );
         arr.push({
           title: name,
@@ -52,9 +50,7 @@ export const TreeCategory = (props: PropInterface) => {
         });
       } else {
         let name = (
-          <>
-            <span className="tree-title-elli">{categories[id][i].name}</span>
-          </>
+          <span className="tree-title-elli">{categories[id][i].name}</span>
         );
         const new_arr: Option[] = checkArr(categories, categories[id][i].id);
         arr.push({
@@ -70,9 +66,8 @@ export const TreeCategory = (props: PropInterface) => {
   const onSelect = (selectedKeys: any, info: any) => {
     let label = "全部" + props.text;
     if (info) {
-      label = info.node.title.props.children.props.children;
+      label = info.node.title.props.children;
     }
-    console.log(info);
     props.onUpdate(selectedKeys, label);
     setSelectKey(selectedKeys);
   };
