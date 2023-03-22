@@ -140,23 +140,25 @@ export const LeftMenu: React.FC = () => {
       >
         <img src={logo} className={styles["App-logo"]} />
       </div>
-      <Menu
-        onClick={onClick}
-        style={{
-          width: 200,
-          background: "#ffffff",
-        }}
-        selectedKeys={selectedKeys}
-        openKeys={openKeys}
-        mode="inline"
-        items={items}
-        onSelect={(data: any) => {
-          setSelectedKeys(data.selectedKeys);
-        }}
-        onOpenChange={(keys: any) => {
-          setOpenKeys(keys);
-        }}
-      />
+      <div className={styles["menu-box"]}>
+        <Menu
+          onClick={onClick}
+          style={{
+            width: 200,
+            background: "#ffffff",
+          }}
+          selectedKeys={selectedKeys}
+          openKeys={openKeys}
+          mode="inline"
+          items={items}
+          onSelect={(data: any) => {
+            setSelectedKeys(data.selectedKeys);
+          }}
+          onOpenChange={(keys: any) => {
+            setOpenKeys(keys);
+          }}
+        />
+      </div>
     </div>
   );
 };
