@@ -178,28 +178,10 @@ export const CoursePage = () => {
           {
             key: "1",
             label: (
-              <Space size="small" style={{ width: 60 }}>
-                <Button
-                  type="link"
-                  size="small"
-                  className="b-link c-red"
-                  onClick={() => {
-                    setCid(Number(record.id));
-                    setHourUpdateVisible(true);
-                  }}
-                >
-                  课时
-                </Button>
-              </Space>
-            ),
-          },
-          {
-            key: "2",
-            label: (
               <Button
                 type="link"
                 size="small"
-                className="b-link c-red"
+                className="b-n-link c-red"
                 onClick={() => {
                   setCid(Number(record.id));
                   setUpdateVisible(true);
@@ -210,12 +192,29 @@ export const CoursePage = () => {
             ),
           },
           {
+            key: "2",
+            label: (
+              <Button
+                style={{ verticalAlign: "middle" }}
+                type="link"
+                size="small"
+                className="b-n-link c-red"
+                onClick={() => {
+                  setCid(Number(record.id));
+                  setHourUpdateVisible(true);
+                }}
+              >
+                课时
+              </Button>
+            ),
+          },
+          {
             key: "3",
             label: (
               <Button
                 type="link"
                 size="small"
-                className="b-link c-red"
+                className="b-n-link c-red"
                 onClick={() => delItem(record.id)}
               >
                 删除
@@ -245,7 +244,7 @@ export const CoursePage = () => {
                 className="b-link c-red"
                 onClick={(e) => e.preventDefault()}
               >
-                <Space>
+                <Space size="small" align="center">
                   更多
                   <DownOutlined />
                 </Space>
