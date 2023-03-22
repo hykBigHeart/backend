@@ -394,6 +394,8 @@ export const CoursePage = () => {
               rowKey={(record) => record.id}
             />
             <CourseCreate
+              cateIds={category_ids}
+              depIds={dep_ids}
               open={createVisible}
               onCancel={() => {
                 setCreateVisible(false);

@@ -211,16 +211,6 @@ export const CourseUpdate: React.FC<PropInterface> = ({
             autoComplete="off"
           >
             <Form.Item
-              label="课程名称"
-              name="title"
-              rules={[{ required: true, message: "请在此处输入课程名称!" }]}
-            >
-              <Input
-                style={{ width: 424 }}
-                placeholder="请在此处输入课程名称"
-              />
-            </Form.Item>
-            <Form.Item
               label="课程分类"
               name="category_ids"
               rules={[{ required: true, message: "请选择课程分类!" }]}
@@ -230,6 +220,16 @@ export const CourseUpdate: React.FC<PropInterface> = ({
                 options={categories}
                 changeOnSelect
                 placeholder="请选择课程分类"
+              />
+            </Form.Item>
+            <Form.Item
+              label="课程名称"
+              name="title"
+              rules={[{ required: true, message: "请在此处输入课程名称!" }]}
+            >
+              <Input
+                style={{ width: 424 }}
+                placeholder="请在此处输入课程名称"
               />
             </Form.Item>
             <Form.Item

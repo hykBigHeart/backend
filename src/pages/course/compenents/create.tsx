@@ -22,6 +22,8 @@ import { TreeHours } from "./hours";
 const { confirm } = Modal;
 
 interface PropInterface {
+  cateIds: any;
+  depIds: any;
   open: boolean;
   onCancel: () => void;
 }
@@ -32,7 +34,12 @@ interface Option {
   children?: Option[];
 }
 
-export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
+export const CourseCreate: React.FC<PropInterface> = ({
+  cateIds,
+  depIds,
+  open,
+  onCancel,
+}) => {
   const [form] = Form.useForm();
   const defaultThumb1 = getHost() + "thumb/thumb1.png";
   const defaultThumb2 = getHost() + "thumb/thumb2.png";
@@ -56,23 +63,27 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
   }, []);
 
   useEffect(() => {
+    let type = "open";
+    if (depIds.length !== 0 && depIds[0] !== 0) {
+      type = "elective";
+    }
     form.setFieldsValue({
       title: "",
       thumb: defaultThumb1,
-      dep_ids: [],
-      category_ids: [],
-      type: "open",
+      dep_ids: depIds,
+      category_ids: cateIds,
+      type: type,
       isRequired: 1,
       short_desc: "",
       hasChapter: 0,
     });
     setThumb(defaultThumb1);
-    setType("open");
+    setType(type);
     setChapterType(0);
     setChapters([]);
     setHours([]);
     setTreeData([]);
-  }, [form, open]);
+  }, [form, open, cateIds, depIds]);
 
   const getParams = () => {
     department.departmentList().then((res: any) => {
@@ -341,16 +352,6 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
             autoComplete="off"
           >
             <Form.Item
-              label="课程名称"
-              name="title"
-              rules={[{ required: true, message: "请在此处输入课程名称!" }]}
-            >
-              <Input
-                style={{ width: 424 }}
-                placeholder="请在此处输入课程名称"
-              />
-            </Form.Item>
-            <Form.Item
               label="课程分类"
               name="category_ids"
               rules={[{ required: true, message: "请选择课程分类!" }]}
@@ -360,6 +361,16 @@ export const CourseCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
                 options={categories}
                 changeOnSelect
                 placeholder="请选择课程分类"
+              />
+            </Form.Item>
+            <Form.Item
+              label="课程名称"
+              name="title"
+              rules={[{ required: true, message: "请在此处输入课程名称!" }]}
+            >
+              <Input
+                style={{ width: 424 }}
+                placeholder="请在此处输入课程名称"
               />
             </Form.Item>
             <Form.Item
