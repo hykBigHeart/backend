@@ -1,10 +1,11 @@
 import { Spin } from "antd";
+import styles from "./index.module.less";
 
 const LoadingPage = () => {
   return (
-    <>
-      <Spin />
-    </>
+    <div className={styles["loading-parent-box"]}>
+      <Spin size="large" />
+    </div>
   );
 };
 
