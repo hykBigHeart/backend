@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
   Row,
-  Col,
   Form,
   Input,
   Image,
@@ -12,16 +11,13 @@ import {
   Checkbox,
   Slider,
 } from "antd";
-import styles from "./index.module.less";
-import { appConfig } from "../../api/index";
-import { useParams, useNavigate } from "react-router-dom";
-import { UploadImageButton } from "../../compenents";
+// import styles from "./index.module.less";
+import { appConfig } from "../../../api/index";
+import { UploadImageButton } from "../../../compenents";
 import type { TabsProps } from "antd";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
 
 export const SystemIndexPage: React.FC = () => {
-  const params = useParams();
-  const navigate = useNavigate();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState<boolean>(false);
   const [logo, setLogo] = useState<string>("");

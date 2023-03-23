@@ -56,7 +56,7 @@ const routes: RouteObject[] = [
         element: <MemberImportPage />,
       },
       {
-        path: "/system/index",
+        path: "/system/config/index",
         element: <SystemIndexPage />,
       },
       {

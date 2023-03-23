@@ -6,7 +6,7 @@ export * from "./test";
 export * from "./course/index";
 export * from "./member/index";
 export * from "./member/import";
-export * from "./system/index";
+export * from "./system/config/index";
 export * from "./system/administrator/index";
 export * from "./system/adminroles/index";
 export * from "./department";
