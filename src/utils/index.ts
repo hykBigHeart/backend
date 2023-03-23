@@ -18,6 +18,24 @@ export function dateFormat(dateStr: string) {
   return moment(dateStr).format("YYYY-MM-DD HH:mm");
 }
 
+export function timeFormat(dateStr: number) {
+  var d = moment.duration(dateStr, "seconds");
+  let value =
+    Math.floor(d.asDays()) +
+    "天" +
+    d.hours() +
+    "时" +
+    d.minutes() +
+    "分" +
+    d.seconds() +
+    "秒";
+
+  if (Math.floor(d.asDays()) === 0) {
+    value = d.hours() + "时" + d.minutes() + "分" + d.seconds() + "秒";
+  }
+  return value;
+}
+
 export function generateUUID(): string {
   let guid = "";
   for (let i = 1; i <= 32; i++) {

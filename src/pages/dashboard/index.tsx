@@ -8,19 +8,28 @@ import iconN1 from "../../assets/images/dashboard/icon-n1.png";
 import iconN2 from "../../assets/images/dashboard/icon-n2.png";
 import iconN3 from "../../assets/images/dashboard/icon-n3.png";
 import { Footer } from "../../compenents/footer";
+import { dashboard } from "../../api/index";
+import { timeFormat } from "../../utils/index";
 
 export const Dashboard: React.FC<any> = () => {
   const navigate = useNavigate();
+  const [basicData, setBasicData] = useState<any>([]);
 
   useEffect(() => {
-    renderPieView({
-      videos_count: 30,
-      images_count: 10,
-    });
-    return () => {
-      window.onresize = null;
-    };
+    getData();
   }, []);
+  const getData = () => {
+    dashboard.dashboardList().then((res: any) => {
+      setBasicData(res.data);
+      renderPieView({
+        videos_count: res.data.resource_video_total,
+        images_count: res.data.resource_image_total,
+      });
+      return () => {
+        window.onresize = null;
+      };
+    });
+  };
 
   const renderPieView = (params: any) => {
     let num = params.videos_count + params.images_count;
@@ -124,6 +133,25 @@ export const Dashboard: React.FC<any> = () => {
     };
   };
 
+  const compareNum = (today: number, yesterday: number) => {
+    let num = today - yesterday;
+    if (num < 0) {
+      return (
+        <span className="c-green">
+          <i className={styles["down"]}>&#9660;</i>
+          {Math.abs(num)}
+        </span>
+      );
+    } else {
+      return (
+        <span className="c-red">
+          <i className={styles["up"]}>&#9650;</i>
+          {Math.abs(num)}
+        </span>
+      );
+    }
+  };
+
   return (
     <>
       <Row gutter={24}>
@@ -133,31 +161,32 @@ export const Dashboard: React.FC<any> = () => {
               <div className={styles["label-item"]}>
                 <div className={styles["label"]}>今日学习学员</div>
                 <div className={styles["info"]}>
-                  <div className={styles["num"]}>300</div>
+                  <div className={styles["num"]}>
+                    {basicData.user_learn_today}
+                  </div>
                   <div className={styles["compare"]}>
                     <span className="mr-5">较昨日</span>
-                    <span className="c-green">
-                      <i className={styles["down"]}>&#9660;</i>100
-                    </span>
+                    {compareNum(
+                      basicData.user_learn_today,
+                      basicData.user_learn_yesterday
+                    )}
                   </div>
                 </div>
               </div>
               <div className={styles["label-item"]}>
                 <div className={styles["label"]}>总学员数</div>
                 <div className={styles["info"]}>
-                  <div className={styles["num"]}>3000</div>
+                  <div className={styles["num"]}>{basicData.user_total}</div>
                   <div className={styles["compare"]}>
                     <span className="mr-5">较昨日</span>
-                    <span className="c-red">
-                      <i className={styles["up"]}>&#9650;</i>100
-                    </span>
+                    {compareNum(basicData.user_today, basicData.user_yesterday)}
                   </div>
                 </div>
               </div>
               <div className={styles["label-item"]}>
                 <div className={styles["label"]}>线上课数</div>
                 <div className={styles["info"]}>
-                  <div className={styles["num"]}>20</div>
+                  <div className={styles["num"]}>{basicData.course_total}</div>
                 </div>
               </div>
             </div>
@@ -215,84 +244,78 @@ export const Dashboard: React.FC<any> = () => {
               </div>
             </div>
           </div>
-          <div className="playedu-main-top mt-24">
+          <div className="playedu-main-top mt-24" style={{ minHeight: 376 }}>
             <div className={styles["large-title"]}>今日学习排行</div>
-            <div className={styles["rank-list"]}>
-              <div className={styles["half-list"]}>
-                <div className={styles["rank-item"]}>
-                  <div className={styles["left-item"]}>
-                    <img className={styles["item-icon"]} src={iconN1} alt="" />
-                    <div className={styles["item-name"]}>忻咏</div>
+            {basicData.user_learn_top10 &&
+              basicData.user_learn_top10.length > 0 && (
+                <div className={styles["rank-list"]}>
+                  <div className={styles["half-list"]}>
+                    {basicData.user_learn_top10.map(
+                      (item: any, index: number) =>
+                        index <= 4 && (
+                          <div key={item.id} className={styles["rank-item"]}>
+                            <div className={styles["left-item"]}>
+                              {index === 0 && (
+                                <img
+                                  className={styles["item-icon"]}
+                                  src={iconN1}
+                                  alt=""
+                                />
+                              )}
+                              {index === 1 && (
+                                <img
+                                  className={styles["item-icon"]}
+                                  src={iconN2}
+                                  alt=""
+                                />
+                              )}
+                              {index === 2 && (
+                                <img
+                                  className={styles["item-icon"]}
+                                  src={iconN3}
+                                  alt=""
+                                />
+                              )}
+                              {index > 2 && (
+                                <div className={styles["item-num"]}>
+                                  {index}
+                                </div>
+                              )}
+                              <div className={styles["item-name"]}>
+                                {item.user_id}
+                              </div>
+                            </div>
+                            <div className={styles["item-time"]}>
+                              {timeFormat(Number(item.duration) / 1000)}
+                            </div>
+                          </div>
+                        )
+                    )}
                   </div>
-                  <div className={styles["item-time"]}>1小时24秒</div>
+                  {basicData.user_learn_top10.length > 5 && (
+                    <div className={styles["half-list"]}>
+                      {basicData.user_learn_top10.map(
+                        (item: any, index: number) =>
+                          index > 4 && (
+                            <div key={item.id} className={styles["rank-item"]}>
+                              <div className={styles["left-item"]}>
+                                <div className={styles["item-num"]}>
+                                  {index}
+                                </div>
+                                <div className={styles["item-name"]}>
+                                  {item.user_id}
+                                </div>
+                              </div>
+                              <div className={styles["item-time"]}>
+                                {timeFormat(Number(item.duration) / 1000)}
+                              </div>
+                            </div>
+                          )
+                      )}
+                    </div>
+                  )}
                 </div>
-                <div className={styles["rank-item"]}>
-                  <div className={styles["left-item"]}>
-                    <img className={styles["item-icon"]} src={iconN2} alt="" />
-                    <div className={styles["item-name"]}>蒋建</div>
-                  </div>
-                  <div className={styles["item-time"]}>1小时24秒</div>
-                </div>
-                <div className={styles["rank-item"]}>
-                  <div className={styles["left-item"]}>
-                    <img className={styles["item-icon"]} src={iconN3} alt="" />
-                    <div className={styles["item-name"]}>谭茂</div>
-                  </div>
-                  <div className={styles["item-time"]}>1小时24秒</div>
-                </div>
-                <div className={styles["rank-item"]}>
-                  <div className={styles["left-item"]}>
-                    <div className={styles["item-num"]}>4</div>
-                    <div className={styles["item-name"]}>渠雅眉</div>
-                  </div>
-                  <div className={styles["item-time"]}>1小时24秒</div>
-                </div>
-                <div className={styles["rank-item"]}>
-                  <div className={styles["left-item"]}>
-                    <div className={styles["item-num"]}>5</div>
-                    <div className={styles["item-name"]}>柴晨</div>
-                  </div>
-                  <div className={styles["item-time"]}>1小时24秒</div>
-                </div>
-              </div>
-              <div className={styles["half-list"]}>
-                <div className={styles["rank-item"]}>
-                  <div className={styles["left-item"]}>
-                    <div className={styles["item-num"]}>6</div>
-                    <div className={styles["item-name"]}>柴晨</div>
-                  </div>
-                  <div className={styles["item-time"]}>1小时24秒</div>
-                </div>
-                <div className={styles["rank-item"]}>
-                  <div className={styles["left-item"]}>
-                    <div className={styles["item-num"]}>7</div>
-                    <div className={styles["item-name"]}>柴晨</div>
-                  </div>
-                  <div className={styles["item-time"]}>1小时24秒</div>
-                </div>
-                <div className={styles["rank-item"]}>
-                  <div className={styles["left-item"]}>
-                    <div className={styles["item-num"]}>8</div>
-                    <div className={styles["item-name"]}>柴晨</div>
-                  </div>
-                  <div className={styles["item-time"]}>1小时24秒</div>
-                </div>
-                <div className={styles["rank-item"]}>
-                  <div className={styles["left-item"]}>
-                    <div className={styles["item-num"]}>9</div>
-                    <div className={styles["item-name"]}>柴晨</div>
-                  </div>
-                  <div className={styles["item-time"]}>1小时24秒</div>
-                </div>
-                <div className={styles["rank-item"]}>
-                  <div className={styles["left-item"]}>
-                    <div className={styles["item-num"]}>10</div>
-                    <div className={styles["item-name"]}>柴晨</div>
-                  </div>
-                  <div className={styles["item-time"]}>1小时24秒</div>
-                </div>
-              </div>
-            </div>
+              )}
           </div>
         </Col>
         <Col span={12}>
@@ -301,19 +324,25 @@ export const Dashboard: React.FC<any> = () => {
               <div className={styles["label-item"]}>
                 <div className={styles["label"]}>部门数</div>
                 <div className={styles["info"]}>
-                  <div className={styles["num"]}>8</div>
+                  <div className={styles["num"]}>
+                    {basicData.department_total}
+                  </div>
                 </div>
               </div>
               <div className={styles["label-item"]}>
                 <div className={styles["label"]}>分类数</div>
                 <div className={styles["info"]}>
-                  <div className={styles["num"]}>2</div>
+                  <div className={styles["num"]}>
+                    {basicData.resource_category_total}
+                  </div>
                 </div>
               </div>
               <div className={styles["label-item"]}>
                 <div className={styles["label"]}>管理员</div>
                 <div className={styles["info"]}>
-                  <div className={styles["num"]}>8</div>
+                  <div className={styles["num"]}>
+                    {basicData.admin_user_total}
+                  </div>
                 </div>
               </div>
             </div>
