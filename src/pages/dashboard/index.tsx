@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styles from "./index.module.less";
-import { Row, Col, message } from "antd";
+import { Row, Col } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import banner from "../../assets/images/dashboard/img-a1.png";
 import icon from "../../assets/images/dashboard/icon-more.png";
@@ -15,9 +15,6 @@ export const Dashboard: React.FC<any> = () => {
   const navigate = useNavigate();
   const [basicData, setBasicData] = useState<any>([]);
 
-  useEffect(() => {
-    getData();
-  }, []);
   const getData = () => {
     dashboard.dashboardList().then((res: any) => {
       setBasicData(res.data);
@@ -30,6 +27,10 @@ export const Dashboard: React.FC<any> = () => {
       };
     });
   };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   const renderPieView = (params: any) => {
     let num = params.videos_count + params.images_count;
@@ -110,7 +111,7 @@ export const Dashboard: React.FC<any> = () => {
             normal: {
               show: true,
               color: "#4c4a4a",
-              formatter: "{active|{c}}" + "\n\r" + "{total| {b} }",
+              formatter: "{active|{c}}\n\r{total| {b} }",
               rich: {
                 total: {
                   fontSize: 15,
@@ -142,15 +143,13 @@ export const Dashboard: React.FC<any> = () => {
           {Math.abs(num)}
         </span>
       );
-    } else {
-      return (
-        <span className="c-red">
-          <i className={styles["up"]}>&#9650;</i>
-          {Math.abs(num)}
-        </span>
-      );
     }
-    return 0;
+    return (
+      <span className="c-red">
+        <i className={styles["up"]}>&#9650;</i>
+        {Math.abs(num)}
+      </span>
+    );
   };
 
   return (
