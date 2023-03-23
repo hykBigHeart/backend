@@ -1,4 +1,3 @@
-import { assert } from "console";
 import moment from "moment";
 import { VideoParseInfo } from "../types";
 
@@ -31,7 +30,7 @@ export function timeFormat(dateStr: number) {
     "秒";
 
   if (Math.floor(d.asDays()) === 0) {
-    if (d.hours() == 0) {
+    if (d.hours() === 0) {
       value = d.minutes() + "分" + d.seconds() + "秒";
     } else {
       value = d.hours() + "时" + d.minutes() + "分" + d.seconds() + "秒";

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
   Row,
-  Col,
   Form,
   Input,
   Image,
@@ -11,15 +10,13 @@ import {
   Switch,
   Checkbox,
 } from "antd";
-import styles from "./index.module.less";
 import { appConfig } from "../../api/index";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { UploadImageButton } from "../../compenents";
 import type { TabsProps } from "antd";
 // import { Colorpicker } from "antd-colorpicker";
 
 export const SystemIndexPage: React.FC = () => {
-  const params = useParams();
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState<boolean>(false);
