@@ -1,5 +1,5 @@
 import { Button } from "antd";
-import { useSelector } from "../../store/hooks";
+import { useSelector } from "react-redux";
 
 interface PropInterface {
   type: "link" | "text" | "primary" | "default";
@@ -12,16 +12,18 @@ interface PropInterface {
 }
 
 export const PerButton = (props: PropInterface) => {
-  const permisssions = useSelector((state: any) => state.permisssions);
-  const through = () => {
-    if (!permisssions) {
+  const permissions = useSelector(
+    (state: any) => state.loginUser.value.permissions
+  );
+  const isThrough = () => {
+    if (!permissions) {
       return false;
     }
-    return typeof permisssions[props.p] !== "undefined";
+    return typeof permissions[props.p] !== "undefined";
   };
   return (
     <>
-      {through() && props.type === "link" && (
+      {isThrough() && props.type === "link" && (
         <Button
           className={props.class}
           type="link"
@@ -35,7 +37,7 @@ export const PerButton = (props: PropInterface) => {
           {props.text}
         </Button>
       )}
-      {through() && props.type !== "link" && (
+      {isThrough() && props.type !== "link" && (
         <Button
           className={props.class}
           type={props.type}

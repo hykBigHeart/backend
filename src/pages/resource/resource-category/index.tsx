@@ -7,8 +7,8 @@ import { PerButton } from "../../../compenents";
 import type { DataNode, TreeProps } from "antd/es/tree";
 import { ResourceCategoryCreate } from "./compenents/create";
 import { ResourceCategoryUpdate } from "./compenents/update";
-import { useSelector } from "../../../store/hooks";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const { confirm } = Modal;
 
@@ -20,7 +20,9 @@ interface Option {
 
 const ResourceCategoryPage = () => {
   const navigate = useNavigate();
-  const permisssions = useSelector((state: any) => state.permisssions);
+  const permissions = useSelector(
+    (state: any) => state.loginUser.value.permissions
+  );
   const [loading, setLoading] = useState<boolean>(true);
   const [refresh, setRefresh] = useState(false);
   const [treeData, setTreeData] = useState<any>([]);
@@ -32,17 +34,17 @@ const ResourceCategoryPage = () => {
 
   useEffect(() => {
     getData();
-  }, [refresh, permisssions]);
+  }, [refresh, permissions]);
 
   const onSelect = (selectedKeys: any, info: any) => {
     setSelectKey(selectedKeys);
   };
 
   const through = (p: string) => {
-    if (!permisssions) {
+    if (!permissions) {
       return false;
     }
-    return typeof permisssions[p] !== "undefined";
+    return typeof permissions[p] !== "undefined";
   };
 
   const getData = () => {

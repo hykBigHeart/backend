@@ -1,19 +1,19 @@
 import React from "react";
 import styles from "./index.module.less";
 import { Button, Dropdown, MenuProps } from "antd";
-import { useSelector } from "../../store/hooks";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { LoginOutActionCreator } from "../../store/user/userActions";
 import avatar from "../../assets/images/commen/avatar.png";
+import { logoutAction } from "../../store/user/loginUserSlice";
 
 export const Header: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector((state: any) => state.user);
+  const user = useSelector((state: any) => state.loginUser.value.user);
+
   const onClick: MenuProps["onClick"] = ({ key }) => {
     if (key === "login_out") {
-      dispatch(LoginOutActionCreator());
+      dispatch(logoutAction());
       navigate("/login");
     } else if (key === "change_password") {
       navigate("/change-password");

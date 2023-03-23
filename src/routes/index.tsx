@@ -1,8 +1,11 @@
 import { lazy } from "react";
 import { RouteObject } from "react-router-dom";
+import { login } from "../api";
 
 import InitPage from "../pages/init";
+import { getToken } from "../utils";
 
+// 异步加载页面
 const LoginPage = lazy(() => import("../pages/login"));
 const HomePage = lazy(() => import("../pages/home"));
 const DashboardPage = lazy(() => import("../pages/dashboard"));
@@ -24,10 +27,33 @@ const ResourceCategoryPage = lazy(
 const ResourceVideosPage = lazy(() => import("../pages/resource/videos"));
 const SystemConfigPage = lazy(() => import("../pages/system/config"));
 
+let RootPage: any = null;
+if (getToken()) {
+  RootPage = lazy(async () => {
+    return new Promise<any>((resolve) => {
+      let userLoginToken = getToken();
+      if (!userLoginToken) {
+        resolve({
+          default: InitPage,
+        });
+        return;
+      }
+      login.getUser().then((res: any) => {
+        resolve({
+          default: <InitPage loginData={res.data} />,
+        });
+      });
+      // todo token过期处理
+    });
+  });
+} else {
+  RootPage = <InitPage loginData={null} />;
+}
+
 const routes: RouteObject[] = [
   {
     path: "/",
-    element: <InitPage />,
+    element: RootPage,
     children: [
       {
         path: "/",

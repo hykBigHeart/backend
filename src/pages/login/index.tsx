@@ -4,15 +4,11 @@ import { Spin, Input, Button, message } from "antd";
 import { login, system } from "../../api/index";
 import { setToken } from "../../utils/index";
 import { useDispatch } from "react-redux";
-import {
-  IsLoginActionCreator,
-  SetUserActionCreator,
-  SetPermisssionsActionCreator,
-} from "../../store/user/userActions";
 import { useNavigate } from "react-router-dom";
 import banner from "../../assets/images/login/banner.png";
 import icon from "../../assets/images/login/icon.png";
 import "./login.less";
+import { loginAction } from "../../store/user/loginUserSlice";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
@@ -75,9 +71,7 @@ const LoginPage = () => {
   const getUser = () => {
     login.getUser().then((res: any) => {
       const data = res.data;
-      dispatch(IsLoginActionCreator());
-      dispatch(SetUserActionCreator(data.user));
-      dispatch(SetPermisssionsActionCreator(data.permissions));
+      dispatch(loginAction(data));
       setLoading(false);
       navigate("/");
     });

@@ -7,8 +7,8 @@ import { PerButton } from "../../compenents";
 import type { DataNode, TreeProps } from "antd/es/tree";
 import { DepartmentCreate } from "./compenents/create";
 import { DepartmentUpdate } from "./compenents/update";
-import { useSelector } from "../../store/hooks";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const { confirm } = Modal;
 
@@ -20,7 +20,9 @@ interface Option {
 
 const DepartmentPage = () => {
   const navigate = useNavigate();
-  const permisssions = useSelector((state: any) => state.permisssions);
+  const permissions = useSelector(
+    (state: any) => state.loginUser.value.permissions
+  );
   const [loading, setLoading] = useState<boolean>(true);
   const [refresh, setRefresh] = useState(false);
   const [treeData, setTreeData] = useState<any>([]);
@@ -36,15 +38,15 @@ const DepartmentPage = () => {
   };
 
   const through = (p: string) => {
-    if (!permisssions) {
+    if (!permissions) {
       return false;
     }
-    return typeof permisssions[p] !== "undefined";
+    return typeof permissions[p] !== "undefined";
   };
 
   useEffect(() => {
     getData();
-  }, [refresh, permisssions]);
+  }, [refresh, permissions]);
 
   const getData = () => {
     setLoading(true);
