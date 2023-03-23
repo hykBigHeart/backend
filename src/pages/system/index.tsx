@@ -16,7 +16,7 @@ import { appConfig } from "../../api/index";
 import { useParams, useNavigate } from "react-router-dom";
 import { UploadImageButton } from "../../compenents";
 import type { TabsProps } from "antd";
-// import { Colorpicker } from "antd-colorpicker";
+import type { CheckboxChangeEvent } from "antd/es/checkbox";
 
 export const SystemIndexPage: React.FC = () => {
   const params = useParams();
@@ -94,6 +94,17 @@ export const SystemIndexPage: React.FC = () => {
       form.setFieldsValue({ "player.is_enabled_bullet_secret": 1 });
     } else {
       form.setFieldsValue({ "player.is_enabled_bullet_secret": 0 });
+    }
+  };
+
+  const addName = (e: CheckboxChangeEvent) => {
+    var value = form.getFieldValue("player.bullet_secret_text");
+    if (e.target.checked) {
+      value += "${user.mobile}";
+      console.log(value);
+      form.setFieldsValue({
+        "player.bullet_secret_text": value,
+      });
     }
   };
 
@@ -232,7 +243,7 @@ export const SystemIndexPage: React.FC = () => {
           >
             <Form.Item
               style={{ marginBottom: 30 }}
-              label="启用跑马灯"
+              label="播放器跑马灯"
               name="player.is_enabled_bullet_secret"
               valuePropName="checked"
             >
@@ -250,21 +261,23 @@ export const SystemIndexPage: React.FC = () => {
             >
               <div className="d-flex">
                 <Input style={{ width: 274 }} placeholder="自定义跑马灯内容" />
-                <Checkbox className="ml-24">姓名</Checkbox>
+                <Checkbox className="ml-24" onChange={addName}>
+                  姓名
+                </Checkbox>
                 <Checkbox className="ml-24">邮箱</Checkbox>
                 <Checkbox className="ml-24">身份证号</Checkbox>
               </div>
             </Form.Item>
             <Form.Item
               style={{ marginBottom: 30 }}
-              label="跑马灯颜色"
+              label="跑马灯文字颜色"
               name="player.bullet_secret_color"
             >
-              {/* <Colorpicker /> */}
+              <Input type="color" style={{ width: 32, padding: 0 }} />
             </Form.Item>
             <Form.Item
               style={{ marginBottom: 30 }}
-              label="跑马灯透明度"
+              label="跑马灯不透明度"
               name="player.bullet_secret_opacity"
             >
               {/* <Colorpicker /> */}
