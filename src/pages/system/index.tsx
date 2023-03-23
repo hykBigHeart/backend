@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Form, Input, Image, Button, message } from "antd";
-import styles from "./update.module.less";
+import { Row, Col, Form, Input, Image, Button, Tabs, message } from "antd";
+import styles from "./index.module.less";
 import { appConfig } from "../../api/index";
 import { useParams, useNavigate } from "react-router-dom";
 import { UploadImageButton } from "../../compenents";
+import type { TabsProps } from "antd";
 
 export const SystemIndexPage: React.FC = () => {
   const params = useParams();
@@ -11,6 +12,7 @@ export const SystemIndexPage: React.FC = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState<boolean>(false);
   const [logo, setLogo] = useState<string>("");
+  const [tabKey, setTabKey] = useState(1);
 
   useEffect(() => {
     getDetail();
@@ -64,63 +66,86 @@ export const SystemIndexPage: React.FC = () => {
     console.log("Failed:", errorInfo);
   };
 
+  const items: TabsProps["items"] = [
+    {
+      key: "1",
+      label: `网站设置`,
+      children: (
+        <div className="float-left mt-24">
+          <Form
+            form={form}
+            name="basic"
+            labelCol={{ span: 4 }}
+            wrapperCol={{ span: 18 }}
+            style={{ width: 800 }}
+            initialValues={{ remember: true }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
+          >
+            <Form.Item
+              label="网站Logo"
+              name="system.logo"
+              labelCol={{ style: { marginTop: 8, marginLeft: 61 } }}
+            >
+              <div className="d-flex">
+                {logo && (
+                  <Image preview={false} width={150} height={50} src={logo} />
+                )}
+                <div className="d-flex ml-24">
+                  <UploadImageButton
+                    onSelected={(url) => {
+                      setLogo(url);
+                      form.setFieldsValue({ "system.logo": url });
+                    }}
+                  ></UploadImageButton>
+                </div>
+                <div className="helper-text ml-24">
+                  （推荐尺寸:240x80px，支持JPG、PNG）
+                </div>
+              </div>
+            </Form.Item>
+            <Form.Item label="网站标题" name="system.name">
+              <Input style={{ width: 274 }} placeholder="请填写网站标题" />
+            </Form.Item>
+            <Form.Item label="API访问地址" name="system.api_url">
+              <Input style={{ width: 274 }} placeholder="请填写API访问地址" />
+            </Form.Item>
+            <Form.Item label="PC端访问地址" name="system.pc_url">
+              <Input style={{ width: 274 }} placeholder="请填写PC端访问地址" />
+            </Form.Item>
+            <Form.Item label="H5端访问地址" name="system.h5_url">
+              <Input style={{ width: 274 }} placeholder="请填写H5端访问地址" />
+            </Form.Item>
+            <Form.Item wrapperCol={{ offset: 4, span: 18 }}>
+              <Button type="primary" htmlType="submit" loading={loading}>
+                保存
+              </Button>
+            </Form.Item>
+          </Form>
+        </div>
+      ),
+    },
+    {
+      key: "2",
+      label: `播放设置`,
+      children: <div className="float-left mt-24"></div>,
+    },
+  ];
+
+  const onChange = (key: string) => {
+    setTabKey(Number(key));
+  };
+
   return (
     <>
       <Row className="playedu-main-body">
-        <Col>
-          <div className="float-left">
-            <Form
-              form={form}
-              name="basic"
-              labelCol={{ span: 8 }}
-              wrapperCol={{ span: 16 }}
-              style={{ width: 600 }}
-              initialValues={{ remember: true }}
-              onFinish={onFinish}
-              onFinishFailed={onFinishFailed}
-              autoComplete="off"
-            >
-              <Form.Item label="网站名" name="system.name">
-                <Input placeholder="请输入网站名" />
-              </Form.Item>
-              <Form.Item label="Logo" name="system.logo">
-                <div className="c-flex">
-                  <div className="d-flex">
-                    <UploadImageButton
-                      onSelected={(url) => {
-                        setLogo(url);
-                        form.setFieldsValue({ "system.logo": url });
-                      }}
-                    ></UploadImageButton>
-                  </div>
-                  {logo && (
-                    <Image
-                      className="mt-10"
-                      preview={false}
-                      width={200}
-                      height={74}
-                      src={logo}
-                    />
-                  )}
-                </div>
-              </Form.Item>
-              <Form.Item label="API访问地址" name="system.api_url">
-                <Input placeholder="请输入API访问地址" />
-              </Form.Item>
-              <Form.Item label="PC端口访问地址" name="system.pc_url">
-                <Input placeholder="请输入PC端口访问地址" />
-              </Form.Item>
-              <Form.Item label="H5端口访问地址" name="system.h5_url">
-                <Input placeholder="请输入H5端口访问地址" />
-              </Form.Item>
-              <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                <Button type="primary" htmlType="submit" loading={loading}>
-                  保存
-                </Button>
-              </Form.Item>
-            </Form>
-          </div>
-        </Col>
+        <Tabs
+          className="float-left"
+          defaultActiveKey="1"
+          items={items}
+          onChange={onChange}
+        />
       </Row>
     </>
   );

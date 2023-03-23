@@ -46,7 +46,7 @@ export const MemberPage: React.FC = () => {
   const [createVisible, setCreateVisible] = useState<boolean>(false);
   const [updateVisible, setUpdateVisible] = useState<boolean>(false);
   const [mid, setMid] = useState<number>(0);
-  const [course_dep_ids, setCourseDepIds] = useState<any>({});
+  const [user_dep_ids, setUserDepIds] = useState<any>({});
   const [departments, setDepartments] = useState<any>({});
 
   const columns: ColumnsType<DataType> = [
@@ -71,11 +71,11 @@ export const MemberPage: React.FC = () => {
       dataIndex: "id",
       render: (id: number) => (
         <div className="float-left">
-          {course_dep_ids[id] &&
-            course_dep_ids[id].map((item: any, index: number) => {
+          {user_dep_ids[id] &&
+            user_dep_ids[id].map((item: any, index: number) => {
               return (
                 <span key={index}>
-                  {index === course_dep_ids[id].length - 1
+                  {index === user_dep_ids[id].length - 1
                     ? departments[item]
                     : departments[item] + "、"}
                 </span>
@@ -143,6 +143,8 @@ export const MemberPage: React.FC = () => {
       })
       .then((res: any) => {
         setList(res.data.data);
+        setDepartments(res.data.departments);
+        setUserDepIds(res.data.user_dep_ids);
         setTotal(res.data.total);
         setLoading(false);
       });
