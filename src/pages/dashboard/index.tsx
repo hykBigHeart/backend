@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./index.module.less";
 import { Row, Col } from "antd";
 import { Link, useNavigate } from "react-router-dom";
@@ -10,8 +10,10 @@ import iconN3 from "../../assets/images/dashboard/icon-n3.png";
 import { Footer } from "../../compenents/footer";
 import { dashboard } from "../../api/index";
 import { timeFormat } from "../../utils/index";
+import * as echarts from "echarts";
 
 export const Dashboard: React.FC<any> = () => {
+  let chartRef = useRef(null);
   const navigate = useNavigate();
   const [basicData, setBasicData] = useState<any>([]);
 
@@ -44,8 +46,8 @@ export const Dashboard: React.FC<any> = () => {
         value: params.images_count,
       },
     ];
-    var echarts = require("echarts");
-    let myChart = echarts.init(document.getElementById("chartCircle"));
+    let dom: any = chartRef.current;
+    let myChart = echarts.init(dom);
     myChart.setOption({
       title: {
         textAlign: "center",
@@ -523,7 +525,7 @@ export const Dashboard: React.FC<any> = () => {
             <div className={styles["large-title"]}>资源统计</div>
             <div className={styles["charts"]}>
               <div
-                id="chartCircle"
+                ref={chartRef}
                 style={{ width: "100%", height: 280, position: "relative" }}
               ></div>
             </div>

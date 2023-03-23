@@ -1,3 +1,3 @@
 export default {
-  app_url: process.env.REACT_APP_URL,
+  app_url: import.meta.env.VITE_APP_URL || "",
 };

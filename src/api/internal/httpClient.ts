@@ -130,7 +130,7 @@ export class HttpClient {
   }
 }
 
-const APP_URL = process.env.REACT_APP_URL || "";
+const APP_URL = import.meta.env.VITE_APP_URL || "";
 
 const client = new HttpClient(APP_URL);
 

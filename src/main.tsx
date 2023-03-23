@@ -8,18 +8,13 @@ import store from "./store/store";
 import { ConfigProvider } from "antd";
 import zhCN from "antd/locale/zh_CN";
 
-const basename = process.env.REACT_BASE_NAME || "";
-
-const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
-);
-root.render(
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <Provider store={store}>
     <ConfigProvider
       locale={zhCN}
       theme={{ token: { colorPrimary: "#ff4d4f" } }}
     >
-      <BrowserRouter basename={basename}>
+      <BrowserRouter>
         <App />
       </BrowserRouter>
     </ConfigProvider>
