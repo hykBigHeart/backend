@@ -11,18 +11,15 @@ import {
   Checkbox,
 } from "antd";
 import { appConfig } from "../../api/index";
-import { useNavigate } from "react-router-dom";
 import { UploadImageButton } from "../../compenents";
 import type { TabsProps } from "antd";
 // import { Colorpicker } from "antd-colorpicker";
 
 export const SystemIndexPage: React.FC = () => {
-  const navigate = useNavigate();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState<boolean>(false);
   const [logo, setLogo] = useState<string>("");
   const [thumb, setThumb] = useState<string>("");
-  const [tabKey, setTabKey] = useState(1);
 
   useEffect(() => {
     getDetail();
@@ -321,19 +318,10 @@ export const SystemIndexPage: React.FC = () => {
     },
   ];
 
-  const onChange = (key: string) => {
-    setTabKey(Number(key));
-  };
-
   return (
     <>
       <Row className="playedu-main-body">
-        <Tabs
-          className="float-left"
-          defaultActiveKey="1"
-          items={items}
-          onChange={onChange}
-        />
+        <Tabs className="float-left" defaultActiveKey="1" items={items} />
       </Row>
     </>
   );
