@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   Row,
+  Col,
   Form,
   Input,
   Image,
@@ -9,17 +10,23 @@ import {
   message,
   Switch,
   Checkbox,
+  Slider,
 } from "antd";
+import styles from "./index.module.less";
 import { appConfig } from "../../api/index";
+import { useParams, useNavigate } from "react-router-dom";
 import { UploadImageButton } from "../../compenents";
 import type { TabsProps } from "antd";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
 
 export const SystemIndexPage: React.FC = () => {
+  const params = useParams();
+  const navigate = useNavigate();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState<boolean>(false);
   const [logo, setLogo] = useState<string>("");
   const [thumb, setThumb] = useState<string>("");
+  const [tabKey, setTabKey] = useState(1);
 
   useEffect(() => {
     getDetail();
@@ -75,8 +82,12 @@ export const SystemIndexPage: React.FC = () => {
             "player.bullet_secret_color": configData[i].key_value,
           });
         } else if (configData[i].key_name === "player.bullet_secret_opacity") {
+          let value = 0;
+          if (configData[i].key_value !== "") {
+            value = Number(configData[i].key_value) * 100;
+          }
           form.setFieldsValue({
-            "player.bullet_secret_opacity": configData[i].key_value,
+            "player.bullet_secret_opacity": value,
           });
         }
       }
@@ -94,7 +105,7 @@ export const SystemIndexPage: React.FC = () => {
   const addName = (e: CheckboxChangeEvent) => {
     var value = form.getFieldValue("player.bullet_secret_text");
     if (e.target.checked) {
-      value += "${user.mobile}";
+      value += "{name}";
       console.log(value);
       form.setFieldsValue({
         "player.bullet_secret_text": value,
@@ -107,6 +118,8 @@ export const SystemIndexPage: React.FC = () => {
       return;
     }
     setLoading(true);
+    values["player.bullet_secret_opacity"] =
+      values["player.bullet_secret_opacity"][0] / 100;
     appConfig.saveAppConfig(values).then((res: any) => {
       message.success("保存成功！");
       setLoading(false);
@@ -122,107 +135,26 @@ export const SystemIndexPage: React.FC = () => {
     {
       key: "1",
       label: `网站设置`,
-      children: (
-        <div className="float-left mt-24">
-          <Form
-            form={form}
-            name="basic"
-            labelCol={{ span: 4 }}
-            wrapperCol={{ span: 18 }}
-            style={{ width: 800 }}
-            initialValues={{ remember: true }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            autoComplete="off"
-          >
-            {logo && (
-              <Form.Item
-                style={{ marginBottom: 30 }}
-                label="网站Logo"
-                name="system.logo"
-                labelCol={{ style: { marginTop: 8, marginLeft: 61 } }}
-              >
-                <div className="d-flex">
-                  <Image preview={false} width={150} height={50} src={logo} />
-                  <div className="d-flex ml-24">
-                    <UploadImageButton
-                      onSelected={(url) => {
-                        setLogo(url);
-                        form.setFieldsValue({ "system.logo": url });
-                      }}
-                    ></UploadImageButton>
-                  </div>
-                  <div className="helper-text ml-24">
-                    （推荐尺寸:240x80px，支持JPG、PNG）
-                  </div>
-                </div>
-              </Form.Item>
-            )}
-            {!logo && (
-              <Form.Item
-                style={{ marginBottom: 30 }}
-                label="网站Logo"
-                name="system.logo"
-              >
-                <div className="d-flex">
-                  <div className="d-flex ml-24">
-                    <UploadImageButton
-                      onSelected={(url) => {
-                        setLogo(url);
-                        form.setFieldsValue({ "system.logo": url });
-                      }}
-                    ></UploadImageButton>
-                  </div>
-                  <div className="helper-text ml-24">
-                    （推荐尺寸:240x80px，支持JPG、PNG）
-                  </div>
-                </div>
-              </Form.Item>
-            )}
-            <Form.Item
-              style={{ marginBottom: 30 }}
-              label="网站标题"
-              name="system.name"
-            >
-              <Input style={{ width: 274 }} placeholder="请填写网站标题" />
-            </Form.Item>
-            <Form.Item
-              style={{ marginBottom: 30 }}
-              label="API访问地址"
-              name="system.api_url"
-            >
-              <Input style={{ width: 274 }} placeholder="请填写API访问地址" />
-            </Form.Item>
-            <Form.Item
-              style={{ marginBottom: 30 }}
-              label="PC端访问地址"
-              name="system.pc_url"
-            >
-              <Input style={{ width: 274 }} placeholder="请填写PC端访问地址" />
-            </Form.Item>
-            <Form.Item
-              style={{ marginBottom: 30 }}
-              label="H5端访问地址"
-              name="system.h5_url"
-            >
-              <Input style={{ width: 274 }} placeholder="请填写H5端访问地址" />
-            </Form.Item>
-            <Form.Item
-              style={{ marginBottom: 30 }}
-              wrapperCol={{ offset: 4, span: 18 }}
-            >
-              <Button type="primary" htmlType="submit" loading={loading}>
-                保存
-              </Button>
-            </Form.Item>
-          </Form>
-        </div>
-      ),
     },
     {
       key: "2",
       label: `播放设置`,
-      children: (
+    },
+  ];
+
+  const onChange = (key: string) => {
+    setTabKey(Number(key));
+  };
+
+  return (
+    <>
+      <Row className="playedu-main-body">
+        <Tabs
+          className="float-left"
+          defaultActiveKey="1"
+          items={items}
+          onChange={onChange}
+        />
         <div className="float-left mt-24">
           <Form
             form={form}
@@ -230,111 +162,211 @@ export const SystemIndexPage: React.FC = () => {
             labelCol={{ span: 3 }}
             wrapperCol={{ span: 21 }}
             style={{ width: 1000 }}
-            initialValues={{ remember: true }}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
           >
-            <Form.Item
-              style={{ marginBottom: 30 }}
-              label="播放器跑马灯"
-              name="player.is_enabled_bullet_secret"
-              valuePropName="checked"
-            >
-              <div className="d-flex">
-                <Switch onChange={onSwitchChange} />
-                <div className="helper-text ml-24">
-                  （打开后播放器会随机出现跑马灯水印，以防录屏传播）
-                </div>
-              </div>
-            </Form.Item>
-            <Form.Item
-              style={{ marginBottom: 30 }}
-              label="跑马灯内容"
-              name="player.bullet_secret_text"
-            >
-              <div className="d-flex">
-                <Input style={{ width: 274 }} placeholder="自定义跑马灯内容" />
-                <Checkbox className="ml-24" onChange={addName}>
-                  姓名
-                </Checkbox>
-                <Checkbox className="ml-24">邮箱</Checkbox>
-                <Checkbox className="ml-24">身份证号</Checkbox>
-              </div>
-            </Form.Item>
-            <Form.Item
-              style={{ marginBottom: 30 }}
-              label="跑马灯文字颜色"
-              name="player.bullet_secret_color"
-            >
-              <Input type="color" style={{ width: 32, padding: 0 }} />
-            </Form.Item>
-            <Form.Item
-              style={{ marginBottom: 30 }}
-              label="跑马灯不透明度"
-              name="player.bullet_secret_opacity"
-            >
-              {/* <Colorpicker /> */}
-            </Form.Item>
-            {thumb && (
-              <Form.Item
-                style={{ marginBottom: 30 }}
-                label="播放器封面"
-                name="player.poster"
-                labelCol={{ style: { marginTop: 75, marginLeft: 42 } }}
-              >
-                <div className="d-flex">
-                  <Image preview={false} width={320} height={180} src={thumb} />
-                  <div className="d-flex ml-24">
-                    <UploadImageButton
-                      onSelected={(url) => {
-                        setThumb(url);
-                        form.setFieldsValue({ "player.poster": url });
-                      }}
-                    ></UploadImageButton>
-                    <div className="helper-text ml-24">
-                      （推荐尺寸:19200x1080px，视频播放未开始时展示）
+            {tabKey === 1 && (
+              <>
+                {logo && (
+                  <Form.Item
+                    style={{ marginBottom: 30 }}
+                    label="网站Logo"
+                    name="system.logo"
+                    labelCol={{ style: { marginTop: 8, marginLeft: 54 } }}
+                  >
+                    <div className="d-flex">
+                      <Image
+                        preview={false}
+                        width={150}
+                        height={50}
+                        src={logo}
+                      />
+                      <div className="d-flex ml-24">
+                        <UploadImageButton
+                          onSelected={(url) => {
+                            setLogo(url);
+                            form.setFieldsValue({ "system.logo": url });
+                          }}
+                        ></UploadImageButton>
+                      </div>
+                      <div className="helper-text ml-24">
+                        （推荐尺寸:240x80px，支持JPG、PNG）
+                      </div>
                     </div>
-                  </div>
-                </div>
-              </Form.Item>
+                  </Form.Item>
+                )}
+                {!logo && (
+                  <Form.Item
+                    style={{ marginBottom: 30 }}
+                    label="网站Logo"
+                    name="system.logo"
+                  >
+                    <div className="d-flex">
+                      <div className="d-flex ml-24">
+                        <UploadImageButton
+                          onSelected={(url) => {
+                            setLogo(url);
+                            form.setFieldsValue({ "system.logo": url });
+                          }}
+                        ></UploadImageButton>
+                      </div>
+                      <div className="helper-text ml-24">
+                        （推荐尺寸:240x80px，支持JPG、PNG）
+                      </div>
+                    </div>
+                  </Form.Item>
+                )}
+                <Form.Item
+                  style={{ marginBottom: 30 }}
+                  label="网站标题"
+                  name="system.name"
+                >
+                  <Input style={{ width: 274 }} placeholder="请填写网站标题" />
+                </Form.Item>
+                <Form.Item
+                  style={{ marginBottom: 30 }}
+                  label="API访问地址"
+                  name="system.api_url"
+                >
+                  <Input
+                    style={{ width: 274 }}
+                    placeholder="请填写API访问地址"
+                  />
+                </Form.Item>
+                <Form.Item
+                  style={{ marginBottom: 30 }}
+                  label="PC端访问地址"
+                  name="system.pc_url"
+                >
+                  <Input
+                    style={{ width: 274 }}
+                    placeholder="请填写PC端访问地址"
+                  />
+                </Form.Item>
+                <Form.Item
+                  style={{ marginBottom: 30 }}
+                  label="H5端访问地址"
+                  name="system.h5_url"
+                >
+                  <Input
+                    style={{ width: 274 }}
+                    placeholder="请填写H5端访问地址"
+                  />
+                </Form.Item>
+              </>
             )}
-            {!thumb && (
-              <Form.Item
-                style={{ marginBottom: 30 }}
-                label="播放器封面"
-                name="player.poster"
-              >
-                <div className="d-flex">
+            {tabKey === 2 && (
+              <>
+                <Form.Item
+                  style={{ marginBottom: 30 }}
+                  label="播放器跑马灯"
+                  name="player.is_enabled_bullet_secret"
+                  valuePropName="checked"
+                >
                   <div className="d-flex">
-                    <UploadImageButton
-                      onSelected={(url) => {
-                        setThumb(url);
-                        form.setFieldsValue({ "player.poster": url });
-                      }}
-                    ></UploadImageButton>
+                    <Switch onChange={onSwitchChange} />
                     <div className="helper-text ml-24">
-                      （推荐尺寸:19200x1080px，视频播放未开始时展示）
+                      （打开后播放器会随机出现跑马灯水印，以防录屏传播）
                     </div>
                   </div>
-                </div>
-              </Form.Item>
+                </Form.Item>
+                <Form.Item
+                  style={{ marginBottom: 30 }}
+                  label="跑马灯内容"
+                  name="player.bullet_secret_text"
+                >
+                  <div className="d-flex">
+                    <Input
+                      style={{ width: 274 }}
+                      placeholder="自定义跑马灯内容"
+                    />
+                    <Checkbox className="ml-24" onChange={addName}>
+                      姓名
+                    </Checkbox>
+                    <Checkbox className="ml-24">邮箱</Checkbox>
+                    <Checkbox className="ml-24">身份证号</Checkbox>
+                  </div>
+                </Form.Item>
+                <Form.Item
+                  style={{ marginBottom: 30 }}
+                  label="跑马灯文字颜色"
+                  name="player.bullet_secret_color"
+                >
+                  <Input type="color" style={{ width: 32, padding: 0 }} />
+                </Form.Item>
+                <Form.Item
+                  style={{ marginBottom: 30 }}
+                  label="跑马灯不透明度"
+                  name="player.bullet_secret_opacity"
+                >
+                  <Slider
+                    style={{ width: 400 }}
+                    range
+                    defaultValue={[0, 100]}
+                  />
+                </Form.Item>
+                {thumb && (
+                  <Form.Item
+                    style={{ marginBottom: 30 }}
+                    label="播放器封面"
+                    name="player.poster"
+                    labelCol={{ style: { marginTop: 75, marginLeft: 42 } }}
+                  >
+                    <div className="d-flex">
+                      <Image
+                        preview={false}
+                        width={320}
+                        height={180}
+                        src={thumb}
+                      />
+                      <div className="d-flex ml-24">
+                        <UploadImageButton
+                          onSelected={(url) => {
+                            setThumb(url);
+                            form.setFieldsValue({ "player.poster": url });
+                          }}
+                        ></UploadImageButton>
+                        <div className="helper-text ml-24">
+                          （推荐尺寸:19200x1080px，视频播放未开始时展示）
+                        </div>
+                      </div>
+                    </div>
+                  </Form.Item>
+                )}
+                {!thumb && (
+                  <Form.Item
+                    style={{ marginBottom: 30 }}
+                    label="播放器封面"
+                    name="player.poster"
+                  >
+                    <div className="d-flex">
+                      <div className="d-flex">
+                        <UploadImageButton
+                          onSelected={(url) => {
+                            setThumb(url);
+                            form.setFieldsValue({ "player.poster": url });
+                          }}
+                        ></UploadImageButton>
+                        <div className="helper-text ml-24">
+                          （推荐尺寸:19200x1080px，视频播放未开始时展示）
+                        </div>
+                      </div>
+                    </div>
+                  </Form.Item>
+                )}
+              </>
             )}
-            <Form.Item wrapperCol={{ offset: 3, span: 21 }}>
+            <Form.Item
+              style={{ marginBottom: 30 }}
+              wrapperCol={{ offset: 2, span: 21 }}
+            >
               <Button type="primary" htmlType="submit" loading={loading}>
                 保存
               </Button>
             </Form.Item>
           </Form>
         </div>
-      ),
-    },
-  ];
-
-  return (
-    <>
-      <Row className="playedu-main-body">
-        <Tabs className="float-left" defaultActiveKey="1" items={items} />
       </Row>
     </>
   );
