@@ -31,7 +31,7 @@ interface ImageItem {
   created_at: string;
 }
 
-export const ResourceImagesPage = () => {
+const ResourceImagesPage = () => {
   const [imageList, setImageList] = useState<ImageItem[]>([]);
   const [refresh, setRefresh] = useState(false);
   const [page, setPage] = useState(1);
@@ -273,3 +273,5 @@ export const ResourceImagesPage = () => {
     </>
   );
 };
+
+export default ResourceImagesPage;

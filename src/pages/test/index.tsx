@@ -1,7 +1,6 @@
-import React from "react";
 import { UploadVideoButton } from "../../compenents/upload-video-button";
 
-export const TestPage: React.FC = () => {
+const TestPage = () => {
   return (
     <div>
       <UploadVideoButton
@@ -13,3 +12,5 @@ export const TestPage: React.FC = () => {
     </div>
   );
 };
+
+export default TestPage;

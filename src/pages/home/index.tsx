@@ -3,7 +3,7 @@ import styles from "./index.module.less";
 import { Outlet } from "react-router-dom";
 import { Header, LeftMenu } from "../../compenents";
 
-export const HomePage: React.FC = () => {
+const HomePage = () => {
   useEffect(() => {}, []);
 
   return (
@@ -25,3 +25,5 @@ export const HomePage: React.FC = () => {
     </>
   );
 };
+
+export default HomePage;

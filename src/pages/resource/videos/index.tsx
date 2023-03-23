@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Button, Modal, Table, message, Space } from "antd";
+import { Modal, Table, message, Space } from "antd";
 import { resource } from "../../../api";
-import styles from "./index.module.less";
+// import styles from "./index.module.less";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import { dateFormat } from "../../../utils/index";
@@ -18,7 +18,7 @@ interface DataType {
   disk: string;
 }
 
-export const ResourceVideosPage = () => {
+const ResourceVideosPage = () => {
   const [videoList, setVideoList] = useState<any>([]);
   const [videosExtra, setVideoExtra] = useState<any>([]);
   const [adminUsers, setAdminUsers] = useState<any>({});
@@ -203,3 +203,5 @@ export const ResourceVideosPage = () => {
     </>
   );
 };
+
+export default ResourceVideosPage;

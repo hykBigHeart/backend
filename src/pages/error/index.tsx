@@ -1,9 +1,8 @@
 import { Button, Result } from "antd";
-import React from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./index.module.less";
 
-export const ErrorPage: React.FC<any> = () => {
+const ErrorPage = () => {
   const navigate = useNavigate();
 
   return (
@@ -25,3 +24,5 @@ export const ErrorPage: React.FC<any> = () => {
     />
   );
 };
+
+export default ErrorPage;

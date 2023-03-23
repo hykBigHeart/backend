@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button, Space, Table, Modal, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import styles from "./index.module.less";
+// import styles from "./index.module.less";
 import { PlusOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 import { adminRole } from "../../../api/index";
 import { dateFormat } from "../../../utils/index";
@@ -17,7 +17,7 @@ interface DataType {
   created_at: string;
 }
 
-export const SystemAdminrolesPage: React.FC = () => {
+const SystemAdminrolesPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [list, setList] = useState<any>([]);
   const [refresh, setRefresh] = useState(false);
@@ -153,3 +153,5 @@ export const SystemAdminrolesPage: React.FC = () => {
     </>
   );
 };
+
+export default SystemAdminrolesPage;

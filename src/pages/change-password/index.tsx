@@ -1,11 +1,10 @@
-import React from "react";
 import { Row, Col, Form, Input, Button, message } from "antd";
-import styles from "./create.module.less";
+// import styles from "./create.module.less";
 import { login } from "../../api/index";
 import { useNavigate } from "react-router-dom";
 import { BackBartment } from "../../compenents";
 
-export const ChangePasswordPage: React.FC = () => {
+const ChangePasswordPage = () => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
 
@@ -74,3 +73,5 @@ export const ChangePasswordPage: React.FC = () => {
     </>
   );
 };
+
+export default ChangePasswordPage;

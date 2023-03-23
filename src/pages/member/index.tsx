@@ -30,7 +30,7 @@ interface DataType {
   is_lock: number;
 }
 
-export const MemberPage: React.FC = () => {
+const MemberPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
@@ -303,3 +303,5 @@ export const MemberPage: React.FC = () => {
     </>
   );
 };
+
+export default MemberPage;

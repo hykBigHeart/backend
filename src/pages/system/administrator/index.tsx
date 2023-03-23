@@ -20,7 +20,7 @@ interface DataType {
   is_ban_login: number;
 }
 
-export const SystemAdministratorPage: React.FC = () => {
+const SystemAdministratorPage = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(true);
   const [page, setPage] = useState(1);
@@ -228,3 +228,5 @@ export const SystemAdministratorPage: React.FC = () => {
     </>
   );
 };
+
+export default SystemAdministratorPage;

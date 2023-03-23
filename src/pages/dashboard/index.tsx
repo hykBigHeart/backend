@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import styles from "./index.module.less";
 import { Row, Col } from "antd";
 import { Link, useNavigate } from "react-router-dom";
@@ -12,7 +12,7 @@ import { dashboard } from "../../api/index";
 import { timeFormat } from "../../utils/index";
 import * as echarts from "echarts";
 
-export const Dashboard: React.FC<any> = () => {
+const DashboardPage = () => {
   let chartRef = useRef(null);
   const navigate = useNavigate();
   const [basicData, setBasicData] = useState<any>([]);
@@ -536,3 +536,5 @@ export const Dashboard: React.FC<any> = () => {
     </>
   );
 };
+
+export default DashboardPage;

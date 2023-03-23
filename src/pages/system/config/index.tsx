@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Row,
   Form,
@@ -17,7 +17,7 @@ import { UploadImageButton } from "../../../compenents";
 import type { TabsProps } from "antd";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
 
-export const SystemIndexPage: React.FC = () => {
+const SystemConfigPage = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState<boolean>(false);
   const [logo, setLogo] = useState<string>("");
@@ -367,3 +367,5 @@ export const SystemIndexPage: React.FC = () => {
     </>
   );
 };
+
+export default SystemConfigPage;

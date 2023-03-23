@@ -12,7 +12,7 @@ import {
   Dropdown,
 } from "antd";
 import { course } from "../../api";
-import styles from "./index.module.less";
+// import styles from "./index.module.less";
 import {
   PlusOutlined,
   DownOutlined,
@@ -21,7 +21,7 @@ import {
 import type { MenuProps } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { dateFormat } from "../../utils/index";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { TreeDepartment, TreeCategory, PerButton } from "../../compenents";
 import type { TabsProps } from "antd";
 import { CourseCreate } from "./compenents/create";
@@ -39,7 +39,7 @@ interface DataType {
   is_show: number;
 }
 
-export const CoursePage = () => {
+const CoursePage = () => {
   const navigate = useNavigate();
   const [list, setList] = useState<any>([]);
   const [refresh, setRefresh] = useState(false);
@@ -423,3 +423,5 @@ export const CoursePage = () => {
     </>
   );
 };
+
+export default CoursePage;

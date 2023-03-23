@@ -14,7 +14,7 @@ import banner from "../../assets/images/login/banner.png";
 import icon from "../../assets/images/login/icon.png";
 import "./login.less";
 
-export const Login: React.FC = () => {
+const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
@@ -166,3 +166,5 @@ export const Login: React.FC = () => {
     </div>
   );
 };
+
+export default LoginPage;

@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import * as XLSX from "xlsx";
-import { Row, Col, Form, Input, Cascader, Button, Upload, message } from "antd";
+import { Row, Col, Button, Upload, message } from "antd";
 import { BackBartment } from "../../compenents";
 import { user } from "../../api/index";
 import { useNavigate } from "react-router-dom";
 import { getHost } from "../../utils/index";
 
-export const MemberImportPage: React.FC = () => {
+const MemberImportPage = () => {
   const navigate = useNavigate();
   const [tableData, setWageTableData] = useState<any>([]);
   const [errorData, setErrorData] = useState<any>([]);
@@ -106,3 +106,5 @@ export const MemberImportPage: React.FC = () => {
     </>
   );
 };
+
+export default MemberImportPage;

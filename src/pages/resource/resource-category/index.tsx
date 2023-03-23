@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Spin, Button, Tree, Modal, message, Tooltip } from "antd";
-import styles from "./index.module.less";
+import { Button, Tree, Modal, message, Tooltip } from "antd";
+// import styles from "./index.module.less";
 import { PlusOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 import { resourceCategory } from "../../../api/index";
 import { PerButton } from "../../../compenents";
@@ -18,14 +18,7 @@ interface Option {
   children?: Option[];
 }
 
-interface DataType {
-  id: React.Key;
-  name: string;
-  created_at: string;
-  sort: number;
-}
-
-export const ResourceCategoryPage: React.FC = () => {
+const ResourceCategoryPage = () => {
   const navigate = useNavigate();
   const permisssions = useSelector((state: any) => state.permisssions);
   const [loading, setLoading] = useState<boolean>(true);
@@ -406,3 +399,5 @@ export const ResourceCategoryPage: React.FC = () => {
     </>
   );
 };
+
+export default ResourceCategoryPage;
