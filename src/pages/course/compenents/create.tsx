@@ -182,6 +182,10 @@ export const CourseCreate: React.FC<PropInterface> = ({
     if (type === "elective") {
       dep_ids = values.dep_ids;
     }
+    if (chapters.length === 0 && treeData.length === 0) {
+      message.error("请配置课时");
+      return;
+    }
     course
       .storeCourse(
         values.title,
