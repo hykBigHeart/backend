@@ -24,6 +24,9 @@ const SystemConfigPage = () => {
   const [logo, setLogo] = useState<string>("");
   const [thumb, setThumb] = useState<string>("");
   const [tabKey, setTabKey] = useState(1);
+  const [nameChecked, setNameChecked] = useState(false);
+  const [emailChecked, setEmailChecked] = useState(false);
+  const [idCardchecked, setIdCardChecked] = useState(false);
 
   useEffect(() => {
     getDetail();
@@ -72,6 +75,15 @@ const SystemConfigPage = () => {
             "player.is_enabled_bullet_secret": value,
           });
         } else if (configData[i].key_name === "player.bullet_secret_text") {
+          if (configData[i].key_value.indexOf("{name}") != -1) {
+            setNameChecked(true);
+          }
+          if (configData[i].key_value.indexOf("{email}") != -1) {
+            setEmailChecked(true);
+          }
+          if (configData[i].key_value.indexOf("{idCard}") != -1) {
+            setIdCardChecked(true);
+          }
           form.setFieldsValue({
             "player.bullet_secret_text": configData[i].key_value,
           });
@@ -114,6 +126,7 @@ const SystemConfigPage = () => {
     form.setFieldsValue({
       "player.bullet_secret_text": value,
     });
+    setNameChecked(!nameChecked);
   };
 
   const addEmail = (e: CheckboxChangeEvent) => {
@@ -126,6 +139,7 @@ const SystemConfigPage = () => {
     form.setFieldsValue({
       "player.bullet_secret_text": value,
     });
+    setEmailChecked(!emailChecked);
   };
   const addIdCard = (e: CheckboxChangeEvent) => {
     var value = form.getFieldValue("player.bullet_secret_text");
@@ -137,6 +151,7 @@ const SystemConfigPage = () => {
     form.setFieldsValue({
       "player.bullet_secret_text": value,
     });
+    setIdCardChecked(!idCardchecked);
   };
 
   const onFinish = (values: any) => {
@@ -294,13 +309,25 @@ const SystemConfigPage = () => {
               <Form.Item name="player.bullet_secret_text">
                 <Input style={{ width: 274 }} placeholder="自定义跑马灯内容" />
               </Form.Item>
-              <Checkbox className="ml-24" onChange={addName}>
+              <Checkbox
+                checked={nameChecked}
+                className="ml-24"
+                onChange={addName}
+              >
                 姓名
               </Checkbox>
-              <Checkbox className="ml-24" onChange={addEmail}>
+              <Checkbox
+                checked={emailChecked}
+                className="ml-24"
+                onChange={addEmail}
+              >
                 邮箱
               </Checkbox>
-              <Checkbox className="ml-24" onChange={addIdCard}>
+              <Checkbox
+                checked={idCardchecked}
+                className="ml-24"
+                onChange={addIdCard}
+              >
                 身份证号
               </Checkbox>
             </Space>
