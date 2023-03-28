@@ -442,9 +442,9 @@ export const CourseCreate: React.FC<PropInterface> = ({
               </Radio.Group>
             </Form.Item>
             <Form.Item
-              label="课程类型"
+              label="指派部门"
               name="type"
-              rules={[{ required: true, message: "请选择课程类型!" }]}
+              rules={[{ required: true, message: "请选择指派部门!" }]}
             >
               <Radio.Group onChange={getType}>
                 <Radio value="open">所有部门</Radio>
@@ -454,12 +454,12 @@ export const CourseCreate: React.FC<PropInterface> = ({
 
             {type === "elective" && (
               <Form.Item
-                label="指派部门"
+                label="选择部门"
                 name="dep_ids"
                 rules={[
                   {
                     required: true,
-                    message: "请选择课程指派部门!",
+                    message: "请选择部门!",
                   },
                 ]}
               >
@@ -469,7 +469,7 @@ export const CourseCreate: React.FC<PropInterface> = ({
                   treeData={departments}
                   multiple
                   allowClear
-                  placeholder="请选择课程指派部门"
+                  placeholder="请选择部门"
                 />
               </Form.Item>
             )}
