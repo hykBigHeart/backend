@@ -268,7 +268,7 @@ const SystemConfigPage = () => {
           </Form.Item>
           <Form.Item
             style={{ marginBottom: 30 }}
-            wrapperCol={{ offset: 2, span: 21 }}
+            wrapperCol={{ offset: 3, span: 21 }}
           >
             <Button type="primary" htmlType="submit" loading={loading}>
               保存
@@ -354,7 +354,13 @@ const SystemConfigPage = () => {
               labelCol={{ style: { marginTop: 75, marginLeft: 42 } }}
             >
               <div className="d-flex">
-                <Image preview={false} width={320} height={180} src={thumb} />
+                <Image
+                  preview={false}
+                  width={320}
+                  height={180}
+                  src={thumb}
+                  style={{ borderRadius: 6 }}
+                />
                 <div className="d-flex ml-24">
                   <UploadImageButton
                     onSelected={(url) => {
@@ -392,7 +398,7 @@ const SystemConfigPage = () => {
           )}
           <Form.Item
             style={{ marginBottom: 30 }}
-            wrapperCol={{ offset: 2, span: 21 }}
+            wrapperCol={{ offset: 3, span: 21 }}
           >
             <Button type="primary" htmlType="submit" loading={loading}>
               保存
