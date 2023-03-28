@@ -97,7 +97,7 @@ export const DepartmentCreate: React.FC<PropInterface> = ({
   return (
     <>
       <Modal
-        title="添加部门"
+        title="新建部门"
         centered
         forceRender
         open={open}

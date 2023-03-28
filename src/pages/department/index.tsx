@@ -353,7 +353,7 @@ const DepartmentPage = () => {
         <div className="d-flex">
           <PerButton
             type="primary"
-            text="添加部门"
+            text="新建部门"
             class="mr-16"
             icon={<PlusOutlined />}
             p="department-cud"

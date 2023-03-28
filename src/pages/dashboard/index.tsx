@@ -242,7 +242,7 @@ const DashboardPage = () => {
                   className="iconfont icon-department"
                   style={{ color: "#21C785", fontSize: 36 }}
                 ></i>
-                <span>添加部门</span>
+                <span>新建部门</span>
               </div>
             </div>
           </div>
