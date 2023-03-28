@@ -84,7 +84,7 @@ const CourseUserPage = () => {
 
   useEffect(() => {
     getList();
-  }, [params.courseId]);
+  }, [params.courseId, refresh, page, size]);
 
   const getList = () => {
     setLoading(true);
