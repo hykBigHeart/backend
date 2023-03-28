@@ -156,9 +156,9 @@ const CoursePage = () => {
     },
     {
       title: "必修/选修",
-      dataIndex: "isRequired",
-      render: (isRequired: number) => (
-        <span>{isRequired === 1 ? "必修课" : "选修课"}</span>
+      dataIndex: "is_required",
+      render: (is_required: number) => (
+        <span>{is_required === 1 ? "必修课" : "选修课"}</span>
       ),
     },
     {
