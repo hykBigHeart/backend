@@ -378,7 +378,7 @@ export const CourseHourUpdate: React.FC<PropInterface> = ({
           />
           <Form
             form={form}
-            name="basic"
+            name="hour-update-basic"
             labelCol={{ span: 5 }}
             wrapperCol={{ span: 19 }}
             initialValues={{ remember: true }}

@@ -9,7 +9,6 @@ import {
   Modal,
   message,
   Image,
-  Tooltip,
   TreeSelect,
 } from "antd";
 import styles from "./create.module.less";
@@ -394,7 +393,7 @@ export const CourseCreate: React.FC<PropInterface> = ({
           />
           <Form
             form={form}
-            name="basic"
+            name="create-basic"
             labelCol={{ span: 5 }}
             wrapperCol={{ span: 19 }}
             initialValues={{ remember: true }}
@@ -444,16 +443,8 @@ export const CourseCreate: React.FC<PropInterface> = ({
               rules={[{ required: true, message: "请选择课程类型!" }]}
             >
               <Radio.Group onChange={getType}>
-                <Radio value="open">
-                  公开课
-                  <Tooltip placement="top" title="公开课所有学员可见">
-                    <i
-                      style={{ fontSize: 14 }}
-                      className="iconfont icon-icon-tips c-gray ml-8"
-                    />
-                  </Tooltip>
-                </Radio>
-                <Radio value="elective">部门课</Radio>
+                <Radio value="open">所有部门</Radio>
+                <Radio value="elective">选择部门</Radio>
               </Radio.Group>
             </Form.Item>
 

@@ -82,3 +82,32 @@ export function updateCourse(
 export function destroyCourse(id: number) {
   return client.destroy(`/backend/v1/course/${id}`);
 }
+
+//学员列表
+export function courseUser(
+  courseId: number,
+  page: number,
+  size: number,
+  sortField: string,
+  sortAlgo: string,
+  name: string,
+  email: string,
+  idCard: string
+) {
+  return client.get(`/backend/v1/course/${courseId}/user/index`, {
+    page: page,
+    size: size,
+    sort_field: sortField,
+    sort_algo: sortAlgo,
+    name: name,
+    email: email,
+    id_card: idCard,
+  });
+}
+
+//删除学员
+export function destroyCourseUser(courseId: number, ids: number[]) {
+  return client.post(`/backend/v1/course/${courseId}/user/destroy`, {
+    ids: ids,
+  });
+}

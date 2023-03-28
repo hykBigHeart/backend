@@ -12,7 +12,8 @@ import ChangePasswordPage from "../pages/change-password";
 import ResourceCategoryPage from "../pages/resource/resource-category";
 import ResourceImagesPage from "../pages/resource/images";
 import ResourceVideosPage from "../pages/resource/videos";
-import CoursePage from "../pages/course";
+import CoursePage from "../pages/course/index";
+import CourseUserPage from "../pages/course/user";
 import MemberPage from "../pages/member";
 import MemberImportPage from "../pages/member/import";
 import SystemConfigPage from "../pages/system/config";
@@ -99,6 +100,10 @@ const routes: RouteObject[] = [
           {
             path: "/course",
             element: <CoursePage />,
+          },
+          {
+            path: "/course/user/:courseId",
+            element: <CourseUserPage />,
           },
           {
             path: "/member",
