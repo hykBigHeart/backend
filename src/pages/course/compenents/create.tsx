@@ -408,6 +408,7 @@ export const CourseCreate: React.FC<PropInterface> = ({
               rules={[{ required: true, message: "请选择课程分类!" }]}
             >
               <TreeSelect
+                showCheckedStrategy={TreeSelect.SHOW_ALL}
                 allowClear
                 multiple
                 style={{ width: 424 }}
@@ -468,6 +469,7 @@ export const CourseCreate: React.FC<PropInterface> = ({
                 ]}
               >
                 <TreeSelect
+                  showCheckedStrategy={TreeSelect.SHOW_ALL}
                   style={{ width: 424 }}
                   treeData={departments}
                   multiple
