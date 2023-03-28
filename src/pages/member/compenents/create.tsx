@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, Cascader, Input, message } from "antd";
+import { Modal, Form, TreeSelect, Input, message } from "antd";
 import styles from "./create.module.less";
 import { user, department } from "../../../api/index";
 import { UploadImageButton } from "../../../compenents";
@@ -73,10 +73,6 @@ export const MemberCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
       message.error("请输入正确的身份证号！");
       return;
     }
-    const arr = [];
-    for (let i = 0; i < values.dep_ids.length; i++) {
-      arr.push(values.dep_ids[i][values.dep_ids[i].length - 1]);
-    }
     user
       .storeUser(
         values.email,
@@ -84,7 +80,7 @@ export const MemberCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
         values.avatar,
         values.password,
         values.idCard,
-        arr
+        values.dep_ids
       )
       .then((res: any) => {
         message.success("保存成功！");
@@ -95,8 +91,6 @@ export const MemberCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
   };
-
-  const onChange = (value: any) => {};
 
   return (
     <>
@@ -170,12 +164,12 @@ export const MemberCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
               name="dep_ids"
               rules={[{ required: true, message: "请选择学员所属部门!" }]}
             >
-              <Cascader
+              <TreeSelect
+                showCheckedStrategy={TreeSelect.SHOW_ALL}
                 style={{ width: 274 }}
-                options={departments}
-                onChange={onChange}
+                treeData={departments}
                 multiple
-                maxTagCount="responsive"
+                allowClear
                 placeholder="请选择学员所属部门"
               />
             </Form.Item>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, Cascader, Input, message } from "antd";
+import { Modal, Form, TreeSelect, Input, message } from "antd";
 import styles from "./create.module.less";
 import { user, department } from "../../../api/index";
 import { UploadImageButton } from "../../../compenents";
@@ -28,10 +28,14 @@ export const MemberUpdate: React.FC<PropInterface> = ({
   const [avatar, setAvatar] = useState<string>(getHost() + "avatar/avatar.png");
 
   useEffect(() => {
-    getParams();
+    if (id == 0) {
+      return;
+    }
+    getDetail();
   }, [id, open]);
 
   useEffect(() => {
+    getParams();
     form.setFieldsValue({
       password: "",
     });
@@ -47,42 +51,19 @@ export const MemberUpdate: React.FC<PropInterface> = ({
         const new_arr: Option[] = checkArr(departments, 0);
         setDepartments(new_arr);
       }
-      getDetail(departments);
     });
   };
 
-  const getDetail = (deps: any) => {
+  const getDetail = () => {
     user.user(id).then((res: any) => {
       let user = res.data.user;
       setAvatar(user.avatar);
-      let box = res.data.dep_ids;
-      let depIds: any[] = [];
-      if (box.length > 1) {
-        for (let i = 0; i < box.length; i++) {
-          let item = checkChild(deps, box[i]);
-          let arr: any[] = [];
-          if (item === undefined) {
-            arr.push(box[i]);
-          } else if (item.parent_chain === "") {
-            arr.push(box[i]);
-          } else {
-            let new_arr = item.parent_chain.split(",");
-            new_arr.map((num: any) => {
-              arr.push(Number(num));
-            });
-            arr.push(box[i]);
-          }
-          depIds.push(arr);
-        }
-      } else {
-        depIds = res.data.dep_ids;
-      }
       form.setFieldsValue({
         email: user.email,
         name: user.name,
         avatar: user.avatar,
         idCard: user.id_card,
-        dep_ids: depIds,
+        dep_ids: res.data.dep_ids,
       });
     });
   };
@@ -122,14 +103,7 @@ export const MemberUpdate: React.FC<PropInterface> = ({
       message.error("请输入正确的身份证号！");
       return;
     }
-    const arr = [];
-    for (let i = 0; i < values.dep_ids.length; i++) {
-      if (Array.isArray(values.dep_ids[i])) {
-        arr.push(values.dep_ids[i][values.dep_ids[i].length - 1]);
-      } else {
-        arr.push(values.dep_ids[i]);
-      }
-    }
+
     user
       .updateUser(
         id,
@@ -138,7 +112,7 @@ export const MemberUpdate: React.FC<PropInterface> = ({
         values.avatar,
         values.password || "",
         values.idCard,
-        arr
+        values.dep_ids
       )
       .then((res: any) => {
         message.success("保存成功！");
@@ -220,12 +194,12 @@ export const MemberUpdate: React.FC<PropInterface> = ({
               name="dep_ids"
               rules={[{ required: true, message: "请选择学员所属部门!" }]}
             >
-              <Cascader
+              <TreeSelect
+                showCheckedStrategy={TreeSelect.SHOW_ALL}
                 style={{ width: 274 }}
-                options={departments}
-                onChange={onChange}
+                treeData={departments}
                 multiple
-                maxTagCount="responsive"
+                allowClear
                 placeholder="请选择学员所属部门"
               />
             </Form.Item>
