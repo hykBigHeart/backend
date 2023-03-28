@@ -5,12 +5,12 @@ import {
   Button,
   Drawer,
   Form,
-  Cascader,
   Input,
   Modal,
   message,
   Image,
   Tooltip,
+  TreeSelect,
 } from "antd";
 import styles from "./create.module.less";
 import { course, department } from "../../../api/index";
@@ -30,7 +30,7 @@ interface PropInterface {
 
 interface Option {
   value: string | number;
-  label: string;
+  title: string;
   children?: Option[];
 }
 
@@ -163,13 +163,13 @@ export const CourseCreate: React.FC<PropInterface> = ({
     for (let i = 0; i < departments[id].length; i++) {
       if (!departments[departments[id][i].id]) {
         arr.push({
-          label: departments[id][i].name,
+          title: departments[id][i].name,
           value: departments[id][i].id,
         });
       } else {
         const new_arr: Option[] = checkArr(departments, departments[id][i].id);
         arr.push({
-          label: departments[id][i].name,
+          title: departments[id][i].name,
           value: departments[id][i].id,
           children: new_arr,
         });
@@ -181,9 +181,7 @@ export const CourseCreate: React.FC<PropInterface> = ({
   const onFinish = (values: any) => {
     let dep_ids: any[] = [];
     if (type === "elective") {
-      for (let i = 0; i < values.dep_ids.length; i++) {
-        dep_ids.push(values.dep_ids[i][values.dep_ids[i].length - 1]);
-      }
+      dep_ids = values.dep_ids;
     }
     course
       .storeCourse(
@@ -409,11 +407,11 @@ export const CourseCreate: React.FC<PropInterface> = ({
               name="category_ids"
               rules={[{ required: true, message: "请选择课程分类!" }]}
             >
-              <Cascader
-                expandTrigger="hover"
+              <TreeSelect
+                allowClear
+                multiple
                 style={{ width: 424 }}
-                options={categories}
-                changeOnSelect
+                treeData={categories}
                 placeholder="请选择课程分类"
               />
             </Form.Item>
@@ -469,11 +467,11 @@ export const CourseCreate: React.FC<PropInterface> = ({
                   },
                 ]}
               >
-                <Cascader
+                <TreeSelect
                   style={{ width: 424 }}
-                  options={departments}
+                  treeData={departments}
                   multiple
-                  maxTagCount="responsive"
+                  allowClear
                   placeholder="请选择课程指派部门"
                 />
               </Form.Item>

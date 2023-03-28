@@ -5,7 +5,7 @@ import {
   Button,
   Drawer,
   Form,
-  Cascader,
+  TreeSelect,
   Input,
   Modal,
   message,
@@ -27,7 +27,7 @@ interface PropInterface {
 
 interface Option {
   value: string | number;
-  label: string;
+  title: string;
   children?: Option[];
 }
 
@@ -47,10 +47,15 @@ export const CourseUpdate: React.FC<PropInterface> = ({
   const [type, setType] = useState<string>("open");
 
   useEffect(() => {
+    getCategory();
+    getParams();
+  }, [form, open]);
+
+  useEffect(() => {
     if (id === 0) {
       return;
     }
-    getCategory();
+    getDetail();
   }, [id, open]);
 
   const getCategory = () => {
@@ -60,52 +65,27 @@ export const CourseUpdate: React.FC<PropInterface> = ({
         const new_arr: Option[] = checkArr(categories, 0);
         setCategories(new_arr);
       }
-
-      getParams(categories);
     });
   };
-  const getParams = (cats: any) => {
+  const getParams = () => {
     department.departmentList().then((res: any) => {
       const departments = res.data.departments;
       if (JSON.stringify(departments) !== "{}") {
         const new_arr: Option[] = checkArr(departments, 0);
         setDepartments(new_arr);
       }
-      getDetail(departments, cats);
     });
   };
 
-  const getDetail = (deps: any, cats: any) => {
+  const getDetail = () => {
     course.course(id).then((res: any) => {
-      let box = res.data.dep_ids;
-      let depIds: any[] = [];
       let type = res.data.dep_ids.length > 0 ? "elective" : "open";
-      if (box.length > 0) {
-        for (let i = 0; i < box.length; i++) {
-          let item = checkChild(deps, box[i]);
-          let arr: any[] = [];
-          if (item === undefined) {
-            arr.push(box[i]);
-          } else if (item.parent_chain === "") {
-            arr.push(box[i]);
-          } else {
-            let new_arr = item.parent_chain.split(",");
-            new_arr.map((num: any) => {
-              arr.push(Number(num));
-            });
-            arr.push(box[i]);
-          }
-          depIds.push(arr);
-        }
-      } else {
-        depIds = res.data.dep_ids;
-      }
 
       let chapterType = res.data.chapters.length > 0 ? 1 : 0;
       form.setFieldsValue({
         title: res.data.course.title,
         thumb: res.data.course.thumb,
-        dep_ids: depIds,
+        dep_ids: res.data.dep_ids,
         category_ids: res.data.category_ids,
         isRequired: res.data.course.is_required,
         type: type,
@@ -132,13 +112,13 @@ export const CourseUpdate: React.FC<PropInterface> = ({
     for (let i = 0; i < departments[id].length; i++) {
       if (!departments[departments[id][i].id]) {
         arr.push({
-          label: departments[id][i].name,
+          title: departments[id][i].name,
           value: departments[id][i].id,
         });
       } else {
         const new_arr: Option[] = checkArr(departments, departments[id][i].id);
         arr.push({
-          label: departments[id][i].name,
+          title: departments[id][i].name,
           value: departments[id][i].id,
           children: new_arr,
         });
@@ -150,11 +130,8 @@ export const CourseUpdate: React.FC<PropInterface> = ({
   const onFinish = (values: any) => {
     let dep_ids: any[] = [];
     if (type === "elective") {
-      for (let i = 0; i < values.dep_ids.length; i++) {
-        dep_ids.push(values.dep_ids[i][values.dep_ids[i].length - 1]);
-      }
+      dep_ids = values.dep_ids;
     }
-
     course
       .updateCourse(
         id,
@@ -215,11 +192,11 @@ export const CourseUpdate: React.FC<PropInterface> = ({
               name="category_ids"
               rules={[{ required: true, message: "请选择课程分类!" }]}
             >
-              <Cascader
-                expandTrigger="hover"
+              <TreeSelect
+                allowClear
+                multiple
                 style={{ width: 424 }}
-                options={categories}
-                changeOnSelect
+                treeData={categories}
                 placeholder="请选择课程分类"
               />
             </Form.Item>
@@ -275,11 +252,11 @@ export const CourseUpdate: React.FC<PropInterface> = ({
                   },
                 ]}
               >
-                <Cascader
+                <TreeSelect
                   style={{ width: 424 }}
-                  options={departments}
+                  treeData={departments}
                   multiple
-                  maxTagCount="responsive"
+                  allowClear
                   placeholder="请选择课程指派部门"
                 />
               </Form.Item>
