@@ -382,7 +382,8 @@ export const CourseUpdate: React.FC<PropInterface> = ({
               <Input.TextArea
                 style={{ width: 424, height: 80 }}
                 allowClear
-                placeholder="请输入课程简介"
+                placeholder="请输入课程简介（最多200字）"
+                maxLength={200}
               />
             </Form.Item>
           </Form>
