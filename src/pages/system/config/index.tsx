@@ -10,6 +10,7 @@ import {
   Switch,
   Checkbox,
   Slider,
+  Space,
 } from "antd";
 // import styles from "./index.module.less";
 import { appConfig } from "../../../api/index";
@@ -56,6 +57,7 @@ const SystemConfigPage = () => {
             "system.h5_url": configData[i].key_value,
           });
         } else if (configData[i].key_name === "player.poster") {
+          setThumb(configData[i].key_value);
           form.setFieldsValue({
             "player.poster": configData[i].key_value,
           });
@@ -63,8 +65,8 @@ const SystemConfigPage = () => {
           configData[i].key_name === "player.is_enabled_bullet_secret"
         ) {
           let value = 0;
-          if (configData[i].key_value !== "") {
-            value = Number(configData[i].key_value);
+          if (configData[i].key_value === "1") {
+            value = 1;
           }
           form.setFieldsValue({
             "player.is_enabled_bullet_secret": value,
@@ -85,6 +87,10 @@ const SystemConfigPage = () => {
           form.setFieldsValue({
             "player.bullet_secret_opacity": value,
           });
+        } else if (configData[i].key_name === "system.pc_index_footer_msg") {
+          form.setFieldsValue({
+            "system.pc_index_footer_msg": configData[i].key_value,
+          });
         }
       }
     });
@@ -102,7 +108,25 @@ const SystemConfigPage = () => {
     var value = form.getFieldValue("player.bullet_secret_text");
     if (e.target.checked) {
       value += "{name}";
-      console.log(value);
+      form.setFieldsValue({
+        "player.bullet_secret_text": value,
+      });
+    }
+  };
+
+  const addEmail = (e: CheckboxChangeEvent) => {
+    var value = form.getFieldValue("player.bullet_secret_text");
+    if (e.target.checked) {
+      value += "{email}";
+      form.setFieldsValue({
+        "player.bullet_secret_text": value,
+      });
+    }
+  };
+  const addIdCard = (e: CheckboxChangeEvent) => {
+    var value = form.getFieldValue("player.bullet_secret_text");
+    if (e.target.checked) {
+      value += "{idCard}";
       form.setFieldsValue({
         "player.bullet_secret_text": value,
       });
@@ -115,7 +139,7 @@ const SystemConfigPage = () => {
     }
     setLoading(true);
     values["player.bullet_secret_opacity"] =
-      values["player.bullet_secret_opacity"][0] / 100;
+      values["player.bullet_secret_opacity"] / 100;
     appConfig.saveAppConfig(values).then((res: any) => {
       message.success("保存成功！");
       setLoading(false);
@@ -254,35 +278,37 @@ const SystemConfigPage = () => {
             )}
             {tabKey === 2 && (
               <>
-                <Form.Item
-                  style={{ marginBottom: 30 }}
-                  label="播放器跑马灯"
-                  name="player.is_enabled_bullet_secret"
-                  valuePropName="checked"
-                >
-                  <div className="d-flex">
-                    <Switch onChange={onSwitchChange} />
+                <Form.Item style={{ marginBottom: 30 }} label="播放器跑马灯">
+                  <Space align="baseline" style={{ height: 32 }}>
+                    <Form.Item
+                      name="player.is_enabled_bullet_secret"
+                      valuePropName="checked"
+                    >
+                      <Switch onChange={onSwitchChange} />
+                    </Form.Item>
                     <div className="helper-text ml-24">
                       （打开后播放器会随机出现跑马灯水印，以防录屏传播）
                     </div>
-                  </div>
+                  </Space>
                 </Form.Item>
-                <Form.Item
-                  style={{ marginBottom: 30 }}
-                  label="跑马灯内容"
-                  name="player.bullet_secret_text"
-                >
-                  <div className="d-flex">
-                    <Input
-                      style={{ width: 274 }}
-                      placeholder="自定义跑马灯内容"
-                    />
+                <Form.Item style={{ marginBottom: 30 }} label="跑马灯内容">
+                  <Space align="baseline" style={{ height: 32 }}>
+                    <Form.Item name="player.bullet_secret_text">
+                      <Input
+                        style={{ width: 274 }}
+                        placeholder="自定义跑马灯内容"
+                      />
+                    </Form.Item>
                     <Checkbox className="ml-24" onChange={addName}>
                       姓名
                     </Checkbox>
-                    <Checkbox className="ml-24">邮箱</Checkbox>
-                    <Checkbox className="ml-24">身份证号</Checkbox>
-                  </div>
+                    <Checkbox className="ml-24" onChange={addEmail}>
+                      邮箱
+                    </Checkbox>
+                    <Checkbox className="ml-24" onChange={addIdCard}>
+                      身份证号
+                    </Checkbox>
+                  </Space>
                 </Form.Item>
                 <Form.Item
                   style={{ marginBottom: 30 }}
@@ -301,6 +327,13 @@ const SystemConfigPage = () => {
                     range
                     defaultValue={[0, 100]}
                   />
+                </Form.Item>
+                <Form.Item
+                  style={{ marginBottom: 30 }}
+                  label="网站页脚"
+                  name="system.pc_index_footer_msg"
+                >
+                  <Input style={{ width: 274 }} placeholder="请填写网站页脚" />
                 </Form.Item>
                 {thumb && (
                   <Form.Item
