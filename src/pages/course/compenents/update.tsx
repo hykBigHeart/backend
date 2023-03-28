@@ -107,7 +107,7 @@ export const CourseUpdate: React.FC<PropInterface> = ({
         thumb: res.data.course.thumb,
         dep_ids: depIds,
         category_ids: res.data.category_ids,
-        isRequired: res.data.course.isRequired,
+        isRequired: res.data.course.is_required,
         type: type,
         short_desc: res.data.course.short_desc,
         hasChapter: chapterType,
