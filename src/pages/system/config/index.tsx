@@ -246,6 +246,13 @@ const SystemConfigPage = () => {
                 </Form.Item>
                 <Form.Item
                   style={{ marginBottom: 30 }}
+                  label="网站页脚"
+                  name="system.pc_index_footer_msg"
+                >
+                  <Input style={{ width: 274 }} placeholder="请填写网站页脚" />
+                </Form.Item>
+                <Form.Item
+                  style={{ marginBottom: 30 }}
                   label="API访问地址"
                   name="system.api_url"
                 >
@@ -327,13 +334,6 @@ const SystemConfigPage = () => {
                     range
                     defaultValue={[0, 100]}
                   />
-                </Form.Item>
-                <Form.Item
-                  style={{ marginBottom: 30 }}
-                  label="网站页脚"
-                  name="system.pc_index_footer_msg"
-                >
-                  <Input style={{ width: 274 }} placeholder="请填写网站页脚" />
                 </Form.Item>
                 {thumb && (
                   <Form.Item
