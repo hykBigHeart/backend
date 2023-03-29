@@ -296,7 +296,7 @@ export const CourseHourUpdate: React.FC<PropInterface> = ({
       cancelText: "取消",
       onOk() {
         const current = data[index].hours.findIndex((i: any) => i.rid === hid);
-        let delId = data[index].hours.map((item: any) => item.id);
+        let delId = data[index].hours[current].id;
         if (current >= 0) {
           data[index].hours.splice(current, 1);
         }
