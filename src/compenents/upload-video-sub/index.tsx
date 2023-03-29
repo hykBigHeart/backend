@@ -109,10 +109,19 @@ export const UploadVideoSub = (props: PropsInterface) => {
     setCheckedList(list);
     setIndeterminate(!!list.length && list.length < plainOptions.length);
     setCheckAll(list.length === plainOptions.length);
+    const defalut = [...props.defaultCheckedList];
+    let localKeys: any = [];
+    list.map((item: any) => {
+      if (defalut.indexOf(item) === -1) {
+        localKeys.push(item);
+      }
+    });
+
     let arrVideos: any = [];
-    for (let i = 0; i < list.length; i++) {
+
+    for (let i = 0; i < localKeys.length; i++) {
       videoList.map((item: any, index: number) => {
-        if (item.id === list[i]) {
+        if (item.id === localKeys[i]) {
           arrVideos.push({
             name: item.name,
             type: item.type,
@@ -123,8 +132,7 @@ export const UploadVideoSub = (props: PropsInterface) => {
         }
       });
     }
-
-    props.onSelected(list, arrVideos);
+    props.onSelected(localKeys, arrVideos);
   };
 
   const onCheckAllChange = (e: CheckboxChangeEvent) => {
@@ -132,18 +140,29 @@ export const UploadVideoSub = (props: PropsInterface) => {
     setCheckedList(e.target.checked ? arr : []);
     setIndeterminate(false);
     setCheckAll(e.target.checked);
-    let arrVideos: any = [];
-    videoList.map((item: any, index: number) => {
-      arrVideos.push({
-        name: item.name,
-        type: item.type,
-        rid: item.id,
-        duration: videosExtra[item.id].duration,
-        disabled: plainOptions[index].disabled,
-      });
+    const defalut = [...props.defaultCheckedList];
+    let localKeys: any = [];
+    arr.map((item: any) => {
+      if (defalut.indexOf(item) === -1) {
+        localKeys.push(item);
+      }
     });
+    let arrVideos: any = [];
+    for (let i = 0; i < localKeys.length; i++) {
+      videoList.map((item: any, index: number) => {
+        if (item.id === localKeys[i]) {
+          arrVideos.push({
+            name: item.name,
+            type: item.type,
+            rid: item.id,
+            duration: videosExtra[item.id].duration,
+            disabled: plainOptions[index].disabled,
+          });
+        }
+      });
+    }
     if (e.target.checked) {
-      props.onSelected(arr, arrVideos);
+      props.onSelected(localKeys, arrVideos);
     } else {
       props.onSelected([], []);
     }

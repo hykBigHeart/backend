@@ -72,6 +72,7 @@ export const CourseCreate: React.FC<PropInterface> = ({
     setThumb(defaultThumb1);
     setChapterType(0);
     setChapters([]);
+    setChapterHours([]);
     setHours([]);
     setTreeData([]);
   }, [form, open]);
@@ -213,16 +214,20 @@ export const CourseCreate: React.FC<PropInterface> = ({
   };
 
   const selectData = (arr: any, videos: any) => {
-    setHours(arr);
-    setTreeData(videos);
+    let keys = [...hours];
+    let data = [...treeData];
+    keys = keys.concat(arr);
+    data = data.concat(videos);
+    setHours(keys);
+    setTreeData(data);
     setVideoVisible(false);
   };
 
   const selectChapterData = (arr: any, videos: any) => {
     const data = [...chapters];
     const keys = [...chapterHours];
-    keys[addvideoCurrent] = arr;
-    data[addvideoCurrent].hours = videos;
+    keys[addvideoCurrent] = keys[addvideoCurrent].concat(arr);
+    data[addvideoCurrent].hours = data[addvideoCurrent].hours.concat(videos);
     setChapters(data);
     setChapterHours(keys);
     setVideoVisible(false);
@@ -361,6 +366,16 @@ export const CourseCreate: React.FC<PropInterface> = ({
     setChapters(data);
   };
 
+  const changeChapterHours = (arr: any) => {
+    const newArr: any = [];
+    for (let i = 0; i < arr.length; i++) {
+      arr[i].map((item: any) => {
+        newArr.push(item);
+      });
+    }
+    return newArr;
+  };
+
   return (
     <>
       <Drawer
@@ -381,7 +396,7 @@ export const CourseCreate: React.FC<PropInterface> = ({
         <div className="float-left mt-24">
           <SelectResource
             defaultKeys={
-              chapterType == 0 ? hours : chapterHours[addvideoCurrent]
+              chapterType == 0 ? hours : changeChapterHours(chapterHours)
             }
             open={videoVisible}
             onCancel={() => {

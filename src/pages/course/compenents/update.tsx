@@ -96,16 +96,6 @@ export const CourseUpdate: React.FC<PropInterface> = ({
     });
   };
 
-  const checkChild = (departments: any[], id: number) => {
-    for (let key in departments) {
-      for (let i = 0; i < departments[key].length; i++) {
-        if (departments[key][i].id === id) {
-          return departments[key][i];
-        }
-      }
-    }
-  };
-
   const checkArr = (departments: any[], id: number) => {
     const arr = [];
     for (let i = 0; i < departments[id].length; i++) {

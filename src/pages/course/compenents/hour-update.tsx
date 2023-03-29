@@ -346,6 +346,16 @@ export const CourseHourUpdate: React.FC<PropInterface> = ({
     });
   };
 
+  const changeChapterHours = (arr: any) => {
+    const newArr: any = [];
+    for (let i = 0; i < arr.length; i++) {
+      arr[i].map((item: any) => {
+        newArr.push(item);
+      });
+    }
+    return newArr;
+  };
+
   return (
     <>
       <Drawer
@@ -362,7 +372,7 @@ export const CourseHourUpdate: React.FC<PropInterface> = ({
         <div className="float-left mt-24">
           <SelectResource
             defaultKeys={
-              chapterType === 0 ? hours : chapterHours[addvideoCurrent]
+              chapterType === 0 ? hours : changeChapterHours(chapterHours)
             }
             open={videoVisible}
             onCancel={() => {
