@@ -150,7 +150,7 @@ const CoursePage = () => {
                 </span>
               );
             })}
-          {!course_dep_ids[id] && <span>公开课</span>}
+          {!course_dep_ids[id] && <span>全部部门</span>}
         </div>
       ),
     },
