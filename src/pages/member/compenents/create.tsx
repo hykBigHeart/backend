@@ -69,7 +69,7 @@ export const MemberCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
   };
 
   const onFinish = (values: any) => {
-    if (!ValidataCredentials(values.idCard)) {
+    if (values.idCard !== "" && !ValidataCredentials(values.idCard)) {
       message.error("请输入正确的身份证号！");
       return;
     }
