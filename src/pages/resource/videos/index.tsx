@@ -7,7 +7,6 @@ import type { ColumnsType } from "antd/es/table";
 import { dateFormat } from "../../../utils/index";
 import { TreeCategory, DurationText, PerButton } from "../../../compenents";
 import { UploadVideoButton } from "../../../compenents/upload-video-button";
-import icon from "../../../assets/images/commen/icon-video.png";
 
 const { confirm } = Modal;
 
@@ -48,7 +47,13 @@ const ResourceVideosPage = () => {
       dataIndex: "name",
       render: (text: string) => (
         <div className="d-flex">
-          <img style={{ width: 16, height: 16 }} src={icon} alt="" />
+          <i
+            className="iconfont icon-icon-video"
+            style={{
+              fontSize: 16,
+              color: "rgba(0,0,0,0.3)",
+            }}
+          />
           <span className="ml-8">{text}</span>
         </div>
       ),
