@@ -1,5 +1,4 @@
 import moment from "moment";
-import { VideoParseInfo } from "../types";
 
 export function getToken(): string {
   return window.localStorage.getItem("playedu-backend-token") || "";
