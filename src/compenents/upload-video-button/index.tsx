@@ -81,7 +81,7 @@ export const UploadVideoButton = (props: PropsInterface) => {
           minioMergeVideo(
             item.filename,
             item.uploadId,
-            props.categoryIds.join(','),
+            props.categoryIds.join(","),
             item.name,
             "mp4",
             item.size,
@@ -119,6 +119,12 @@ export const UploadVideoButton = (props: PropsInterface) => {
     },
   };
 
+  const closeWin = () => {
+    setShowModal(false);
+    setFileList([]);
+    props.onUpdate();
+  };
+
   return (
     <>
       <Button
@@ -136,14 +142,12 @@ export const UploadVideoButton = (props: PropsInterface) => {
           title="上传视频"
           open={true}
           onCancel={() => {
-            setShowModal(false);
-            props.onUpdate();
+            closeWin();
           }}
           maskClosable={false}
           closable={false}
           onOk={() => {
-            setShowModal(false);
-            props.onUpdate();
+            closeWin();
           }}
         >
           <Row gutter={[0, 10]}>
