@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, Input, Select, message } from "antd";
+import { Drawer, Select, Space, Button, Form, Input, message } from "antd";
 import styles from "./update.module.less";
 import { adminRole } from "../../../../api/index";
 
 interface PropInterface {
-  id: number;
+  id: any;
   open: boolean;
   onCancel: () => void;
 }
@@ -24,7 +24,7 @@ export const SystemAdminrolesUpdate: React.FC<PropInterface> = ({
   }, []);
 
   useEffect(() => {
-    if (id === 0 || "undefined" || "") {
+    if (id === undefined) {
       return;
     }
     getDetail();
@@ -86,22 +86,27 @@ export const SystemAdminrolesUpdate: React.FC<PropInterface> = ({
 
   return (
     <>
-      <Modal
-        title="编辑角色"
-        centered
-        forceRender
-        open={open}
-        width={416}
-        onOk={() => form.submit()}
-        onCancel={() => onCancel()}
+      <Drawer
+        title="新建角色"
+        onClose={onCancel}
         maskClosable={false}
+        open={open}
+        footer={
+          <Space className="j-r-flex">
+            <Button onClick={() => onCancel()}>取 消</Button>
+            <Button onClick={() => form.submit()} type="primary">
+              确 认
+            </Button>
+          </Space>
+        }
+        width={634}
       >
         <div className="float-left mt-24">
           <Form
             form={form}
-            name="basic"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 16 }}
+            name="adminroles-update"
+            labelCol={{ span: 5 }}
+            wrapperCol={{ span: 19 }}
             initialValues={{ remember: true }}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
@@ -112,11 +117,11 @@ export const SystemAdminrolesUpdate: React.FC<PropInterface> = ({
               name="name"
               rules={[{ required: true, message: "请输入角色名!" }]}
             >
-              <Input style={{ width: 200 }} placeholder="请输入角色名" />
+              <Input style={{ width: 424 }} placeholder="请输入角色名" />
             </Form.Item>
             <Form.Item label="操作权限" name="action_ids">
               <Select
-                style={{ width: 200 }}
+                style={{ width: 424 }}
                 mode="multiple"
                 allowClear
                 placeholder="请选择权限"
@@ -125,7 +130,7 @@ export const SystemAdminrolesUpdate: React.FC<PropInterface> = ({
             </Form.Item>
             <Form.Item label="数据权限" name="permission_ids">
               <Select
-                style={{ width: 200 }}
+                style={{ width: 424 }}
                 mode="multiple"
                 allowClear
                 placeholder="请选择权限"
@@ -134,7 +139,7 @@ export const SystemAdminrolesUpdate: React.FC<PropInterface> = ({
             </Form.Item>
           </Form>
         </div>
-      </Modal>
+      </Drawer>
     </>
   );
 };
