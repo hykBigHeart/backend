@@ -5,12 +5,14 @@ import { adminUser } from "../../../../api/index";
 
 interface PropInterface {
   roleId: number;
+  refresh: boolean;
   open: boolean;
   onCancel: () => void;
 }
 
 export const SystemAdministratorCreate: React.FC<PropInterface> = ({
   roleId,
+  refresh,
   open,
   onCancel,
 }) => {
@@ -20,7 +22,7 @@ export const SystemAdministratorCreate: React.FC<PropInterface> = ({
 
   useEffect(() => {
     getParams();
-  }, []);
+  }, [refresh]);
 
   useEffect(() => {
     let roleIds = [];

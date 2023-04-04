@@ -312,6 +312,7 @@ const SystemAdministratorPage = () => {
               rowKey={(record) => record.id}
             />
             <SystemAdministratorCreate
+              refresh={refresh}
               roleId={role_ids[0]}
               open={createVisible}
               onCancel={() => {
@@ -321,6 +322,7 @@ const SystemAdministratorPage = () => {
             />
             <SystemAdministratorUpdate
               id={cid}
+              refresh={refresh}
               open={updateVisible}
               onCancel={() => {
                 setUpdateVisible(false);

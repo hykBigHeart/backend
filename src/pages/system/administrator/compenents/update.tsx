@@ -5,12 +5,14 @@ import { adminUser } from "../../../../api/index";
 
 interface PropInterface {
   id: number;
+  refresh: boolean;
   open: boolean;
   onCancel: () => void;
 }
 
 export const SystemAdministratorUpdate: React.FC<PropInterface> = ({
   id,
+  refresh,
   open,
   onCancel,
 }) => {
@@ -20,7 +22,7 @@ export const SystemAdministratorUpdate: React.FC<PropInterface> = ({
 
   useEffect(() => {
     getParams();
-  }, []);
+  }, [refresh]);
 
   useEffect(() => {
     if (id === 0) {
