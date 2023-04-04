@@ -340,7 +340,7 @@ export const CourseUpdate: React.FC<PropInterface> = ({
             </Form.Item>
             <Form.Item label="课程简介" name="short_desc">
               <Input.TextArea
-                style={{ width: 424, height: 80, resize: "none" }}
+                style={{ width: 424, minHeight: 80 }}
                 allowClear
                 placeholder="请输入课程简介（最多200字）"
                 maxLength={200}
