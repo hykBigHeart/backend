@@ -109,11 +109,25 @@ export const SystemAdministratorUpdate: React.FC<PropInterface> = ({
             autoComplete="off"
           >
             <Form.Item
-              label="姓名"
-              name="name"
-              rules={[{ required: true, message: "请输入姓名!" }]}
+              label="选择角色"
+              name="roleIds"
+              rules={[{ required: true, message: "请选择角色!" }]}
             >
-              <Input style={{ width: 200 }} placeholder="请输入姓名" />
+              <Select
+                style={{ width: 200 }}
+                mode="multiple"
+                allowClear
+                placeholder="请选择角色"
+                onChange={handleChange}
+                options={roles}
+              />
+            </Form.Item>
+            <Form.Item
+              label="管理员姓名"
+              name="name"
+              rules={[{ required: true, message: "请输入管理员姓名!" }]}
+            >
+              <Input style={{ width: 200 }} placeholder="请输入管理员姓名" />
             </Form.Item>
             <Form.Item
               label="邮箱"
@@ -126,16 +140,6 @@ export const SystemAdministratorUpdate: React.FC<PropInterface> = ({
               <Input.Password
                 style={{ width: 200 }}
                 placeholder="请输入登录密码"
-              />
-            </Form.Item>
-            <Form.Item label="角色" name="roleIds">
-              <Select
-                style={{ width: 200 }}
-                mode="multiple"
-                allowClear
-                placeholder="请选择角色"
-                onChange={handleChange}
-                options={roles}
               />
             </Form.Item>
             <Form.Item

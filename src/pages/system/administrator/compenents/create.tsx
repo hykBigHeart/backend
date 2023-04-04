@@ -4,11 +4,13 @@ import styles from "./create.module.less";
 import { adminUser } from "../../../../api/index";
 
 interface PropInterface {
+  roleId: number;
   open: boolean;
   onCancel: () => void;
 }
 
 export const SystemAdministratorCreate: React.FC<PropInterface> = ({
+  roleId,
   open,
   onCancel,
 }) => {
@@ -21,14 +23,18 @@ export const SystemAdministratorCreate: React.FC<PropInterface> = ({
   }, []);
 
   useEffect(() => {
+    let roleIds = [];
+    if (roleId) {
+      roleIds.push(roleId);
+    }
     form.setFieldsValue({
       email: "",
       name: "",
       password: "",
       is_ban_login: 0,
-      roleIds: [],
+      roleIds: roleIds,
     });
-  }, [form, open]);
+  }, [form, open, roleId]);
 
   const getParams = () => {
     adminUser.createAdminUser().then((res: any) => {
@@ -97,11 +103,25 @@ export const SystemAdministratorCreate: React.FC<PropInterface> = ({
             autoComplete="off"
           >
             <Form.Item
-              label="姓名"
-              name="name"
-              rules={[{ required: true, message: "请输入姓名!" }]}
+              label="选择角色"
+              name="roleIds"
+              rules={[{ required: true, message: "请选择角色!" }]}
             >
-              <Input style={{ width: 200 }} placeholder="请输入姓名" />
+              <Select
+                style={{ width: 200 }}
+                mode="multiple"
+                allowClear
+                placeholder="请选择角色"
+                onChange={handleChange}
+                options={roles}
+              />
+            </Form.Item>
+            <Form.Item
+              label="管理员姓名"
+              name="name"
+              rules={[{ required: true, message: "请输入管理员姓名!" }]}
+            >
+              <Input style={{ width: 200 }} placeholder="请输入管理员姓名" />
             </Form.Item>
             <Form.Item
               label="邮箱"
@@ -120,16 +140,7 @@ export const SystemAdministratorCreate: React.FC<PropInterface> = ({
                 placeholder="请输入登录密码"
               />
             </Form.Item>
-            <Form.Item label="角色" name="roleIds">
-              <Select
-                style={{ width: 200 }}
-                mode="multiple"
-                allowClear
-                placeholder="请选择角色"
-                onChange={handleChange}
-                options={roles}
-              />
-            </Form.Item>
+
             <Form.Item
               label="禁止登录"
               name="is_ban_login"

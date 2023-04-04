@@ -1,10 +1,16 @@
 import client from "./internal/httpClient";
 
-export function adminUserList(page: number, size: number, name: string) {
+export function adminUserList(
+  page: number,
+  size: number,
+  name: string,
+  roleId: number
+) {
   return client.get("/backend/v1/admin-user/index", {
     page: page,
     size: size,
     name: name,
+    role_id: roleId,
   });
 }
 

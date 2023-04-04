@@ -5,9 +5,11 @@ import { PlusOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 import { adminUser } from "../../../api/index";
 import { dateFormat } from "../../../utils/index";
 import { useNavigate } from "react-router-dom";
-import { PerButton } from "../../../compenents";
+import { TreeAdminroles, PerButton } from "../../../compenents";
 import { SystemAdministratorCreate } from "./compenents/create";
 import { SystemAdministratorUpdate } from "./compenents/update";
+import { SystemAdminrolesCreate } from "../adminroles/compenents/create";
+import { SystemAdminrolesUpdate } from "../adminroles/compenents/update";
 
 const { confirm } = Modal;
 
@@ -30,18 +32,22 @@ const SystemAdministratorPage = () => {
   const [refresh, setRefresh] = useState(false);
   const [createVisible, setCreateVisible] = useState<boolean>(false);
   const [updateVisible, setUpdateVisible] = useState<boolean>(false);
+  const [createRoleVisible, setCreateRoleVisible] = useState<boolean>(false);
+  const [updateRoleVisible, setUpdateRoleVisible] = useState<boolean>(false);
   const [cid, setCid] = useState<number>(0);
+  const [role_ids, setRoleIds] = useState<any>([]);
+  const [selLabel, setLabel] = useState<string>("全部管理员");
 
   const [name, setName] = useState<string>("");
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "ID",
-      key: "id",
-      dataIndex: "id",
+      title: "管理员",
+      dataIndex: "name",
+      render: (text: string) => <span>{text}</span>,
     },
     {
-      title: "姓名",
+      title: "角色",
       dataIndex: "name",
       render: (text: string) => <span>{text}</span>,
     },
@@ -50,14 +56,14 @@ const SystemAdministratorPage = () => {
       dataIndex: "email",
     },
     {
-      title: "登录时间",
-      dataIndex: "login_at",
-      render: (text: string) => <span>{text && dateFormat(text)}</span>,
-    },
-    {
       title: "登录IP",
       dataIndex: "login_ip",
       render: (text: string) => <span>{text}</span>,
+    },
+    {
+      title: "上次登录时间",
+      dataIndex: "login_at",
+      render: (text: string) => <span>{text && dateFormat(text)}</span>,
     },
     {
       title: "禁止登录",
@@ -101,11 +107,11 @@ const SystemAdministratorPage = () => {
 
   useEffect(() => {
     getData();
-  }, [refresh, page, size]);
+  }, [refresh, page, size, role_ids]);
 
   const getData = () => {
     setLoading(true);
-    adminUser.adminUserList(page, size, name).then((res: any) => {
+    adminUser.adminUserList(page, size, name, role_ids[0]).then((res: any) => {
       setList(res.data.data);
       setTotal(res.data.total);
       setLoading(false);
@@ -159,70 +165,120 @@ const SystemAdministratorPage = () => {
 
   return (
     <>
-      <div className="playedu-main-body">
-        <div className="float-left j-b-flex mb-24">
-          <div className="d-flex">
-            <PerButton
-              type="primary"
-              text="添加管理员"
-              class="mr-16"
-              icon={<PlusOutlined />}
-              p="admin-user-cud"
-              onClick={() => setCreateVisible(true)}
-              disabled={null}
-            />
+      <div className="tree-main-body">
+        <div className="left-box">
+          <TreeAdminroles
+            type=""
+            text={"管理员"}
+            onUpdate={(keys: any, title: any) => {
+              setRoleIds(keys);
+              setLabel(title);
+            }}
+          />
+        </div>
+        <div className="right-box">
+          <div className="d-flex playedu-main-title float-left mb-24">
+            {selLabel}
           </div>
-          <div className="d-flex">
-            <div className="d-flex mr-24">
-              <Typography.Text>姓名：</Typography.Text>
-              <Input
-                value={name}
-                onChange={(e) => {
-                  setName(e.target.value);
-                }}
-                style={{ width: 160 }}
-                placeholder="请输入姓名"
+          <div className="float-left j-b-flex mb-24">
+            <div className="d-flex">
+              <PerButton
+                text="新建角色"
+                icon={<PlusOutlined />}
+                class="mr-16"
+                type="primary"
+                p="admin-role"
+                onClick={() => setCreateRoleVisible(true)}
+                disabled={null}
+              />
+              <PerButton
+                type="default"
+                text="添加管理员"
+                class="mr-16"
+                icon={null}
+                p="admin-user-cud"
+                onClick={() => setCreateVisible(true)}
+                disabled={null}
               />
             </div>
             <div className="d-flex">
-              <Button className="mr-16" onClick={resetData}>
-                重 置
-              </Button>
-              <Button
-                type="primary"
-                onClick={() => {
-                  setPage(1);
-                  setRefresh(!refresh);
-                }}
-              >
-                查 询
-              </Button>
+              <div className="d-flex mr-24">
+                <Typography.Text>管理员姓名：</Typography.Text>
+                <Input
+                  value={name}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                  }}
+                  style={{ width: 160 }}
+                  placeholder="请输入管理员姓名"
+                />
+              </div>
+              <div className="d-flex">
+                <Button className="mr-16" onClick={resetData}>
+                  重 置
+                </Button>
+                <Button
+                  className="mr-16"
+                  type="primary"
+                  onClick={() => {
+                    setPage(1);
+                    setRefresh(!refresh);
+                  }}
+                >
+                  查 询
+                </Button>
+                <PerButton
+                  text="角色权限"
+                  icon={null}
+                  class=""
+                  type="default"
+                  p="admin-role"
+                  onClick={() => setUpdateRoleVisible(true)}
+                  disabled={null}
+                />
+              </div>
             </div>
           </div>
-        </div>
-        <div className="float-left">
-          <Table
-            columns={columns}
-            dataSource={list}
-            loading={loading}
-            pagination={paginationProps}
-            rowKey={(record) => record.id}
-          />
-          <SystemAdministratorCreate
-            open={createVisible}
-            onCancel={() => {
-              setCreateVisible(false);
-              setRefresh(!refresh);
-            }}
-          />
-          <SystemAdministratorUpdate
-            id={cid}
-            open={updateVisible}
-            onCancel={() => {
-              setUpdateVisible(false);
-              setRefresh(!refresh);
-            }}
-          />
+          <div className="float-left">
+            <Table
+              columns={columns}
+              dataSource={list}
+              loading={loading}
+              pagination={paginationProps}
+              rowKey={(record) => record.id}
+            />
+            <SystemAdministratorCreate
+              roleId={role_ids[0]}
+              open={createVisible}
+              onCancel={() => {
+                setCreateVisible(false);
+                setRefresh(!refresh);
+              }}
+            />
+            <SystemAdministratorUpdate
+              id={cid}
+              open={updateVisible}
+              onCancel={() => {
+                setUpdateVisible(false);
+                setRefresh(!refresh);
+              }}
+            />
+            <SystemAdminrolesCreate
+              open={createRoleVisible}
+              onCancel={() => {
+                setCreateRoleVisible(false);
+                setRefresh(!refresh);
+              }}
+            />
+            <SystemAdminrolesUpdate
+              id={role_ids[0]}
+              open={updateRoleVisible}
+              onCancel={() => {
+                setUpdateRoleVisible(false);
+                setRefresh(!refresh);
+              }}
+            />
+          </div>
         </div>
       </div>
     </>

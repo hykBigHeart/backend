@@ -62,7 +62,7 @@ const items = [
     [
       getItem("系统配置", "/system/config/index", null, null, null),
       getItem("管理人员", "/system/administrator", null, null, null),
-      getItem("角色配置", "/system/adminroles", null, null, null),
+      // getItem("角色配置", "/system/adminroles", null, null, null),
     ],
     null
   ),
