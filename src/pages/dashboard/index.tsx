@@ -512,11 +512,11 @@ const DashboardPage = () => {
             </div>
           </div>
           <div className="playedu-main-top mt-24">
-            <div className={styles["large-title"]}>使用指南</div>
+            <div className={styles["large-title"]}>产品文档</div>
             <div className={styles["usage-guide"]}>
               <img className={styles["banner"]} src={banner} alt="" />
               <Link to="https://www.playedu.xyz/" className={styles["link"]}>
-                点击查看使用指南，快速玩转Playedu！
+                点击查看产品文档，快速玩转Playedu！
                 <img className={styles["icon"]} src={icon} alt="" />
               </Link>
             </div>

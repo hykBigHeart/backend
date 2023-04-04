@@ -218,7 +218,7 @@ export const CourseUpdate: React.FC<PropInterface> = ({
               rules={[{ required: true, message: "请选择指派部门!" }]}
             >
               <Radio.Group onChange={getType}>
-                <Radio value="open">所有部门</Radio>
+                <Radio value="open">全部部门</Radio>
                 <Radio value="elective">选择部门</Radio>
               </Radio.Group>
             </Form.Item>
@@ -340,7 +340,7 @@ export const CourseUpdate: React.FC<PropInterface> = ({
             </Form.Item>
             <Form.Item label="课程简介" name="short_desc">
               <Input.TextArea
-                style={{ width: 424, height: 80 }}
+                style={{ width: 424, height: 80, resize: "none" }}
                 allowClear
                 placeholder="请输入课程简介（最多200字）"
                 maxLength={200}
