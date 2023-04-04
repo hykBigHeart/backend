@@ -128,6 +128,10 @@ export const SystemAdminrolesUpdate: React.FC<PropInterface> = ({
   const onFinish = (values: any) => {
     let pids = [];
     let aids = [];
+    if (values.permission_ids.length === 0 && values.action_ids.length === 0) {
+      message.error("必须选择至少一个权限！");
+      return;
+    }
     if (values.permission_ids) {
       pids = values.permission_ids;
     }
