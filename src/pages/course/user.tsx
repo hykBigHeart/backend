@@ -76,8 +76,13 @@ const CourseUserPage = () => {
       render: (progress: number) => <span>{progress / 100}%</span>,
     },
     {
-      title: "创建时间",
+      title: "第一次学习时间",
       dataIndex: "created_at",
+      render: (text: string) => <span>{dateFormat(text)}</span>,
+    },
+    {
+      title: "学习完成时间",
+      dataIndex: "finished_at",
       render: (text: string) => <span>{dateFormat(text)}</span>,
     },
   ];
@@ -138,13 +143,13 @@ const CourseUserPage = () => {
   // 删除学员
   const delItem = () => {
     if (selectedRowKeys.length === 0) {
-      message.error("请选择学员后再删除");
+      message.error("请选择学员后再清除");
       return;
     }
     confirm({
       title: "操作确认",
       icon: <ExclamationCircleFilled />,
-      content: "确认删除选中学员？",
+      content: "确认清除选中学员学习记录？",
       centered: true,
       okText: "确认",
       cancelText: "取消",
@@ -152,7 +157,7 @@ const CourseUserPage = () => {
         course
           .destroyCourseUser(Number(params.courseId), selectedRowKeys)
           .then(() => {
-            message.success("删除成功");
+            message.success("清除成功");
             resetList();
           });
       },
@@ -179,12 +184,12 @@ const CourseUserPage = () => {
             <div className="d-flex">
               <PerButton
                 type="primary"
-                text="删除"
+                text="清除学习记录"
                 class="mr-16"
                 icon={null}
                 p="course"
                 onClick={() => delItem()}
-                disabled={null}
+                disabled={selectedRowKeys.length === 0}
               />
             </div>
             <div className="d-flex">
