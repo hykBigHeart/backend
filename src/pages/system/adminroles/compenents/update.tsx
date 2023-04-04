@@ -187,6 +187,7 @@ export const SystemAdminrolesUpdate: React.FC<PropInterface> = ({
             <Form.Item label="操作权限" name="action_ids">
               <TreeSelect
                 style={{ width: 424 }}
+                listHeight={600}
                 treeCheckable={true}
                 placeholder="请选择权限"
                 multiple
@@ -197,6 +198,7 @@ export const SystemAdminrolesUpdate: React.FC<PropInterface> = ({
             <Form.Item label="数据权限" name="permission_ids">
               <TreeSelect
                 style={{ width: 424 }}
+                listHeight={600}
                 treeCheckable={true}
                 placeholder="请选择权限"
                 multiple

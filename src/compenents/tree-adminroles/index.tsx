@@ -34,6 +34,7 @@ export const TreeAdminroles = (props: PropInterface) => {
         }
         setTreeData(new_arr);
       }
+      onSelect([], "");
     });
   }, [props.refresh]);
   const onSelect = (selectedKeys: any, info: any) => {

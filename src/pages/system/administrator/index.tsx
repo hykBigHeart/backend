@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Typography, Input, Button, Space, Table, Modal, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { PlusOutlined, ExclamationCircleFilled } from "@ant-design/icons";
-import { adminUser } from "../../../api/index";
+import { adminUser, adminRole } from "../../../api/index";
 import { dateFormat } from "../../../utils/index";
 import { useNavigate } from "react-router-dom";
 import { TreeAdminroles, PerButton } from "../../../compenents";
@@ -180,6 +180,29 @@ const SystemAdministratorPage = () => {
     });
   };
 
+  const delAdminRole = () => {
+    if (role_ids.length === 0) {
+      return;
+    }
+    confirm({
+      title: "操作确认",
+      icon: <ExclamationCircleFilled />,
+      content: "删除此角色会同时删除管理员对应关联权限，确认删除？",
+      centered: true,
+      okText: "确认",
+      cancelText: "取消",
+      onOk() {
+        adminRole.destroyAdminRole(role_ids[0]).then((res: any) => {
+          message.success("操作成功");
+          setRefresh(!refresh);
+        });
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
+
   return (
     <>
       <div className="tree-main-body">
@@ -200,26 +223,52 @@ const SystemAdministratorPage = () => {
           </div>
           <div className="float-left j-b-flex mb-24">
             <div className="d-flex">
+              <PerButton
+                type="primary"
+                text="添加管理员"
+                class="mr-16"
+                icon={<PlusOutlined />}
+                p="admin-user-cud"
+                onClick={() => setCreateVisible(true)}
+                disabled={null}
+              />
               {role_ids.length === 0 && (
                 <PerButton
                   text="新建角色"
-                  icon={<PlusOutlined />}
+                  icon={null}
                   class="mr-16"
-                  type="primary"
+                  type="default"
                   p="admin-role"
                   onClick={() => setCreateRoleVisible(true)}
                   disabled={null}
                 />
               )}
-              <PerButton
-                type="default"
-                text="添加管理员"
-                class="mr-16"
-                icon={null}
-                p="admin-user-cud"
-                onClick={() => setCreateVisible(true)}
-                disabled={null}
-              />
+              {role_ids.length > 0 && (
+                <>
+                  <PerButton
+                    text="角色权限"
+                    icon={null}
+                    class="ml-16"
+                    type="default"
+                    p="admin-role"
+                    onClick={() => {
+                      setUpdateRoleVisible(true);
+                    }}
+                    disabled={null}
+                  />
+                  <PerButton
+                    text="删除角色"
+                    icon={null}
+                    class="ml-16"
+                    type="default"
+                    p="admin-role"
+                    onClick={() => {
+                      delAdminRole();
+                    }}
+                    disabled={null}
+                  />
+                </>
+              )}
             </div>
             <div className="d-flex">
               <div className="d-flex mr-24">
@@ -246,19 +295,6 @@ const SystemAdministratorPage = () => {
                 >
                   查 询
                 </Button>
-                {role_ids.length > 0 && (
-                  <PerButton
-                    text="角色权限"
-                    icon={null}
-                    class="ml-16"
-                    type="default"
-                    p="admin-role"
-                    onClick={() => {
-                      setUpdateRoleVisible(true);
-                    }}
-                    disabled={null}
-                  />
-                )}
               </div>
             </div>
           </div>
