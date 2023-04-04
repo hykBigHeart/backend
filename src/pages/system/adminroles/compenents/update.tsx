@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Drawer, Select, Space, Button, Form, Input, message } from "antd";
+import { Drawer, TreeSelect, Space, Button, Form, Input, message } from "antd";
 import styles from "./update.module.less";
 import { adminRole } from "../../../../api/index";
 
@@ -7,6 +7,12 @@ interface PropInterface {
   id: any;
   open: boolean;
   onCancel: () => void;
+}
+
+interface Option {
+  value: string | number;
+  title: string;
+  children?: Option[];
 }
 
 export const SystemAdminrolesUpdate: React.FC<PropInterface> = ({
@@ -32,20 +38,75 @@ export const SystemAdminrolesUpdate: React.FC<PropInterface> = ({
 
   const getParams = () => {
     adminRole.createAdminRole().then((res: any) => {
-      const arr = [];
-      const arr2 = [];
+      const arr: Option[] = [
+        {
+          title: "学员",
+          value: "学员-n",
+          children: [],
+        },
+        {
+          title: "管理员",
+          value: "管理员-n",
+          children: [],
+        },
+      ];
+      const arr2: Option[] = [
+        {
+          title: "学员",
+          value: "学员-n",
+          children: [],
+        },
+        {
+          title: "管理员",
+          value: "管理员-n",
+          children: [],
+        },
+        {
+          title: "管理员角色",
+          value: "管理员角色-n",
+          children: [],
+        },
+        {
+          title: "线上课",
+          value: "线上课-n",
+          children: [],
+        },
+        {
+          title: "资源",
+          value: "资源-n",
+          children: [],
+        },
+        {
+          title: "资源分类",
+          value: "资源分类-n",
+          children: [],
+        },
+        {
+          title: "部门",
+          value: "部门-n",
+          children: [],
+        },
+      ];
       let actions = res.data.perm_action.action;
       let permissions = res.data.perm_action.data;
       for (let i = 0; i < permissions.length; i++) {
-        arr.push({
-          label: permissions[i].group_name + "-" + permissions[i].name,
-          value: permissions[i].id,
+        arr.map((item: any) => {
+          if (item.title === permissions[i].group_name) {
+            item.children.push({
+              title: permissions[i].name,
+              value: permissions[i].id,
+            });
+          }
         });
       }
       for (let j = 0; j < actions.length; j++) {
-        arr2.push({
-          label: actions[j].group_name + "-" + actions[j].name,
-          value: actions[j].id,
+        arr2.map((item: any) => {
+          if (item.title === actions[j].group_name) {
+            item.children.push({
+              title: actions[j].name,
+              value: actions[j].id,
+            });
+          }
         });
       }
       setPermissions(arr);
@@ -120,21 +181,23 @@ export const SystemAdminrolesUpdate: React.FC<PropInterface> = ({
               <Input style={{ width: 424 }} placeholder="请输入角色名" />
             </Form.Item>
             <Form.Item label="操作权限" name="action_ids">
-              <Select
+              <TreeSelect
                 style={{ width: 424 }}
-                mode="multiple"
-                allowClear
+                treeCheckable={true}
                 placeholder="请选择权限"
-                options={actions}
+                multiple
+                allowClear
+                treeData={actions}
               />
             </Form.Item>
             <Form.Item label="数据权限" name="permission_ids">
-              <Select
+              <TreeSelect
                 style={{ width: 424 }}
-                mode="multiple"
-                allowClear
+                treeCheckable={true}
                 placeholder="请选择权限"
-                options={permissions}
+                multiple
+                allowClear
+                treeData={permissions}
               />
             </Form.Item>
           </Form>
