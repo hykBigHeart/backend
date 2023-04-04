@@ -13,7 +13,7 @@ export const Footer: React.FC = () => {
         textAlign: "center",
       }}
     >
-      <Link to="https://www.playedu.xyz/">
+      <Link to="https://playedu.xyz/">
         <i
           style={{ fontSize: 30, color: "#cccccc" }}
           className="iconfont icon-waterprint footer-icon"
