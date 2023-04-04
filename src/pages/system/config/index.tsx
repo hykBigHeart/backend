@@ -195,7 +195,7 @@ const SystemConfigPage = () => {
               labelCol={{ style: { marginTop: 8, marginLeft: 54 } }}
             >
               <div className="d-flex">
-                <Image preview={false} width={150} height={50} src={logo} />
+                <Image preview={false} height={40} src={logo} />
                 <div className="d-flex ml-24">
                   <UploadImageButton
                     onSelected={(url) => {
