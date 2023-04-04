@@ -235,7 +235,6 @@ const SystemAdministratorPage = () => {
                   重 置
                 </Button>
                 <Button
-                  className="mr-16"
                   type="primary"
                   onClick={() => {
                     setPage(1);
@@ -244,15 +243,19 @@ const SystemAdministratorPage = () => {
                 >
                   查 询
                 </Button>
-                <PerButton
-                  text="角色权限"
-                  icon={null}
-                  class=""
-                  type="default"
-                  p="admin-role"
-                  onClick={() => setUpdateRoleVisible(true)}
-                  disabled={null}
-                />
+                {role_ids.length > 0 && (
+                  <PerButton
+                    text="角色权限"
+                    icon={null}
+                    class="ml-16"
+                    type="default"
+                    p="admin-role"
+                    onClick={() => {
+                      setUpdateRoleVisible(true);
+                    }}
+                    disabled={null}
+                  />
+                )}
               </div>
             </div>
           </div>
