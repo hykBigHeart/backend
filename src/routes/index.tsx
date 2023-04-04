@@ -65,6 +65,9 @@ if (getToken()) {
     });
   });
 } else {
+  if (window.location.pathname !== "/login") {
+    window.location.href = "/login";
+  }
   RootPage = <InitPage loginData={null} />;
 }
 
