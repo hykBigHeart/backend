@@ -245,7 +245,7 @@ const SystemConfigPage = () => {
           >
             <Input style={{ width: 274 }} placeholder="请填写网站页脚" />
           </Form.Item>
-          <Form.Item
+          {/* <Form.Item
             style={{ marginBottom: 30 }}
             label="API访问地址"
             name="system.api_url"
@@ -265,7 +265,7 @@ const SystemConfigPage = () => {
             name="system.h5_url"
           >
             <Input style={{ width: 274 }} placeholder="请填写H5端访问地址" />
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item
             style={{ marginBottom: 30 }}
             wrapperCol={{ offset: 3, span: 21 }}
