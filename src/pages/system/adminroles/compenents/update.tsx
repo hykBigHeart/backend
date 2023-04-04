@@ -152,7 +152,7 @@ export const SystemAdminrolesUpdate: React.FC<PropInterface> = ({
   return (
     <>
       <Drawer
-        title="新建角色"
+        title="编辑角色权限"
         onClose={onCancel}
         maskClosable={false}
         open={open}

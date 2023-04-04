@@ -9,6 +9,7 @@ interface Option {
 }
 
 interface PropInterface {
+  refresh: boolean;
   type: string;
   text: string;
   onUpdate: (keys: any, title: any) => void;
@@ -34,7 +35,7 @@ export const TreeAdminroles = (props: PropInterface) => {
         setTreeData(new_arr);
       }
     });
-  }, []);
+  }, [props.refresh]);
   const onSelect = (selectedKeys: any, info: any) => {
     let label = "全部" + props.text;
     if (info) {

@@ -185,6 +185,7 @@ const SystemAdministratorPage = () => {
       <div className="tree-main-body">
         <div className="left-box">
           <TreeAdminroles
+            refresh={refresh}
             type=""
             text={"管理员"}
             onUpdate={(keys: any, title: any) => {
