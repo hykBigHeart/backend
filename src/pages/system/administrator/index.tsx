@@ -39,6 +39,7 @@ const SystemAdministratorPage = () => {
   const [cid, setCid] = useState<number>(0);
   const [role_ids, setRoleIds] = useState<any>([]);
   const [selLabel, setLabel] = useState<string>("全部管理员");
+  const [roleDelSuccess, setRoleDelSuccess] = useState(false);
 
   const [name, setName] = useState<string>("");
 
@@ -55,12 +56,14 @@ const SystemAdministratorPage = () => {
         <div className="float-left">
           {userRoleIds[id] &&
             userRoleIds[id].map((item: any, index: number) => {
-              return (
+              return roles[item] ? (
                 <span key={index}>
                   {index === userRoleIds[id].length - 1
                     ? roles[item][0].name
                     : roles[item][0].name + "、"}
                 </span>
+              ) : (
+                ""
               );
             })}
         </div>
@@ -195,6 +198,7 @@ const SystemAdministratorPage = () => {
         adminRole.destroyAdminRole(role_ids[0]).then((res: any) => {
           message.success("操作成功");
           setRefresh(!refresh);
+          setRoleDelSuccess(!roleDelSuccess);
         });
       },
       onCancel() {
@@ -208,6 +212,7 @@ const SystemAdministratorPage = () => {
       <div className="tree-main-body">
         <div className="left-box">
           <TreeAdminroles
+            roleDelSuccess={roleDelSuccess}
             refresh={refresh}
             type=""
             text={"管理员"}
@@ -248,7 +253,7 @@ const SystemAdministratorPage = () => {
                   <PerButton
                     text="角色权限"
                     icon={null}
-                    class="ml-16"
+                    class="mr-16"
                     type="default"
                     p="admin-role"
                     onClick={() => {
@@ -259,7 +264,7 @@ const SystemAdministratorPage = () => {
                   <PerButton
                     text="删除角色"
                     icon={null}
-                    class="ml-16"
+                    class="mr-16"
                     type="default"
                     p="admin-role"
                     onClick={() => {

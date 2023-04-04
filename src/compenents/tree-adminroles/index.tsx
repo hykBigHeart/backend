@@ -10,6 +10,7 @@ interface Option {
 
 interface PropInterface {
   refresh: boolean;
+  roleDelSuccess: boolean;
   type: string;
   text: string;
   onUpdate: (keys: any, title: any) => void;
@@ -19,6 +20,10 @@ export const TreeAdminroles = (props: PropInterface) => {
   const [treeData, setTreeData] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [selectKey, setSelectKey] = useState<any>([]);
+
+  useEffect(() => {
+    onSelect([], "");
+  }, [props.roleDelSuccess]);
 
   useEffect(() => {
     adminRole.adminRoleList().then((res: any) => {
@@ -34,9 +39,9 @@ export const TreeAdminroles = (props: PropInterface) => {
         }
         setTreeData(new_arr);
       }
-      onSelect([], "");
     });
   }, [props.refresh]);
+
   const onSelect = (selectedKeys: any, info: any) => {
     let label = "全部" + props.text;
     if (info) {
