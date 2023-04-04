@@ -200,15 +200,17 @@ const SystemAdministratorPage = () => {
           </div>
           <div className="float-left j-b-flex mb-24">
             <div className="d-flex">
-              <PerButton
-                text="新建角色"
-                icon={<PlusOutlined />}
-                class="mr-16"
-                type="primary"
-                p="admin-role"
-                onClick={() => setCreateRoleVisible(true)}
-                disabled={null}
-              />
+              {role_ids.length === 0 && (
+                <PerButton
+                  text="新建角色"
+                  icon={<PlusOutlined />}
+                  class="mr-16"
+                  type="primary"
+                  p="admin-role"
+                  onClick={() => setCreateRoleVisible(true)}
+                  disabled={null}
+                />
+              )}
               <PerButton
                 type="default"
                 text="添加管理员"
