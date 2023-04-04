@@ -24,7 +24,7 @@ export const SystemAdminrolesUpdate: React.FC<PropInterface> = ({
   }, []);
 
   useEffect(() => {
-    if (id === 0) {
+    if (id === 0 || "undefined" || "") {
       return;
     }
     getDetail();

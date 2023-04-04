@@ -28,6 +28,8 @@ const SystemAdministratorPage = () => {
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
   const [list, setList] = useState<any>([]);
+  const [roles, setRoles] = useState<any>([]);
+  const [userRoleIds, setUserRoleIds] = useState<any>({});
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
   const [createVisible, setCreateVisible] = useState<boolean>(false);
@@ -48,8 +50,21 @@ const SystemAdministratorPage = () => {
     },
     {
       title: "角色",
-      dataIndex: "name",
-      render: (text: string) => <span>{text}</span>,
+      dataIndex: "id",
+      render: (id: number) => (
+        <div className="float-left">
+          {userRoleIds[id] &&
+            userRoleIds[id].map((item: any, index: number) => {
+              return (
+                <span key={index}>
+                  {index === userRoleIds[id].length - 1
+                    ? roles[item][0].name
+                    : roles[item][0].name + "、"}
+                </span>
+              );
+            })}
+        </div>
+      ),
     },
     {
       title: "登录邮箱",
@@ -113,6 +128,8 @@ const SystemAdministratorPage = () => {
     setLoading(true);
     adminUser.adminUserList(page, size, name, role_ids[0]).then((res: any) => {
       setList(res.data.data);
+      setRoles(res.data.roles);
+      setUserRoleIds(res.data.user_role_ids);
       setTotal(res.data.total);
       setLoading(false);
     });
