@@ -35,10 +35,12 @@ export const MemberUpdate: React.FC<PropInterface> = ({
   }, [id, open]);
 
   useEffect(() => {
-    getParams();
-    form.setFieldsValue({
-      password: "",
-    });
+    if (open) {
+      getParams();
+      form.setFieldsValue({
+        password: "",
+      });
+    }
   }, [form, open]);
 
   const getParams = () => {

@@ -24,7 +24,9 @@ export const ResourceCategoryCreate: React.FC<PropInterface> = ({
   const [parent_id, setParentId] = useState<number>(0);
 
   useEffect(() => {
-    getParams();
+    if (open) {
+      getParams();
+    }
   }, [open]);
 
   useEffect(() => {

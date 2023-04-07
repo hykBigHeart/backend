@@ -46,8 +46,10 @@ export const CourseUpdate: React.FC<PropInterface> = ({
   const [type, setType] = useState<string>("open");
 
   useEffect(() => {
-    getCategory();
-    getParams();
+    if (open) {
+      getParams();
+      getCategory();
+    }
   }, [form, open]);
 
   useEffect(() => {

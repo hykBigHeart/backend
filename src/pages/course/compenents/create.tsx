@@ -57,8 +57,10 @@ export const CourseCreate: React.FC<PropInterface> = ({
   const [addvideoCurrent, setAddvideoCurrent] = useState(0);
 
   useEffect(() => {
-    getParams();
-    getCategory();
+    if (open) {
+      getParams();
+      getCategory();
+    }
   }, [open, cateIds, depIds]);
 
   useEffect(() => {

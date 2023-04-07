@@ -23,8 +23,10 @@ export const MemberCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
   const [avatar, setAvatar] = useState<string>(getHost() + "avatar/avatar.png");
 
   useEffect(() => {
-    getParams();
-  }, []);
+    if (open) {
+      getParams();
+    }
+  }, [open]);
 
   useEffect(() => {
     form.setFieldsValue({

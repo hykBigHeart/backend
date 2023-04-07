@@ -27,7 +27,9 @@ export const ResourceCategoryUpdate: React.FC<PropInterface> = ({
   const [sort, setSort] = useState<number>(0);
 
   useEffect(() => {
-    getParams();
+    if (open) {
+      getParams();
+    }
   }, [open]);
 
   const getParams = () => {
