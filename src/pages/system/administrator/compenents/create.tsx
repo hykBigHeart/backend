@@ -21,8 +21,10 @@ export const SystemAdministratorCreate: React.FC<PropInterface> = ({
   const [roles, setRoles] = useState<any>([]);
 
   useEffect(() => {
-    getParams();
-  }, [refresh]);
+    if (open) {
+      getParams();
+    }
+  }, [refresh, open]);
 
   useEffect(() => {
     let roleIds = [];

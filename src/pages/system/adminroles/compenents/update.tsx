@@ -26,8 +26,10 @@ export const SystemAdminrolesUpdate: React.FC<PropInterface> = ({
   const [actions, setActions] = useState<any>([]);
 
   useEffect(() => {
-    getParams();
-  }, []);
+    if (open) {
+      getParams();
+    }
+  }, [open]);
 
   useEffect(() => {
     if (id === undefined) {

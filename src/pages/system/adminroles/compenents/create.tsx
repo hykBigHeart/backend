@@ -24,8 +24,10 @@ export const SystemAdminrolesCreate: React.FC<PropInterface> = ({
   const [actions, setActions] = useState<any>([]);
 
   useEffect(() => {
-    getParams();
-  }, []);
+    if (open) {
+      getParams();
+    }
+  }, [open]);
 
   useEffect(() => {
     form.setFieldsValue({
