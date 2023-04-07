@@ -2,10 +2,8 @@
 <img src="https://playedu.xyz/images/index/logo-big.png?v=2023032901" width="150"/>
 </p>
 
-<h1 align="center">PlayEdu开源培训系统</h1>
+<h1 align="center">后台界面程序 - PlayEdu开源培训系统</h1>
 <p align="center">一款开源的培训系统，您可以使用它快速搭建私有化内部培训平台</p>
-
-# PlayEdu 后台界面程序
 
 ### 常用链接
 
