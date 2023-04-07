@@ -87,6 +87,11 @@ export const SystemAdminrolesCreate: React.FC<PropInterface> = ({
           value: "部门-n",
           children: [],
         },
+        {
+          title: "其它",
+          value: "其它-n",
+          children: [],
+        },
       ];
       let actions = res.data.perm_action.action;
       let permissions = res.data.perm_action.data;
