@@ -30,5 +30,6 @@ package-lock.json
 
 deploy-test.sh
 deploy-prod.sh
+deploy-demo.sh
 
 dist/
