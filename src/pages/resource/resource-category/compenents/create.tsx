@@ -44,6 +44,13 @@ export const ResourceCategoryCreate: React.FC<PropInterface> = ({
           value: 0,
         });
         setCategories(new_arr);
+      } else {
+        const new_arr: Option[] = [];
+        new_arr.unshift({
+          label: "作为一级分类",
+          value: 0,
+        });
+        setCategories(new_arr);
       }
     });
   };

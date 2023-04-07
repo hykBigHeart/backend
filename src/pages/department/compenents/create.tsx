@@ -44,6 +44,13 @@ export const DepartmentCreate: React.FC<PropInterface> = ({
           value: 0,
         });
         setDepartments(new_arr);
+      } else {
+        const new_arr: Option[] = [];
+        new_arr.unshift({
+          label: "作为一级部门",
+          value: 0,
+        });
+        setDepartments(new_arr);
       }
     });
   };
