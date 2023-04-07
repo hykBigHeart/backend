@@ -54,11 +54,6 @@ export const SystemAdminrolesUpdate: React.FC<PropInterface> = ({
       ];
       const arr2: Option[] = [
         {
-          title: "其它",
-          value: "其它-n",
-          children: [],
-        },
-        {
           title: "学员",
           value: "学员-n",
           children: [],
