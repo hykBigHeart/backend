@@ -8,7 +8,6 @@ import { getHost } from "../../utils/index";
 
 const MemberImportPage = () => {
   const navigate = useNavigate();
-  const [tableData, setWageTableData] = useState<any>([]);
   const [errorData, setErrorData] = useState<any>([]);
 
   const uploadProps = {
@@ -30,41 +29,39 @@ const MemberImportPage = () => {
       reader.readAsBinaryString(f);
       return false;
     },
-    onRemove: () => {
-      setWageTableData([]);
-    },
   };
-  const handleImpotedJson = (jsonArr: any, file: any) => {
-    //jsonArr返回的是你上传的excel表格的每一行的数据 是数组形式
-    jsonArr.splice(0, 1); // 去掉表头
-    const jsonArrData = jsonArr.map((item: any, index: number) => {
-      // console.log(item, index);
-      let jsonObj = item;
-      //在这写你需要的处理逻辑
-      // jsonObj.id = data.length + index + 1;
-      // jsonObj.key = data.length + index + 1 + '';
-      // jsonObj.name = item[0];
+  const handleImpotedJson = (jsonArr: any[], file: any) => {
+    jsonArr.splice(0, 2); // 去掉表头[第一行规则描述,第二行表头名]
+    let data: any[] = [];
+    for (let i = 0; i < jsonArr.length; i++) {
+      let tmpItem = jsonArr[i];
+      if (typeof tmpItem === undefined) {
+        break;
+      }
+      if (tmpItem.length === 0) {
+        //空行
+        continue;
+      }
+      data.push({
+        deps: tmpItem[0],
+        email: tmpItem[1],
+        password: tmpItem[2],
+        name: tmpItem[3],
+        id_card: tmpItem[4],
+      });
+    }
 
-      // jsonObj.profession = item[1];
-      // jsonObj.pay = item[2];
-      // jsonObj.work = item[3];
-      return jsonObj;
-    });
-
-    // setData([...data, ...jsonArrData]);
-    setWageTableData(jsonArrData);
-    storeBatchTableData(jsonArrData);
+    storeBatchTableData(data);
   };
 
   const storeBatchTableData = (data: any) => {
     user
       .storeBatch(2, data)
-      .then((res: any) => {
+      .then(() => {
         message.success("导入成功！");
         navigate(-1);
       })
       .catch((e) => {
-        setWageTableData([]);
         if (e.code === -1) {
           setErrorData(e.data);
         }
