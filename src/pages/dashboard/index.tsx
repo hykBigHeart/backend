@@ -515,7 +515,11 @@ const DashboardPage = () => {
             <div className={styles["large-title"]}>产品文档</div>
             <div className={styles["usage-guide"]}>
               <img className={styles["banner"]} src={banner} alt="" />
-              <Link to="https://www.playedu.xyz/" className={styles["link"]}>
+              <Link
+                to="https://www.playedu.xyz/docs/docs/intro/"
+                target="blank"
+                className={styles["link"]}
+              >
                 点击查看产品文档，快速玩转Playedu！
                 <img className={styles["icon"]} src={icon} alt="" />
               </Link>
