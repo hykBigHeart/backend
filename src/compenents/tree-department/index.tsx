@@ -90,13 +90,16 @@ export const TreeDepartment = (props: PropInterface) => {
       >
         全部{props.text}
       </div>
-      <Tree
-        selectedKeys={selectKey}
-        onSelect={onSelect}
-        onExpand={onExpand}
-        treeData={treeData}
-        switcherIcon={<i className="iconfont icon-icon-fold c-gray" />}
-      />
+      {treeData.length > 0 && (
+        <Tree
+          selectedKeys={selectKey}
+          onSelect={onSelect}
+          onExpand={onExpand}
+          treeData={treeData}
+          defaultExpandAll={true}
+          switcherIcon={<i className="iconfont icon-icon-fold c-gray" />}
+        />
+      )}
     </div>
   );
 };
