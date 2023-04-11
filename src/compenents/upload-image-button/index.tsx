@@ -71,8 +71,10 @@ export const UploadImageButton = (props: PropsInterface) => {
 
   // 加载图片列表
   useEffect(() => {
-    getImageList();
-  }, [category_ids, refresh, page, size]);
+    if (showModal) {
+      getImageList();
+    }
+  }, [category_ids, refresh, page, size, showModal]);
 
   return (
     <>

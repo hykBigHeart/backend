@@ -89,13 +89,16 @@ export const TreeCategory = (props: PropInterface) => {
           <span>全部{props.text}</span>
         </div>
       </div>
-      <Tree
-        onSelect={onSelect}
-        selectedKeys={selectKey}
-        onExpand={onExpand}
-        treeData={treeData}
-        switcherIcon={<i className="iconfont icon-icon-fold c-gray" />}
-      />
+      {treeData.length > 0 && (
+        <Tree
+          onSelect={onSelect}
+          selectedKeys={selectKey}
+          onExpand={onExpand}
+          treeData={treeData}
+          defaultExpandAll={true}
+          switcherIcon={<i className="iconfont icon-icon-fold c-gray" />}
+        />
+      )}
     </div>
   );
 };

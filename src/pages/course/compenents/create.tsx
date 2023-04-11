@@ -434,6 +434,7 @@ export const CourseCreate: React.FC<PropInterface> = ({
                 style={{ width: 424 }}
                 treeData={categories}
                 placeholder="请选择课程分类"
+                treeDefaultExpandAll
               />
             </Form.Item>
             <Form.Item
