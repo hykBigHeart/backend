@@ -1,6 +1,6 @@
 import { lazy } from "react";
 import { RouteObject } from "react-router-dom";
-import { login } from "../api";
+import { login, system } from "../api";
 
 import InitPage from "../pages/init";
 import { getToken } from "../utils";
@@ -23,52 +23,34 @@ import DepartmentPage from "../pages/department";
 import TestPage from "../pages/test";
 import ErrorPage from "../pages/error";
 
-// 异步加载页面
 // const LoginPage = lazy(() => import("../pages/login"));
-// const HomePage = lazy(() => import("../pages/home"));
-// const DashboardPage = lazy(() => import("../pages/dashboard"));
-// const ErrorPage = lazy(() => import("../pages/error"));
-// const CoursePage = lazy(() => import("../pages/course"));
-// const TestPage = lazy(() => import("../pages/test"));
-// const MemberPage = lazy(() => import("../pages/member"));
-// const MemberImportPage = lazy(() => import("../pages/member/import"));
-// const SystemAdministratorPage = lazy(
-//   () => import("../pages/system/administrator")
-// );
-// const SystemAdminrolesPage = lazy(() => import("../pages/system/adminroles"));
-// const DepartmentPage = lazy(() => import("../pages/department"));
-// const ChangePasswordPage = lazy(() => import("../pages/change-password"));
-// const ResourceImagesPage = lazy(() => import("../pages/resource/images"));
-// const ResourceCategoryPage = lazy(
-//   () => import("../pages/resource/resource-category")
-// );
-// const ResourceVideosPage = lazy(() => import("../pages/resource/videos"));
-// const SystemConfigPage = lazy(() => import("../pages/system/config"));
 
 let RootPage: any = null;
 if (getToken()) {
   RootPage = lazy(async () => {
-    return new Promise<any>((resolve) => {
-      let userLoginToken = getToken();
-      if (!userLoginToken) {
+    return new Promise<any>(async (resolve) => {
+      try {
+        let configRes: any = await system.getSystemConfig();
+        let userRes: any = await login.getUser();
+        
         resolve({
-          default: InitPage,
+          default: (
+            <InitPage configData={configRes.data} loginData={userRes.data} />
+          ),
         });
-        return;
+      } catch (e) {
+        console.error("系统初始化失败", e);
+        resolve({
+          default: <ErrorPage />,
+        });
       }
-      login.getUser().then((res: any) => {
-        resolve({
-          default: <InitPage loginData={res.data} />,
-        });
-      });
-      // todo token过期处理
     });
   });
 } else {
   if (window.location.pathname !== "/login") {
     window.location.href = "/login";
   }
-  RootPage = <InitPage loginData={null} />;
+  RootPage = <InitPage />;
 }
 
 const routes: RouteObject[] = [
