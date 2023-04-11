@@ -181,7 +181,7 @@ const DashboardPage = () => {
                   <div className={styles["num"]}>{basicData.user_total}</div>
                   <div className={styles["compare"]}>
                     <span className="mr-5">较昨日</span>
-                    {compareNum(basicData.user_today, basicData.user_yesterday)}
+                    {compareNum(basicData.user_today, 0)}
                   </div>
                 </div>
               </div>
