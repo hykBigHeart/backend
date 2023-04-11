@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import styles from "./index.module.less";
 import { Spin, Input, Button, message } from "antd";
-import { login, system } from "../../api/index";
+import { login as loginApi, system } from "../../api/index";
 import { setToken } from "../../utils/index";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +9,10 @@ import banner from "../../assets/images/login/banner.png";
 import icon from "../../assets/images/login/icon.png";
 import "./login.less";
 import { loginAction } from "../../store/user/loginUserSlice";
+import {
+  SystemConfigStoreInterface,
+  saveConfigAction,
+} from "../../store/system/systemConfigSlice";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
@@ -22,6 +26,7 @@ const LoginPage = () => {
   const [captchaLoading, setCaptchaLoading] = useState(true);
 
   const fetchImageCaptcha = () => {
+    setCaptchaVal("");
     setCaptchaLoading(true);
     system.getImageCaptcha().then((res: any) => {
       setImage(res.data.image);
@@ -30,7 +35,7 @@ const LoginPage = () => {
     });
   };
 
-  const loginSubmit = (e: any) => {
+  const loginSubmit = async () => {
     if (!email) {
       message.error("请输入管理员邮箱账号");
       return;
@@ -43,47 +48,60 @@ const LoginPage = () => {
       message.error("请输入图形验证码");
       return;
     }
-    if (captchaVal.length < 4) {
+    if (captchaVal.length !== 4) {
       message.error("图形验证码错误");
       return;
     }
-    if (loading) {
-      return;
-    }
-    handleSubmit();
+    await handleSubmit();
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (loading) {
       return;
     }
     setLoading(true);
-    login
-      .login(email, password, captchaKey, captchaVal)
-      .then((res: any) => {
-        const token = res.data.token;
-        setToken(token);
-        getUser();
-      })
-      .catch((e) => {
-        setLoading(false);
-        setCaptchaVal("");
-        fetchImageCaptcha();
-      });
+    try {
+      let res: any = await loginApi.login(
+        email,
+        password,
+        captchaKey,
+        captchaVal
+      );
+      setToken(res.data.token); //将token写入本地
+      await getSystemConfig(); //获取系统配置并写入store
+      await getUser(); //获取登录用户的信息并写入store
+
+      navigate("/");
+    } catch (e) {
+      message.error("登录出现错误");
+      console.error("错误信息", e);
+      setLoading(false);
+      fetchImageCaptcha(); //刷新图形验证码
+    }
   };
 
-  const getUser = () => {
-    login.getUser().then((res: any) => {
-      const data = res.data;
-      dispatch(loginAction(data));
-      setLoading(false);
-      navigate("/");
-    });
+  const getUser = async () => {
+    let res: any = await loginApi.getUser();
+    dispatch(loginAction(res.data));
+  };
+
+  const getSystemConfig = async () => {
+    let res: any = await system.getSystemConfig();
+    let data: SystemConfigStoreInterface = {
+      systemName: res.data["system.name"],
+      systemLogo: res.data["system.logo"],
+      systemApiUrl: res.data["system.api_url"],
+      systemPcUrl: res.data["system.pc_url"],
+      systemH5Url: res.data["system.h5_url"],
+      memberDefaultAvatar: res.data["member.default_avatar"],
+      courseDefaultThumbs: res.data["default.course_thumbs"],
+    };
+    dispatch(saveConfigAction(data));
   };
 
   const keyUp = (e: any) => {
     if (e.keyCode === 13) {
-      loginSubmit(e);
+      loginSubmit();
     }
   };
 
