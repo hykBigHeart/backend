@@ -574,6 +574,7 @@ export const CourseCreate: React.FC<PropInterface> = ({
                   </div>
                   <div className="d-flex">
                     <UploadImageButton
+                      text="更换封面"
                       onSelected={(url) => {
                         setThumb(url);
                         form.setFieldsValue({ thumb: url });

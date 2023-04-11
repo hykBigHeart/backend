@@ -198,6 +198,7 @@ const SystemConfigPage = () => {
                 <Image preview={false} height={40} src={logo} />
                 <div className="d-flex ml-24">
                   <UploadImageButton
+                    text="更换Logo"
                     onSelected={(url) => {
                       setLogo(url);
                       form.setFieldsValue({ "system.logo": url });
@@ -219,6 +220,7 @@ const SystemConfigPage = () => {
               <div className="d-flex">
                 <div className="d-flex ml-24">
                   <UploadImageButton
+                    text="更换Logo"
                     onSelected={(url) => {
                       setLogo(url);
                       form.setFieldsValue({ "system.logo": url });
@@ -363,6 +365,7 @@ const SystemConfigPage = () => {
                 />
                 <div className="d-flex ml-24">
                   <UploadImageButton
+                    text="更换封面"
                     onSelected={(url) => {
                       setThumb(url);
                       form.setFieldsValue({ "player.poster": url });
@@ -384,6 +387,7 @@ const SystemConfigPage = () => {
               <div className="d-flex">
                 <div className="d-flex">
                   <UploadImageButton
+                    text="更换封面"
                     onSelected={(url) => {
                       setThumb(url);
                       form.setFieldsValue({ "player.poster": url });

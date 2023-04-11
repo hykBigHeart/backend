@@ -163,6 +163,7 @@ export const MemberUpdate: React.FC<PropInterface> = ({
                 )}
                 <div className="d-flex">
                   <UploadImageButton
+                    text="更换头像"
                     onSelected={(url) => {
                       setAvatar(url);
                       form.setFieldsValue({ avatar: url });

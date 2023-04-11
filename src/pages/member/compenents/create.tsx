@@ -129,6 +129,7 @@ export const MemberCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
                 )}
                 <div className="d-flex">
                   <UploadImageButton
+                    text="更换头像"
                     onSelected={(url) => {
                       setAvatar(url);
                       form.setFieldsValue({ avatar: url });
