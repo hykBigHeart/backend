@@ -35,7 +35,9 @@ export const SystemAdminrolesUpdate: React.FC<PropInterface> = ({
     if (id === undefined) {
       return;
     }
-    getDetail();
+    if (open) {
+      getDetail();
+    }
   }, [id, open]);
 
   const getParams = () => {

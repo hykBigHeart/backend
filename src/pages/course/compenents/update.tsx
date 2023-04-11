@@ -242,6 +242,7 @@ export const CourseUpdate: React.FC<PropInterface> = ({
                   treeData={departments}
                   multiple
                   allowClear
+                  treeDefaultExpandAll
                   placeholder="请选择部门"
                 />
               </Form.Item>

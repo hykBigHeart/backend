@@ -172,6 +172,7 @@ export const MemberCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
                 treeData={departments}
                 multiple
                 allowClear
+                treeDefaultExpandAll
                 placeholder="请选择学员所属部门"
               />
             </Form.Item>
