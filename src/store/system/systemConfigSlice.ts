@@ -1,25 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 type SystemConfigStoreInterface = {
-  systemApiUrl: string;
-  systemPcUrl: string;
-  systemH5Url: string;
-  systemLogo: string;
-  systemName: string;
-};
-
-let defaultValue: SystemConfigStoreInterface = {
-  systemApiUrl: "",
-  systemPcUrl: "",
-  systemH5Url: "",
-  systemLogo: "",
-  systemName: "",
+  systemApiUrl?: string;
+  systemPcUrl?: string;
+  systemH5Url?: string;
+  systemLogo?: string;
+  systemName?: string;
+  memberDefaultAvatar?: string;
+  courseDefaultThumbs?: string[];
 };
 
 const systemConfigSlice = createSlice({
   name: "systemConfig",
   initialState: {
-    value: defaultValue,
+    value: {},
   },
   reducers: {
     saveConfigAction(stage, e) {
