@@ -36,6 +36,7 @@ interface ImageItem {
 }
 
 interface PropsInterface {
+  text: any;
   onSelected: (url: string) => void;
 }
 
@@ -71,8 +72,10 @@ export const UploadImageButton = (props: PropsInterface) => {
 
   // 加载图片列表
   useEffect(() => {
-    getImageList();
-  }, [category_ids, refresh, page, size]);
+    if (showModal) {
+      getImageList();
+    }
+  }, [category_ids, refresh, page, size, showModal]);
 
   return (
     <>
@@ -81,7 +84,7 @@ export const UploadImageButton = (props: PropsInterface) => {
           setShowModal(true);
         }}
       >
-        上传图片
+        {props.text ? props.text : "上传图片"}
       </Button>
 
       {showModal && (

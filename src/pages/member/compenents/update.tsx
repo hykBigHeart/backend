@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Form, TreeSelect, Input, message } from "antd";
-import styles from "./create.module.less";
+import styles from "./update.module.less";
+import { useSelector } from "react-redux";
 import { user, department } from "../../../api/index";
 import { UploadImageButton } from "../../../compenents";
-import { ValidataCredentials, getHost } from "../../../utils/index";
+import { ValidataCredentials } from "../../../utils/index";
 
 interface PropInterface {
   id: number;
@@ -25,7 +26,10 @@ export const MemberUpdate: React.FC<PropInterface> = ({
   const [form] = Form.useForm();
   const [loading, setLoading] = useState<boolean>(true);
   const [departments, setDepartments] = useState<any>([]);
-  const [avatar, setAvatar] = useState<string>(getHost() + "avatar/avatar.png");
+  const memberDefaultAvatar = useSelector(
+    (state: any) => state.systemConfig.value.memberDefaultAvatar
+  );
+  const [avatar, setAvatar] = useState<string>(memberDefaultAvatar);
 
   useEffect(() => {
     if (id == 0) {
@@ -163,6 +167,7 @@ export const MemberUpdate: React.FC<PropInterface> = ({
                 )}
                 <div className="d-flex">
                   <UploadImageButton
+                    text="更换头像"
                     onSelected={(url) => {
                       setAvatar(url);
                       form.setFieldsValue({ avatar: url });
@@ -202,6 +207,7 @@ export const MemberUpdate: React.FC<PropInterface> = ({
                 treeData={departments}
                 multiple
                 allowClear
+                treeDefaultExpandAll
                 placeholder="请选择学员所属部门"
               />
             </Form.Item>

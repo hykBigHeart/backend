@@ -30,7 +30,9 @@ export const SystemAdministratorUpdate: React.FC<PropInterface> = ({
     if (id === 0) {
       return;
     }
-    getDetail();
+    if (open) {
+      getDetail();
+    }
   }, [id, open]);
 
   const getParams = () => {

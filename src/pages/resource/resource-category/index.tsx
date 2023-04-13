@@ -372,15 +372,18 @@ const ResourceCategoryPage = () => {
       </div>
       <div className="playedu-main-body">
         <div style={{ width: 366 }}>
-          <Tree
-            onSelect={onSelect}
-            treeData={treeData}
-            draggable
-            blockNode
-            onDragEnter={onDragEnter}
-            onDrop={onDrop}
-            switcherIcon={<i className="iconfont icon-icon-fold c-gray" />}
-          />
+          {treeData.length > 0 && (
+            <Tree
+              onSelect={onSelect}
+              treeData={treeData}
+              draggable
+              blockNode
+              onDragEnter={onDragEnter}
+              onDrop={onDrop}
+              defaultExpandAll={true}
+              switcherIcon={<i className="iconfont icon-icon-fold c-gray" />}
+            />
+          )}
         </div>
         <ResourceCategoryCreate
           open={createVisible}
