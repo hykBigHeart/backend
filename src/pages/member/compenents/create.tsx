@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Form, TreeSelect, Input, message } from "antd";
 import styles from "./create.module.less";
+import { useSelector } from "react-redux";
 import { user, department } from "../../../api/index";
 import { UploadImageButton } from "../../../compenents";
-import { ValidataCredentials, getHost } from "../../../utils/index";
+import { ValidataCredentials } from "../../../utils/index";
 
 interface PropInterface {
   open: boolean;
@@ -20,7 +21,10 @@ export const MemberCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState<boolean>(true);
   const [departments, setDepartments] = useState<any>([]);
-  const [avatar, setAvatar] = useState<string>(getHost() + "avatar/avatar.png");
+  const memberDefaultAvatar = useSelector(
+    (state: any) => state.systemConfig.value.memberDefaultAvatar
+  );
+  const [avatar, setAvatar] = useState<string>(memberDefaultAvatar);
 
   useEffect(() => {
     if (open) {
@@ -33,11 +37,11 @@ export const MemberCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
       email: "",
       name: "",
       password: "",
-      avatar: getHost() + "avatar/avatar.png",
+      avatar: memberDefaultAvatar,
       idCard: "",
       dep_ids: [],
     });
-    setAvatar(getHost() + "avatar/avatar.png");
+    setAvatar(memberDefaultAvatar);
   }, [form, open]);
 
   const getParams = () => {

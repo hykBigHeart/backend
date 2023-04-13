@@ -12,10 +12,10 @@ import {
   TreeSelect,
 } from "antd";
 import styles from "./create.module.less";
+import { useSelector } from "react-redux";
 import { course, department } from "../../../api/index";
 import { UploadImageButton, SelectResource } from "../../../compenents";
 import { ExclamationCircleFilled } from "@ant-design/icons";
-import { getHost } from "../../../utils/index";
 import { TreeHours } from "./hours";
 
 const { confirm } = Modal;
@@ -40,9 +40,12 @@ export const CourseCreate: React.FC<PropInterface> = ({
   onCancel,
 }) => {
   const [form] = Form.useForm();
-  const defaultThumb1 = getHost() + "thumb/thumb1.png";
-  const defaultThumb2 = getHost() + "thumb/thumb2.png";
-  const defaultThumb3 = getHost() + "thumb/thumb3.png";
+  const courseDefaultThumbs = useSelector(
+    (state: any) => state.systemConfig.value.courseDefaultThumbs
+  );
+  const defaultThumb1 = courseDefaultThumbs[0];
+  const defaultThumb2 = courseDefaultThumbs[1];
+  const defaultThumb3 = courseDefaultThumbs[2];
   const [loading, setLoading] = useState<boolean>(true);
   const [departments, setDepartments] = useState<any>([]);
   const [categories, setCategories] = useState<any>([]);
