@@ -85,8 +85,9 @@ export const CourseCreate: React.FC<PropInterface> = ({
   const getParams = () => {
     department.departmentList().then((res: any) => {
       const departments = res.data.departments;
+      const departCount = res.data.dep_user_count;
       if (JSON.stringify(departments) !== "{}") {
-        const new_arr: Option[] = checkArr(departments, 0);
+        const new_arr: any = checkArr(departments, 0, departCount);
         setDepartments(new_arr);
       }
       let type = "open";
@@ -134,7 +135,7 @@ export const CourseCreate: React.FC<PropInterface> = ({
     course.createCourse().then((res: any) => {
       const categories = res.data.categories;
       if (JSON.stringify(categories) !== "{}") {
-        const new_arr: Option[] = checkArr(categories, 0);
+        const new_arr: any = checkArr(categories, 0, null);
         setCategories(new_arr);
       }
 
@@ -163,18 +164,39 @@ export const CourseCreate: React.FC<PropInterface> = ({
     });
   };
 
-  const checkArr = (departments: any[], id: number) => {
+  const getNewTitle = (title: any, id: number, counts: any) => {
+    if (counts) {
+      let value = counts[id] || 0;
+      return title + "(" + value + ")";
+    } else {
+      return title;
+    }
+  };
+
+  const checkArr = (departments: any[], id: number, counts: any) => {
     const arr = [];
     for (let i = 0; i < departments[id].length; i++) {
       if (!departments[departments[id][i].id]) {
         arr.push({
-          title: departments[id][i].name,
+          title: getNewTitle(
+            departments[id][i].name,
+            departments[id][i].id,
+            counts
+          ),
           value: departments[id][i].id,
         });
       } else {
-        const new_arr: Option[] = checkArr(departments, departments[id][i].id);
+        const new_arr: any = checkArr(
+          departments,
+          departments[id][i].id,
+          counts
+        );
         arr.push({
-          title: departments[id][i].name,
+          title: getNewTitle(
+            departments[id][i].name,
+            departments[id][i].id,
+            counts
+          ),
           value: departments[id][i].id,
           children: new_arr,
         });
