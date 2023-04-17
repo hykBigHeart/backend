@@ -32,7 +32,8 @@ export const TreeDepartment = (props: PropInterface) => {
           setTreeData(new_arr);
           let num = 0;
           for (let item in departCount) {
-            num = num + Number(item);
+            num = num + Number(departCount[item]);
+            
           }
           setTotal(num);
         } else {
