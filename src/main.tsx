@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 import store from "./store";
 import { ConfigProvider } from "antd";
 import zhCN from "antd/locale/zh_CN";
+import AutoScorllTop from "./AutoTop";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <Provider store={store}>
@@ -15,7 +16,9 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
       theme={{ token: { colorPrimary: "#ff4d4f" } }}
     >
       <BrowserRouter>
-        <App />
+        <AutoScorllTop>
+          <App />
+        </AutoScorllTop>
       </BrowserRouter>
     </ConfigProvider>
   </Provider>
