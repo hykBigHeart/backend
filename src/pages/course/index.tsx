@@ -89,6 +89,7 @@ const CoursePage = () => {
       children: (
         <div className="float-left">
           <TreeDepartment
+            showNum={false}
             type="no-course"
             text={"部门"}
             onUpdate={(keys: any, title: any) => {

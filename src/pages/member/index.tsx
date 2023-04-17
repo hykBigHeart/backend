@@ -200,6 +200,7 @@ const MemberPage = () => {
       <div className="tree-main-body">
         <div className="left-box">
           <TreeDepartment
+            showNum={true}
             type=""
             text={"部门"}
             onUpdate={(keys: any, title: any) => {
