@@ -19,23 +19,18 @@ export const TreeDepartment = (props: PropInterface) => {
   const [treeData, setTreeData] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [selectKey, setSelectKey] = useState<any>([]);
-  const [total, setTotal] = useState(0);
+  const [userTotal, setUserTotal] = useState(0);
 
   useEffect(() => {
     setLoading(true);
     department.departmentList().then((res: any) => {
       const departments = res.data.departments;
       const departCount = res.data.dep_user_count;
+      setUserTotal(res.data.user_total);
       if (JSON.stringify(departments) !== "{}") {
         if (props.showNum) {
           const new_arr: any = checkNewArr(departments, 0, departCount);
           setTreeData(new_arr);
-          let num = 0;
-          for (let item in departCount) {
-            num = num + Number(departCount[item]);
-            
-          }
-          setTotal(num);
         } else {
           const new_arr: Option[] = checkArr(departments, 0);
           setTreeData(new_arr);
@@ -144,7 +139,7 @@ export const TreeDepartment = (props: PropInterface) => {
         onClick={() => onSelect([], "")}
       >
         全部{props.text}
-        {props.showNum && total ? "(" + total + ")" : ""}
+        {props.showNum && userTotal ? "(" + userTotal + ")" : ""}
       </div>
       {treeData.length > 0 && (
         <Tree
