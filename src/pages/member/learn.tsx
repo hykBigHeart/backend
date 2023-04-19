@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import styles from "./learn.module.less";
-import { Row, Col, Image, message, Table } from "antd";
-import { useNavigate, useLocation } from "react-router-dom";
+import { Row, Image, Table } from "antd";
+import { useLocation } from "react-router-dom";
 import { BackBartment, DurationText } from "../../compenents";
 import { dateFormat } from "../../utils/index";
 import { user as member } from "../../api/index";

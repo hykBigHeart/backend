@@ -17,6 +17,7 @@ import CourseUserPage from "../pages/course/user";
 import MemberPage from "../pages/member";
 import MemberImportPage from "../pages/member/import";
 import MemberLearnPage from "../pages/member/learn";
+import MemberDepartmentProgressPage from "../pages/member/departmentUser";
 import SystemConfigPage from "../pages/system/config";
 import SystemAdministratorPage from "../pages/system/administrator";
 import SystemAdminrolesPage from "../pages/system/adminroles";
@@ -102,6 +103,10 @@ const routes: RouteObject[] = [
           {
             path: "/member/learn",
             element: <MemberLearnPage />,
+          },
+          {
+            path: "/member/departmentUser",
+            element: <MemberDepartmentProgressPage />,
           },
           {
             path: "/system/config/index",

@@ -250,6 +250,22 @@ const MemberPage = () => {
                   disabled={null}
                 />
               </Link>
+              {dep_ids.length > 0 && (
+                <Link
+                  style={{ textDecoration: "none" }}
+                  to={`/member/departmentUser?id=${dep_ids.join(",")}`}
+                >
+                  <PerButton
+                    type="primary"
+                    text="查看部门学员进度"
+                    class="mr-16"
+                    icon={null}
+                    p="department-user-learn"
+                    onClick={() => null}
+                    disabled={null}
+                  />
+                </Link>
+              )}
             </div>
             <div className="d-flex">
               <div className="d-flex mr-24">

@@ -108,3 +108,16 @@ export function learnCourses(
     ...params,
   });
 }
+
+export function departmentProgress(
+  id: number,
+  page: number,
+  size: number,
+  params: object
+) {
+  return client.get(`/backend/v1/department/${id}/users`, {
+    page,
+    size,
+    ...params,
+  });
+}
