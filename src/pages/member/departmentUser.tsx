@@ -44,7 +44,7 @@ const MemberDepartmentProgressPage = () => {
 
   useEffect(() => {
     getData();
-  }, [refresh, page, size, name, email, id_card]);
+  }, [refresh, page, size]);
 
   const getData = () => {
     if (loading) {
