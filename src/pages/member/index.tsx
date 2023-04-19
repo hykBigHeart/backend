@@ -14,7 +14,7 @@ import type { ColumnsType } from "antd/es/table";
 import { PlusOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 import { user } from "../../api/index";
 import { dateFormat } from "../../utils/index";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { TreeDepartment, PerButton } from "../../compenents";
 import { MemberCreate } from "./compenents/create";
 import { MemberUpdate } from "./compenents/update";
@@ -99,6 +99,21 @@ const MemberPage = () => {
       width: 160,
       render: (_, record: any) => (
         <Space size="small">
+          <Link
+            style={{ textDecoration: "none" }}
+            to={`/member/learn?id=${record.id}`}
+          >
+            <PerButton
+              type="link"
+              text="学习"
+              class="b-link c-red"
+              icon={null}
+              p="user-learn"
+              onClick={() => null}
+              disabled={null}
+            />
+          </Link>
+          <div className="form-column"></div>
           <PerButton
             type="link"
             text="编辑"

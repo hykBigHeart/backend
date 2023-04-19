@@ -16,6 +16,7 @@ import CoursePage from "../pages/course/index";
 import CourseUserPage from "../pages/course/user";
 import MemberPage from "../pages/member";
 import MemberImportPage from "../pages/member/import";
+import MemberLearnPage from "../pages/member/learn";
 import SystemConfigPage from "../pages/system/config";
 import SystemAdministratorPage from "../pages/system/administrator";
 import SystemAdminrolesPage from "../pages/system/adminroles";
@@ -32,7 +33,7 @@ if (getToken()) {
       try {
         let configRes: any = await system.getSystemConfig();
         let userRes: any = await login.getUser();
-        
+
         resolve({
           default: (
             <InitPage configData={configRes.data} loginData={userRes.data} />
@@ -97,6 +98,10 @@ const routes: RouteObject[] = [
           {
             path: "/member/import",
             element: <MemberImportPage />,
+          },
+          {
+            path: "/member/learn",
+            element: <MemberLearnPage />,
           },
           {
             path: "/system/config/index",
