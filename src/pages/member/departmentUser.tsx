@@ -36,6 +36,7 @@ const MemberDepartmentProgressPage = () => {
   const [refresh, setRefresh] = useState(false);
   const [courses, setCourses] = useState<any>([]);
   const [records, setRecords] = useState<any>({});
+  const [totalHour, setTotalHour] = useState(0);
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [id_card, setIdCard] = useState<string>("");
@@ -63,10 +64,13 @@ const MemberDepartmentProgressPage = () => {
         setTotal(res.data.total);
         let data = res.data.courses;
         let arr = [];
+        let value = 0;
         for (let key in data) {
           arr.push(data[key]);
+          value += data[key].class_hour;
         }
         setCourses(arr);
+        setTotalHour(value);
         setRecords(res.data.user_course_records);
         setLoading(false);
       });
@@ -241,9 +245,7 @@ const MemberDepartmentProgressPage = () => {
               title="总课时"
               dataIndex="class_hour"
               key="class_hour"
-              render={(_, record: any) => (
-                <>{getTotalHours(records[record.id])}</>
-              )}
+              render={(_, record: any) => <span>{totalHour}</span>}
             />
           </ColumnGroup>
         </Table>
