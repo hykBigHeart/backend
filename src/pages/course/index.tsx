@@ -338,6 +338,7 @@ const CoursePage = () => {
           <Tabs
             defaultActiveKey="1"
             centered
+            tabBarGutter={55}
             items={items}
             onChange={onChange}
           />
