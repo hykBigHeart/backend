@@ -278,17 +278,19 @@ const MemberPage = () => {
                 onClick={() => setCreateVisible(true)}
                 disabled={null}
               />
-              <Link style={{ textDecoration: "none" }} to={`/member/import`}>
-                <PerButton
-                  type="default"
-                  text="批量导入学员"
-                  class="mr-16"
-                  icon={null}
-                  p="user-store"
-                  onClick={() => null}
-                  disabled={null}
-                />
-              </Link>
+              {dep_ids.length === 0 && (
+                <Link style={{ textDecoration: "none" }} to={`/member/import`}>
+                  <PerButton
+                    type="default"
+                    text="批量导入学员"
+                    class="mr-16"
+                    icon={null}
+                    p="user-store"
+                    onClick={() => null}
+                    disabled={null}
+                  />
+                </Link>
+              )}
               {dep_ids.length > 0 && (
                 <Link
                   style={{ textDecoration: "none" }}
@@ -296,7 +298,7 @@ const MemberPage = () => {
                 >
                   <PerButton
                     type="primary"
-                    text="查看部门学员进度"
+                    text="部门学员进度"
                     class="mr-16"
                     icon={null}
                     p="department-user-learn"
