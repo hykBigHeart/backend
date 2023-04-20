@@ -7,6 +7,7 @@ import { dateFormat } from "../../utils/index";
 import { user as member } from "../../api/index";
 import * as echarts from "echarts";
 import type { ColumnsType } from "antd/es/table";
+import { duration } from "moment";
 
 interface DataType {
   id: React.Key;
@@ -58,10 +59,21 @@ const MemberLearnPage = () => {
     });
   };
 
+  const minuteFormat = (duration: number) => {
+    if (duration === 0) {
+      return 0;
+    }
+    let h = Math.trunc(duration / 3600);
+    let m = Math.trunc((duration % 3600) / 60);
+    let s = Math.trunc((duration % 3600) % 60);
+    return h + "小时" + m + "分";
+  };
+
   const renderView = (params: any) => {
     const timeData: any = [];
     const valueData: any = [];
     params.map((item: any) => {
+      let time = minuteFormat(item.value / 1000);
       timeData.push(item.key);
       valueData.push(item.value / 1000);
     });
@@ -91,9 +103,10 @@ const MemberLearnPage = () => {
       },
       series: [
         {
-          name: "每日学习时长（秒）",
+          name: "每日学习时长",
           type: "line",
           data: valueData,
+          color: "#ff4d4f",
         },
       ],
     });
@@ -278,7 +291,6 @@ const MemberLearnPage = () => {
         <div className="float-left mb-24">
           <BackBartment title="学员学习" />
         </div>
-        <div className={styles["large-title"]}>学习时长统计</div>
         <div className={styles["charts"]}>
           <div
             ref={chartRef}
