@@ -557,7 +557,7 @@ textarea.ant-input {
   .ant-tabs-tab {
     font-size: 16px !important;
     font-weight: 500;
-    padding: 10px 30px !important;
+    padding: 10px 24px !important;
     .ant-tabs-tab-btn {
       line-height: 20px;
     }
@@ -632,4 +632,10 @@ textarea.ant-input {
     color: rgba(0, 0, 0, 0.3);
     transform: rotate(90deg);
   }
+}
+
+:where(.css-dev-only-do-not-override-op13lp).ant-tabs
+  .ant-tabs-tab
+  + .ant-tabs-tab {
+  margin: 0 0 0 55px;
 }
