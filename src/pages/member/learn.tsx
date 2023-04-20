@@ -61,12 +61,12 @@ const MemberLearnPage = () => {
 
   const minuteFormat = (duration: number) => {
     if (duration === 0) {
-      return 0;
+      return "0小时0分0秒";
     }
     let h = Math.trunc(duration / 3600);
     let m = Math.trunc((duration % 3600) / 60);
     let s = Math.trunc((duration % 3600) % 60);
-    return h + "小时" + m + "分";
+    return h + "小时" + m + "分" + s + "秒";
   };
 
   const renderView = (params: any) => {
@@ -75,7 +75,7 @@ const MemberLearnPage = () => {
     params.map((item: any) => {
       let time = minuteFormat(item.value / 1000);
       timeData.push(item.key);
-      valueData.push(item.value / 1000);
+      valueData.push(time);
     });
     let dom: any = chartRef.current;
     let myChart = echarts.init(dom);
@@ -99,7 +99,8 @@ const MemberLearnPage = () => {
         data: timeData,
       },
       yAxis: {
-        type: "value",
+        type: "category",
+        boundaryGap: false,
       },
       series: [
         {
