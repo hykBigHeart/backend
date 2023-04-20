@@ -198,7 +198,7 @@ const SystemConfigPage = () => {
               style={{ marginBottom: 30 }}
               label="网站Logo"
               name="system.logo"
-              labelCol={{ style: { marginTop: 8, marginLeft: 54 } }}
+              labelCol={{ style: { marginTop: 4, marginLeft: 54 } }}
             >
               <div className="d-flex">
                 <Image preview={false} height={40} src={logo} />
