@@ -247,6 +247,7 @@ const MemberPage = () => {
       <div className="tree-main-body">
         <div className="left-box">
           <TreeDepartment
+            refresh={refresh}
             showNum={true}
             type=""
             text={"部门"}

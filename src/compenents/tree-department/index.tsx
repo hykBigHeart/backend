@@ -11,6 +11,7 @@ interface Option {
 interface PropInterface {
   type: string;
   text: string;
+  refresh: boolean;
   showNum: boolean;
   onUpdate: (keys: any, title: any) => void;
 }
@@ -47,7 +48,7 @@ export const TreeDepartment = (props: PropInterface) => {
       }
       setLoading(false);
     });
-  }, []);
+  }, [props.refresh]);
 
   const checkNewArr = (departments: any[], id: number, counts: any) => {
     const arr = [];
