@@ -218,7 +218,7 @@ const MemberDepartmentProgressPage = () => {
               ellipsis={true}
               dataIndex="id"
               key={item.id}
-              width={100}
+              width={60}
               render={(_, record: any) => (
                 <>
                   {records[record.id] && records[record.id][item.id] ? (
@@ -246,7 +246,7 @@ const MemberDepartmentProgressPage = () => {
             title="所有课程总课时"
             dataIndex="id"
             key="id"
-            width={100}
+            width={60}
             render={(_, record: any) => (
               <>
                 <span>{getFinishedHours(records[record.id])}</span> /{" "}
