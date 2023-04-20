@@ -301,11 +301,8 @@ const MemberLearnPage = () => {
 
   return (
     <>
-      <Row className="playedu-main-sp-top mb-24">
-        <div
-          className="float-left mb-24"
-          style={{ padding: "0 36px", boxSizing: "border-box" }}
-        >
+      <Row className="playedu-main-top mb-24">
+        <div className="float-left mb-24">
           <BackBartment title="学员学习" />
         </div>
         <div className={styles["charts"]}>
