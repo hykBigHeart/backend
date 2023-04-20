@@ -73,15 +73,27 @@ const MemberLearnPage = () => {
     const timeData: any = [];
     const valueData: any = [];
     params.map((item: any) => {
-      let time = minuteFormat(item.value / 1000);
       timeData.push(item.key);
-      valueData.push(time);
+      valueData.push(item.value / 1000);
     });
     let dom: any = chartRef.current;
     let myChart = echarts.init(dom);
     myChart.setOption({
       tooltip: {
         trigger: "axis",
+        formatter: function (params: any) {
+          //  只粘贴formatter了
+          let relVal = params[0].axisValueLabel;
+          for (let i = 0; i < params.length; i++) {
+            relVal +=
+              "<br/>" +
+              params[i].marker +
+              params[i].seriesName +
+              ":  " +
+              minuteFormat(params[i].value);
+          }
+          return relVal;
+        },
       },
       legend: {
         data: ["每日学习时长"],
@@ -99,8 +111,7 @@ const MemberLearnPage = () => {
         data: timeData,
       },
       yAxis: {
-        type: "category",
-        boundaryGap: false,
+        type: "value",
       },
       series: [
         {
@@ -290,8 +301,11 @@ const MemberLearnPage = () => {
 
   return (
     <>
-      <Row className="playedu-main-top mb-24">
-        <div className="float-left mb-24">
+      <Row className="playedu-main-sp-top mb-24">
+        <div
+          className="float-left mb-24"
+          style={{ padding: "0 36px", boxSizing: "border-box" }}
+        >
           <BackBartment title="学员学习" />
         </div>
         <div className={styles["charts"]}>
