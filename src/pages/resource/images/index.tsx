@@ -164,7 +164,7 @@ const ResourceImagesPage = () => {
         </div>
         <div className="right-box">
           <div className="d-flex playedu-main-title float-left mb-24">
-            图片 / {selLabel}
+            图片 | {selLabel}
           </div>
           <Row gutter={16} style={{ marginBottom: 24 }}>
             <Col span={24}>

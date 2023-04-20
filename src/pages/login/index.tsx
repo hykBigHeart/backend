@@ -71,7 +71,7 @@ const LoginPage = () => {
       await getSystemConfig(); //获取系统配置并写入store
       await getUser(); //获取登录用户的信息并写入store
 
-      navigate("/");
+      navigate("/", { replace: true });
     } catch (e) {
       message.error("登录出现错误");
       console.error("错误信息", e);

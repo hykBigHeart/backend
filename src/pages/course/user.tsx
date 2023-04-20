@@ -11,7 +11,7 @@ import {
   Image,
 } from "antd";
 import { course } from "../../api";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
 import { BackBartment } from "../../compenents";
 import { ExclamationCircleFilled } from "@ant-design/icons";
@@ -31,6 +31,7 @@ interface DataType {
 
 const CourseUserPage = () => {
   const params = useParams();
+  const result = new URLSearchParams(useLocation().search);
   const [list, setList] = useState<any>([]);
   const [users, setUsers] = useState<any>([]);
   const [refresh, setRefresh] = useState(false);
@@ -42,10 +43,11 @@ const CourseUserPage = () => {
   const [email, setEmail] = useState<string>("");
   const [idCard, setIdCard] = useState<string>("");
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
+  const [title, setTitle] = useState<string>(String(result.get("title")));
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "学员名称",
+      title: "学员",
       render: (_, record: any) => (
         <div className="d-flex">
           <Image
@@ -71,11 +73,6 @@ const CourseUserPage = () => {
       ),
     },
     {
-      title: "学习进度",
-      dataIndex: "progress",
-      render: (progress: number) => <span>{progress / 100}%</span>,
-    },
-    {
       title: "第一次学习时间",
       dataIndex: "created_at",
       render: (text: string) => <span>{dateFormat(text)}</span>,
@@ -84,6 +81,15 @@ const CourseUserPage = () => {
       title: "学习完成时间",
       dataIndex: "finished_at",
       render: (text: string) => <span>{dateFormat(text)}</span>,
+    },
+    {
+      title: "学习进度",
+      dataIndex: "progress",
+      render: (progress: number) => (
+        <span className={progress >= 10000 ? "c-green" : "c-red"}>
+          {progress / 100}%
+        </span>
+      ),
     },
   ];
 
@@ -178,7 +184,7 @@ const CourseUserPage = () => {
       <Row className="playedu-main-body">
         <Col span={24}>
           <div className="float-left mb-24">
-            <BackBartment title="线上课学员" />
+            <BackBartment title={title || "线上课学员"} />
           </div>
           <div className="float-left j-b-flex mb-24">
             <div className="d-flex">
@@ -215,7 +221,7 @@ const CourseUserPage = () => {
                   placeholder="请输入学员邮箱"
                 />
               </div>
-              <div className="d-flex mr-24">
+              {/* <div className="d-flex mr-24">
                 <Typography.Text>身份证号：</Typography.Text>
                 <Input
                   value={idCard}
@@ -225,7 +231,7 @@ const CourseUserPage = () => {
                   style={{ width: 160 }}
                   placeholder="请输入身份证号"
                 />
-              </div>
+              </div> */}
               <div className="d-flex">
                 <Button className="mr-16" onClick={resetList}>
                   重 置

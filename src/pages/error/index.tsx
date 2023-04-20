@@ -15,7 +15,7 @@ const ErrorPage = () => {
         <Button
           type="primary"
           onClick={() => {
-            navigate("/");
+            navigate("/", { replace: true });
           }}
         >
           返回首页

@@ -11,6 +11,8 @@ interface Option {
 interface PropInterface {
   type: string;
   text: string;
+  refresh: boolean;
+  showNum: boolean;
   onUpdate: (keys: any, title: any) => void;
 }
 
@@ -18,14 +20,22 @@ export const TreeDepartment = (props: PropInterface) => {
   const [treeData, setTreeData] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [selectKey, setSelectKey] = useState<any>([]);
+  const [userTotal, setUserTotal] = useState(0);
+
   useEffect(() => {
     setLoading(true);
     department.departmentList().then((res: any) => {
       const departments = res.data.departments;
-
+      const departCount = res.data.dep_user_count;
+      setUserTotal(res.data.user_total);
       if (JSON.stringify(departments) !== "{}") {
-        const new_arr: Option[] = checkArr(departments, 0);
-        setTreeData(new_arr);
+        if (props.showNum) {
+          const new_arr: any = checkNewArr(departments, 0, departCount);
+          setTreeData(new_arr);
+        } else {
+          const new_arr: Option[] = checkArr(departments, 0);
+          setTreeData(new_arr);
+        }
       } else {
         const new_arr: Option[] = [
           {
@@ -38,7 +48,39 @@ export const TreeDepartment = (props: PropInterface) => {
       }
       setLoading(false);
     });
-  }, []);
+  }, [props.refresh]);
+
+  const checkNewArr = (departments: any[], id: number, counts: any) => {
+    const arr = [];
+    for (let i = 0; i < departments[id].length; i++) {
+      if (!departments[departments[id][i].id]) {
+        arr.push({
+          title: getNewTitle(
+            departments[id][i].name,
+            departments[id][i].id,
+            counts
+          ),
+          key: departments[id][i].id,
+        });
+      } else {
+        const new_arr: any = checkNewArr(
+          departments,
+          departments[id][i].id,
+          counts
+        );
+        arr.push({
+          title: getNewTitle(
+            departments[id][i].name,
+            departments[id][i].id,
+            counts
+          ),
+          key: departments[id][i].id,
+          children: new_arr,
+        });
+      }
+    }
+    return arr;
+  };
 
   const checkArr = (departments: any[], id: number) => {
     const arr = [];
@@ -58,6 +100,15 @@ export const TreeDepartment = (props: PropInterface) => {
       }
     }
     return arr;
+  };
+
+  const getNewTitle = (title: any, id: number, counts: any) => {
+    if (counts) {
+      let value = counts[id] || 0;
+      return title + "(" + value + ")";
+    } else {
+      return title;
+    }
   };
 
   const onSelect = (selectedKeys: any, info: any) => {
@@ -89,6 +140,7 @@ export const TreeDepartment = (props: PropInterface) => {
         onClick={() => onSelect([], "")}
       >
         全部{props.text}
+        {props.showNum && userTotal ? "(" + userTotal + ")" : ""}
       </div>
       {treeData.length > 0 && (
         <Tree

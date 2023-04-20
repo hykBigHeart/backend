@@ -89,6 +89,8 @@ const CoursePage = () => {
       children: (
         <div className="float-left">
           <TreeDepartment
+            refresh={refresh}
+            showNum={false}
             type="no-course"
             text={"部门"}
             onUpdate={(keys: any, title: any) => {
@@ -231,7 +233,9 @@ const CoursePage = () => {
               p="course"
               onClick={() => {
                 setCid(Number(record.id));
-                navigate("/course/user/" + Number(record.id));
+                navigate(
+                  "/course/user/" + Number(record.id) + "?title=" + record.title
+                );
               }}
               disabled={null}
             />
@@ -337,13 +341,14 @@ const CoursePage = () => {
           <Tabs
             defaultActiveKey="1"
             centered
+            tabBarGutter={55}
             items={items}
             onChange={onChange}
           />
         </div>
         <div className="right-box">
           <div className="playedu-main-title float-left mb-24">
-            课程/{selLabel}
+            线上课 | {selLabel}
           </div>
           <div className="float-left j-b-flex mb-24">
             <div className="d-flex">

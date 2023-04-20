@@ -78,3 +78,46 @@ export function storeBatch(startLine: number, users: string[][]) {
     users: users,
   });
 }
+
+export function learnStats(id: number) {
+  return client.get(`/backend/v1/user/${id}/learn-stats`, {});
+}
+
+export function learnHours(
+  id: number,
+  page: number,
+  size: number,
+  params: object
+) {
+  return client.get(`/backend/v1/user/${id}/learn-hours`, {
+    page,
+    size,
+    ...params,
+  });
+}
+
+export function learnCourses(
+  id: number,
+  page: number,
+  size: number,
+  params: object
+) {
+  return client.get(`/backend/v1/user/${id}/learn-courses`, {
+    page,
+    size,
+    ...params,
+  });
+}
+
+export function departmentProgress(
+  id: number,
+  page: number,
+  size: number,
+  params: object
+) {
+  return client.get(`/backend/v1/department/${id}/users`, {
+    page,
+    size,
+    ...params,
+  });
+}

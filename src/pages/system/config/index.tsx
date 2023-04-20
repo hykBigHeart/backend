@@ -23,6 +23,7 @@ const SystemConfigPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [logo, setLogo] = useState<string>("");
   const [thumb, setThumb] = useState<string>("");
+  const [avatar, setAvatar] = useState<string>("");
   const [tabKey, setTabKey] = useState(1);
   const [nameChecked, setNameChecked] = useState(false);
   const [emailChecked, setEmailChecked] = useState(false);
@@ -102,6 +103,11 @@ const SystemConfigPage = () => {
         } else if (configData[i].key_name === "system.pc_index_footer_msg") {
           form.setFieldsValue({
             "system.pc_index_footer_msg": configData[i].key_value,
+          });
+        } else if (configData[i].key_name === "member.default_avatar") {
+          setAvatar(configData[i].key_value);
+          form.setFieldsValue({
+            "member.default_avatar": configData[i].key_value,
           });
         }
       }
@@ -192,7 +198,7 @@ const SystemConfigPage = () => {
               style={{ marginBottom: 30 }}
               label="网站Logo"
               name="system.logo"
-              labelCol={{ style: { marginTop: 8, marginLeft: 54 } }}
+              labelCol={{ style: { marginTop: 4, marginLeft: 54 } }}
             >
               <div className="d-flex">
                 <Image preview={false} height={40} src={logo} />
@@ -396,6 +402,79 @@ const SystemConfigPage = () => {
                   <div className="helper-text ml-24">
                     （推荐尺寸:19200x1080px，视频播放未开始时展示）
                   </div>
+                </div>
+              </div>
+            </Form.Item>
+          )}
+          <Form.Item
+            style={{ marginBottom: 30 }}
+            wrapperCol={{ offset: 3, span: 21 }}
+          >
+            <Button type="primary" htmlType="submit" loading={loading}>
+              保存
+            </Button>
+          </Form.Item>
+        </Form>
+      ),
+    },
+    {
+      key: "3",
+      label: `学员设置`,
+      children: (
+        <Form
+          form={form}
+          name="m-basic"
+          labelCol={{ span: 3 }}
+          wrapperCol={{ span: 21 }}
+          style={{ width: 1000, paddingTop: 30 }}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          autoComplete="off"
+        >
+          {avatar && (
+            <Form.Item
+              style={{ marginBottom: 30 }}
+              label="学员默认头像"
+              name="member.default_avatar"
+              labelCol={{ style: { marginTop: 14, marginLeft: 28 } }}
+            >
+              <div className="d-flex">
+                <Image
+                  preview={false}
+                  width={60}
+                  height={60}
+                  src={avatar}
+                  style={{ borderRadius: "50%" }}
+                />
+                <div className="d-flex ml-24">
+                  <UploadImageButton
+                    text="更换头像"
+                    onSelected={(url) => {
+                      setAvatar(url);
+                      form.setFieldsValue({ "member.default_avatar": url });
+                    }}
+                  ></UploadImageButton>
+                  <div className="helper-text ml-24">（新学员的默认头像）</div>
+                </div>
+              </div>
+            </Form.Item>
+          )}
+          {!avatar && (
+            <Form.Item
+              style={{ marginBottom: 30 }}
+              label="学员默认头像"
+              name="member.default_avatar"
+            >
+              <div className="d-flex">
+                <div className="d-flex">
+                  <UploadImageButton
+                    text="更换头像"
+                    onSelected={(url) => {
+                      setAvatar(url);
+                      form.setFieldsValue({ "member.default_avatar": url });
+                    }}
+                  ></UploadImageButton>
+                  <div className="helper-text ml-24">（新学员的默认头像）</div>
                 </div>
               </div>
             </Form.Item>

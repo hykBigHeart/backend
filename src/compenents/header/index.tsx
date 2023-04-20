@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import avatar from "../../assets/images/commen/avatar.png";
 import { logoutAction } from "../../store/user/loginUserSlice";
+import { clearToken } from "../../utils/index";
 
 export const Header: React.FC = () => {
   const dispatch = useDispatch();
@@ -13,6 +14,7 @@ export const Header: React.FC = () => {
 
   const onClick: MenuProps["onClick"] = ({ key }) => {
     if (key === "login_out") {
+      clearToken();
       dispatch(logoutAction());
       navigate("/login");
     } else if (key === "change_password") {

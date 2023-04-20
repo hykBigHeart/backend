@@ -184,7 +184,7 @@ const ResourceVideosPage = () => {
         </div>
         <div className="right-box">
           <div className="d-flex playedu-main-title float-left mb-24">
-            视频 / {selLabel}
+            视频 | {selLabel}
           </div>
           <div className="float-left mb-24">
             <UploadVideoButton

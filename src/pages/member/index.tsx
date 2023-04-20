@@ -8,13 +8,19 @@ import {
   Table,
   message,
   Image,
+  Dropdown,
 } from "antd";
+import type { MenuProps } from "antd";
 import type { ColumnsType } from "antd/es/table";
 // import styles from "./index.module.less";
-import { PlusOutlined, ExclamationCircleFilled } from "@ant-design/icons";
+import {
+  PlusOutlined,
+  DownOutlined,
+  ExclamationCircleFilled,
+} from "@ant-design/icons";
 import { user } from "../../api/index";
 import { dateFormat } from "../../utils/index";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { TreeDepartment, PerButton } from "../../compenents";
 import { MemberCreate } from "./compenents/create";
 import { MemberUpdate } from "./compenents/update";
@@ -50,7 +56,7 @@ const MemberPage = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "学员姓名",
+      title: "学员",
       dataIndex: "name",
       render: (_, record: any) => (
         <>
@@ -97,32 +103,73 @@ const MemberPage = () => {
       key: "action",
       fixed: "right",
       width: 160,
-      render: (_, record: any) => (
-        <Space size="small">
-          <PerButton
-            type="link"
-            text="编辑"
-            class="b-link c-red"
-            icon={null}
-            p="user-update"
-            onClick={() => {
-              setMid(Number(record.id));
-              setUpdateVisible(true);
-            }}
-            disabled={null}
-          />
-          <div className="form-column"></div>
-          <PerButton
-            type="link"
-            text="删除"
-            class="b-link c-red"
-            icon={null}
-            p="user-destroy"
-            onClick={() => delUser(record.id)}
-            disabled={null}
-          />
-        </Space>
-      ),
+      render: (_, record: any) => {
+        const items: MenuProps["items"] = [
+          {
+            key: "1",
+            label: (
+              <PerButton
+                type="link"
+                text="编辑"
+                class="b-link c-red"
+                icon={null}
+                p="user-update"
+                onClick={() => {
+                  setMid(Number(record.id));
+                  setUpdateVisible(true);
+                }}
+                disabled={null}
+              />
+            ),
+          },
+          {
+            key: "2",
+            label: (
+              <PerButton
+                type="link"
+                text="删除"
+                class="b-link c-red"
+                icon={null}
+                p="user-destroy"
+                onClick={() => delUser(record.id)}
+                disabled={null}
+              />
+            ),
+          },
+        ];
+
+        return (
+          <Space size="small">
+            <Link
+              style={{ textDecoration: "none" }}
+              to={`/member/learn?id=${record.id}`}
+            >
+              <PerButton
+                type="link"
+                text="学习"
+                class="b-link c-red"
+                icon={null}
+                p="user-learn"
+                onClick={() => null}
+                disabled={null}
+              />
+            </Link>
+            <div className="form-column"></div>
+            <Dropdown menu={{ items }}>
+              <Button
+                type="link"
+                className="b-link c-red"
+                onClick={(e) => e.preventDefault()}
+              >
+                <Space size="small" align="center">
+                  更多
+                  <DownOutlined />
+                </Space>
+              </Button>
+            </Dropdown>
+          </Space>
+        );
+      },
     },
   ];
 
@@ -200,17 +247,25 @@ const MemberPage = () => {
       <div className="tree-main-body">
         <div className="left-box">
           <TreeDepartment
+            refresh={refresh}
+            showNum={true}
             type=""
             text={"部门"}
             onUpdate={(keys: any, title: any) => {
               setDepIds(keys);
-              setLabel(title);
+              var index = title.indexOf("(");
+              if (index !== -1) {
+                var resolve = title.substring(0, index);
+                setLabel(resolve);
+              } else {
+                setLabel(title);
+              }
             }}
           />
         </div>
         <div className="right-box">
           <div className="playedu-main-title float-left mb-24">
-            学员/{selLabel}
+            学员 | {selLabel}
           </div>
           <div className="float-left j-b-flex mb-24">
             <div className="d-flex">
@@ -223,17 +278,37 @@ const MemberPage = () => {
                 onClick={() => setCreateVisible(true)}
                 disabled={null}
               />
-              <Link style={{ textDecoration: "none" }} to={`/member/import`}>
-                <PerButton
-                  type="default"
-                  text="批量导入学员"
-                  class="mr-16"
-                  icon={null}
-                  p="user-store"
-                  onClick={() => null}
-                  disabled={null}
-                />
-              </Link>
+              {dep_ids.length === 0 && (
+                <Link style={{ textDecoration: "none" }} to={`/member/import`}>
+                  <PerButton
+                    type="default"
+                    text="批量导入学员"
+                    class="mr-16"
+                    icon={null}
+                    p="user-store"
+                    onClick={() => null}
+                    disabled={null}
+                  />
+                </Link>
+              )}
+              {dep_ids.length > 0 && (
+                <Link
+                  style={{ textDecoration: "none" }}
+                  to={`/member/departmentUser?id=${dep_ids.join(
+                    ","
+                  )}&title=${selLabel}`}
+                >
+                  <PerButton
+                    type="default"
+                    text="部门学员进度"
+                    class="mr-16"
+                    icon={null}
+                    p="department-user-learn"
+                    onClick={() => null}
+                    disabled={null}
+                  />
+                </Link>
+              )}
             </div>
             <div className="d-flex">
               <div className="d-flex mr-24">
