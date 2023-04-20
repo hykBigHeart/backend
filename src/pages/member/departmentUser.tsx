@@ -232,7 +232,7 @@ const MemberDepartmentProgressPage = () => {
               />
             </ColumnGroup>
           ))}
-          <ColumnGroup title="总计">
+          <ColumnGroup title="总计" fixed>
             <Column
               title="已学课时"
               dataIndex="id"
