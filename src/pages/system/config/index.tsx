@@ -436,7 +436,7 @@ const SystemConfigPage = () => {
               style={{ marginBottom: 30 }}
               label="学员默认头像"
               name="member.default_avatar"
-              labelCol={{ style: { marginTop: 14, marginLeft: 42 } }}
+              labelCol={{ style: { marginTop: 14, marginLeft: 28 } }}
             >
               <div className="d-flex">
                 <Image
