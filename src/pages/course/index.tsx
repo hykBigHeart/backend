@@ -335,12 +335,7 @@ const CoursePage = () => {
     <>
       <div className="tree-main-body">
         <div className="left-box">
-          <Tabs
-            defaultActiveKey="1"
-            centered
-            items={items}
-            onChange={onChange}
-          />
+          <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
         </div>
         <div className="right-box">
           <div className="playedu-main-title float-left mb-24">
