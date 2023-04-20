@@ -237,7 +237,7 @@ const MemberLearnPage = () => {
 
   const column2: ColumnsType<DataType> = [
     {
-      title: "课程",
+      title: "课程名称",
       dataIndex: "title",
       render: (_, record: any) => (
         <div className="d-flex">
@@ -253,36 +253,38 @@ const MemberLearnPage = () => {
       ),
     },
     {
-      title: "总课时",
+      title: "课程进度",
       dataIndex: "total_duration",
       render: (_, record: any) => (
         <>
-          <span>{record.hour_count}</span>
+          <span>
+            已完成课时: {record.finished_count}/{record.hour_count}
+          </span>
         </>
       ),
     },
     {
-      title: "已学习课时",
-      dataIndex: "finished_duration",
-      render: (_, record: any) => (
-        <>
-          <span>{record.finished_count}</span>
-        </>
-      ),
+      title: "第一次学习时间",
+      dataIndex: "created_at",
+      render: (text: string) => <span>{dateFormat(text)}</span>,
     },
     {
-      title: "状态",
+      title: "学习进度",
       dataIndex: "is_finished",
       render: (_, record: any) => (
         <>
-          {record.is_finished === 1 ? <span>已学完</span> : <span>未学完</span>}
+          <span
+            className={
+              Math.floor((record.finished_count / record.hour_count) * 100) >=
+              100
+                ? "c-green"
+                : "c-red"
+            }
+          >
+            {Math.floor((record.finished_count / record.hour_count) * 100)}%
+          </span>
         </>
       ),
-    },
-    {
-      title: "时间",
-      dataIndex: "created_at",
-      render: (text: string) => <span>{dateFormat(text)}</span>,
     },
   ];
 
@@ -303,7 +305,7 @@ const MemberLearnPage = () => {
           ></div>
         </div>
       </Row>
-      <div className="playedu-main-top mb-24">
+      {/* <div className="playedu-main-top mb-24">
         <div className={styles["large-title"]}>课时学习记录</div>
         <div className="float-left mt-24">
           <Table
@@ -314,7 +316,7 @@ const MemberLearnPage = () => {
             rowKey={(record) => record.id}
           />
         </div>
-      </div>
+      </div> */}
       <div className="playedu-main-top">
         <div className={styles["large-title"]}>线上课学习记录</div>
         <div className="float-left mt-24">
