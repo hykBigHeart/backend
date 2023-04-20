@@ -73,11 +73,6 @@ const CourseUserPage = () => {
       ),
     },
     {
-      title: "学习进度",
-      dataIndex: "progress",
-      render: (progress: number) => <span>{progress / 100}%</span>,
-    },
-    {
       title: "第一次学习时间",
       dataIndex: "created_at",
       render: (text: string) => <span>{dateFormat(text)}</span>,
@@ -86,6 +81,15 @@ const CourseUserPage = () => {
       title: "学习完成时间",
       dataIndex: "finished_at",
       render: (text: string) => <span>{dateFormat(text)}</span>,
+    },
+    {
+      title: "学习进度",
+      dataIndex: "progress",
+      render: (progress: number) => (
+        <span className={progress >= 10000 ? "c-green" : "c-red"}>
+          {progress / 100}%
+        </span>
+      ),
     },
   ];
 

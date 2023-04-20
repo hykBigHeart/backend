@@ -275,6 +275,16 @@ const MemberLearnPage = () => {
       ),
     },
     {
+      title: "第一次学习时间",
+      dataIndex: "created_at",
+      render: (text: string) => <span>{dateFormat(text)}</span>,
+    },
+    {
+      title: "学习完成时间",
+      dataIndex: "finished_at",
+      render: (text: string) => <span>{dateFormat(text)}</span>,
+    },
+    {
       title: "学习进度",
       dataIndex: "is_finished",
       render: (_, record: any) => (
@@ -291,16 +301,6 @@ const MemberLearnPage = () => {
           </span>
         </>
       ),
-    },
-    {
-      title: "第一次学习时间",
-      dataIndex: "created_at",
-      render: (text: string) => <span>{dateFormat(text)}</span>,
-    },
-    {
-      title: "学习完成时间",
-      dataIndex: "finished_at",
-      render: (text: string) => <span>{dateFormat(text)}</span>,
     },
   ];
 
