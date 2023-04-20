@@ -8,10 +8,16 @@ import {
   Table,
   message,
   Image,
+  Dropdown,
 } from "antd";
+import type { MenuProps } from "antd";
 import type { ColumnsType } from "antd/es/table";
 // import styles from "./index.module.less";
-import { PlusOutlined, ExclamationCircleFilled } from "@ant-design/icons";
+import {
+  PlusOutlined,
+  DownOutlined,
+  ExclamationCircleFilled,
+} from "@ant-design/icons";
 import { user } from "../../api/index";
 import { dateFormat } from "../../utils/index";
 import { Link, Navigate } from "react-router-dom";
@@ -97,47 +103,73 @@ const MemberPage = () => {
       key: "action",
       fixed: "right",
       width: 160,
-      render: (_, record: any) => (
-        <Space size="small">
-          <Link
-            style={{ textDecoration: "none" }}
-            to={`/member/learn?id=${record.id}`}
-          >
-            <PerButton
-              type="link"
-              text="学习"
-              class="b-link c-red"
-              icon={null}
-              p="user-learn"
-              onClick={() => null}
-              disabled={null}
-            />
-          </Link>
-          <div className="form-column"></div>
-          <PerButton
-            type="link"
-            text="编辑"
-            class="b-link c-red"
-            icon={null}
-            p="user-update"
-            onClick={() => {
-              setMid(Number(record.id));
-              setUpdateVisible(true);
-            }}
-            disabled={null}
-          />
-          <div className="form-column"></div>
-          <PerButton
-            type="link"
-            text="删除"
-            class="b-link c-red"
-            icon={null}
-            p="user-destroy"
-            onClick={() => delUser(record.id)}
-            disabled={null}
-          />
-        </Space>
-      ),
+      render: (_, record: any) => {
+        const items: MenuProps["items"] = [
+          {
+            key: "1",
+            label: (
+              <PerButton
+                type="link"
+                text="编辑"
+                class="b-link c-red"
+                icon={null}
+                p="user-update"
+                onClick={() => {
+                  setMid(Number(record.id));
+                  setUpdateVisible(true);
+                }}
+                disabled={null}
+              />
+            ),
+          },
+          {
+            key: "2",
+            label: (
+              <PerButton
+                type="link"
+                text="删除"
+                class="b-link c-red"
+                icon={null}
+                p="user-destroy"
+                onClick={() => delUser(record.id)}
+                disabled={null}
+              />
+            ),
+          },
+        ];
+
+        return (
+          <Space size="small">
+            <Link
+              style={{ textDecoration: "none" }}
+              to={`/member/learn?id=${record.id}`}
+            >
+              <PerButton
+                type="link"
+                text="学习"
+                class="b-link c-red"
+                icon={null}
+                p="user-learn"
+                onClick={() => null}
+                disabled={null}
+              />
+            </Link>
+            <div className="form-column"></div>
+            <Dropdown menu={{ items }}>
+              <Button
+                type="link"
+                className="b-link c-red"
+                onClick={(e) => e.preventDefault()}
+              >
+                <Space size="small" align="center">
+                  更多
+                  <DownOutlined />
+                </Space>
+              </Button>
+            </Dropdown>
+          </Space>
+        );
+      },
     },
   ];
 
