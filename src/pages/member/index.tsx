@@ -56,7 +56,7 @@ const MemberPage = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "学员姓名",
+      title: "学员",
       dataIndex: "name",
       render: (_, record: any) => (
         <>
@@ -252,7 +252,13 @@ const MemberPage = () => {
             text={"部门"}
             onUpdate={(keys: any, title: any) => {
               setDepIds(keys);
-              setLabel(title);
+              var index = title.indexOf("(");
+              if (index !== -1) {
+                var resolve = title.substring(0, index);
+                setLabel(resolve);
+              } else {
+                setLabel(title);
+              }
             }}
           />
         </div>

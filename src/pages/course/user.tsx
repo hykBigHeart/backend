@@ -217,7 +217,7 @@ const CourseUserPage = () => {
                   placeholder="请输入学员邮箱"
                 />
               </div>
-              <div className="d-flex mr-24">
+              {/* <div className="d-flex mr-24">
                 <Typography.Text>身份证号：</Typography.Text>
                 <Input
                   value={idCard}
@@ -227,7 +227,7 @@ const CourseUserPage = () => {
                   style={{ width: 160 }}
                   placeholder="请输入身份证号"
                 />
-              </div>
+              </div> */}
               <div className="d-flex">
                 <Button className="mr-16" onClick={resetList}>
                   重 置
