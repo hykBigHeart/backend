@@ -269,15 +269,10 @@ const MemberLearnPage = () => {
       render: (_, record: any) => (
         <>
           <span>
-            已完成课时: {record.finished_count}/{record.hour_count}
+            已完成课时：{record.finished_count} / {record.hour_count}
           </span>
         </>
       ),
-    },
-    {
-      title: "第一次学习时间",
-      dataIndex: "created_at",
-      render: (text: string) => <span>{dateFormat(text)}</span>,
     },
     {
       title: "学习进度",
@@ -297,6 +292,16 @@ const MemberLearnPage = () => {
         </>
       ),
     },
+    {
+      title: "第一次学习时间",
+      dataIndex: "created_at",
+      render: (text: string) => <span>{dateFormat(text)}</span>,
+    },
+    {
+      title: "学习完成时间",
+      dataIndex: "finished_at",
+      render: (text: string) => <span>{dateFormat(text)}</span>,
+    },
   ];
 
   return (
@@ -315,6 +320,15 @@ const MemberLearnPage = () => {
             }}
           ></div>
         </div>
+        <div className="float-left mt-24">
+          <Table
+            columns={column2}
+            dataSource={list2}
+            loading={loading2}
+            pagination={paginationProps2}
+            rowKey={(record) => record.id}
+          />
+        </div>
       </Row>
       {/* <div className="playedu-main-top mb-24">
         <div className={styles["large-title"]}>课时学习记录</div>
@@ -328,18 +342,6 @@ const MemberLearnPage = () => {
           />
         </div>
       </div> */}
-      <div className="playedu-main-top">
-        <div className={styles["large-title"]}>线上课学习记录</div>
-        <div className="float-left mt-24">
-          <Table
-            columns={column2}
-            dataSource={list2}
-            loading={loading2}
-            pagination={paginationProps2}
-            rowKey={(record) => record.id}
-          />
-        </div>
-      </div>
     </>
   );
 };

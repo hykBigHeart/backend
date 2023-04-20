@@ -232,7 +232,9 @@ const CoursePage = () => {
               p="course"
               onClick={() => {
                 setCid(Number(record.id));
-                navigate("/course/user/" + Number(record.id));
+                navigate(
+                  "/course/user/" + Number(record.id) + "?title=" + record.title
+                );
               }}
               disabled={null}
             />
