@@ -132,7 +132,7 @@ const MemberDepartmentProgressPage = () => {
       </div>
       <div className="float-left j-b-flex mb-24">
         <div className="d-flex helper-text ">
-          以下表格内数字对应的是表头课程的“已学完课时数/总课时数”）
+          （以下表格内数字对应的是表头课程的“已学完课时数/总课时数”）
         </div>
         <div className="d-flex">
           <div className="d-flex mr-24 ">
@@ -191,14 +191,14 @@ const MemberDepartmentProgressPage = () => {
           loading={loading}
           pagination={paginationProps}
           rowKey={(record) => record.id}
-          scroll={{ x: 1600 }}
+          scroll={{ x: 1200 }}
         >
           <Column
             fixed="left"
             title="学员"
             dataIndex="name"
             key="name"
-            width={300}
+            width={100}
             render={(_, record: any) => (
               <>
                 <Image
@@ -218,7 +218,7 @@ const MemberDepartmentProgressPage = () => {
               ellipsis={true}
               dataIndex="id"
               key={item.id}
-              width={60}
+              width={100}
               render={(_, record: any) => (
                 <>
                   {records[record.id] && records[record.id][item.id] ? (
@@ -246,7 +246,7 @@ const MemberDepartmentProgressPage = () => {
             title="所有课程总课时"
             dataIndex="id"
             key="id"
-            width={60}
+            width={100}
             render={(_, record: any) => (
               <>
                 <span>{getFinishedHours(records[record.id])}</span> /{" "}
