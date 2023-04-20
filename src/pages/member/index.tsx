@@ -294,7 +294,9 @@ const MemberPage = () => {
               {dep_ids.length > 0 && (
                 <Link
                   style={{ textDecoration: "none" }}
-                  to={`/member/departmentUser?id=${dep_ids.join(",")}`}
+                  to={`/member/departmentUser?id=${dep_ids.join(
+                    ","
+                  )}&title=${selLabel}`}
                 >
                   <PerButton
                     type="default"

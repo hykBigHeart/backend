@@ -41,6 +41,7 @@ const MemberDepartmentProgressPage = () => {
   const [email, setEmail] = useState<string>("");
   const [id_card, setIdCard] = useState<string>("");
   const [did, setDid] = useState(Number(result.get("id")));
+  const [title, setTitle] = useState(String(result.get("title")));
 
   useEffect(() => {
     getData();
@@ -127,10 +128,13 @@ const MemberDepartmentProgressPage = () => {
   return (
     <div className="playedu-main-body">
       <div className="float-left mb-24">
-        <BackBartment title="部门学员进度" />
+        <BackBartment title={title + "学习进度"} />
       </div>
-      <div className="float-left mb-24">
-        <div className="d-flex  ">
+      <div className="float-left j-b-flex mb-24">
+        <div className="d-flex helper-text ">
+          以下表格内数字对应的是表头课程的“已学完课时数/总课时数”）
+        </div>
+        <div className="d-flex">
           <div className="d-flex mr-24 ">
             <Typography.Text>姓名：</Typography.Text>
             <Input
@@ -153,7 +157,7 @@ const MemberDepartmentProgressPage = () => {
               placeholder="请输入邮箱"
             />
           </div>
-          <div className="d-flex mr-24">
+          {/* <div className="d-flex mr-24">
             <Typography.Text>身份证号：</Typography.Text>
             <Input
               value={id_card}
@@ -163,7 +167,7 @@ const MemberDepartmentProgressPage = () => {
               style={{ width: 160 }}
               placeholder="请输入身份证号"
             />
-          </div>
+          </div> */}
           <div className="d-flex">
             <Button className="mr-16" onClick={resetData}>
               重 置
@@ -182,15 +186,19 @@ const MemberDepartmentProgressPage = () => {
       </div>
       <div className="float-left">
         <Table
+          bordered
           dataSource={list}
           loading={loading}
           pagination={paginationProps}
           rowKey={(record) => record.id}
+          scroll={{ x: 1600 }}
         >
           <Column
+            fixed="left"
             title="学员"
             dataIndex="name"
             key="name"
+            width={300}
             render={(_, record: any) => (
               <>
                 <Image
@@ -205,49 +213,47 @@ const MemberDepartmentProgressPage = () => {
             )}
           />
           {courses.map((item: any) => (
-            <ColumnGroup key={item.id} title={item.title}>
-              <Column
-                title="已学课时"
-                dataIndex="id"
-                key="id"
-                render={(_, record: any) => (
-                  <>
-                    {records[record.id] && records[record.id][item.id] ? (
-                      <span>{records[record.id][item.id].finished_count}</span>
-                    ) : (
-                      <span>0</span>
-                    )}
-                  </>
-                )}
-              />
-              <Column
-                title="总课时"
-                dataIndex="class_hour"
-                key="class_hour"
-                render={(_, record: any) => (
-                  <>
-                    <span>{item.class_hour}</span>
-                  </>
-                )}
-              />
-            </ColumnGroup>
-          ))}
-          <ColumnGroup title="总计" fixed="right">
             <Column
-              title="已学课时"
+              title={item.title}
+              ellipsis={true}
               dataIndex="id"
-              key="id"
+              key={item.id}
+              width={100}
               render={(_, record: any) => (
-                <>{getFinishedHours(records[record.id])}</>
+                <>
+                  {records[record.id] && records[record.id][item.id] ? (
+                    records[record.id][item.id].is_finished === 1 ? (
+                      <span>已完成</span>
+                    ) : (
+                      <>
+                        <span>
+                          {records[record.id][item.id].finished_count}
+                        </span>{" "}
+                        / <span>{item.class_hour}</span>
+                      </>
+                    )
+                  ) : (
+                    <>
+                      <span>0</span> / <span>{item.class_hour}</span>
+                    </>
+                  )}
+                </>
               )}
             />
-            <Column
-              title="总课时"
-              dataIndex="class_hour"
-              key="class_hour"
-              render={(_, record: any) => <span>{totalHour}</span>}
-            />
-          </ColumnGroup>
+          ))}
+          <Column
+            fixed="right"
+            title="所有课程总课时"
+            dataIndex="id"
+            key="id"
+            width={100}
+            render={(_, record: any) => (
+              <>
+                <span>{getFinishedHours(records[record.id])}</span> /{" "}
+                <span>{totalHour}</span>
+              </>
+            )}
+          />
         </Table>
       </div>
     </div>
