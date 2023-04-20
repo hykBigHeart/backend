@@ -13,10 +13,16 @@ export function clearToken() {
 }
 
 export function dateFormat(dateStr: string) {
+  if (!dateStr) {
+    return "-";
+  }
   return moment(dateStr).format("YYYY-MM-DD HH:mm");
 }
 
 export function timeFormat(dateStr: number) {
+  if (!dateStr) {
+    return "-";
+  }
   var d = moment.duration(dateStr, "seconds");
   let value =
     Math.floor(d.asDays()) +
