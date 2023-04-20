@@ -226,7 +226,7 @@ const MemberPage = () => {
         </div>
         <div className="right-box">
           <div className="playedu-main-title float-left mb-24">
-            学员/{selLabel}
+            学员 | {selLabel}
           </div>
           <div className="float-left j-b-flex mb-24">
             <div className="d-flex">

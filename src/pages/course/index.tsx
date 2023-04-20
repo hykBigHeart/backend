@@ -345,7 +345,7 @@ const CoursePage = () => {
         </div>
         <div className="right-box">
           <div className="playedu-main-title float-left mb-24">
-            课程/{selLabel}
+            线上课 | {selLabel}
           </div>
           <div className="float-left j-b-flex mb-24">
             <div className="d-flex">
