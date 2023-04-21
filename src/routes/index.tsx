@@ -4,6 +4,7 @@ import { login, system } from "../api";
 
 import InitPage from "../pages/init";
 import { getToken } from "../utils";
+import KeepAlive from "../compenents/keep-alive";
 
 import LoginPage from "../pages/login";
 import HomePage from "../pages/home";
@@ -94,19 +95,22 @@ const routes: RouteObject[] = [
           },
           {
             path: "/member",
-            element: <MemberPage />,
-          },
-          {
-            path: "/member/import",
-            element: <MemberImportPage />,
-          },
-          {
-            path: "/member/learn",
-            element: <MemberLearnPage />,
-          },
-          {
-            path: "/member/departmentUser",
-            element: <MemberDepartmentProgressPage />,
+            element: <KeepAlive />,
+            children: [
+              { path: "/member/index", element: <MemberPage /> },
+              {
+                path: "/member/import",
+                element: <MemberImportPage />,
+              },
+              {
+                path: "/member/learn",
+                element: <MemberLearnPage />,
+              },
+              {
+                path: "/member/departmentUser",
+                element: <MemberDepartmentProgressPage />,
+              },
+            ],
           },
           {
             path: "/system/config/index",

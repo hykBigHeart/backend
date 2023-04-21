@@ -194,7 +194,7 @@ const DepartmentPage = () => {
                     type="link"
                     style={{ paddingLeft: 4, paddingRight: 4 }}
                     danger
-                    onClick={() => navigate("/member")}
+                    onClick={() => navigate("/member/index")}
                   >
                     （{res.data.users.length}个学员），
                   </Button>

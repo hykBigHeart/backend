@@ -50,7 +50,7 @@ const items = [
     "user",
     <i className="iconfont icon-icon-user" />,
     [
-      getItem("学员", "/member", null, null, null),
+      getItem("学员", "/member/index", null, null, null),
       getItem("部门", "/department", null, null, null),
     ],
     null

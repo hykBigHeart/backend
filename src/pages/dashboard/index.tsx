@@ -199,7 +199,7 @@ const DashboardPage = () => {
               <div
                 className={styles["link-mode"]}
                 onClick={() => {
-                  navigate("/member");
+                  navigate("/member/index");
                 }}
               >
                 <i
