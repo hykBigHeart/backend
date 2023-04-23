@@ -9,12 +9,14 @@ import {
   Space,
   message,
   Table,
+  Select,
 } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import { BackBartment, DurationText } from "../../compenents";
 import { dateFormat } from "../../utils/index";
 import { user as member } from "../../api/index";
 const { Column, ColumnGroup } = Table;
+import * as XLSX from "xlsx";
 
 interface DataType {
   id: React.Key;
@@ -40,8 +42,14 @@ const MemberDepartmentProgressPage = () => {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [id_card, setIdCard] = useState<string>("");
+  const [showMode, setShowMode] = useState<string>("all");
   const [did, setDid] = useState(Number(result.get("id")));
   const [title, setTitle] = useState(String(result.get("title")));
+  const [exportLoading, setExportLoading] = useState(false);
+  const modes = [
+    { label: "全部", value: "all" },
+    { label: "不显示公开课", value: "only_dep" },
+  ];
 
   useEffect(() => {
     setDid(Number(result.get("id")));
@@ -64,6 +72,7 @@ const MemberDepartmentProgressPage = () => {
         name: name,
         email: email,
         id_card: id_card,
+        show_mode: showMode,
       })
       .then((res: any) => {
         setList(res.data.data);
@@ -86,6 +95,7 @@ const MemberDepartmentProgressPage = () => {
     setName("");
     setEmail("");
     setIdCard("");
+    setShowMode("all");
     setPage(1);
     setSize(10);
     setList([]);
@@ -130,14 +140,80 @@ const MemberDepartmentProgressPage = () => {
     }
   };
 
+  const exportExcel = () => {
+    if (exportLoading) {
+      return;
+    }
+    setExportLoading(true);
+    let filter = {
+      sort_field: "",
+      sort_algo: "",
+      name: name,
+      email: email,
+      id_card: id_card,
+      show_mode: showMode,
+    };
+    member.departmentProgress(did, page, total, filter).then((res: any) => {
+      if (res.data.total === 0) {
+        message.error("数据为空");
+        setExportLoading(false);
+        return;
+      }
+      let filename = title + "学习进度.xlsx";
+      let sheetName = "sheet1";
+      let data = [];
+      let arr = ["学员"];
+      courses.map((item: any) => {
+        arr.push(item.title);
+      });
+      arr.push("总计课时");
+      data.push(arr);
+
+      res.data.data.forEach((item: any) => {
+        let arr = [item.name];
+        courses.map((it: any) => {
+          if (records && records[item.id] && records[item.id][it.id]) {
+            if (records && records[item.id][it.id].is_finished === 1) {
+              arr.push("已完成");
+            } else {
+              arr.push(
+                records &&
+                  records[item.id][it.id].finished_count + " / " + it.class_hour
+              );
+            }
+          } else {
+            arr.push(0 + " / " + it.class_hour);
+          }
+        });
+        arr.push(getFinishedHours(records[item.id]) + " / " + totalHour);
+        data.push(arr);
+      });
+
+      const jsonWorkSheet = XLSX.utils.json_to_sheet(data);
+      const workBook: XLSX.WorkBook = {
+        SheetNames: [sheetName],
+        Sheets: {
+          [sheetName]: jsonWorkSheet,
+        },
+      };
+      XLSX.writeFile(workBook, filename);
+      setExportLoading(false);
+    });
+  };
+
   return (
     <div className="playedu-main-body">
       <div className="float-left mb-24">
         <BackBartment title={title + "学习进度"} />
       </div>
       <div className="float-left j-b-flex mb-24">
-        <div className="d-flex helper-text ">
-          （以下表格内数字对应的是表头课程的“已学完课时数/总课时数”）
+        <div className="d-flex">
+          <Button type="default" onClick={() => exportExcel()}>
+            批量导出表格
+          </Button>
+          <div className="helper-text ml-24">
+            （以下表格内数字对应的是表头课程的“已学完课时数/总课时数”）
+          </div>
         </div>
         <div className="d-flex">
           <div className="d-flex mr-24 ">
@@ -162,17 +238,17 @@ const MemberDepartmentProgressPage = () => {
               placeholder="请输入邮箱"
             />
           </div>
-          {/* <div className="d-flex mr-24">
-            <Typography.Text>身份证号：</Typography.Text>
-            <Input
-              value={id_card}
-              onChange={(e) => {
-                setIdCard(e.target.value);
-              }}
+          <div className="d-flex mr-24">
+            <Typography.Text>模式：</Typography.Text>
+            <Select
               style={{ width: 160 }}
-              placeholder="请输入身份证号"
+              allowClear
+              placeholder="请选择"
+              value={showMode}
+              onChange={(value: string) => setShowMode(value)}
+              options={modes}
             />
-          </div> */}
+          </div>
           <div className="d-flex">
             <Button className="mr-16" onClick={resetData}>
               重 置
@@ -248,7 +324,7 @@ const MemberDepartmentProgressPage = () => {
           ))}
           <Column
             fixed="right"
-            title="所有课程总课时"
+            title="总计课时"
             dataIndex="id"
             key="id"
             width={100}
