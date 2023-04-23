@@ -39,6 +39,10 @@ const MemberLearnPage = () => {
   const [uid, setUid] = useState(Number(result.get("id")));
 
   useEffect(() => {
+    setUid(Number(result.get("id")));
+  }, [Number(result.get("id"))]);
+
+  useEffect(() => {
     getZxtData();
     return () => {
       window.onresize = null;
@@ -47,11 +51,11 @@ const MemberLearnPage = () => {
 
   useEffect(() => {
     getLearnHours();
-  }, [refresh, page, size]);
+  }, [refresh, page, size, uid]);
 
   useEffect(() => {
     getLearnCourses();
-  }, [refresh2, page2, size2]);
+  }, [refresh2, page2, size2, uid]);
 
   const getZxtData = () => {
     member.learnStats(uid).then((res: any) => {
