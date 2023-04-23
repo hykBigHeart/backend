@@ -121,3 +121,25 @@ export function departmentProgress(
     ...params,
   });
 }
+
+export function learnCoursesProgress(
+  id: number,
+  courseId: number,
+  params: any
+) {
+  return client.get(`/backend/v1/user/${id}/learn-course/${courseId} `, params);
+}
+
+export function destroyAllUserLearned(id: number, courseId: number) {
+  return client.destroy(`/backend/v1/user/${id}/learn-course/${courseId}`);
+}
+
+export function destroyUserLearned(
+  id: number,
+  courseId: number,
+  hourId: number
+) {
+  return client.destroy(
+    `/backend/v1/user/${id}/learn-course/${courseId}/hour/${hourId}`
+  );
+}

@@ -1,13 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import styles from "./learn.module.less";
-import { Row, Image, Table } from "antd";
-import { useLocation } from "react-router-dom";
+import { Row, Image, Table, Button } from "antd";
+import { useLocation, useNavigate } from "react-router-dom";
 import { BackBartment, DurationText } from "../../compenents";
 import { dateFormat } from "../../utils/index";
 import { user as member } from "../../api/index";
 import * as echarts from "echarts";
 import type { ColumnsType } from "antd/es/table";
-import { duration } from "moment";
+import { MemberLearnProgressDialog } from "./compenents/progress";
 
 interface DataType {
   id: React.Key;
@@ -21,6 +21,7 @@ interface DataType {
 
 const MemberLearnPage = () => {
   let chartRef = useRef(null);
+  const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
   const [loading, setLoading] = useState<boolean>(false);
   const [page, setPage] = useState(1);
@@ -37,6 +38,8 @@ const MemberLearnPage = () => {
   const [total2, setTotal2] = useState(0);
   const [refresh2, setRefresh2] = useState(false);
   const [uid, setUid] = useState(Number(result.get("id")));
+  const [visiable, setVisiable] = useState(false);
+  const [courseId, setcourseId] = useState<number>(0);
 
   useEffect(() => {
     setUid(Number(result.get("id")));
@@ -169,20 +172,6 @@ const MemberLearnPage = () => {
       });
   };
 
-  const paginationProps = {
-    current: page, //当前页码
-    pageSize: size,
-    total: total, // 总条数
-    onChange: (page: number, pageSize: number) =>
-      handlePageChange(page, pageSize), //改变页码的函数
-    showSizeChanger: true,
-  };
-
-  const handlePageChange = (page: number, pageSize: number) => {
-    setPage(page);
-    setSize(pageSize);
-  };
-
   const paginationProps2 = {
     current: page2, //当前页码
     pageSize: size2,
@@ -196,59 +185,6 @@ const MemberLearnPage = () => {
     setPage2(page);
     setSize2(pageSize);
   };
-
-  const columns: ColumnsType<DataType> = [
-    {
-      title: "课时标题",
-      dataIndex: "title",
-      render: (_, record: any) => (
-        <>
-          <span>{hours[record.hour_id].title}</span>
-        </>
-      ),
-    },
-    {
-      title: "课时类型",
-      dataIndex: "type",
-      render: (_, record: any) => (
-        <>
-          <span>{hours[record.hour_id].type}</span>
-        </>
-      ),
-    },
-    {
-      title: "总时长",
-      dataIndex: "total_duration",
-      render: (_, record: any) => (
-        <>
-          <DurationText duration={record.total_duration}></DurationText>
-        </>
-      ),
-    },
-    {
-      title: "已学习时长",
-      dataIndex: "finished_duration",
-      render: (_, record: any) => (
-        <>
-          <DurationText duration={record.finished_duration || 0}></DurationText>
-        </>
-      ),
-    },
-    {
-      title: "状态",
-      dataIndex: "is_finished",
-      render: (_, record: any) => (
-        <>
-          {record.is_finished === 1 ? <span>已学完</span> : <span>未学完</span>}
-        </>
-      ),
-    },
-    {
-      title: "时间",
-      dataIndex: "created_at",
-      render: (text: string) => <span>{dateFormat(text)}</span>,
-    },
-  ];
 
   const column2: ColumnsType<DataType> = [
     {
@@ -306,11 +242,38 @@ const MemberLearnPage = () => {
         </>
       ),
     },
+    {
+      title: "操作",
+      key: "action",
+      fixed: "right",
+      width: 100,
+      render: (_, record: any) => (
+        <Button
+          type="link"
+          className="b-link c-red"
+          onClick={() => {
+            setcourseId(record.course_id);
+            setVisiable(true);
+          }}
+        >
+          详细
+        </Button>
+      ),
+    },
   ];
 
   return (
     <>
       <Row className="playedu-main-top mb-24">
+        <MemberLearnProgressDialog
+          open={visiable}
+          uid={uid}
+          id={courseId}
+          onCancel={() => {
+            setVisiable(false);
+            setRefresh2(!refresh2);
+          }}
+        ></MemberLearnProgressDialog>
         <div className="float-left mb-24">
           <BackBartment title="学员学习" />
         </div>
@@ -334,18 +297,6 @@ const MemberLearnPage = () => {
           />
         </div>
       </Row>
-      {/* <div className="playedu-main-top mb-24">
-        <div className={styles["large-title"]}>课时学习记录</div>
-        <div className="float-left mt-24">
-          <Table
-            columns={columns}
-            dataSource={list}
-            loading={loading}
-            pagination={paginationProps}
-            rowKey={(record) => record.id}
-          />
-        </div>
-      </div> */}
     </>
   );
 };
