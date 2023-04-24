@@ -12,7 +12,7 @@ import {
 import { resource, resourceCategory } from "../../api";
 import styles from "./index.module.less";
 import { CreateResourceCategory } from "../create-rs-category";
-import { CloseOutlined } from "@ant-design/icons";
+import { CloseOutlined, CheckOutlined } from "@ant-design/icons";
 import { UploadImageSub } from "./upload-image-sub";
 import { TreeCategory } from "../../compenents";
 
@@ -49,6 +49,7 @@ export const UploadImageButton = (props: PropsInterface) => {
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(15);
   const [total, setTotal] = useState(0);
+  const [selected, setSelected] = useState<string>("");
 
   // 获取图片列表
   const getImageList = () => {
@@ -97,6 +98,14 @@ export const UploadImageButton = (props: PropsInterface) => {
           open={true}
           width={820}
           maskClosable={false}
+          onOk={() => {
+            if (!selected) {
+              message.error("请选择图片后确定");
+              return;
+            }
+            props.onSelected(selected);
+            setShowModal(false);
+          }}
         >
           <Row style={{ width: 752, minHeight: 520, marginTop: 24 }}>
             <Col span={7}>
@@ -104,7 +113,10 @@ export const UploadImageButton = (props: PropsInterface) => {
                 refresh={false}
                 type="no-cate"
                 text={"图片"}
-                onUpdate={(keys: any) => setCategoryIds(keys)}
+                onUpdate={(keys: any) => {
+                  setSelected("");
+                  setCategoryIds(keys);
+                }}
               />
             </Col>
             <Col span={17}>
@@ -130,10 +142,21 @@ export const UploadImageButton = (props: PropsInterface) => {
                     className="image-item"
                     style={{ backgroundImage: `url(${item.url})` }}
                     onClick={() => {
-                      props.onSelected(item.url);
-                      setShowModal(false);
+                      setSelected(item.url);
                     }}
-                  ></div>
+                  >
+                    {selected.indexOf(item.url) !== -1 && (
+                      <i
+                        className={styles.checked}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelected("");
+                        }}
+                      >
+                        <CheckOutlined />
+                      </i>
+                    )}
+                  </div>
                 ))}
               </div>
               {imageList.length > 0 && (
