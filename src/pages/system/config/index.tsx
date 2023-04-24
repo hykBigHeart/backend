@@ -31,7 +31,7 @@ const SystemConfigPage = () => {
 
   useEffect(() => {
     getDetail();
-  }, []);
+  }, [tabKey]);
 
   const getDetail = () => {
     appConfig.appConfig().then((res: any) => {
