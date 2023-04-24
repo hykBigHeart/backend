@@ -142,7 +142,7 @@ const MemberPage = () => {
           <Space size="small">
             <Link
               style={{ textDecoration: "none" }}
-              to={`/member/learn?id=${record.id}`}
+              to={`/member/learn?id=${record.id}&name=${record.name}`}
             >
               <PerButton
                 type="link"

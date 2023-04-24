@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import styles from "./learn.module.less";
-import { Row, Image, Table, Button } from "antd";
+import { Row, Image, Table, Button, Select } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
 import { BackBartment, DurationText } from "../../compenents";
 import { dateFormat } from "../../utils/index";
@@ -23,27 +23,27 @@ const MemberLearnPage = () => {
   let chartRef = useRef(null);
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10);
-  const [list, setList] = useState<any>([]);
-  const [hours, setHours] = useState<any>({});
-  const [total, setTotal] = useState(0);
-  const [refresh, setRefresh] = useState(false);
   const [loading2, setLoading2] = useState<boolean>(false);
-  const [page2, setPage2] = useState(1);
-  const [size2, setSize2] = useState(10);
   const [list2, setList2] = useState<any>([]);
   const [courses, setCourses] = useState<any>({});
+  const [deps, setDeps] = useState<any>([]);
+  const [depValue, setDepValue] = useState<number>(0);
+  const [currentCourses, setCurrentCourses] = useState<any>([]);
+  const [openCourses, setOpenCourses] = useState<any>([]);
+  const [records, setRecords] = useState<any>({});
   const [total2, setTotal2] = useState(0);
   const [refresh2, setRefresh2] = useState(false);
   const [uid, setUid] = useState(Number(result.get("id")));
+  const [userName, setUserName] = useState<string>(String(result.get("name")));
   const [visiable, setVisiable] = useState(false);
   const [courseId, setcourseId] = useState<number>(0);
 
   useEffect(() => {
     setUid(Number(result.get("id")));
-  }, [Number(result.get("id"))]);
+    setUserName(String(result.get("name")));
+    setLoading2(false);
+    setRefresh2(!refresh2);
+  }, [result.get("id"), result.get("name")]);
 
   useEffect(() => {
     getZxtData();
@@ -53,12 +53,22 @@ const MemberLearnPage = () => {
   }, [uid]);
 
   useEffect(() => {
-    getLearnHours();
-  }, [refresh, page, size, uid]);
+    getLearnCourses();
+  }, [refresh2, uid]);
 
   useEffect(() => {
-    getLearnCourses();
-  }, [refresh2, page2, size2, uid]);
+    if (depValue === 0) {
+      return;
+    }
+    let arr = courses[depValue];
+    let arr2 = openCourses;
+    if (arr.length > 0) {
+      var data = arr.concat(arr2);
+      setCurrentCourses(data);
+    } else {
+      setCurrentCourses(arr);
+    }
+  }, [depValue]);
 
   const getZxtData = () => {
     member.learnStats(uid).then((res: any) => {
@@ -134,56 +144,27 @@ const MemberLearnPage = () => {
     };
   };
 
-  const getLearnHours = () => {
-    if (loading) {
-      return;
-    }
-    setLoading(true);
-    member
-      .learnHours(uid, page, size, {
-        sort_field: "",
-        sort_algo: "",
-        is_finished: "",
-      })
-      .then((res: any) => {
-        setList(res.data.data);
-        setHours(res.data.hours);
-        setTotal(res.data.total);
-        setLoading(false);
-      });
-  };
-
   const getLearnCourses = () => {
     if (loading2) {
       return;
     }
     setLoading2(true);
-    member
-      .learnCourses(uid, page2, size2, {
-        sort_field: "",
-        sort_algo: "",
-        is_finished: "",
-      })
-      .then((res: any) => {
-        setList2(res.data.data);
-        setCourses(res.data.courses);
-        setTotal2(res.data.total);
-        setLoading2(false);
+    member.learnAllCourses(uid).then((res: any) => {
+      setList2(res.data.departments);
+      setCourses(res.data.dep_courses);
+      setOpenCourses(res.data.open_courses);
+      setRecords(res.data.user_course_records);
+      let box: any = [];
+      res.data.departments.map((item: any) => {
+        box.push({
+          label: item.name,
+          value: String(item.id),
+        });
       });
-  };
-
-  const paginationProps2 = {
-    current: page2, //当前页码
-    pageSize: size2,
-    total: total2, // 总条数
-    onChange: (page: number, pageSize: number) =>
-      handlePageChange2(page, pageSize), //改变页码的函数
-    showSizeChanger: true,
-  };
-
-  const handlePageChange2 = (page: number, pageSize: number) => {
-    setPage2(page);
-    setSize2(pageSize);
+      setDepValue(Number(box[0].value));
+      setDeps(box);
+      setLoading2(false);
+    });
   };
 
   const column2: ColumnsType<DataType> = [
@@ -193,13 +174,13 @@ const MemberLearnPage = () => {
       render: (_, record: any) => (
         <div className="d-flex">
           <Image
-            src={courses[record.course_id].thumb}
+            src={record.thumb}
             preview={false}
             width={80}
             height={60}
             style={{ borderRadius: 6 }}
           />
-          <span className="ml-8">{courses[record.course_id].title}</span>
+          <span className="ml-8">{record.title}</span>
         </div>
       ),
     },
@@ -209,7 +190,9 @@ const MemberLearnPage = () => {
       render: (_, record: any) => (
         <>
           <span>
-            已完成课时：{record.finished_count} / {record.hour_count}
+            已完成课时：
+            {(records[record.id] && records[record.id].finished_count) ||
+              0} / {record.class_hour}
           </span>
         </>
       ),
@@ -217,28 +200,56 @@ const MemberLearnPage = () => {
     {
       title: "第一次学习时间",
       dataIndex: "created_at",
-      render: (text: string) => <span>{dateFormat(text)}</span>,
+      render: (_, record: any) => (
+        <>
+          {records[record.id] ? (
+            <span>{dateFormat(records[record.id].created_at)}</span>
+          ) : (
+            <span>-</span>
+          )}
+        </>
+      ),
     },
     {
       title: "学习完成时间",
       dataIndex: "finished_at",
-      render: (text: string) => <span>{dateFormat(text)}</span>,
+      render: (_, record: any) => (
+        <>
+          {records[record.id] ? (
+            <span>{dateFormat(records[record.id].finished_at)}</span>
+          ) : (
+            <span>-</span>
+          )}
+        </>
+      ),
     },
     {
       title: "学习进度",
       dataIndex: "is_finished",
       render: (_, record: any) => (
         <>
-          <span
-            className={
-              Math.floor((record.finished_count / record.hour_count) * 100) >=
-              100
-                ? "c-green"
-                : "c-red"
-            }
-          >
-            {Math.floor((record.finished_count / record.hour_count) * 100)}%
-          </span>
+          {records[record.id] ? (
+            <span
+              className={
+                Math.floor(
+                  (records[record.id].finished_count /
+                    records[record.id].hour_count) *
+                    100
+                ) >= 100
+                  ? "c-green"
+                  : "c-red"
+              }
+            >
+              {Math.floor(
+                (records[record.id].finished_count /
+                  records[record.id].hour_count) *
+                  100
+              )}
+              %
+            </span>
+          ) : (
+            <span className="c-red">0%</span>
+          )}
         </>
       ),
     },
@@ -252,11 +263,11 @@ const MemberLearnPage = () => {
           type="link"
           className="b-link c-red"
           onClick={() => {
-            setcourseId(record.course_id);
+            setcourseId(record.id);
             setVisiable(true);
           }}
         >
-          详细
+          明细
         </Button>
       ),
     },
@@ -275,7 +286,7 @@ const MemberLearnPage = () => {
           }}
         ></MemberLearnProgressDialog>
         <div className="float-left mb-24">
-          <BackBartment title="学员学习" />
+          <BackBartment title={userName + "的学习明细"} />
         </div>
         <div className={styles["charts"]}>
           <div
@@ -288,11 +299,24 @@ const MemberLearnPage = () => {
           ></div>
         </div>
         <div className="float-left mt-24">
+          {list2.length > 1 && (
+            <div className="d-flex mb-24">
+              <span>切换部门：</span>
+              <Select
+                style={{ width: 160 }}
+                allowClear
+                placeholder="请选择部门"
+                value={String(depValue)}
+                onChange={(value: string) => setDepValue(Number(value))}
+                options={deps}
+              />
+            </div>
+          )}
           <Table
             columns={column2}
-            dataSource={list2}
+            dataSource={currentCourses}
             loading={loading2}
-            pagination={paginationProps2}
+            pagination={false}
             rowKey={(record) => record.id}
           />
         </div>
