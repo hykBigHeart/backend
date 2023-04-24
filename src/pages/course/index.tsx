@@ -69,6 +69,7 @@ const CoursePage = () => {
       children: (
         <div className="float-left">
           <TreeCategory
+            refresh={refresh}
             type=""
             text={"分类"}
             onUpdate={(keys: any, title: any) => {
@@ -331,6 +332,14 @@ const CoursePage = () => {
   };
 
   const onChange = (key: string) => {
+    setCategoryIds([]);
+    setDepIds([]);
+    if (Number(key) === 1) {
+      setLabel("全部分类");
+    } else {
+      setLabel("全部部门");
+    }
+    setRefresh(!refresh);
     setTabKey(Number(key));
   };
 
