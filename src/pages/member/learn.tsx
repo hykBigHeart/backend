@@ -60,9 +60,9 @@ const MemberLearnPage = () => {
     if (depValue === 0) {
       return;
     }
-    let arr = courses[depValue];
-    let arr2 = openCourses;
-    if (arr.length > 0) {
+    let arr = [...courses[depValue]];
+    let arr2 = [...openCourses];
+    if (arr2.length > 0) {
       var data = arr.concat(arr2);
       setCurrentCourses(data);
     } else {
@@ -154,15 +154,20 @@ const MemberLearnPage = () => {
       setCourses(res.data.dep_courses);
       setOpenCourses(res.data.open_courses);
       setRecords(res.data.user_course_records);
-      let box: any = [];
-      res.data.departments.map((item: any) => {
-        box.push({
-          label: item.name,
-          value: String(item.id),
+      if (res.data.departments.length > 0) {
+        let box: any = [];
+        res.data.departments.map((item: any) => {
+          box.push({
+            label: item.name,
+            value: String(item.id),
+          });
         });
-      });
-      setDepValue(Number(box[0].value));
-      setDeps(box);
+        setDepValue(Number(box[0].value));
+        setDeps(box);
+      } else {
+        setDepValue(0);
+        setDeps([]);
+      }
       setLoading2(false);
     });
   };
