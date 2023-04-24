@@ -51,6 +51,7 @@ const CoursePage = () => {
   const [title, setTitle] = useState<string>("");
   const [dep_ids, setDepIds] = useState<any>([]);
   const [selLabel, setLabel] = useState<string>("全部分类");
+  const [selDepLabel, setDepLabel] = useState<string>("全部部门");
   const [course_category_ids, setCourseCategoryIds] = useState<any>({});
   const [course_dep_ids, setCourseDepIds] = useState<any>({});
   const [categories, setCategories] = useState<any>({});
@@ -69,7 +70,6 @@ const CoursePage = () => {
       children: (
         <div className="float-left">
           <TreeCategory
-            refresh={refresh}
             type=""
             text={"分类"}
             onUpdate={(keys: any, title: any) => {
@@ -96,7 +96,7 @@ const CoursePage = () => {
             text={"部门"}
             onUpdate={(keys: any, title: any) => {
               setDepIds(keys);
-              setLabel(title);
+              setDepLabel(title);
             }}
           />
         </div>
@@ -283,11 +283,16 @@ const CoursePage = () => {
     });
   };
 
-  // 获取视频列表
+  // 获取列表
   const getList = () => {
     setLoading(true);
-    let categoryIds = category_ids.join(",");
-    let depIds = dep_ids.join(",");
+    let categoryIds = "";
+    let depIds = "";
+    if (tabKey === 1) {
+      categoryIds = category_ids.join(",");
+    } else {
+      depIds = dep_ids.join(",");
+    }
     course
       .courseList(page, size, "", "", title, depIds, categoryIds)
       .then((res: any) => {
@@ -315,7 +320,7 @@ const CoursePage = () => {
   // 加载列表
   useEffect(() => {
     getList();
-  }, [category_ids, dep_ids, refresh, page, size]);
+  }, [category_ids, dep_ids, refresh, page, size, tabKey]);
 
   const paginationProps = {
     current: page, //当前页码
@@ -332,14 +337,6 @@ const CoursePage = () => {
   };
 
   const onChange = (key: string) => {
-    setCategoryIds([]);
-    setDepIds([]);
-    if (Number(key) === 1) {
-      setLabel("全部分类");
-    } else {
-      setLabel("全部部门");
-    }
-    setRefresh(!refresh);
     setTabKey(Number(key));
   };
 
@@ -357,7 +354,7 @@ const CoursePage = () => {
         </div>
         <div className="right-box">
           <div className="playedu-main-title float-left mb-24">
-            线上课 | {selLabel}
+            线上课 | {tabKey === 1 ? selLabel : selDepLabel}
           </div>
           <div className="float-left j-b-flex mb-24">
             <div className="d-flex">

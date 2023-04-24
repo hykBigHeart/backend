@@ -170,7 +170,6 @@ const ResourceVideosPage = () => {
       <div className="tree-main-body">
         <div className="left-box">
           <TreeCategory
-            refresh={false}
             type="no-cate"
             text={"视频"}
             onUpdate={(keys: any, title: any) => {

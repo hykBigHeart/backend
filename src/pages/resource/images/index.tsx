@@ -150,7 +150,6 @@ const ResourceImagesPage = () => {
       <div className="tree-main-body">
         <div className="left-box">
           <TreeCategory
-           refresh={false}
             type="no-cate"
             text={"图片"}
             onUpdate={(keys: any, title: any) => {

@@ -24,7 +24,6 @@ export const TreeDepartment = (props: PropInterface) => {
 
   useEffect(() => {
     setLoading(true);
-    setSelectKey([])
     department.departmentList().then((res: any) => {
       const departments = res.data.departments;
       const departCount = res.data.dep_user_count;

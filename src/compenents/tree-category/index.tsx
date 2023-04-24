@@ -12,7 +12,6 @@ interface Option {
 interface PropInterface {
   type: string;
   text: string;
-  refresh: boolean;
   onUpdate: (keys: any, title: any) => void;
 }
 
@@ -37,10 +36,6 @@ export const TreeCategory = (props: PropInterface) => {
       }
     });
   }, []);
-
-  useEffect(() => {
-    setSelectKey([]);
-  }, [props.refresh]);
 
   const checkArr = (categories: any[], id: number) => {
     const arr = [];
