@@ -406,8 +406,8 @@ const CoursePage = () => {
               rowKey={(record) => record.id}
             />
             <CourseCreate
-              cateIds={category_ids}
-              depIds={dep_ids}
+              cateIds={tabKey === 1 ? category_ids : []}
+              depIds={tabKey === 2 ? dep_ids : []}
               open={createVisible}
               onCancel={() => {
                 setCreateVisible(false);
