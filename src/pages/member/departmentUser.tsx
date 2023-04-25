@@ -228,7 +228,7 @@ const MemberDepartmentProgressPage = () => {
               placeholder="请输入姓名关键字"
             />
           </div>
-          <div className="d-flex mr-24">
+          {/* <div className="d-flex mr-24">
             <Typography.Text>邮箱：</Typography.Text>
             <Input
               value={email}
@@ -250,7 +250,7 @@ const MemberDepartmentProgressPage = () => {
               onChange={(value: string) => setShowMode(value)}
               options={modes}
             />
-          </div>
+          </div> */}
           <div className="d-flex">
             <Button className="mr-16" onClick={resetData}>
               重 置
