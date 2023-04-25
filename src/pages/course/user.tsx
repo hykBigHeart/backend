@@ -190,7 +190,7 @@ const CourseUserPage = () => {
             <div className="d-flex">
               <PerButton
                 type="primary"
-                text="清除学习记录"
+                text="重置学习记录"
                 class="mr-16"
                 icon={null}
                 p="course"
