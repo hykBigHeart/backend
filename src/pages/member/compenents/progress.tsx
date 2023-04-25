@@ -148,7 +148,7 @@ export const MemberLearnProgressDialog: React.FC<PropInterface> = ({
           {records && records[record.id] ? (
             <PerButton
               type="link"
-              text="删除"
+              text="重置"
               class="b-link c-red"
               icon={null}
               p="user-learn-destroy"
@@ -169,7 +169,7 @@ export const MemberLearnProgressDialog: React.FC<PropInterface> = ({
     confirm({
       title: "操作确认",
       icon: <ExclamationCircleFilled />,
-      content: "确认删除此课程下所有课时的学习记录？",
+      content: "确认重置此课程下所有课时的学习记录？",
       centered: true,
       okText: "确认",
       cancelText: "取消",
@@ -192,7 +192,7 @@ export const MemberLearnProgressDialog: React.FC<PropInterface> = ({
     confirm({
       title: "操作确认",
       icon: <ExclamationCircleFilled />,
-      content: "确认删除此课时的学习记录？",
+      content: "确认重置此课时的学习记录？",
       centered: true,
       okText: "确认",
       cancelText: "取消",
@@ -224,7 +224,7 @@ export const MemberLearnProgressDialog: React.FC<PropInterface> = ({
         <div className="d-flex mt-24">
           <PerButton
             type="primary"
-            text="清空"
+            text="重置学习记录"
             class="c-white"
             icon={null}
             p="user-learn-destroy"
