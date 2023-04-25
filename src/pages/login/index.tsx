@@ -73,7 +73,6 @@ const LoginPage = () => {
 
       navigate("/", { replace: true });
     } catch (e) {
-      message.error("登录出现错误");
       console.error("错误信息", e);
       setLoading(false);
       fetchImageCaptcha(); //刷新图形验证码
