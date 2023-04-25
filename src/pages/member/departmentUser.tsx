@@ -53,8 +53,9 @@ const MemberDepartmentProgressPage = () => {
 
   useEffect(() => {
     setDid(Number(result.get("id")));
+    setTitle(String(result.get("title")));
     resetData();
-  }, [Number(result.get("id"))]);
+  }, [result.get("id"), result.get("title")]);
 
   useEffect(() => {
     getData();
