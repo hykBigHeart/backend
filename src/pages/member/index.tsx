@@ -320,6 +320,7 @@ const MemberPage = () => {
                   }}
                   style={{ width: 160 }}
                   placeholder="请输入姓名关键字"
+                  allowClear
                 />
               </div>
               <div className="d-flex mr-24">
@@ -331,6 +332,7 @@ const MemberPage = () => {
                   }}
                   style={{ width: 160 }}
                   placeholder="请输入邮箱账号"
+                  allowClear
                 />
               </div>
               <div className="d-flex">

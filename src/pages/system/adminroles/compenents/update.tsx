@@ -191,7 +191,11 @@ export const SystemAdminrolesUpdate: React.FC<PropInterface> = ({
               name="name"
               rules={[{ required: true, message: "请输入角色名!" }]}
             >
-              <Input style={{ width: 424 }} placeholder="请输入角色名" />
+              <Input
+                style={{ width: 424 }}
+                allowClear
+                placeholder="请输入角色名"
+              />
             </Form.Item>
             <Form.Item label="操作权限" name="action_ids">
               <TreeSelect

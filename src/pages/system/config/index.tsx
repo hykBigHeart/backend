@@ -251,7 +251,11 @@ const SystemConfigPage = () => {
             label="网站页脚"
             name="system.pc_index_footer_msg"
           >
-            <Input style={{ width: 274 }} placeholder="请填写网站页脚" />
+            <Input
+              style={{ width: 274 }}
+              allowClear
+              placeholder="请填写网站页脚"
+            />
           </Form.Item>
           {/* <Form.Item
             style={{ marginBottom: 30 }}
@@ -315,7 +319,11 @@ const SystemConfigPage = () => {
           <Form.Item style={{ marginBottom: 30 }} label="跑马灯内容">
             <Space align="baseline" style={{ height: 32 }}>
               <Form.Item name="player.bullet_secret_text">
-                <Input style={{ width: 274 }} placeholder="自定义跑马灯内容" />
+                <Input
+                  style={{ width: 274 }}
+                  allowClear
+                  placeholder="自定义跑马灯内容"
+                />
               </Form.Item>
               <Checkbox
                 checked={nameChecked}
@@ -345,7 +353,7 @@ const SystemConfigPage = () => {
             label="跑马灯文字颜色"
             name="player.bullet_secret_color"
           >
-            <Input type="color" style={{ width: 32, padding: 0 }} />
+            <Input type="color" allowClear style={{ width: 32, padding: 0 }} />
           </Form.Item>
           <Form.Item
             style={{ marginBottom: 30 }}

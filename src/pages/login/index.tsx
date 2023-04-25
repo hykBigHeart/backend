@@ -129,6 +129,7 @@ const LoginPage = () => {
               style={{ width: 400, height: 54 }}
               placeholder="请输入管理员邮箱账号"
               onKeyUp={(e) => keyUp(e)}
+              allowClear
             />
           </div>
           <div className="login-box d-flex mt-50">
@@ -137,6 +138,7 @@ const LoginPage = () => {
               onChange={(e) => {
                 setPassword(e.target.value);
               }}
+              allowClear
               style={{ width: 400, height: 54 }}
               placeholder="请输入密码"
             />
@@ -149,6 +151,7 @@ const LoginPage = () => {
               onChange={(e) => {
                 setCaptchaVal(e.target.value);
               }}
+              allowClear
               onKeyUp={(e) => keyUp(e)}
             />
             <div className={styles["captcha-box"]}>

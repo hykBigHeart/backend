@@ -451,6 +451,7 @@ export const CourseHourUpdate: React.FC<PropInterface> = ({
                               saveChapterName(index, e.target.value);
                             }}
                             placeholder="请在此处输入章节名称"
+                            allowClear
                           />
                           <Button
                             className="mr-16"

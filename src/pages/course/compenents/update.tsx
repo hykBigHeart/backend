@@ -224,6 +224,7 @@ export const CourseUpdate: React.FC<PropInterface> = ({
               rules={[{ required: true, message: "请在此处输入课程名称!" }]}
             >
               <Input
+                allowClear
                 style={{ width: 424 }}
                 placeholder="请在此处输入课程名称"
               />

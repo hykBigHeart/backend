@@ -147,7 +147,11 @@ export const ResourceCategoryCreate: React.FC<PropInterface> = ({
               name="name"
               rules={[{ required: true, message: "请输入分类名称!" }]}
             >
-              <Input style={{ width: 200 }} placeholder="请输入分类名称" />
+              <Input
+                style={{ width: 200 }}
+                allowClear
+                placeholder="请输入分类名称"
+              />
             </Form.Item>
           </Form>
         </div>

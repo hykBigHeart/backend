@@ -376,6 +376,7 @@ const CoursePage = () => {
                   onChange={(e) => {
                     setTitle(e.target.value);
                   }}
+                  allowClear
                   style={{ width: 160 }}
                   placeholder="请输入名称关键字"
                 />

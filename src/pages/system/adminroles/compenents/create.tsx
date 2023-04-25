@@ -180,6 +180,7 @@ export const SystemAdminrolesCreate: React.FC<PropInterface> = ({
               <Input
                 style={{ width: 424 }}
                 placeholder="请在此处输入角色名称"
+                allowClear
               />
             </Form.Item>
             <Form.Item label="操作权限" name="action_ids">

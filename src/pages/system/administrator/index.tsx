@@ -283,6 +283,7 @@ const SystemAdministratorPage = () => {
                   onChange={(e) => {
                     setName(e.target.value);
                   }}
+                  allowClear
                   style={{ width: 160 }}
                   placeholder="请输入管理员姓名"
                 />

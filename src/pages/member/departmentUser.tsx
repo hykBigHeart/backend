@@ -223,6 +223,7 @@ const MemberDepartmentProgressPage = () => {
               onChange={(e) => {
                 setName(e.target.value);
               }}
+              allowClear
               style={{ width: 160 }}
               placeholder="请输入姓名关键字"
             />
@@ -234,6 +235,7 @@ const MemberDepartmentProgressPage = () => {
               onChange={(e) => {
                 setEmail(e.target.value);
               }}
+              allowClear
               style={{ width: 160 }}
               placeholder="请输入邮箱"
             />

@@ -181,18 +181,27 @@ export const MemberUpdate: React.FC<PropInterface> = ({
               name="name"
               rules={[{ required: true, message: "请输入学员姓名!" }]}
             >
-              <Input style={{ width: 274 }} placeholder="请填写学员姓名" />
+              <Input
+                allowClear
+                style={{ width: 274 }}
+                placeholder="请填写学员姓名"
+              />
             </Form.Item>
             <Form.Item
               label="登录邮箱"
               name="email"
               rules={[{ required: true, message: "请输入登录邮箱!" }]}
             >
-              <Input style={{ width: 274 }} placeholder="请输入学员登录邮箱" />
+              <Input
+                style={{ width: 274 }}
+                allowClear
+                placeholder="请输入学员登录邮箱"
+              />
             </Form.Item>
             <Form.Item label="登录密码" name="password">
               <Input.Password
                 style={{ width: 274 }}
+                allowClear
                 placeholder="请输入登录密码"
               />
             </Form.Item>
@@ -212,7 +221,11 @@ export const MemberUpdate: React.FC<PropInterface> = ({
               />
             </Form.Item>
             <Form.Item label="身份证号" name="idCard">
-              <Input style={{ width: 274 }} placeholder="请填写学员身份证号" />
+              <Input
+                allowClear
+                style={{ width: 274 }}
+                placeholder="请填写学员身份证号"
+              />
             </Form.Item>
           </Form>
         </div>
