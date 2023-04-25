@@ -174,7 +174,7 @@ const MemberDepartmentProgressPage = () => {
         courses.map((it: any) => {
           if (records && records[item.id] && records[item.id][it.id]) {
             if (records && records[item.id][it.id].is_finished === 1) {
-              arr.push("已完成");
+              arr.push("已学完");
             } else {
               arr.push(
                 records &&
@@ -306,7 +306,7 @@ const MemberDepartmentProgressPage = () => {
                 <>
                   {records[record.id] && records[record.id][item.id] ? (
                     records[record.id][item.id].is_finished === 1 ? (
-                      <span>已完成</span>
+                      <span>已学完</span>
                     ) : (
                       <>
                         <span>
