@@ -281,7 +281,7 @@ const MemberDepartmentProgressPage = () => {
             title="学员"
             dataIndex="name"
             key="name"
-            width={100}
+            width={150}
             render={(_, record: any) => (
               <>
                 <Image
@@ -301,7 +301,7 @@ const MemberDepartmentProgressPage = () => {
               ellipsis={true}
               dataIndex="id"
               key={item.id}
-              width={100}
+              width={168}
               render={(_, record: any) => (
                 <>
                   {records[record.id] && records[record.id][item.id] ? (
@@ -329,7 +329,7 @@ const MemberDepartmentProgressPage = () => {
             title="总计课时"
             dataIndex="id"
             key="id"
-            width={100}
+            width={150}
             render={(_, record: any) => (
               <>
                 <span>{getFinishedHours(records[record.id])}</span> /{" "}
