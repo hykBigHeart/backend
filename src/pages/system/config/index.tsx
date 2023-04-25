@@ -244,7 +244,11 @@ const SystemConfigPage = () => {
             label="网站标题"
             name="system.name"
           >
-            <Input style={{ width: 274 }} allowClear placeholder="请填写网站标题" />
+            <Input
+              style={{ width: 274 }}
+              allowClear
+              placeholder="请填写网站标题"
+            />
           </Form.Item>
           <Form.Item
             style={{ marginBottom: 30 }}
@@ -353,7 +357,7 @@ const SystemConfigPage = () => {
             label="跑马灯文字颜色"
             name="player.bullet_secret_color"
           >
-            <Input type="color" allowClear style={{ width: 32, padding: 0 }} />
+            <Input type="color" style={{ width: 32, padding: 0 }} />
           </Form.Item>
           <Form.Item
             style={{ marginBottom: 30 }}
