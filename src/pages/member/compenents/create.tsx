@@ -8,6 +8,7 @@ import { ValidataCredentials } from "../../../utils/index";
 
 interface PropInterface {
   open: boolean;
+  depIds: any;
   onCancel: () => void;
 }
 
@@ -17,7 +18,11 @@ interface Option {
   children?: Option[];
 }
 
-export const MemberCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
+export const MemberCreate: React.FC<PropInterface> = ({
+  open,
+  depIds,
+  onCancel,
+}) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState<boolean>(true);
   const [departments, setDepartments] = useState<any>([]);
@@ -39,10 +44,10 @@ export const MemberCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
       password: "",
       avatar: memberDefaultAvatar,
       idCard: "",
-      dep_ids: [],
+      dep_ids: depIds,
     });
     setAvatar(memberDefaultAvatar);
-  }, [form, open]);
+  }, [form, open, depIds]);
 
   const getParams = () => {
     department.departmentList().then((res: any) => {

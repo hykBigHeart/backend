@@ -361,6 +361,7 @@ const MemberPage = () => {
             />
             <MemberCreate
               open={createVisible}
+              depIds={dep_ids}
               onCancel={() => {
                 setCreateVisible(false);
                 setRefresh(!refresh);
