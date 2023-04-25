@@ -244,7 +244,7 @@ const SystemConfigPage = () => {
             label="网站标题"
             name="system.name"
           >
-            <Input style={{ width: 274 }} placeholder="请填写网站标题" />
+            <Input style={{ width: 274 }} allowClear placeholder="请填写网站标题" />
           </Form.Item>
           <Form.Item
             style={{ marginBottom: 30 }}
