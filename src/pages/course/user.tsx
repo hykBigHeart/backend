@@ -149,13 +149,13 @@ const CourseUserPage = () => {
   // 删除学员
   const delItem = () => {
     if (selectedRowKeys.length === 0) {
-      message.error("请选择学员后再清除");
+      message.error("请选择学员后再重置");
       return;
     }
     confirm({
       title: "操作确认",
       icon: <ExclamationCircleFilled />,
-      content: "确认清除选中学员学习记录？",
+      content: "确认重置选中学员学习记录？",
       centered: true,
       okText: "确认",
       cancelText: "取消",
@@ -190,7 +190,7 @@ const CourseUserPage = () => {
             <div className="d-flex">
               <PerButton
                 type="primary"
-                text="清除学习记录"
+                text="重置学习记录"
                 class="mr-16"
                 icon={null}
                 p="course"
@@ -206,6 +206,7 @@ const CourseUserPage = () => {
                   onChange={(e) => {
                     setName(e.target.value);
                   }}
+                  allowClear
                   style={{ width: 160 }}
                   placeholder="请输入姓名关键字"
                 />
@@ -217,6 +218,7 @@ const CourseUserPage = () => {
                   onChange={(e) => {
                     setEmail(e.target.value);
                   }}
+                  allowClear
                   style={{ width: 160 }}
                   placeholder="请输入学员邮箱"
                 />

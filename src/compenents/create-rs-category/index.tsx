@@ -54,6 +54,7 @@ export const CreateResourceCategory = (props: PropInterface) => {
           onChange={(e) => {
             setName(e.target.value);
           }}
+          allowClear
         />
       </Modal>
     </>

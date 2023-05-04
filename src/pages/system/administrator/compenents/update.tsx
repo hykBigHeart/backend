@@ -133,18 +133,27 @@ export const SystemAdministratorUpdate: React.FC<PropInterface> = ({
               name="name"
               rules={[{ required: true, message: "请输入管理员姓名!" }]}
             >
-              <Input style={{ width: 200 }} placeholder="请输入管理员姓名" />
+              <Input
+                allowClear
+                style={{ width: 200 }}
+                placeholder="请输入管理员姓名"
+              />
             </Form.Item>
             <Form.Item
               label="邮箱"
               name="email"
               rules={[{ required: true, message: "请输入学员邮箱!" }]}
             >
-              <Input style={{ width: 200 }} placeholder="请输入学员邮箱" />
+              <Input
+                allowClear
+                style={{ width: 200 }}
+                placeholder="请输入学员邮箱"
+              />
             </Form.Item>
             <Form.Item label="密码" name="password">
               <Input.Password
                 style={{ width: 200 }}
+                allowClear
                 placeholder="请输入登录密码"
               />
             </Form.Item>

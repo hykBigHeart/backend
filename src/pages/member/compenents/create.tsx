@@ -8,6 +8,7 @@ import { ValidataCredentials } from "../../../utils/index";
 
 interface PropInterface {
   open: boolean;
+  depIds: any;
   onCancel: () => void;
 }
 
@@ -17,7 +18,11 @@ interface Option {
   children?: Option[];
 }
 
-export const MemberCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
+export const MemberCreate: React.FC<PropInterface> = ({
+  open,
+  depIds,
+  onCancel,
+}) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState<boolean>(true);
   const [departments, setDepartments] = useState<any>([]);
@@ -39,10 +44,10 @@ export const MemberCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
       password: "",
       avatar: memberDefaultAvatar,
       idCard: "",
-      dep_ids: [],
+      dep_ids: depIds,
     });
     setAvatar(memberDefaultAvatar);
-  }, [form, open]);
+  }, [form, open, depIds]);
 
   const getParams = () => {
     department.departmentList().then((res: any) => {
@@ -154,7 +159,11 @@ export const MemberCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
               name="email"
               rules={[{ required: true, message: "请输入登录邮箱!" }]}
             >
-              <Input style={{ width: 274 }} placeholder="请输入学员登录邮箱" />
+              <Input
+                allowClear
+                style={{ width: 274 }}
+                placeholder="请输入学员登录邮箱"
+              />
             </Form.Item>
             <Form.Item
               label="登录密码"
@@ -162,6 +171,7 @@ export const MemberCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
               rules={[{ required: true, message: "请输入登录密码!" }]}
             >
               <Input.Password
+                allowClear
                 style={{ width: 274 }}
                 placeholder="请输入登录密码"
               />
@@ -182,7 +192,11 @@ export const MemberCreate: React.FC<PropInterface> = ({ open, onCancel }) => {
               />
             </Form.Item>
             <Form.Item label="身份证号" name="idCard">
-              <Input style={{ width: 274 }} placeholder="请填写学员身份证号" />
+              <Input
+                style={{ width: 274 }}
+                allowClear
+                placeholder="请填写学员身份证号"
+              />
             </Form.Item>
           </Form>
         </div>

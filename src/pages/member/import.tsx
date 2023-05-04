@@ -58,6 +58,7 @@ const MemberImportPage = () => {
     user
       .storeBatch(2, data)
       .then(() => {
+        setErrorData([]);
         message.success("导入成功！");
         navigate(-1);
       })
@@ -92,9 +93,9 @@ const MemberImportPage = () => {
             {errorData &&
               errorData.map((item: any, index: number) => {
                 return (
-                  <span key={index} className="c-red mb-10">
+                  <div key={index} className="c-red mb-10">
                     {item}
-                  </span>
+                  </div>
                 );
               })}
           </div>

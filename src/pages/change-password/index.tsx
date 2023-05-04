@@ -45,14 +45,14 @@ const ChangePasswordPage = () => {
                 name="old_password"
                 rules={[{ required: true, message: "请输入原密码!" }]}
               >
-                <Input.Password placeholder="请输入原密码" />
+                <Input.Password placeholder="请输入原密码" allowClear />
               </Form.Item>
               <Form.Item
                 label="新密码"
                 name="new_password"
                 rules={[{ required: true, message: "请输入新密码!" }]}
               >
-                <Input.Password placeholder="请输入新密码" />
+                <Input.Password placeholder="请输入新密码" allowClear />
               </Form.Item>
               <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
                 <Button type="primary" htmlType="submit">

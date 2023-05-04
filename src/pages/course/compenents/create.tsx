@@ -470,6 +470,7 @@ export const CourseCreate: React.FC<PropInterface> = ({
               <Input
                 style={{ width: 424 }}
                 placeholder="请在此处输入课程名称"
+                allowClear
               />
             </Form.Item>
             <Form.Item
@@ -683,6 +684,7 @@ export const CourseCreate: React.FC<PropInterface> = ({
                             onChange={(e) => {
                               setChapterName(index, e.target.value);
                             }}
+                            allowClear
                             placeholder="请在此处输入章节名称"
                           />
                           <Button

@@ -142,7 +142,7 @@ const MemberPage = () => {
           <Space size="small">
             <Link
               style={{ textDecoration: "none" }}
-              to={`/member/learn?id=${record.id}`}
+              to={`/member/learn?id=${record.id}&name=${record.name}`}
             >
               <PerButton
                 type="link"
@@ -320,6 +320,7 @@ const MemberPage = () => {
                   }}
                   style={{ width: 160 }}
                   placeholder="请输入姓名关键字"
+                  allowClear
                 />
               </div>
               <div className="d-flex mr-24">
@@ -331,6 +332,7 @@ const MemberPage = () => {
                   }}
                   style={{ width: 160 }}
                   placeholder="请输入邮箱账号"
+                  allowClear
                 />
               </div>
               <div className="d-flex">
@@ -359,6 +361,7 @@ const MemberPage = () => {
             />
             <MemberCreate
               open={createVisible}
+              depIds={dep_ids}
               onCancel={() => {
                 setCreateVisible(false);
                 setRefresh(!refresh);
