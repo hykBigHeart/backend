@@ -83,6 +83,8 @@ const CourseUserPage = () => {
         <>
           {records[record.id] ? (
             <span>{dateFormat(records[record.id].created_at)}</span>
+          ) : hourCount[record.id] ? (
+            <span>{dateFormat(hourCount[record.id])}</span>
           ) : (
             <span>-</span>
           )}
@@ -126,7 +128,7 @@ const CourseUserPage = () => {
               )}
               %
             </span>
-          ) : hourCount[record.id] && hourCount[record.id] > 0 ? (
+          ) : hourCount[record.id] ? (
             <span className="c-red">1%</span>
           ) : (
             <span className="c-red">0%</span>
@@ -155,7 +157,7 @@ const CourseUserPage = () => {
       .then((res: any) => {
         setTotal(res.data.total);
         setList(res.data.data);
-        setHourCount(res.data.user_course_hour_user_count);
+        setHourCount(res.data.user_course_hour_user_first_at);
         setRecords(res.data.user_course_records);
         setCourse(res.data.course);
         setLoading(false);
