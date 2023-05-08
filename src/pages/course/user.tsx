@@ -10,7 +10,7 @@ import {
   message,
   Image,
 } from "antd";
-import { course } from "../../api";
+import { course as Course } from "../../api";
 import { useParams, useLocation } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
 import { BackBartment } from "../../compenents";
@@ -33,7 +33,9 @@ const CourseUserPage = () => {
   const params = useParams();
   const result = new URLSearchParams(useLocation().search);
   const [list, setList] = useState<any>([]);
-  const [users, setUsers] = useState<any>([]);
+  const [course, setCourse] = useState<any>({});
+  const [records, setRecords] = useState<any>({});
+  const [hourCount, setHourCount] = useState<any>({});
   const [refresh, setRefresh] = useState(false);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
@@ -55,11 +57,9 @@ const CourseUserPage = () => {
             preview={false}
             width={40}
             height={40}
-            src={users.find((i: any) => i.id === record.user_id).avatar}
+            src={record.avatar}
           ></Image>
-          <span className="ml-8">
-            {users.find((i: any) => i.id === record.user_id).name}
-          </span>
+          <span className="ml-8">{record.name}</span>
         </div>
       ),
     },
@@ -68,27 +68,70 @@ const CourseUserPage = () => {
       dataIndex: "progress",
       render: (_, record: any) => (
         <span>
-          已完成课时：{record.finished_count} / {record.hour_count}
+          已完成课时：
+          {(records[record.id] && records[record.id].finished_count) ||
+            0} /{" "}
+          {(records[record.id] && records[record.id].hour_count) ||
+            course.class_hour}
         </span>
       ),
     },
     {
       title: "第一次学习时间",
       dataIndex: "created_at",
-      render: (text: string) => <span>{dateFormat(text)}</span>,
+      render: (_, record: any) => (
+        <>
+          {records[record.id] ? (
+            <span>{dateFormat(records[record.id].created_at)}</span>
+          ) : (
+            <span>-</span>
+          )}
+        </>
+      ),
     },
     {
       title: "学习完成时间",
       dataIndex: "finished_at",
-      render: (text: string) => <span>{dateFormat(text)}</span>,
+      render: (_, record: any) => (
+        <>
+          {records[record.id] ? (
+            <span>{dateFormat(records[record.id].finished_at)}</span>
+          ) : (
+            <span>-</span>
+          )}
+        </>
+      ),
     },
     {
       title: "学习进度",
       dataIndex: "progress",
-      render: (progress: number) => (
-        <span className={progress >= 10000 ? "c-green" : "c-red"}>
-          {Math.floor(progress / 100)}%
-        </span>
+      render: (_, record: any) => (
+        <>
+          {records[record.id] ? (
+            <span
+              className={
+                Math.floor(
+                  (records[record.id].finished_count /
+                    records[record.id].hour_count) *
+                    100
+                ) >= 100
+                  ? "c-green"
+                  : "c-red"
+              }
+            >
+              {Math.floor(
+                (records[record.id].finished_count /
+                  records[record.id].hour_count) *
+                  100
+              )}
+              %
+            </span>
+          ) : hourCount[record.id] && hourCount[record.id] > 0 ? (
+            <span className="c-red">1%</span>
+          ) : (
+            <span className="c-red">0%</span>
+          )}
+        </>
       ),
     },
   ];
@@ -99,21 +142,22 @@ const CourseUserPage = () => {
 
   const getList = () => {
     setLoading(true);
-    course
-      .courseUser(
-        Number(params.courseId),
-        page,
-        size,
-        "",
-        "",
-        name,
-        email,
-        idCard
-      )
+    Course.courseUser(
+      Number(params.courseId),
+      page,
+      size,
+      "",
+      "",
+      name,
+      email,
+      idCard
+    )
       .then((res: any) => {
         setTotal(res.data.total);
         setList(res.data.data);
-        setUsers(res.data.users);
+        setHourCount(res.data.user_course_hour_user_count);
+        setRecords(res.data.user_course_records);
+        setCourse(res.data.course);
         setLoading(false);
       })
       .catch((err: any) => {
@@ -160,12 +204,12 @@ const CourseUserPage = () => {
       okText: "确认",
       cancelText: "取消",
       onOk() {
-        course
-          .destroyCourseUser(Number(params.courseId), selectedRowKeys)
-          .then(() => {
+        Course.destroyCourseUser(Number(params.courseId), selectedRowKeys).then(
+          () => {
             message.success("清除成功");
             resetList();
-          });
+          }
+        );
       },
       onCancel() {
         console.log("Cancel");
