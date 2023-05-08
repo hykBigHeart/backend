@@ -87,7 +87,7 @@ const CourseUserPage = () => {
       dataIndex: "progress",
       render: (progress: number) => (
         <span className={progress >= 10000 ? "c-green" : "c-red"}>
-          {progress / 100}%
+          {Math.floor(progress / 100)}%
         </span>
       ),
     },
