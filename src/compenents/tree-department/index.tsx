@@ -120,7 +120,7 @@ export const TreeDepartment = (props: PropInterface) => {
   const onSelect = (selectedKeys: any, info: any) => {
     let label = "全部" + props.text;
     if (info) {
-      label = info.node.title;
+      label = info.node.title.props.children;
     }
     props.onUpdate(selectedKeys, label);
     setSelectKey(selectedKeys);
@@ -129,7 +129,7 @@ export const TreeDepartment = (props: PropInterface) => {
   const onExpand = (selectedKeys: any, info: any) => {
     let label = "全部" + props.text;
     if (info) {
-      label = info.node.title;
+      label = info.node.title.props.children;
     }
     props.onUpdate(selectedKeys, label);
     setSelectKey(selectedKeys);
