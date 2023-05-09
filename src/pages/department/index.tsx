@@ -68,7 +68,7 @@ const DepartmentPage = () => {
         arr.push({
           title: (
             <>
-              <div className="w-174px mr-24">{departments[id][i].name}</div>
+              <div className="tree-title-elli">{departments[id][i].name}</div>
               <div className="d-flex">
                 <Tooltip placement="top" title="可拖拽排序">
                   <i
@@ -103,7 +103,7 @@ const DepartmentPage = () => {
         arr.push({
           title: (
             <>
-              <div className="w-174px mr-24">{departments[id][i].name}</div>
+              <div className="tree-title-elli">{departments[id][i].name}</div>
               <div className="d-flex">
                 <Tooltip placement="top" title="可拖拽排序">
                   <i

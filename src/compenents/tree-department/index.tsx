@@ -87,13 +87,17 @@ export const TreeDepartment = (props: PropInterface) => {
     for (let i = 0; i < departments[id].length; i++) {
       if (!departments[departments[id][i].id]) {
         arr.push({
-          title: departments[id][i].name,
+          title: (
+            <span className="tree-title-elli">{departments[id][i].name}</span>
+          ),
           key: departments[id][i].id,
         });
       } else {
-        const new_arr: Option[] = checkArr(departments, departments[id][i].id);
+        const new_arr: any[] = checkArr(departments, departments[id][i].id);
         arr.push({
-          title: departments[id][i].name,
+          title: (
+            <span className="tree-title-elli">{departments[id][i].name}</span>
+          ),
           key: departments[id][i].id,
           children: new_arr,
         });
@@ -105,9 +109,11 @@ export const TreeDepartment = (props: PropInterface) => {
   const getNewTitle = (title: any, id: number, counts: any) => {
     if (counts) {
       let value = counts[id] || 0;
-      return title + "(" + value + ")";
+      return (
+        <span className="tree-title-elli">{title + "(" + value + ")"}</span>
+      );
     } else {
-      return title;
+      return <span className="tree-title-elli">{title}</span>;
     }
   };
 
