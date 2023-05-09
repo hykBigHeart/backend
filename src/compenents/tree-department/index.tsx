@@ -30,10 +30,10 @@ export const TreeDepartment = (props: PropInterface) => {
       setUserTotal(res.data.user_total);
       if (JSON.stringify(departments) !== "{}") {
         if (props.showNum) {
-          const new_arr: any = checkNewArr(departments, 0, departCount);
+          const new_arr: any[] = checkNewArr(departments, 0, departCount);
           setTreeData(new_arr);
         } else {
-          const new_arr: Option[] = checkArr(departments, 0);
+          const new_arr: any[] = checkArr(departments, 0);
           setTreeData(new_arr);
         }
       } else {
