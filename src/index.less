@@ -23,7 +23,7 @@ code {
 }
 
 .w-174px {
-  max-width: 174px;
+  max-width: 134px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -457,6 +457,7 @@ textarea.ant-input {
   margin-bottom: 8px !important;
   display: flex;
   align-items: center !important;
+
   &.ant-tree-treenode-selected {
     background-color: #fff2f0 !important;
     border-radius: 6px !important;
@@ -559,9 +560,11 @@ textarea.ant-input {
 
 .tree-title-elli {
   width: 100%;
+  display: -webkit-box;
   overflow: hidden;
-  white-space: nowrap;
   text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
 }
 
 .ant-tabs {

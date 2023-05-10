@@ -119,8 +119,16 @@ export const LeftMenu: React.FC = () => {
   };
 
   useEffect(() => {
-    setSelectedKeys([location.pathname]);
-    setOpenKeys(openKeyMerge(location.pathname));
+    if (location.pathname.indexOf("/course/user") !== -1) {
+      setSelectedKeys(["/course"]);
+      setOpenKeys(openKeyMerge("/course"));
+    } else if (location.pathname.indexOf("/member/learn") !== -1) {
+      setSelectedKeys(["/member/index"]);
+      setOpenKeys(openKeyMerge("/member/index"));
+    } else {
+      setSelectedKeys([location.pathname]);
+      setOpenKeys(openKeyMerge(location.pathname));
+    }
   }, [location.pathname]);
 
   return (

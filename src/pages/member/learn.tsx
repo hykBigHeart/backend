@@ -31,6 +31,7 @@ const MemberLearnPage = () => {
   const [currentCourses, setCurrentCourses] = useState<any>([]);
   const [openCourses, setOpenCourses] = useState<any>([]);
   const [records, setRecords] = useState<any>({});
+  const [hourCount, setHourCount] = useState<any>({});
   const [total2, setTotal2] = useState(0);
   const [refresh2, setRefresh2] = useState(false);
   const [uid, setUid] = useState(Number(result.get("id")));
@@ -153,6 +154,7 @@ const MemberLearnPage = () => {
       setList2(res.data.departments);
       setCourses(res.data.dep_courses);
       setOpenCourses(res.data.open_courses);
+      setHourCount(res.data.user_course_hour_count);
       setRecords(res.data.user_course_records);
       if (res.data.departments.length > 0) {
         let box: any = [];
@@ -252,6 +254,8 @@ const MemberLearnPage = () => {
               )}
               %
             </span>
+          ) : hourCount[record.id] && hourCount[record.id] > 0 ? (
+            <span className="c-red">1%</span>
           ) : (
             <span className="c-red">0%</span>
           )}

@@ -30,10 +30,10 @@ export const TreeDepartment = (props: PropInterface) => {
       setUserTotal(res.data.user_total);
       if (JSON.stringify(departments) !== "{}") {
         if (props.showNum) {
-          const new_arr: any = checkNewArr(departments, 0, departCount);
+          const new_arr: any[] = checkNewArr(departments, 0, departCount);
           setTreeData(new_arr);
         } else {
-          const new_arr: Option[] = checkArr(departments, 0);
+          const new_arr: any[] = checkArr(departments, 0);
           setTreeData(new_arr);
         }
       } else {
@@ -87,13 +87,17 @@ export const TreeDepartment = (props: PropInterface) => {
     for (let i = 0; i < departments[id].length; i++) {
       if (!departments[departments[id][i].id]) {
         arr.push({
-          title: departments[id][i].name,
+          title: (
+            <span className="tree-title-elli">{departments[id][i].name}</span>
+          ),
           key: departments[id][i].id,
         });
       } else {
-        const new_arr: Option[] = checkArr(departments, departments[id][i].id);
+        const new_arr: any[] = checkArr(departments, departments[id][i].id);
         arr.push({
-          title: departments[id][i].name,
+          title: (
+            <span className="tree-title-elli">{departments[id][i].name}</span>
+          ),
           key: departments[id][i].id,
           children: new_arr,
         });
@@ -105,16 +109,18 @@ export const TreeDepartment = (props: PropInterface) => {
   const getNewTitle = (title: any, id: number, counts: any) => {
     if (counts) {
       let value = counts[id] || 0;
-      return title + "(" + value + ")";
+      return (
+        <span className="tree-title-elli">{title + "(" + value + ")"}</span>
+      );
     } else {
-      return title;
+      return <span className="tree-title-elli">{title}</span>;
     }
   };
 
   const onSelect = (selectedKeys: any, info: any) => {
     let label = "全部" + props.text;
     if (info) {
-      label = info.node.title;
+      label = info.node.title.props.children;
     }
     props.onUpdate(selectedKeys, label);
     setSelectKey(selectedKeys);
@@ -123,7 +129,7 @@ export const TreeDepartment = (props: PropInterface) => {
   const onExpand = (selectedKeys: any, info: any) => {
     let label = "全部" + props.text;
     if (info) {
-      label = info.node.title;
+      label = info.node.title.props.children;
     }
     props.onUpdate(selectedKeys, label);
     setSelectKey(selectedKeys);

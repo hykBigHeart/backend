@@ -25,6 +25,7 @@ import SystemAdminrolesPage from "../pages/system/adminroles";
 import DepartmentPage from "../pages/department";
 import TestPage from "../pages/test";
 import ErrorPage from "../pages/error";
+import PrivateRoute from "../compenents/private-route";
 
 // const LoginPage = lazy(() => import("../pages/login"));
 
@@ -63,70 +64,75 @@ const routes: RouteObject[] = [
     children: [
       {
         path: "/",
-        element: <HomePage />,
+        element: <PrivateRoute Component={<HomePage />} />,
         children: [
           {
             path: "/",
-            element: <DashboardPage />,
+            element: <PrivateRoute Component={<DashboardPage />} />,
           },
           {
             path: "/change-password",
-            element: <ChangePasswordPage />,
+            element: <PrivateRoute Component={<ChangePasswordPage />} />,
           },
           {
             path: "/resource-category",
-            element: <ResourceCategoryPage />,
+            element: <PrivateRoute Component={<ResourceCategoryPage />} />,
           },
           {
             path: "/images",
-            element: <ResourceImagesPage />,
+            element: <PrivateRoute Component={<ResourceImagesPage />} />,
           },
           {
             path: "/videos",
-            element: <ResourceVideosPage />,
+            element: <PrivateRoute Component={<ResourceVideosPage />} />,
           },
           {
             path: "/course",
-            element: <CoursePage />,
+            element: <PrivateRoute Component={<CoursePage />} />,
           },
           {
             path: "/course/user/:courseId",
-            element: <CourseUserPage />,
+            element: <PrivateRoute Component={<CourseUserPage />} />,
           },
           {
             path: "/member",
             element: <KeepAlive />,
             children: [
-              { path: "/member/index", element: <MemberPage /> },
+              {
+                path: "/member/index",
+                element: <PrivateRoute Component={<MemberPage />} />,
+              },
               {
                 path: "/member/import",
-                element: <MemberImportPage />,
+                element: <PrivateRoute Component={<MemberImportPage />} />,
               },
               {
                 path: "/member/learn",
-                element: <MemberLearnPage />,
+                element: <PrivateRoute Component={<MemberLearnPage />} />,
               },
               {
                 path: "/member/departmentUser",
-                element: <MemberDepartmentProgressPage />,
+                element: (
+                  <PrivateRoute Component={<MemberDepartmentProgressPage />} />
+                ),
               },
             ],
           },
           {
             path: "/system/config/index",
-            element: <SystemConfigPage />,
+            element: <PrivateRoute Component={<SystemConfigPage />} />,
           },
           {
             path: "/system/administrator",
-            element: <SystemAdministratorPage />,
+            element: <PrivateRoute Component={<SystemAdministratorPage />} />,
           },
           {
             path: "/system/adminroles",
-            element: <SystemAdminrolesPage />,
+            element: <PrivateRoute Component={<SystemAdminrolesPage />} />,
           },
           {
             path: "/department",
-            element: <DepartmentPage />,
+            element: <PrivateRoute Component={<DepartmentPage />} />,
           },
         ],
       },

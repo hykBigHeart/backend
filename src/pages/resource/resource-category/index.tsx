@@ -66,7 +66,7 @@ const ResourceCategoryPage = () => {
         arr.push({
           title: (
             <>
-              <div className="w-174px mr-24">{categories[id][i].name}</div>
+              <div className="tree-title-elli">{categories[id][i].name}</div>
               <div className="d-flex">
                 <Tooltip placement="top" title="可拖拽排序">
                   <i
@@ -101,7 +101,7 @@ const ResourceCategoryPage = () => {
         arr.push({
           title: (
             <>
-              <div className="w-174px mr-24">{categories[id][i].name}</div>
+              <div className="tree-title-elli">{categories[id][i].name}</div>
               <div className="d-flex">
                 <Tooltip placement="top" title="可拖拽排序">
                   <i
