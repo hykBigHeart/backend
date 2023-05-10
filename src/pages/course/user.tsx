@@ -36,6 +36,8 @@ const CourseUserPage = () => {
   const [course, setCourse] = useState<any>({});
   const [records, setRecords] = useState<any>({});
   const [hourCount, setHourCount] = useState<any>({});
+  const [userDepIds, setUserDepIds] = useState<any>({});
+  const [departments, setDepartments] = useState<any>({});
   const [refresh, setRefresh] = useState(false);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
@@ -60,6 +62,27 @@ const CourseUserPage = () => {
             src={record.avatar}
           ></Image>
           <span className="ml-8">{record.name}</span>
+        </div>
+      ),
+    },
+    {
+      title: "邮箱",
+      render: (_, record: any) => <span>{record.email}</span>,
+    },
+    {
+      title: "部门",
+      render: (_, record: any) => (
+        <div className="float-left">
+          {userDepIds[record.id] &&
+            userDepIds[record.id].map((item: any, index: number) => {
+              return (
+                <span key={index}>
+                  {index === userDepIds[record.id].length - 1
+                    ? departments[item]
+                    : departments[item] + "、"}
+                </span>
+              );
+            })}
         </div>
       ),
     },
@@ -160,6 +183,8 @@ const CourseUserPage = () => {
         setHourCount(res.data.user_course_hour_user_first_at);
         setRecords(res.data.user_course_records);
         setCourse(res.data.course);
+        setDepartments(res.data.departments);
+        setUserDepIds(res.data.user_dep_ids);
         setLoading(false);
       })
       .catch((err: any) => {
