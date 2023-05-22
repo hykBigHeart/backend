@@ -62,7 +62,11 @@ export const SelectResource = (props: PropsInterface) => {
         open={props.open}
         width={800}
         maskClosable={false}
-        onOk={() => props.onSelected(selectKeys, selectVideos)}
+        onOk={() => {
+          props.onSelected(selectKeys, selectVideos);
+          setSelectKeys([]);
+          setSelectVideos([]);
+        }}
       >
         <Row>
           <Tabs defaultActiveKey="1" items={items} onChange={onChange} />

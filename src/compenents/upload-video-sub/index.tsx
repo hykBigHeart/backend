@@ -218,7 +218,7 @@ export const UploadVideoSub = (props: PropsInterface) => {
               paddingLeft: 10,
             }}
           >
-            {videoList.length > 0 && (
+            {videoList.length > 0 && total > 10 && (
               <Col
                 span={24}
                 style={{ display: "flex", flexDirection: "row-reverse" }}

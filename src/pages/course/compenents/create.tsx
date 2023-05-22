@@ -241,17 +241,11 @@ export const CourseCreate: React.FC<PropInterface> = ({
   };
 
   const selectData = (arr: any, videos: any) => {
-    let keys = [...hours];
-    let init = false;
-    keys.map((item: any) => {
-      if (arr.indexOf(item) !== -1) {
-        init = true;
-      }
-    });
-    if (init) {
+    if (arr.length === 0) {
       message.error("请选择视频");
       return;
     }
+    let keys = [...hours];
     let data = [...treeData];
     keys = keys.concat(arr);
     data = data.concat(videos);
@@ -261,18 +255,12 @@ export const CourseCreate: React.FC<PropInterface> = ({
   };
 
   const selectChapterData = (arr: any, videos: any) => {
-    const data = [...chapters];
-    const keys = [...chapterHours];
-    let init = false;
-    keys[addvideoCurrent].map((item: any) => {
-      if (arr.indexOf(item) !== -1) {
-        init = true;
-      }
-    });
-    if (init) {
+    if (arr.length === 0) {
       message.error("请选择视频");
       return;
     }
+    const data = [...chapters];
+    const keys = [...chapterHours];
     keys[addvideoCurrent] = keys[addvideoCurrent].concat(arr);
     data[addvideoCurrent].hours = data[addvideoCurrent].hours.concat(videos);
     setChapters(data);
