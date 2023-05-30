@@ -65,6 +65,14 @@ const SystemConfigPage = () => {
           form.setFieldsValue({
             "player.poster": configData[i].key_value,
           });
+        } else if (configData[i].key_name === "player.disabled_drag") {
+          let value = 0;
+          if (configData[i].key_value === "1") {
+            value = 1;
+          }
+          form.setFieldsValue({
+            "player.disabled_drag": value,
+          });
         } else if (
           configData[i].key_name === "player.is_enabled_bullet_secret"
         ) {
@@ -119,6 +127,14 @@ const SystemConfigPage = () => {
       form.setFieldsValue({ "player.is_enabled_bullet_secret": 1 });
     } else {
       form.setFieldsValue({ "player.is_enabled_bullet_secret": 0 });
+    }
+  };
+
+  const onDragChange = (checked: boolean) => {
+    if (checked) {
+      form.setFieldsValue({ "player.disabled_drag": 1 });
+    } else {
+      form.setFieldsValue({ "player.disabled_drag": 0 });
     }
   };
 
@@ -307,6 +323,16 @@ const SystemConfigPage = () => {
           onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
+          <Form.Item style={{ marginBottom: 30 }} label="禁止拖动进度条">
+            <Space align="baseline" style={{ height: 32 }}>
+              <Form.Item name="player.disabled_drag" valuePropName="checked">
+                <Switch onChange={onDragChange} />
+              </Form.Item>
+              <div className="helper-text ml-24">
+                （打开后禁止学员在首次学习中拖动进度条，以防刷课）
+              </div>
+            </Space>
+          </Form.Item>
           <Form.Item style={{ marginBottom: 30 }} label="播放器跑马灯">
             <Space align="baseline" style={{ height: 32 }}>
               <Form.Item
