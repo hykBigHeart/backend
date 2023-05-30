@@ -402,7 +402,6 @@ const SystemConfigPage = () => {
               <div className="d-flex">
                 <Image
                   preview={false}
-                  width={320}
                   height={180}
                   src={thumb}
                   style={{ borderRadius: 6 }}
