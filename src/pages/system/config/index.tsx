@@ -437,7 +437,7 @@ const SystemConfigPage = () => {
                     }}
                   ></UploadImageButton>
                   <div className="helper-text ml-24">
-                    （推荐尺寸:19200x1080px，视频播放未开始时展示）
+                    （推荐尺寸:1920x1080px，视频播放未开始时展示）
                   </div>
                 </div>
               </div>
