@@ -117,6 +117,26 @@ const SystemConfigPage = () => {
           form.setFieldsValue({
             "member.default_avatar": configData[i].key_value,
           });
+        } else if (configData[i].key_name === "minio.access_key") {
+          form.setFieldsValue({
+            "minio.access_key": configData[i].key_value,
+          });
+        } else if (configData[i].key_name === "minio.secret_key") {
+          form.setFieldsValue({
+            "minio.secret_key": configData[i].key_value,
+          });
+        } else if (configData[i].key_name === "minio.bucket") {
+          form.setFieldsValue({
+            "minio.bucket": configData[i].key_value,
+          });
+        } else if (configData[i].key_name === "minio.endpoint") {
+          form.setFieldsValue({
+            "minio.endpoint": configData[i].key_value,
+          });
+        } else if (configData[i].key_name === "minio.domain") {
+          form.setFieldsValue({
+            "minio.domain": configData[i].key_value,
+          });
         }
       }
     });
@@ -516,6 +536,86 @@ const SystemConfigPage = () => {
               </div>
             </Form.Item>
           )}
+          <Form.Item
+            style={{ marginBottom: 30 }}
+            wrapperCol={{ offset: 3, span: 21 }}
+          >
+            <Button type="primary" htmlType="submit" loading={loading}>
+              保存
+            </Button>
+          </Form.Item>
+        </Form>
+      ),
+    },
+    {
+      key: "4",
+      label: `MinIO存储`,
+      children: (
+        <Form
+          form={form}
+          name="IO-basic"
+          labelCol={{ span: 3 }}
+          wrapperCol={{ span: 21 }}
+          style={{ width: 1000, paddingTop: 30 }}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          autoComplete="off"
+        >
+          <Form.Item
+            style={{ marginBottom: 30 }}
+            label="AccessKey"
+            name="minio.access_key"
+          >
+            <Input
+              style={{ width: 274 }}
+              allowClear
+              placeholder="请填写AccessKey"
+            />
+          </Form.Item>
+          <Form.Item
+            style={{ marginBottom: 30 }}
+            label="SecretKey"
+            name="minio.secret_key"
+          >
+            <Input
+              style={{ width: 274 }}
+              allowClear
+              placeholder="请填写SecretKey"
+            />
+          </Form.Item>
+          <Form.Item
+            style={{ marginBottom: 30 }}
+            label="Bucket"
+            name="minio.bucket"
+          >
+            <Input
+              style={{ width: 274 }}
+              allowClear
+              placeholder="请填写Bucket"
+            />
+          </Form.Item>
+          <Form.Item
+            style={{ marginBottom: 30 }}
+            label="Endpoint"
+            name="minio.endpoint"
+          >
+            <Input
+              style={{ width: 274 }}
+              allowClear
+              placeholder="请填写Endpoint"
+            />
+          </Form.Item>
+          <Form.Item
+            style={{ marginBottom: 30 }}
+            label="Domain"
+            name="minio.domain"
+          >
+            <Input
+              style={{ width: 274 }}
+              allowClear
+              placeholder="请填写Domain"
+            />
+          </Form.Item>
           <Form.Item
             style={{ marginBottom: 30 }}
             wrapperCol={{ offset: 3, span: 21 }}
