@@ -117,6 +117,10 @@ export const CourseHourUpdate: React.FC<PropInterface> = ({
         });
       }
     }
+    if (hours.length === 0) {
+      message.error("请选择视频");
+      return;
+    }
     courseHour
       .storeCourseHourMulti(id, hours)
       .then((res: any) => {
@@ -147,6 +151,10 @@ export const CourseHourUpdate: React.FC<PropInterface> = ({
           rid: videos[i].rid,
         });
       }
+    }
+    if (hours.length === 0) {
+      message.error("请选择视频");
+      return;
     }
     courseHour
       .storeCourseHourMulti(id, hours)

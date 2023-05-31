@@ -263,7 +263,7 @@ const DashboardPage = () => {
                           {
                             basicData.user_learn_top10_users[
                               basicData.user_learn_top10[0].user_id
-                            ].name
+                            ]?.name
                           }
                         </div>
                       )}
@@ -288,7 +288,7 @@ const DashboardPage = () => {
                           {
                             basicData.user_learn_top10_users[
                               basicData.user_learn_top10[1].user_id
-                            ].name
+                            ]?.name
                           }
                         </div>
                       )}
@@ -313,7 +313,7 @@ const DashboardPage = () => {
                           {
                             basicData.user_learn_top10_users[
                               basicData.user_learn_top10[2].user_id
-                            ].name
+                            ]?.name
                           }
                         </div>
                       )}
@@ -334,7 +334,7 @@ const DashboardPage = () => {
                           {
                             basicData.user_learn_top10_users[
                               basicData.user_learn_top10[3].user_id
-                            ].name
+                            ]?.name
                           }
                         </div>
                       )}
@@ -355,7 +355,7 @@ const DashboardPage = () => {
                           {
                             basicData.user_learn_top10_users[
                               basicData.user_learn_top10[4].user_id
-                            ].name
+                            ]?.name
                           }
                         </div>
                       )}
@@ -380,7 +380,7 @@ const DashboardPage = () => {
                           {
                             basicData.user_learn_top10_users[
                               basicData.user_learn_top10[5].user_id
-                            ].name
+                            ]?.name
                           }
                         </div>
                       )}
@@ -401,7 +401,7 @@ const DashboardPage = () => {
                           {
                             basicData.user_learn_top10_users[
                               basicData.user_learn_top10[6].user_id
-                            ].name
+                            ]?.name
                           }
                         </div>
                       )}
@@ -422,7 +422,7 @@ const DashboardPage = () => {
                           {
                             basicData.user_learn_top10_users[
                               basicData.user_learn_top10[7].user_id
-                            ].name
+                            ]?.name
                           }
                         </div>
                       )}
@@ -443,7 +443,7 @@ const DashboardPage = () => {
                           {
                             basicData.user_learn_top10_users[
                               basicData.user_learn_top10[8].user_id
-                            ].name
+                            ]?.name
                           }
                         </div>
                       )}
@@ -464,7 +464,7 @@ const DashboardPage = () => {
                           {
                             basicData.user_learn_top10_users[
                               basicData.user_learn_top10[9].user_id
-                            ].name
+                            ]?.name
                           }
                         </div>
                       )}

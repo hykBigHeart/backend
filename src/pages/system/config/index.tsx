@@ -65,6 +65,14 @@ const SystemConfigPage = () => {
           form.setFieldsValue({
             "player.poster": configData[i].key_value,
           });
+        } else if (configData[i].key_name === "player.disabled_drag") {
+          let value = 0;
+          if (configData[i].key_value === "1") {
+            value = 1;
+          }
+          form.setFieldsValue({
+            "player.disabled_drag": value,
+          });
         } else if (
           configData[i].key_name === "player.is_enabled_bullet_secret"
         ) {
@@ -109,6 +117,26 @@ const SystemConfigPage = () => {
           form.setFieldsValue({
             "member.default_avatar": configData[i].key_value,
           });
+        } else if (configData[i].key_name === "minio.access_key") {
+          form.setFieldsValue({
+            "minio.access_key": configData[i].key_value,
+          });
+        } else if (configData[i].key_name === "minio.secret_key") {
+          form.setFieldsValue({
+            "minio.secret_key": configData[i].key_value,
+          });
+        } else if (configData[i].key_name === "minio.bucket") {
+          form.setFieldsValue({
+            "minio.bucket": configData[i].key_value,
+          });
+        } else if (configData[i].key_name === "minio.endpoint") {
+          form.setFieldsValue({
+            "minio.endpoint": configData[i].key_value,
+          });
+        } else if (configData[i].key_name === "minio.domain") {
+          form.setFieldsValue({
+            "minio.domain": configData[i].key_value,
+          });
         }
       }
     });
@@ -119,6 +147,14 @@ const SystemConfigPage = () => {
       form.setFieldsValue({ "player.is_enabled_bullet_secret": 1 });
     } else {
       form.setFieldsValue({ "player.is_enabled_bullet_secret": 0 });
+    }
+  };
+
+  const onDragChange = (checked: boolean) => {
+    if (checked) {
+      form.setFieldsValue({ "player.disabled_drag": 1 });
+    } else {
+      form.setFieldsValue({ "player.disabled_drag": 0 });
     }
   };
 
@@ -307,6 +343,16 @@ const SystemConfigPage = () => {
           onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
+          <Form.Item style={{ marginBottom: 30 }} label="禁止拖动进度条">
+            <Space align="baseline" style={{ height: 32 }}>
+              <Form.Item name="player.disabled_drag" valuePropName="checked">
+                <Switch onChange={onDragChange} />
+              </Form.Item>
+              <div className="helper-text ml-24">
+                （打开后禁止学员在首次学习中拖动进度条，以防刷课）
+              </div>
+            </Space>
+          </Form.Item>
           <Form.Item style={{ marginBottom: 30 }} label="播放器跑马灯">
             <Space align="baseline" style={{ height: 32 }}>
               <Form.Item
@@ -376,7 +422,6 @@ const SystemConfigPage = () => {
               <div className="d-flex">
                 <Image
                   preview={false}
-                  width={320}
                   height={180}
                   src={thumb}
                   style={{ borderRadius: 6 }}
@@ -390,7 +435,7 @@ const SystemConfigPage = () => {
                     }}
                   ></UploadImageButton>
                   <div className="helper-text ml-24">
-                    （推荐尺寸:19200x1080px，视频播放未开始时展示）
+                    （推荐尺寸:1920x1080px，视频播放未开始时展示）
                   </div>
                 </div>
               </div>
@@ -412,7 +457,7 @@ const SystemConfigPage = () => {
                     }}
                   ></UploadImageButton>
                   <div className="helper-text ml-24">
-                    （推荐尺寸:19200x1080px，视频播放未开始时展示）
+                    （推荐尺寸:1920x1080px，视频播放未开始时展示）
                   </div>
                 </div>
               </div>
@@ -491,6 +536,86 @@ const SystemConfigPage = () => {
               </div>
             </Form.Item>
           )}
+          <Form.Item
+            style={{ marginBottom: 30 }}
+            wrapperCol={{ offset: 3, span: 21 }}
+          >
+            <Button type="primary" htmlType="submit" loading={loading}>
+              保存
+            </Button>
+          </Form.Item>
+        </Form>
+      ),
+    },
+    {
+      key: "4",
+      label: `MinIO存储`,
+      children: (
+        <Form
+          form={form}
+          name="IO-basic"
+          labelCol={{ span: 3 }}
+          wrapperCol={{ span: 21 }}
+          style={{ width: 1000, paddingTop: 30 }}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          autoComplete="off"
+        >
+          <Form.Item
+            style={{ marginBottom: 30 }}
+            label="AccessKey"
+            name="minio.access_key"
+          >
+            <Input
+              style={{ width: 274 }}
+              allowClear
+              placeholder="请填写AccessKey"
+            />
+          </Form.Item>
+          <Form.Item
+            style={{ marginBottom: 30 }}
+            label="SecretKey"
+            name="minio.secret_key"
+          >
+            <Input
+              style={{ width: 274 }}
+              allowClear
+              placeholder="请填写SecretKey"
+            />
+          </Form.Item>
+          <Form.Item
+            style={{ marginBottom: 30 }}
+            label="Bucket"
+            name="minio.bucket"
+          >
+            <Input
+              style={{ width: 274 }}
+              allowClear
+              placeholder="请填写Bucket"
+            />
+          </Form.Item>
+          <Form.Item
+            style={{ marginBottom: 30 }}
+            label="Endpoint"
+            name="minio.endpoint"
+          >
+            <Input
+              style={{ width: 274 }}
+              allowClear
+              placeholder="请填写Endpoint"
+            />
+          </Form.Item>
+          <Form.Item
+            style={{ marginBottom: 30 }}
+            label="Domain"
+            name="minio.domain"
+          >
+            <Input
+              style={{ width: 274 }}
+              allowClear
+              placeholder="请填写Domain"
+            />
+          </Form.Item>
           <Form.Item
             style={{ marginBottom: 30 }}
             wrapperCol={{ offset: 3, span: 21 }}

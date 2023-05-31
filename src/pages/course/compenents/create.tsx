@@ -241,6 +241,10 @@ export const CourseCreate: React.FC<PropInterface> = ({
   };
 
   const selectData = (arr: any, videos: any) => {
+    if (arr.length === 0) {
+      message.error("请选择视频");
+      return;
+    }
     let keys = [...hours];
     let data = [...treeData];
     keys = keys.concat(arr);
@@ -251,6 +255,10 @@ export const CourseCreate: React.FC<PropInterface> = ({
   };
 
   const selectChapterData = (arr: any, videos: any) => {
+    if (arr.length === 0) {
+      message.error("请选择视频");
+      return;
+    }
     const data = [...chapters];
     const keys = [...chapterHours];
     keys[addvideoCurrent] = keys[addvideoCurrent].concat(arr);

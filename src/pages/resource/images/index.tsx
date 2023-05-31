@@ -98,6 +98,7 @@ const ResourceImagesPage = () => {
   const resetImageList = () => {
     setPage(1);
     setImageList([]);
+    setSelectKey([]);
     setRefresh(!refresh);
   };
 
