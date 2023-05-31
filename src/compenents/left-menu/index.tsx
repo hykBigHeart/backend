@@ -104,6 +104,7 @@ export const LeftMenu: React.FC = () => {
       }
       newOpenKeys.push(openKeys[i]);
     }
+
     return newOpenKeys;
   };
 
