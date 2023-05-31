@@ -68,18 +68,17 @@ const items = [
   ),
 ];
 
-const children2Parent: any = {
-  "^/video": ["resource"],
-  "^/image": ["resource"],
-  "^/member": ["user"],
-  "^/department": ["user"],
-  "^/course": ["courses"],
-  "^/system": ["system"],
-};
-
 export const LeftMenu: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const children2Parent: any = {
+    "^/video": ["resource"],
+    "^/image": ["resource"],
+    "^/member": ["user"],
+    "^/department": ["user"],
+    "^/course": ["courses"],
+    "^/system": ["system"],
+  };
 
   const hit = (pathname: string): string[] => {
     for (let p in children2Parent) {
@@ -104,7 +103,6 @@ export const LeftMenu: React.FC = () => {
       }
       newOpenKeys.push(openKeys[i]);
     }
-
     return newOpenKeys;
   };
 
