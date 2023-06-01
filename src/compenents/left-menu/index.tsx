@@ -54,7 +54,7 @@ const items = [
     "课程中心",
     "courses",
     <i className="iconfont icon-icon-study" />,
-    [getItem("线上课", "/course", null, null, null, null)],
+    [getItem("线上课", "/course", null, null, null, "course")],
     null,
     null
   ),
@@ -63,8 +63,8 @@ const items = [
     "user",
     <i className="iconfont icon-icon-user" />,
     [
-      getItem("学员", "/member/index", null, null, null, null),
-      getItem("部门", "/department", null, null, null, null),
+      getItem("学员", "/member/index", null, null, null, "user-index"),
+      getItem("部门", "/department", null, null, null, "department-cud"),
     ],
     null,
     null
@@ -82,7 +82,14 @@ const items = [
         null,
         "system-config"
       ),
-      getItem("管理人员", "/system/administrator", null, null, null, null),
+      getItem(
+        "管理人员",
+        "/system/administrator",
+        null,
+        null,
+        null,
+        "admin-user-index"
+      ),
       // getItem("角色配置", "/system/adminroles", null, null, null, null),
     ],
     null,
