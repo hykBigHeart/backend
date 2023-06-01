@@ -88,6 +88,11 @@ export const SystemAdminrolesCreate: React.FC<PropInterface> = ({
           children: [],
         },
         {
+          title: "系统配置",
+          value: "系统配置-n",
+          children: [],
+        },
+        {
           title: "其它",
           value: "其它-n",
           children: [],
