@@ -1,16 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { Menu } from "antd";
+import { useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import styles from "./index.module.less";
 import logo from "../../assets/logo.png";
 
-function getItem(label: any, key: any, icon: any, children: any, type: any) {
+function getItem(
+  label: any,
+  key: any,
+  icon: any,
+  children: any,
+  type: any,
+  permission: any
+) {
   return {
     key,
     icon,
     children,
     label,
     type,
+    permission,
   };
 }
 const items = [
@@ -19,12 +28,14 @@ const items = [
     "/",
     <i className={`iconfont icon-icon-home`} />,
     null,
+    null,
     null
   ),
   getItem(
     "分类管理",
     "/resource-category",
     <i className="iconfont icon-icon-category" />,
+    null,
     null,
     null
   ),
@@ -33,16 +44,18 @@ const items = [
     "resource",
     <i className="iconfont icon-icon-file" />,
     [
-      getItem("视频", "/videos", null, null, null),
-      getItem("图片", "/images", null, null, null),
+      getItem("视频", "/videos", null, null, null, null),
+      getItem("图片", "/images", null, null, null, null),
     ],
+    null,
     null
   ),
   getItem(
     "课程中心",
     "courses",
     <i className="iconfont icon-icon-study" />,
-    [getItem("线上课", "/course", null, null, null)],
+    [getItem("线上课", "/course", null, null, null, null)],
+    null,
     null
   ),
   getItem(
@@ -50,9 +63,10 @@ const items = [
     "user",
     <i className="iconfont icon-icon-user" />,
     [
-      getItem("学员", "/member/index", null, null, null),
-      getItem("部门", "/department", null, null, null),
+      getItem("学员", "/member/index", null, null, null, null),
+      getItem("部门", "/department", null, null, null, null),
     ],
+    null,
     null
   ),
   getItem(
@@ -60,10 +74,18 @@ const items = [
     "system",
     <i className="iconfont icon-icon-setting" />,
     [
-      getItem("系统配置", "/system/config/index", null, null, null),
-      getItem("管理人员", "/system/administrator", null, null, null),
-      // getItem("角色配置", "/system/adminroles", null, null, null),
+      getItem(
+        "系统配置",
+        "/system/config/index",
+        null,
+        null,
+        null,
+        "system-config"
+      ),
+      getItem("管理人员", "/system/administrator", null, null, null, null),
+      // getItem("角色配置", "/system/adminroles", null, null, null, null),
     ],
+    null,
     null
   ),
 ];
@@ -112,9 +134,52 @@ export const LeftMenu: React.FC = () => {
   ]);
   // 展开菜单
   const [openKeys, setOpenKeys] = useState<string[]>(hit(location.pathname));
+  const permissions = useSelector(
+    (state: any) => state.loginUser.value.permissions
+  );
+  const [activeMenus, setActiveMenus] = useState<any>([]);
 
   const onClick = (e: any) => {
     navigate(e.key);
+  };
+
+  useEffect(() => {
+    checkMenuPermissions(items, permissions);
+  }, [items, permissions]);
+
+  const checkMenuPermissions = (items: any, permissions: any) => {
+    let menus: any = [];
+    if (permissions.length === 0) {
+      setActiveMenus(menus);
+      return;
+    }
+
+    for (let i in items) {
+      let menuItem = items[i];
+      if (!menuItem.children) {
+        // 一级菜单不做权限控制
+        menus.push(menuItem);
+        continue;
+      }
+      let children = [];
+
+      for (let j in menuItem.children) {
+        let childrenItem = menuItem.children[j];
+
+        if (
+          typeof permissions[childrenItem.permission] !== "undefined" ||
+          !childrenItem.permission
+        ) {
+          // 存在权限
+          children.push(childrenItem);
+        }
+      }
+
+      if (children.length > 0) {
+        menus.push(Object.assign({}, menuItem, { children: children }));
+      }
+    }
+    setActiveMenus(menus);
   };
 
   useEffect(() => {
@@ -157,7 +222,7 @@ export const LeftMenu: React.FC = () => {
           selectedKeys={selectedKeys}
           openKeys={openKeys}
           mode="inline"
-          items={items}
+          items={activeMenus}
           onSelect={(data: any) => {
             setSelectedKeys(data.selectedKeys);
           }}
