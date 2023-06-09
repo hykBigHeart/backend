@@ -482,9 +482,9 @@ export const CourseCreate: React.FC<PropInterface> = ({
               />
             </Form.Item>
             <Form.Item
-              label="必修选修"
+              label="课程属性"
               name="isRequired"
-              rules={[{ required: true, message: "请选择必修选修!" }]}
+              rules={[{ required: true, message: "请选择课程属性!" }]}
             >
               <Radio.Group>
                 <Radio value={1}>必修课</Radio>
