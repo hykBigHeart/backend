@@ -58,6 +58,11 @@ const ResourceImagesPage = () => {
     }
   }, [result.get("cid")]);
 
+  // 加载图片列表
+  useEffect(() => {
+    getImageList();
+  }, [category_ids, refresh, page, size]);
+
   // 删除图片
   const removeResource = () => {
     if (selectKey.length === 0) {
@@ -84,10 +89,8 @@ const ResourceImagesPage = () => {
 
   // 获取图片列表
   const getImageList = () => {
-    if (loading) {
-      return;
-    }
     setLoading(true);
+    console.log(category_ids);
     let categoryIds = category_ids.join(",");
     resource
       .resourceList(page, size, "", "", "", "IMAGE", categoryIds)
@@ -115,11 +118,6 @@ const ResourceImagesPage = () => {
     setSelectKey([]);
     setRefresh(!refresh);
   };
-
-  // 加载图片列表
-  useEffect(() => {
-    getImageList();
-  }, [category_ids, refresh, page, size]);
 
   const onChange = (e: any, id: number) => {
     e.preventDefault();
