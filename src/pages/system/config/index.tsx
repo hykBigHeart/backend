@@ -373,6 +373,14 @@ const SystemConfigPage = () => {
                   style={{ width: 274 }}
                   allowClear
                   placeholder="自定义跑马灯内容"
+                  onChange={(e) => {
+                    const { value } = e.target;
+                    if (!value && e.type !== "change") {
+                      setNameChecked(false);
+                      setEmailChecked(false);
+                      setIdCardChecked(false);
+                    }
+                  }}
                 />
               </Form.Item>
               <Checkbox
