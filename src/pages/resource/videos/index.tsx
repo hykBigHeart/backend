@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Modal, Table, message, Space } from "antd";
 import { resource } from "../../../api";
 // import styles from "./index.module.less";
+import { useLocation } from "react-router-dom";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import { dateFormat } from "../../../utils/index";
@@ -18,6 +19,7 @@ interface DataType {
 }
 
 const ResourceVideosPage = () => {
+  const result = new URLSearchParams(useLocation().search);
   const [videoList, setVideoList] = useState<any>([]);
   const [videosExtra, setVideoExtra] = useState<any>([]);
   const [adminUsers, setAdminUsers] = useState<any>({});
@@ -27,7 +29,19 @@ const ResourceVideosPage = () => {
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState<boolean>(true);
   const [category_ids, setCategoryIds] = useState<any>([]);
-  const [selLabel, setLabel] = useState<string>("全部视频");
+  const [selLabel, setLabel] = useState<string>(
+    result.get("label") ? String(result.get("label")) : "全部视频"
+  );
+  const [cateId, setCateId] = useState(Number(result.get("cid")));
+
+  useEffect(() => {
+    setCateId(Number(result.get("cid")));
+    if (Number(result.get("cid"))) {
+      let arr = [];
+      arr.push(Number(result.get("cid")));
+      setCategoryIds(arr);
+    }
+  }, [result.get("cid")]);
 
   const columns: ColumnsType<DataType> = [
     // {
@@ -170,6 +184,7 @@ const ResourceVideosPage = () => {
       <div className="tree-main-body">
         <div className="left-box">
           <TreeCategory
+            selected={category_ids}
             type="no-cate"
             text={"视频"}
             onUpdate={(keys: any, title: any) => {

@@ -21,7 +21,7 @@ import {
 import type { MenuProps } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { dateFormat } from "../../utils/index";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { TreeDepartment, TreeCategory, PerButton } from "../../compenents";
 import type { TabsProps } from "antd";
 import { CourseCreate } from "./compenents/create";
@@ -40,6 +40,7 @@ interface DataType {
 }
 
 const CoursePage = () => {
+  const result = new URLSearchParams(useLocation().search);
   const navigate = useNavigate();
   const [list, setList] = useState<any>([]);
   const [refresh, setRefresh] = useState(false);
@@ -50,18 +51,43 @@ const CoursePage = () => {
   const [category_ids, setCategoryIds] = useState<any>([]);
   const [title, setTitle] = useState<string>("");
   const [dep_ids, setDepIds] = useState<any>([]);
-  const [selLabel, setLabel] = useState<string>("全部分类");
-  const [selDepLabel, setDepLabel] = useState<string>("全部部门");
+  const [selLabel, setLabel] = useState<string>(
+    result.get("label") ? String(result.get("label")) : "全部分类"
+  );
+  const [selDepLabel, setDepLabel] = useState<string>(
+    result.get("label") ? String(result.get("label")) : "全部部门"
+  );
   const [course_category_ids, setCourseCategoryIds] = useState<any>({});
   const [course_dep_ids, setCourseDepIds] = useState<any>({});
   const [categories, setCategories] = useState<any>({});
   const [departments, setDepartments] = useState<any>({});
-  const [tabKey, setTabKey] = useState(1);
+  const [tabKey, setTabKey] = useState(result.get("did") ? "2" : "1");
 
   const [createVisible, setCreateVisible] = useState<boolean>(false);
   const [updateVisible, setUpdateVisible] = useState<boolean>(false);
   const [updateHourVisible, setHourUpdateVisible] = useState<boolean>(false);
   const [cid, setCid] = useState<number>(0);
+  const [cateId, setCateId] = useState(Number(result.get("cid")));
+  const [did, setDid] = useState(Number(result.get("did")));
+
+  useEffect(() => {
+    getList();
+  }, [category_ids, dep_ids, refresh, page, size, tabKey]);
+
+  useEffect(() => {
+    setCateId(Number(result.get("cid")));
+    if (Number(result.get("cid"))) {
+      let arr = [];
+      arr.push(Number(result.get("cid")));
+      setCategoryIds(arr);
+    }
+    setDid(Number(result.get("did")));
+    if (Number(result.get("did"))) {
+      let arr = [];
+      arr.push(Number(result.get("did")));
+      setDepIds(arr);
+    }
+  }, [result.get("cid"), result.get("did")]);
 
   const items: TabsProps["items"] = [
     {
@@ -70,6 +96,7 @@ const CoursePage = () => {
       children: (
         <div className="float-left">
           <TreeCategory
+            selected={category_ids}
             type=""
             text={"分类"}
             onUpdate={(keys: any, title: any) => {
@@ -90,6 +117,7 @@ const CoursePage = () => {
       children: (
         <div className="float-left">
           <TreeDepartment
+            selected={dep_ids}
             refresh={refresh}
             showNum={false}
             type="no-course"
@@ -288,7 +316,7 @@ const CoursePage = () => {
     setLoading(true);
     let categoryIds = "";
     let depIds = "";
-    if (tabKey === 1) {
+    if (tabKey === "1") {
       categoryIds = category_ids.join(",");
     } else {
       depIds = dep_ids.join(",");
@@ -317,11 +345,6 @@ const CoursePage = () => {
     setRefresh(!refresh);
   };
 
-  // 加载列表
-  useEffect(() => {
-    getList();
-  }, [category_ids, dep_ids, refresh, page, size, tabKey]);
-
   const paginationProps = {
     current: page, //当前页码
     pageSize: size,
@@ -337,7 +360,7 @@ const CoursePage = () => {
   };
 
   const onChange = (key: string) => {
-    setTabKey(Number(key));
+    setTabKey(key);
   };
 
   return (
@@ -345,7 +368,7 @@ const CoursePage = () => {
       <div className="tree-main-body">
         <div className="left-box">
           <Tabs
-            defaultActiveKey="1"
+            defaultActiveKey={tabKey}
             centered
             tabBarGutter={55}
             items={items}
@@ -354,7 +377,7 @@ const CoursePage = () => {
         </div>
         <div className="right-box">
           <div className="playedu-main-title float-left mb-24">
-            线上课 | {tabKey === 1 ? selLabel : selDepLabel}
+            线上课 | {tabKey === "1" ? selLabel : selDepLabel}
           </div>
           <div className="float-left j-b-flex mb-24">
             <div className="d-flex">
@@ -406,8 +429,8 @@ const CoursePage = () => {
               rowKey={(record) => record.id}
             />
             <CourseCreate
-              cateIds={tabKey === 1 ? category_ids : []}
-              depIds={tabKey === 2 ? dep_ids : []}
+              cateIds={tabKey === "1" ? category_ids : []}
+              depIds={tabKey === "2" ? dep_ids : []}
               open={createVisible}
               onCancel={() => {
                 setCreateVisible(false);

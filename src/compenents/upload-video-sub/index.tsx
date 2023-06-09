@@ -173,6 +173,7 @@ export const UploadVideoSub = (props: PropsInterface) => {
       <Row style={{ width: 752, minHeight: 520 }}>
         <Col span={7}>
           <TreeCategory
+            selected={[]}
             type="no-cate"
             text={props.label}
             onUpdate={(keys: any) => setCategoryIds(keys)}

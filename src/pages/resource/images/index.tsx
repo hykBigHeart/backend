@@ -11,6 +11,7 @@ import {
   Pagination,
 } from "antd";
 import { resource } from "../../../api";
+import { useLocation } from "react-router-dom";
 import styles from "./index.module.less";
 import { UploadImageSub } from "../../../compenents/upload-image-button/upload-image-sub";
 import { TreeCategory, PerButton } from "../../../compenents";
@@ -32,6 +33,7 @@ interface ImageItem {
 }
 
 const ResourceImagesPage = () => {
+  const result = new URLSearchParams(useLocation().search);
   const [imageList, setImageList] = useState<ImageItem[]>([]);
   const [refresh, setRefresh] = useState(false);
   const [page, setPage] = useState(1);
@@ -41,8 +43,20 @@ const ResourceImagesPage = () => {
   const [selectKey, setSelectKey] = useState<any>([]);
   const [visibleArr, setVisibleArr] = useState<any>([]);
   const [hoverArr, setHoverArr] = useState<any>([]);
-  const [selLabel, setLabel] = useState<string>("全部图片");
+  const [selLabel, setLabel] = useState<string>(
+    result.get("label") ? String(result.get("label")) : "全部图片"
+  );
   const [loading, setLoading] = useState<boolean>(false);
+  const [cateId, setCateId] = useState(Number(result.get("cid")));
+
+  useEffect(() => {
+    setCateId(Number(result.get("cid")));
+    if (Number(result.get("cid"))) {
+      let arr = [];
+      arr.push(Number(result.get("cid")));
+      setCategoryIds(arr);
+    }
+  }, [result.get("cid")]);
 
   // 删除图片
   const removeResource = () => {
@@ -151,6 +165,7 @@ const ResourceImagesPage = () => {
       <div className="tree-main-body">
         <div className="left-box">
           <TreeCategory
+            selected={category_ids}
             type="no-cate"
             text={"图片"}
             onUpdate={(keys: any, title: any) => {

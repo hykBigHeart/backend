@@ -88,7 +88,9 @@ const ResourceCategoryPage = () => {
                   <i
                     className="iconfont icon-icon-delete"
                     style={{ fontSize: 24 }}
-                    onClick={() => removeItem(categories[id][i].id)}
+                    onClick={() =>
+                      removeItem(categories[id][i].id, categories[id][i].name)
+                    }
                   />
                 )}
               </div>
@@ -123,7 +125,9 @@ const ResourceCategoryPage = () => {
                   <i
                     className="iconfont icon-icon-delete"
                     style={{ fontSize: 24 }}
-                    onClick={() => removeItem(categories[id][i].id)}
+                    onClick={() =>
+                      removeItem(categories[id][i].id, categories[id][i].name)
+                    }
                   />
                 )}
               </div>
@@ -142,7 +146,7 @@ const ResourceCategoryPage = () => {
     setRefresh(!refresh);
   };
 
-  const removeItem = (id: number) => {
+  const removeItem = (id: number, label: string) => {
     if (id === 0) {
       return;
     }
@@ -187,7 +191,9 @@ const ResourceCategoryPage = () => {
                     style={{ paddingLeft: 4, paddingRight: 4 }}
                     type="link"
                     danger
-                    onClick={() => navigate("/course")}
+                    onClick={() =>
+                      navigate("/course?cid=" + id + "&label=" + label)
+                    }
                   >
                     （{res.data.courses.length}个线上课程），
                   </Button>
@@ -197,7 +203,9 @@ const ResourceCategoryPage = () => {
                     type="link"
                     style={{ paddingLeft: 4, paddingRight: 4 }}
                     danger
-                    onClick={() => navigate("/videos")}
+                    onClick={() =>
+                      navigate("/videos?cid=" + id + "&label=" + label)
+                    }
                   >
                     （{res.data.videos.length}个视频文件），
                   </Button>
@@ -207,7 +215,9 @@ const ResourceCategoryPage = () => {
                     type="link"
                     style={{ paddingLeft: 4, paddingRight: 4 }}
                     danger
-                    onClick={() => navigate("/images")}
+                    onClick={() =>
+                      navigate("/images?cid=" + id + "&label=" + label)
+                    }
                   >
                     （{res.data.images.length}个图片文件），
                   </Button>

@@ -89,7 +89,12 @@ const DepartmentPage = () => {
                     <i
                       className="iconfont icon-icon-delete"
                       style={{ fontSize: 24 }}
-                      onClick={() => removeItem(departments[id][i].id)}
+                      onClick={() =>
+                        removeItem(
+                          departments[id][i].id,
+                          departments[id][i].name
+                        )
+                      }
                     />
                   </>
                 )}
@@ -124,7 +129,12 @@ const DepartmentPage = () => {
                     <i
                       className="iconfont icon-icon-delete"
                       style={{ fontSize: 24 }}
-                      onClick={() => removeItem(departments[id][i].id)}
+                      onClick={() =>
+                        removeItem(
+                          departments[id][i].id,
+                          departments[id][i].name
+                        )
+                      }
                     />
                   </>
                 )}
@@ -144,7 +154,7 @@ const DepartmentPage = () => {
     setRefresh(!refresh);
   };
 
-  const removeItem = (id: number) => {
+  const removeItem = (id: number, label: string) => {
     if (id === 0) {
       return;
     }
@@ -187,7 +197,9 @@ const DepartmentPage = () => {
                     style={{ paddingLeft: 4, paddingRight: 4 }}
                     type="link"
                     danger
-                    onClick={() => navigate("/course")}
+                    onClick={() =>
+                      navigate("/course?did=" + id + "&label=" + label)
+                    }
                   >
                     （{res.data.courses.length}个线上课程），
                   </Button>
@@ -197,7 +209,9 @@ const DepartmentPage = () => {
                     type="link"
                     style={{ paddingLeft: 4, paddingRight: 4 }}
                     danger
-                    onClick={() => navigate("/member/index")}
+                    onClick={() =>
+                      navigate("/member/index?did=" + id + "&label=" + label)
+                    }
                   >
                     （{res.data.users.length}个学员），
                   </Button>
