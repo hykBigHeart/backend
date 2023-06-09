@@ -2,7 +2,7 @@ import { Button, message, Modal } from "antd";
 import Dragger from "antd/es/upload/Dragger";
 import { useState } from "react";
 import config from "../../../js/config";
-import { getToken } from "../../../utils";
+import { getToken, checkUrl } from "../../../utils";
 import { InboxOutlined } from "@ant-design/icons";
 
 interface PropsInterface {
@@ -17,8 +17,8 @@ export const UploadImageSub = (props: PropsInterface) => {
     name: "file",
     multiple: true,
     action:
-      config.app_url +
-      "/backend/v1/upload/minio?category_ids=" +
+      checkUrl(config.app_url) +
+      "backend/v1/upload/minio?category_ids=" +
       props.categoryIds.join(","),
     headers: {
       authorization: "Bearer " + getToken(),
