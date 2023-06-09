@@ -150,13 +150,16 @@ const DepartmentPage = () => {
     }
     department.checkDestroy(id).then((res: any) => {
       if (
+        res.data.children &&
         res.data.children.length === 0 &&
+        res.data.courses &&
         res.data.courses.length === 0 &&
+        res.data.users &&
         res.data.users.length === 0
       ) {
         delUser(id);
       } else {
-        if (res.data.children.length > 0) {
+        if (res.data.children && res.data.children.length > 0) {
           modal.warning({
             title: "操作确认",
             centered: true,
@@ -179,7 +182,7 @@ const DepartmentPage = () => {
             content: (
               <p>
                 此部门已关联
-                {res.data.courses.length > 0 && (
+                {res.data.courses && res.data.courses.length > 0 && (
                   <Button
                     style={{ paddingLeft: 4, paddingRight: 4 }}
                     type="link"
@@ -189,7 +192,7 @@ const DepartmentPage = () => {
                     （{res.data.courses.length}个线上课程），
                   </Button>
                 )}
-                {res.data.users.length > 0 && (
+                {res.data.users && res.data.users.length > 0 && (
                   <Button
                     type="link"
                     style={{ paddingLeft: 4, paddingRight: 4 }}

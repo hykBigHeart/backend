@@ -148,14 +148,18 @@ const ResourceCategoryPage = () => {
     }
     resourceCategory.checkDestroy(id).then((res: any) => {
       if (
+        res.data.children &&
         res.data.children.length === 0 &&
+        res.data.courses &&
         res.data.courses.length === 0 &&
+        res.data.images &&
         res.data.images.length === 0 &&
+        res.data.videos &&
         res.data.videos.length === 0
       ) {
         delUser(id);
       } else {
-        if (res.data.children.length > 0) {
+        if (res.data.children && res.data.children.length > 0) {
           modal.warning({
             title: "操作确认",
             centered: true,
@@ -178,7 +182,7 @@ const ResourceCategoryPage = () => {
             content: (
               <p>
                 此分类已关联
-                {res.data.courses.length > 0 && (
+                {res.data.courses && res.data.courses.length > 0 && (
                   <Button
                     style={{ paddingLeft: 4, paddingRight: 4 }}
                     type="link"
@@ -188,7 +192,7 @@ const ResourceCategoryPage = () => {
                     （{res.data.courses.length}个线上课程），
                   </Button>
                 )}
-                {res.data.videos.length > 0 && (
+                {res.data.videos && res.data.videos.length > 0 && (
                   <Button
                     type="link"
                     style={{ paddingLeft: 4, paddingRight: 4 }}
@@ -198,7 +202,7 @@ const ResourceCategoryPage = () => {
                     （{res.data.videos.length}个视频文件），
                   </Button>
                 )}
-                {res.data.images.length > 0 && (
+                {res.data.images && res.data.images.length > 0 && (
                   <Button
                     type="link"
                     style={{ paddingLeft: 4, paddingRight: 4 }}
