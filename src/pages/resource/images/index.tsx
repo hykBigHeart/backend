@@ -90,7 +90,6 @@ const ResourceImagesPage = () => {
   // 获取图片列表
   const getImageList = () => {
     setLoading(true);
-    console.log(category_ids);
     let categoryIds = category_ids.join(",");
     resource
       .resourceList(page, size, "", "", "", "IMAGE", categoryIds)
