@@ -266,6 +266,7 @@ const MemberPage = () => {
             type=""
             text={"部门"}
             onUpdate={(keys: any, title: any) => {
+              setPage(1);
               setDepIds(keys);
               var index = title.indexOf("(");
               if (index !== -1) {

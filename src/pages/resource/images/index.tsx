@@ -166,6 +166,7 @@ const ResourceImagesPage = () => {
             type="no-cate"
             text={"图片"}
             onUpdate={(keys: any, title: any) => {
+              setPage(1);
               setCategoryIds(keys);
               if (typeof title === "string") {
                 setLabel(title);

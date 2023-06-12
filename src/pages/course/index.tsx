@@ -100,6 +100,7 @@ const CoursePage = () => {
             type=""
             text={"分类"}
             onUpdate={(keys: any, title: any) => {
+              setPage(1);
               setCategoryIds(keys);
               if (typeof title === "string") {
                 setLabel(title);
@@ -123,6 +124,7 @@ const CoursePage = () => {
             type="no-course"
             text={"部门"}
             onUpdate={(keys: any, title: any) => {
+              setPage(1);
               setDepIds(keys);
               setDepLabel(title);
             }}

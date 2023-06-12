@@ -188,6 +188,7 @@ const ResourceVideosPage = () => {
             type="no-cate"
             text={"视频"}
             onUpdate={(keys: any, title: any) => {
+              setPage(1);
               setCategoryIds(keys);
               if (typeof title === "string") {
                 setLabel(title);
