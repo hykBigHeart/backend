@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import { Modal, Table, message, Space } from "antd";
+import { Modal, Table, message, Space, Dropdown, Button } from "antd";
+import type { MenuProps } from "antd";
 import { resource } from "../../../api";
 // import styles from "./index.module.less";
 import { useLocation } from "react-router-dom";
-import { ExclamationCircleFilled } from "@ant-design/icons";
+import { DownOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import { dateFormat } from "../../../utils/index";
 import { TreeCategory, DurationText, PerButton } from "../../../compenents";
@@ -29,10 +30,15 @@ const ResourceVideosPage = () => {
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState<boolean>(true);
   const [category_ids, setCategoryIds] = useState<any>([]);
+  const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
   const [selLabel, setLabel] = useState<string>(
     result.get("label") ? String(result.get("label")) : "全部视频"
   );
   const [cateId, setCateId] = useState(Number(result.get("cid")));
+  const [updateVisible, setUpdateVisible] = useState<boolean>(false);
+  const [playVisible, setPlayeVisible] = useState<boolean>(false);
+  const [multiConfig, setMultiConfig] = useState<boolean>(false);
+  const [updateId, setUpdateId] = useState(0);
 
   useEffect(() => {
     setCateId(Number(result.get("cid")));
@@ -44,18 +50,6 @@ const ResourceVideosPage = () => {
   }, [result.get("cid")]);
 
   const columns: ColumnsType<DataType> = [
-    // {
-    //   title: "封面",
-    //   dataIndex: "id",
-    //   render: (id: string) => (
-    //     <Image
-    //       preview={false}
-    //       width={120}
-    //       height={80}
-    //       src={videosExtra[id].poster}
-    //     ></Image>
-    //   ),
-    // },
     {
       title: "视频名称",
       dataIndex: "name",
@@ -94,20 +88,70 @@ const ResourceVideosPage = () => {
       title: "操作",
       key: "action",
       fixed: "right",
-      width: 100,
-      render: (_, record: any) => (
-        <Space size="small">
-          <PerButton
-            type="link"
-            text="删除"
-            class="b-link c-red"
-            icon={null}
-            p="resource-destroy"
-            onClick={() => removeResource(record.id)}
-            disabled={null}
-          />
-        </Space>
-      ),
+      width: 160,
+      render: (_, record: any) => {
+        const items: MenuProps["items"] = [
+          {
+            key: "1",
+            label: (
+              <PerButton
+                type="link"
+                text="编辑"
+                class="b-link c-red"
+                icon={null}
+                p="resource-update"
+                onClick={() => {
+                  setUpdateId(record.id);
+                  setUpdateVisible(true);
+                }}
+                disabled={null}
+              />
+            ),
+          },
+          {
+            key: "2",
+            label: (
+              <PerButton
+                type="link"
+                text="删除"
+                class="b-link c-red"
+                icon={null}
+                p="resource-destroy"
+                onClick={() => removeResource(record.id)}
+                disabled={null}
+              />
+            ),
+          },
+        ];
+
+        return (
+          <Space size="small">
+            <Button
+              type="link"
+              size="small"
+              className="b-n-link c-red"
+              onClick={() => {
+                setPlayeVisible(true);
+              }}
+            >
+              预览
+            </Button>
+            <div className="form-column"></div>
+            <Dropdown menu={{ items }}>
+              <Button
+                type="link"
+                className="b-link c-red"
+                onClick={(e) => e.preventDefault()}
+              >
+                <Space size="small" align="center">
+                  更多
+                  <DownOutlined />
+                </Space>
+              </Button>
+            </Dropdown>
+          </Space>
+        );
+      },
     },
   ];
 
@@ -119,12 +163,35 @@ const ResourceVideosPage = () => {
     confirm({
       title: "操作确认",
       icon: <ExclamationCircleFilled />,
-      content: "确认删除此视频？",
+      content: "删除前请检查选中视频文件无关联课程，确认删除？",
       centered: true,
       okText: "确认",
       cancelText: "取消",
       onOk() {
         resource.destroyResource(id).then(() => {
+          message.success("删除成功");
+          resetVideoList();
+        });
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
+
+  const removeResourceMulti = () => {
+    if (selectedRowKeys.length === 0) {
+      return;
+    }
+    confirm({
+      title: "操作确认",
+      icon: <ExclamationCircleFilled />,
+      content: "删除前请检查选中视频文件无关联课程，确认删除？",
+      centered: true,
+      okText: "确认",
+      cancelText: "取消",
+      onOk() {
+        resource.destroyResourceMulti(selectedRowKeys).then(() => {
           message.success("删除成功");
           resetVideoList();
         });
@@ -152,11 +219,13 @@ const ResourceVideosPage = () => {
         console.log("错误,", err);
       });
   };
+
   // 重置列表
   const resetVideoList = () => {
     setPage(1);
     setSize(10);
     setVideoList([]);
+    setSelectedRowKeys([]);
     setRefresh(!refresh);
   };
 
@@ -177,6 +246,12 @@ const ResourceVideosPage = () => {
   const handlePageChange = (page: number, pageSize: number) => {
     setPage(page);
     setSize(pageSize);
+  };
+
+  const rowSelection = {
+    onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
+      setSelectedRowKeys(selectedRowKeys);
+    },
   };
 
   return (
@@ -202,22 +277,59 @@ const ResourceVideosPage = () => {
           <div className="d-flex playedu-main-title float-left mb-24">
             视频 | {selLabel}
           </div>
-          <div className="float-left mb-24">
-            <UploadVideoButton
-              categoryIds={category_ids}
-              onUpdate={() => {
-                resetVideoList();
-              }}
-            ></UploadVideoButton>
+          <div className="float-left  j-b-flex  mb-24">
+            <div>
+              <UploadVideoButton
+                categoryIds={category_ids}
+                onUpdate={() => {
+                  resetVideoList();
+                }}
+              ></UploadVideoButton>
+            </div>
+            <div className="d-flex">
+              <Button
+                type="primary"
+                className="mr-16"
+                onClick={() => {
+                  setSelectedRowKeys([]);
+                  setMultiConfig(!multiConfig);
+                }}
+              >
+                {multiConfig ? "取消操作" : "批量操作"}
+              </Button>
+              <PerButton
+                type="default"
+                text="删除"
+                class=""
+                icon={null}
+                p="resource-destroy"
+                onClick={() => removeResourceMulti()}
+                disabled={selectedRowKeys.length === 0}
+              />
+            </div>
           </div>
           <div className="float-left">
-            <Table
-              columns={columns}
-              dataSource={videoList}
-              loading={loading}
-              pagination={paginationProps}
-              rowKey={(record) => record.id}
-            />
+            {multiConfig ? (
+              <Table
+                rowSelection={{
+                  type: "checkbox",
+                  ...rowSelection,
+                }}
+                columns={columns}
+                dataSource={videoList}
+                loading={loading}
+                pagination={paginationProps}
+                rowKey={(record) => record.id}
+              />
+            ) : (
+              <Table
+                columns={columns}
+                dataSource={videoList}
+                loading={loading}
+                pagination={paginationProps}
+                rowKey={(record) => record.id}
+              />
+            )}
           </div>
         </div>
       </div>

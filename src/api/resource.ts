@@ -61,3 +61,7 @@ export function destroyResourceMulti(ids: number[]) {
     ids: ids,
   });
 }
+
+export function videoUpdate(id: number, params: any) {
+  return client.put(`/backend/v1/resource/${id}`, params);
+}
