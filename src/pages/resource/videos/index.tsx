@@ -9,6 +9,8 @@ import type { ColumnsType } from "antd/es/table";
 import { dateFormat } from "../../../utils/index";
 import { TreeCategory, DurationText, PerButton } from "../../../compenents";
 import { UploadVideoButton } from "../../../compenents/upload-video-button";
+import { VideoPlayDialog } from "./compenents/video-play-dialog";
+import { VideosUpdateDialog } from "./compenents/update-dialog";
 
 const { confirm } = Modal;
 
@@ -39,6 +41,7 @@ const ResourceVideosPage = () => {
   const [playVisible, setPlayeVisible] = useState<boolean>(false);
   const [multiConfig, setMultiConfig] = useState<boolean>(false);
   const [updateId, setUpdateId] = useState(0);
+  const [playUrl, setPlayUrl] = useState<string>("");
 
   useEffect(() => {
     setCateId(Number(result.get("cid")));
@@ -131,6 +134,8 @@ const ResourceVideosPage = () => {
               size="small"
               className="b-n-link c-red"
               onClick={() => {
+                setUpdateId(record.id);
+                setPlayUrl(record.url);
                 setPlayeVisible(true);
               }}
             >
@@ -332,6 +337,17 @@ const ResourceVideosPage = () => {
             )}
           </div>
         </div>
+        <VideoPlayDialog
+          id={Number(updateId)}
+          open={playVisible}
+          url={playUrl}
+          onCancel={() => setPlayeVisible(false)}
+        ></VideoPlayDialog>
+        <VideosUpdateDialog
+          id={Number(updateId)}
+          open={updateVisible}
+          onCancel={() => setUpdateVisible(false)}
+        ></VideosUpdateDialog>
       </div>
     </>
   );

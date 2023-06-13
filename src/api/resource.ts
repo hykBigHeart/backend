@@ -62,6 +62,10 @@ export function destroyResourceMulti(ids: number[]) {
   });
 }
 
+export function videoDetail(id: number) {
+  return client.get(`/backend/v1/resource/${id}`, {});
+}
+
 export function videoUpdate(id: number, params: any) {
   return client.put(`/backend/v1/resource/${id}`, params);
 }
