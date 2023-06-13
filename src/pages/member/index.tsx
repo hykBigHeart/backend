@@ -20,7 +20,7 @@ import {
 } from "@ant-design/icons";
 import { user } from "../../api/index";
 import { dateFormat } from "../../utils/index";
-import { Link, Navigate } from "react-router-dom";
+import { Link, Navigate, useLocation } from "react-router-dom";
 import { TreeDepartment, PerButton } from "../../compenents";
 import { MemberCreate } from "./compenents/create";
 import { MemberUpdate } from "./compenents/update";
@@ -37,6 +37,7 @@ interface DataType {
 }
 
 const MemberPage = () => {
+  const result = new URLSearchParams(useLocation().search);
   const [loading, setLoading] = useState<boolean>(true);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
@@ -47,12 +48,24 @@ const MemberPage = () => {
   const [nickname, setNickname] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [dep_ids, setDepIds] = useState<any>([]);
-  const [selLabel, setLabel] = useState<string>("全部部门");
+  const [selLabel, setLabel] = useState<string>(
+    result.get("label") ? String(result.get("label")) : "全部部门"
+  );
   const [createVisible, setCreateVisible] = useState<boolean>(false);
   const [updateVisible, setUpdateVisible] = useState<boolean>(false);
   const [mid, setMid] = useState<number>(0);
   const [user_dep_ids, setUserDepIds] = useState<any>({});
   const [departments, setDepartments] = useState<any>({});
+  const [did, setDid] = useState(Number(result.get("did")));
+
+  useEffect(() => {
+    setDid(Number(result.get("did")));
+    if (Number(result.get("did"))) {
+      let arr = [];
+      arr.push(Number(result.get("did")));
+      setDepIds(arr);
+    }
+  }, [result.get("did")]);
 
   const columns: ColumnsType<DataType> = [
     {
@@ -247,11 +260,13 @@ const MemberPage = () => {
       <div className="tree-main-body">
         <div className="left-box">
           <TreeDepartment
+            selected={dep_ids}
             refresh={refresh}
             showNum={true}
             type=""
             text={"部门"}
             onUpdate={(keys: any, title: any) => {
+              setPage(1);
               setDepIds(keys);
               var index = title.indexOf("(");
               if (index !== -1) {

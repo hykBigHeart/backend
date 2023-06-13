@@ -13,6 +13,7 @@ interface PropInterface {
   text: string;
   refresh: boolean;
   showNum: boolean;
+  selected: any;
   onUpdate: (keys: any, title: any) => void;
 }
 
@@ -21,6 +22,12 @@ export const TreeDepartment = (props: PropInterface) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [selectKey, setSelectKey] = useState<any>([]);
   const [userTotal, setUserTotal] = useState(0);
+
+  useEffect(() => {
+    if (props.selected && props.selected.length > 0) {
+      setSelectKey(props.selected);
+    }
+  }, [props.selected]);
 
   useEffect(() => {
     setLoading(true);

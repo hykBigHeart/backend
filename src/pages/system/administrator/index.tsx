@@ -40,6 +40,7 @@ const SystemAdministratorPage = () => {
   const [role_ids, setRoleIds] = useState<any>([]);
   const [selLabel, setLabel] = useState<string>("全部管理员");
   const [roleDelSuccess, setRoleDelSuccess] = useState(false);
+  const [isSuper, setIsSuper] = useState(false);
 
   const [name, setName] = useState<string>("");
 
@@ -216,9 +217,10 @@ const SystemAdministratorPage = () => {
             refresh={refresh}
             type=""
             text={"管理员"}
-            onUpdate={(keys: any, title: any) => {
+            onUpdate={(keys: any, title: any, isSuper: boolean) => {
               setRoleIds(keys);
               setLabel(title);
+              setIsSuper(isSuper);
             }}
           />
         </div>
@@ -248,7 +250,7 @@ const SystemAdministratorPage = () => {
                   disabled={null}
                 />
               )}
-              {role_ids.length > 0 && (
+              {!isSuper && role_ids.length > 0 && (
                 <>
                   <PerButton
                     text="角色权限"

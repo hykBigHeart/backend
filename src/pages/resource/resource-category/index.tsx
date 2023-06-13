@@ -84,13 +84,13 @@ const ResourceCategoryPage = () => {
                     }}
                   />
                 )}
-                {through("resource-destroy") && (
-                  <i
-                    className="iconfont icon-icon-delete"
-                    style={{ fontSize: 24 }}
-                    onClick={() => removeItem(categories[id][i].id)}
-                  />
-                )}
+                <i
+                  className="iconfont icon-icon-delete"
+                  style={{ fontSize: 24 }}
+                  onClick={() =>
+                    removeItem(categories[id][i].id, categories[id][i].name)
+                  }
+                />
               </div>
             </>
           ),
@@ -119,13 +119,13 @@ const ResourceCategoryPage = () => {
                     }}
                   />
                 )}
-                {through("resource-destroy") && (
-                  <i
-                    className="iconfont icon-icon-delete"
-                    style={{ fontSize: 24 }}
-                    onClick={() => removeItem(categories[id][i].id)}
-                  />
-                )}
+                <i
+                  className="iconfont icon-icon-delete"
+                  style={{ fontSize: 24 }}
+                  onClick={() =>
+                    removeItem(categories[id][i].id, categories[id][i].name)
+                  }
+                />
               </div>
             </>
           ),
@@ -142,20 +142,24 @@ const ResourceCategoryPage = () => {
     setRefresh(!refresh);
   };
 
-  const removeItem = (id: number) => {
+  const removeItem = (id: number, label: string) => {
     if (id === 0) {
       return;
     }
     resourceCategory.checkDestroy(id).then((res: any) => {
       if (
+        res.data.children &&
         res.data.children.length === 0 &&
+        res.data.courses &&
         res.data.courses.length === 0 &&
+        res.data.images &&
         res.data.images.length === 0 &&
+        res.data.videos &&
         res.data.videos.length === 0
       ) {
         delUser(id);
       } else {
-        if (res.data.children.length > 0) {
+        if (res.data.children && res.data.children.length > 0) {
           modal.warning({
             title: "操作确认",
             centered: true,
@@ -178,32 +182,38 @@ const ResourceCategoryPage = () => {
             content: (
               <p>
                 此分类已关联
-                {res.data.courses.length > 0 && (
+                {res.data.courses && res.data.courses.length > 0 && (
                   <Button
                     style={{ paddingLeft: 4, paddingRight: 4 }}
                     type="link"
                     danger
-                    onClick={() => navigate("/course")}
+                    onClick={() =>
+                      navigate("/course?cid=" + id + "&label=" + label)
+                    }
                   >
                     （{res.data.courses.length}个线上课程），
                   </Button>
                 )}
-                {res.data.videos.length > 0 && (
+                {res.data.videos && res.data.videos.length > 0 && (
                   <Button
                     type="link"
                     style={{ paddingLeft: 4, paddingRight: 4 }}
                     danger
-                    onClick={() => navigate("/videos")}
+                    onClick={() =>
+                      navigate("/videos?cid=" + id + "&label=" + label)
+                    }
                   >
                     （{res.data.videos.length}个视频文件），
                   </Button>
                 )}
-                {res.data.images.length > 0 && (
+                {res.data.images && res.data.images.length > 0 && (
                   <Button
                     type="link"
                     style={{ paddingLeft: 4, paddingRight: 4 }}
                     danger
-                    onClick={() => navigate("/images")}
+                    onClick={() =>
+                      navigate("/images?cid=" + id + "&label=" + label)
+                    }
                   >
                     （{res.data.images.length}个图片文件），
                   </Button>

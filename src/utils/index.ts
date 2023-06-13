@@ -124,3 +124,12 @@ export function ValidataCredentials(value: any) {
     }
   }
 }
+
+export function checkUrl(value: any) {
+  let url = value;
+  let str = url.substr(url.length - 1, 1);
+  if (str !== "/") {
+    url = url + "/";
+  }
+  return url;
+}

@@ -5,13 +5,13 @@ import { resourceCategory } from "../../api/index";
 interface Option {
   key: string | number;
   title: any;
-
   children?: Option[];
 }
 
 interface PropInterface {
   type: string;
   text: string;
+  selected: any;
   onUpdate: (keys: any, title: any) => void;
 }
 
@@ -19,6 +19,12 @@ export const TreeCategory = (props: PropInterface) => {
   const [treeData, setTreeData] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [selectKey, setSelectKey] = useState<any>([]);
+
+  useEffect(() => {
+    if (props.selected && props.selected.length > 0) {
+      setSelectKey(props.selected);
+    }
+  }, [props.selected]);
 
   useEffect(() => {
     resourceCategory.resourceCategoryList().then((res: any) => {
