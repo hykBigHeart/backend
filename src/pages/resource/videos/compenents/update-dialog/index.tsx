@@ -6,12 +6,14 @@ interface PropInterface {
   id: number;
   open: boolean;
   onCancel: () => void;
+  onSuccess: () => void;
 }
 
 export const VideosUpdateDialog: React.FC<PropInterface> = ({
   id,
   open,
   onCancel,
+  onSuccess,
 }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState<boolean>(true);
@@ -72,9 +74,12 @@ export const VideosUpdateDialog: React.FC<PropInterface> = ({
   };
 
   const onFinish = (values: any) => {
+    if (Array.isArray(values.category_id)) {
+      values.category_id = values.category_id[0];
+    }
     resource.videoUpdate(id, values).then((res: any) => {
       message.success("保存成功！");
-      onCancel();
+      onSuccess();
     });
   };
 

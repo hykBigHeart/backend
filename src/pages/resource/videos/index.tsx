@@ -341,6 +341,10 @@ const ResourceVideosPage = () => {
           id={Number(updateId)}
           open={updateVisible}
           onCancel={() => setUpdateVisible(false)}
+          onSuccess={() => {
+            setUpdateVisible(false);
+            setRefresh(!refresh);
+          }}
         ></VideosUpdateDialog>
       </div>
     </>
