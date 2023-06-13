@@ -52,6 +52,10 @@ const SystemConfigPage = () => {
           form.setFieldsValue({
             "system.api_url": configData[i].key_value,
           });
+        } else if (configData[i].key_name === "system.api_url") {
+          form.setFieldsValue({
+            "system.api_url": configData[i].key_value,
+          });
         } else if (configData[i].key_name === "system.pc_url") {
           form.setFieldsValue({
             "system.pc_url": configData[i].key_value,
@@ -277,6 +281,13 @@ const SystemConfigPage = () => {
           )}
           <Form.Item
             style={{ marginBottom: 30 }}
+            label="API访问地址"
+            name="system.api_url"
+          >
+            <Input style={{ width: 274 }} placeholder="请填写API访问地址" />
+          </Form.Item>
+          <Form.Item
+            style={{ marginBottom: 30 }}
             label="网站标题"
             name="system.name"
           >
@@ -297,13 +308,7 @@ const SystemConfigPage = () => {
               placeholder="请填写网站页脚"
             />
           </Form.Item>
-          {/* <Form.Item
-            style={{ marginBottom: 30 }}
-            label="API访问地址"
-            name="system.api_url"
-          >
-            <Input style={{ width: 274 }} placeholder="请填写API访问地址" />
-          </Form.Item>
+          {/* 
           <Form.Item
             style={{ marginBottom: 30 }}
             label="PC端访问地址"
