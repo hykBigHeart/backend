@@ -73,11 +73,6 @@ export const SystemAdminrolesCreate: React.FC<PropInterface> = ({
           children: [],
         },
         {
-          title: "资源",
-          value: "资源-n",
-          children: [],
-        },
-        {
           title: "资源分类",
           value: "资源分类-n",
           children: [],
