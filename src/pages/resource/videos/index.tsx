@@ -97,32 +97,28 @@ const ResourceVideosPage = () => {
           {
             key: "1",
             label: (
-              <PerButton
+              <Button
                 type="link"
-                text="编辑"
-                class="b-link c-red"
-                icon={null}
-                p="resource-update"
+                className="b-link c-red"
                 onClick={() => {
                   setUpdateId(record.id);
                   setUpdateVisible(true);
                 }}
-                disabled={null}
-              />
+              >
+                编辑
+              </Button>
             ),
           },
           {
             key: "2",
             label: (
-              <PerButton
+              <Button
                 type="link"
-                text="删除"
-                class="b-link c-red"
-                icon={null}
-                p="resource-destroy"
+                className="b-link c-red"
                 onClick={() => removeResource(record.id)}
-                disabled={null}
-              />
+              >
+                删除
+              </Button>
             ),
           },
         ];
@@ -302,15 +298,13 @@ const ResourceVideosPage = () => {
               >
                 {multiConfig ? "取消操作" : "批量操作"}
               </Button>
-              <PerButton
+              <Button
                 type="default"
-                text="删除"
-                class=""
-                icon={null}
-                p="resource-destroy"
                 onClick={() => removeResourceMulti()}
                 disabled={selectedRowKeys.length === 0}
-              />
+              >
+                删除
+              </Button>
             </div>
           </div>
           <div className="float-left">
