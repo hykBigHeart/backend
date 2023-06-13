@@ -13,13 +13,14 @@ interface PropInterface {
   roleDelSuccess: boolean;
   type: string;
   text: string;
-  onUpdate: (keys: any, title: any) => void;
+  onUpdate: (keys: any, title: any, isSuper: boolean) => void;
 }
 
 export const TreeAdminroles = (props: PropInterface) => {
   const [treeData, setTreeData] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [selectKey, setSelectKey] = useState<any>([]);
+  const [superId, setSuperId] = useState(0);
 
   useEffect(() => {
     onSelect([], "");
@@ -28,6 +29,7 @@ export const TreeAdminroles = (props: PropInterface) => {
   useEffect(() => {
     adminRole.adminRoleList().then((res: any) => {
       let adminrole = res.data;
+      let superId = 0;
       if (adminrole.length > 0) {
         const new_arr: Option[] = [];
         for (let i = 0; i < adminrole.length; i++) {
@@ -36,9 +38,13 @@ export const TreeAdminroles = (props: PropInterface) => {
             key: adminrole[i].id,
             children: [],
           });
+          if (adminrole[i].slug === "super-role") {
+            superId = adminrole[i].id;
+          }
         }
         setTreeData(new_arr);
       }
+      setSuperId(superId);
     });
   }, [props.refresh]);
 
@@ -47,7 +53,11 @@ export const TreeAdminroles = (props: PropInterface) => {
     if (info) {
       label = info.node.title;
     }
-    props.onUpdate(selectedKeys, label);
+    let isSuper = false;
+    if (selectedKeys[0] === superId && superId !== 0) {
+      isSuper = true;
+    }
+    props.onUpdate(selectedKeys, label, isSuper);
     setSelectKey(selectedKeys);
   };
 
