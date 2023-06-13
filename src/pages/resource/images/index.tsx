@@ -200,15 +200,13 @@ const ResourceImagesPage = () => {
                       <Button className="mr-16" onClick={() => selectAll()}>
                         全选
                       </Button>
-                      <PerButton
+                      <Button
                         disabled={selectKey.length === 0}
                         type="primary"
-                        text="删除"
-                        class=""
-                        icon={null}
-                        p="resource-destroy"
                         onClick={() => removeResource()}
-                      />
+                      >
+                        删除
+                      </Button>
                     </>
                   )}
                 </div>

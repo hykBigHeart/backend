@@ -84,15 +84,13 @@ const ResourceCategoryPage = () => {
                     }}
                   />
                 )}
-                {through("resource-destroy") && (
-                  <i
-                    className="iconfont icon-icon-delete"
-                    style={{ fontSize: 24 }}
-                    onClick={() =>
-                      removeItem(categories[id][i].id, categories[id][i].name)
-                    }
-                  />
-                )}
+                <i
+                  className="iconfont icon-icon-delete"
+                  style={{ fontSize: 24 }}
+                  onClick={() =>
+                    removeItem(categories[id][i].id, categories[id][i].name)
+                  }
+                />
               </div>
             </>
           ),
@@ -121,15 +119,13 @@ const ResourceCategoryPage = () => {
                     }}
                   />
                 )}
-                {through("resource-destroy") && (
-                  <i
-                    className="iconfont icon-icon-delete"
-                    style={{ fontSize: 24 }}
-                    onClick={() =>
-                      removeItem(categories[id][i].id, categories[id][i].name)
-                    }
-                  />
-                )}
+                <i
+                  className="iconfont icon-icon-delete"
+                  style={{ fontSize: 24 }}
+                  onClick={() =>
+                    removeItem(categories[id][i].id, categories[id][i].name)
+                  }
+                />
               </div>
             </>
           ),
