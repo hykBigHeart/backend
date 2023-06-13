@@ -289,7 +289,7 @@ const ResourceVideosPage = () => {
             </div>
             <div className="d-flex">
               <Button
-                type="primary"
+                type="default"
                 className="mr-16"
                 onClick={() => {
                   setSelectedRowKeys([]);
