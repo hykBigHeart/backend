@@ -109,7 +109,7 @@ export const CourseHourUpdate: React.FC<PropInterface> = ({
       if (videos[i].disabled === false) {
         hours.push({
           chapter_id: 0,
-          sort: i,
+          sort: treeData.length + i,
           title: videos[i].name,
           type: videos[i].type,
           duration: videos[i].duration,
@@ -144,7 +144,7 @@ export const CourseHourUpdate: React.FC<PropInterface> = ({
       if (videos[i].disabled === false) {
         hours.push({
           chapter_id: data[addvideoCurrent].id,
-          sort: i,
+          sort: data[addvideoCurrent].hours.length + i,
           title: videos[i].name,
           type: videos[i].type,
           duration: videos[i].duration,
