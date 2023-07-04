@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import styles from "./index.module.less";
-import { Spin, Input, Button, message } from "antd";
+import { Input, Button, message } from "antd";
 import { login as loginApi, system } from "../../api/index";
 import { setToken } from "../../utils/index";
 import { useDispatch } from "react-redux";
@@ -18,22 +18,8 @@ const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
-  const [image, setImage] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [captchaVal, setCaptchaVal] = useState<string>("");
-  const [captchaKey, setCaptchaKey] = useState<string>("");
-  const [captchaLoading, setCaptchaLoading] = useState(true);
-
-  const fetchImageCaptcha = () => {
-    setCaptchaVal("");
-    setCaptchaLoading(true);
-    system.getImageCaptcha().then((res: any) => {
-      setImage(res.data.image);
-      setCaptchaKey(res.data.key);
-      setCaptchaLoading(false);
-    });
-  };
 
   const loginSubmit = async () => {
     if (!email) {
@@ -42,14 +28,6 @@ const LoginPage = () => {
     }
     if (!password) {
       message.error("请输入密码");
-      return;
-    }
-    if (!captchaVal) {
-      message.error("请输入图形验证码");
-      return;
-    }
-    if (captchaVal.length !== 4) {
-      message.error("图形验证码错误");
       return;
     }
     await handleSubmit();
@@ -61,12 +39,7 @@ const LoginPage = () => {
     }
     setLoading(true);
     try {
-      let res: any = await loginApi.login(
-        email,
-        password,
-        captchaKey,
-        captchaVal
-      );
+      let res: any = await loginApi.login(email, password);
       setToken(res.data.token); //将token写入本地
       await getSystemConfig(); //获取系统配置并写入store
       await getUser(); //获取登录用户的信息并写入store
@@ -75,7 +48,6 @@ const LoginPage = () => {
     } catch (e) {
       console.error("错误信息", e);
       setLoading(false);
-      fetchImageCaptcha(); //刷新图形验证码
     }
   };
 
@@ -103,10 +75,6 @@ const LoginPage = () => {
       loginSubmit();
     }
   };
-
-  useEffect(() => {
-    fetchImageCaptcha();
-  }, []);
 
   return (
     <div className={styles["login-content"]}>
@@ -141,33 +109,6 @@ const LoginPage = () => {
               style={{ width: 400, height: 54 }}
               placeholder="请输入密码"
             />
-          </div>
-          <div className="d-flex mt-50">
-            <Input
-              value={captchaVal}
-              style={{ width: 260, height: 54 }}
-              placeholder="请输入图形验证码"
-              onChange={(e) => {
-                setCaptchaVal(e.target.value);
-              }}
-              allowClear
-              onKeyUp={(e) => keyUp(e)}
-            />
-            <div className={styles["captcha-box"]}>
-              {captchaLoading && (
-                <div className={styles["catpcha-loading-box"]}>
-                  <Spin size="small" />
-                </div>
-              )}
-
-              {!captchaLoading && (
-                <img
-                  className={styles["captcha"]}
-                  onClick={fetchImageCaptcha}
-                  src={image}
-                />
-              )}
-            </div>
           </div>
           <div className="login-box d-flex mt-50">
             <Button
