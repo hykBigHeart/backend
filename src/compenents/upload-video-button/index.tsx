@@ -42,6 +42,7 @@ interface FileItem {
 
 export const UploadVideoButton = (props: PropsInterface) => {
   const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(false);
   const localFileList = useRef<FileItem[]>([]);
   const [fileList, setFileList] = useState<FileItem[]>([]);
 
@@ -54,6 +55,7 @@ export const UploadVideoButton = (props: PropsInterface) => {
     multiple: true,
     beforeUpload: async (file: File) => {
       if (file.type === "video/mp4") {
+        setLoading(true);
         // 视频封面解析 || 视频时长解析
         let videoInfo = await parseVideo(file);
         // 添加到本地待上传
@@ -91,6 +93,7 @@ export const UploadVideoButton = (props: PropsInterface) => {
             item.isSuc = true;
             setFileList([...localFileList.current]);
             message.success(`${item.file.name} 上传成功`);
+            setLoading(false);
           });
         });
         item.run.on("retry", () => {
@@ -106,6 +109,7 @@ export const UploadVideoButton = (props: PropsInterface) => {
           item.isErr = true;
           item.errMsg = msg;
           setFileList([...localFileList.current]);
+          setLoading(false);
         });
         setTimeout(() => {
           item.run.start();
@@ -120,6 +124,10 @@ export const UploadVideoButton = (props: PropsInterface) => {
   };
 
   const closeWin = () => {
+    if (loading) {
+      message.error(`等待上传成功后才能关闭`);
+      return;
+    }
     setShowModal(false);
     setFileList([]);
     props.onUpdate();
