@@ -130,6 +130,7 @@ export const UploadVideoButton = (props: PropsInterface) => {
     }
     setShowModal(false);
     setFileList([]);
+    localFileList.current = [];
     props.onUpdate();
   };
 
