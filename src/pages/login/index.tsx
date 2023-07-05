@@ -95,8 +95,8 @@ const LoginPage = () => {
               }}
               style={{ width: 400, height: 54 }}
               placeholder="请输入管理员邮箱账号"
-              onKeyUp={(e) => keyUp(e)}
               allowClear
+              onKeyUp={(e) => keyUp(e)}
             />
           </div>
           <div className="login-box d-flex mt-50">
@@ -108,6 +108,7 @@ const LoginPage = () => {
               allowClear
               style={{ width: 400, height: 54 }}
               placeholder="请输入密码"
+              onKeyUp={(e) => keyUp(e)}
             />
           </div>
           <div className="login-box d-flex mt-50">
