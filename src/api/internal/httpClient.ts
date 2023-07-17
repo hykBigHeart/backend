@@ -52,10 +52,13 @@ export class HttpClient {
           GoLogin();
         } else if (status === 404) {
           // 跳转到404页面
+          GoLogin();
         } else if (status === 403) {
           // 跳转到无权限页面
+          GoLogin();
         } else if (status === 500) {
           // 跳转到500异常页面
+          GoLogin();
         }
         return Promise.reject(error.response);
       }
