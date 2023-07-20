@@ -152,7 +152,7 @@ export const SystemAdministratorUpdate: React.FC<PropInterface> = ({
             </Form.Item>
             <Form.Item label="密码" name="password">
               <Input.Password
-                autoComplete="off"
+                autoComplete="new-password"
                 style={{ width: 200 }}
                 allowClear
                 placeholder="请输入登录密码"
