@@ -158,6 +158,15 @@ const ResourceCategoryPage = () => {
         res.data.videos.length === 0
       ) {
         delUser(id);
+      } else if (
+        res.data.children &&
+        res.data.children.length === 0 &&
+        res.data.courses &&
+        res.data.courses.length === 0 &&
+        !res.data.images &&
+        !res.data.videos
+      ) {
+        delUser(id);
       } else {
         if (res.data.children && res.data.children.length > 0) {
           modal.warning({
