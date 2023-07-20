@@ -124,14 +124,29 @@ export const UploadVideoButton = (props: PropsInterface) => {
   };
 
   const closeWin = () => {
-    if (upRef.current > 0) {
-      message.error(`等待上传成功后才能关闭`);
-      return;
+    // if (upRef.current > 0) {
+    //   message.error(`等待上传成功后才能关闭`);
+    //   return;
+    // }
+
+    if (fileList.length > 0) {
+      let i = 0;
+      fileList.map((item: any) => {
+        item.run.cancel();
+        i++;
+      });
+      if (i === fileList.length) {
+        setShowModal(false);
+        setFileList([]);
+        localFileList.current = [];
+        props.onUpdate();
+      }
+    } else {
+      setShowModal(false);
+      setFileList([]);
+      localFileList.current = [];
+      props.onUpdate();
     }
-    setShowModal(false);
-    setFileList([]);
-    localFileList.current = [];
-    props.onUpdate();
   };
 
   return (
