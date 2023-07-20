@@ -11,7 +11,7 @@ import {
   Upload,
 } from "antd";
 import Dragger from "antd/es/upload/Dragger";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { generateUUID, parseVideo } from "../../utils";
 import { minioMergeVideo, minioUploadId } from "../../api/upload";
 import { UploadChunk } from "../../js/minio-upload-chunk";
@@ -24,12 +24,36 @@ interface PropsInterface {
 export const UploadVideoButton = (props: PropsInterface) => {
   const [showModal, setShowModal] = useState(false);
   const localFileList = useRef<FileItem[]>([]);
+  const intervalId = useRef<number>();
   const [fileList, setFileList] = useState<FileItem[]>([]);
 
   const getMinioUploadId = async () => {
     let resp: any = await minioUploadId("mp4");
     return resp.data;
   };
+
+  useEffect(() => {
+    if (showModal) {
+      intervalId.current = setInterval(() => {
+        if (localFileList.current.length === 0) {
+          return;
+        }
+        for (let i = 0; i < localFileList.current.length; i++) {
+          if (localFileList.current[i].upload.status === 0) {
+            localFileList.current[i].upload.handler.start();
+            break;
+          }
+          if (localFileList.current[i].upload.status === 3) {
+            break;
+          }
+        }
+      }, 1000);
+      console.log("定时器已创建", intervalId.current);
+    } else {
+      window.clearInterval(intervalId.current);
+      console.log("定时器已销毁");
+    }
+  }, [showModal]);
 
   const uploadProps = {
     multiple: true,
@@ -65,14 +89,14 @@ export const UploadVideoButton = (props: PropsInterface) => {
             item.video?.duration || 0,
             item.video?.poster || ""
           ).then(() => {
+            item.upload.progress = 100;
             item.upload.status = item.upload.handler.getUploadStatus();
             setFileList([...localFileList.current]);
           });
         });
         item.upload.handler.on("progress", (p: number) => {
           item.upload.status = item.upload.handler.getUploadStatus();
-          item.upload.progress = p;
-          console.log("状态，进度", item.upload.status, item.upload.progress);
+          item.upload.progress = p >= 100 ? 99 : p;
           setFileList([...localFileList.current]);
         });
         item.upload.handler.on("error", (msg: string) => {
@@ -80,9 +104,6 @@ export const UploadVideoButton = (props: PropsInterface) => {
           item.upload.remark = msg;
           setFileList([...localFileList.current]);
         });
-        setTimeout(() => {
-          item.upload.handler.start();
-        }, 500);
         // 先插入到ref
         localFileList.current.push(item);
         // 再更新list
@@ -96,23 +117,16 @@ export const UploadVideoButton = (props: PropsInterface) => {
 
   const closeWin = () => {
     if (fileList.length > 0) {
-      let i = 0;
-      fileList.map((item: any) => {
-        item.run.cancel();
-        i++;
+      fileList.forEach((item) => {
+        if (item.upload.status !== 5 && item.upload.status !== 7) {
+          item.upload.handler.cancel();
+        }
       });
-      if (i === fileList.length) {
-        setShowModal(false);
-        setFileList([]);
-        localFileList.current = [];
-        props.onUpdate();
-      }
-    } else {
-      setShowModal(false);
-      setFileList([]);
-      localFileList.current = [];
-      props.onUpdate();
     }
+    props.onUpdate();
+    localFileList.current = [];
+    setFileList([]);
+    setShowModal(false);
   };
 
   return (
@@ -126,7 +140,7 @@ export const UploadVideoButton = (props: PropsInterface) => {
         上传视频
       </Button>
 
-      {showModal && (
+      {showModal ? (
         <Modal
           width={800}
           title="上传视频"
@@ -212,7 +226,7 @@ export const UploadVideoButton = (props: PropsInterface) => {
             </Col>
           </Row>
         </Modal>
-      )}
+      ) : null}
     </>
   );
 };
