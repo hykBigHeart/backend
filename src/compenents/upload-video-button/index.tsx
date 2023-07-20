@@ -153,6 +153,7 @@ export const UploadVideoButton = (props: PropsInterface) => {
           onOk={() => {
             closeWin();
           }}
+          okText="完成"
         >
           <Row gutter={[0, 10]}>
             <Col span={24}>
