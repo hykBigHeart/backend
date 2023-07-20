@@ -21,30 +21,10 @@ interface PropsInterface {
   onUpdate: () => void;
 }
 
-interface FileItem {
-  id: string;
-  filename: string;
-  uploadId: string;
-  name: string;
-  duration: number;
-  size: number;
-  progress: number;
-  file: File;
-  resourceType: string;
-  loading: boolean;
-  run: UploadChunk;
-  isSuc: boolean;
-  isErr: boolean;
-  errMsg: string;
-  remoteName: string;
-  poster: string;
-}
-
 export const UploadVideoButton = (props: PropsInterface) => {
   const [showModal, setShowModal] = useState(false);
   const localFileList = useRef<FileItem[]>([]);
   const [fileList, setFileList] = useState<FileItem[]>([]);
-  const upRef = useRef(0);
 
   const getMinioUploadId = async () => {
     let resp: any = await minioUploadId("mp4");
@@ -55,7 +35,6 @@ export const UploadVideoButton = (props: PropsInterface) => {
     multiple: true,
     beforeUpload: async (file: File) => {
       if (file.type === "video/mp4") {
-        upRef.current++;
         // 视频封面解析 || 视频时长解析
         let videoInfo = await parseVideo(file);
         // 添加到本地待上传
@@ -63,58 +42,50 @@ export const UploadVideoButton = (props: PropsInterface) => {
         let run = new UploadChunk(file, data["upload_id"], data["filename"]);
         let item: FileItem = {
           id: generateUUID(),
-          duration: videoInfo.duration,
-          filename: data["filename"],
-          uploadId: data["upload_id"],
-          name: file.name,
-          size: file.size,
-          progress: 0,
           file: file,
-          resourceType: data["resource_type"],
-          loading: true,
-          run: run,
-          isSuc: false,
-          isErr: false,
-          errMsg: "",
-          remoteName: data["filename"],
-          poster: videoInfo.poster,
+          upload: {
+            handler: run,
+            progress: 0,
+            status: 0,
+            remark: "",
+          },
+          video: {
+            duration: videoInfo.duration,
+            poster: videoInfo.poster,
+          },
         };
-        item.run.on("success", () => {
+        item.upload.handler.on("success", () => {
           minioMergeVideo(
-            item.filename,
-            item.uploadId,
+            data["filename"],
+            data["upload_id"],
             props.categoryIds.join(","),
-            item.name,
+            item.file.name,
             "mp4",
-            item.size,
-            item.duration,
-            item.poster
+            item.file.size,
+            item.video?.duration || 0,
+            item.video?.poster || ""
           ).then(() => {
-            item.isSuc = true;
+            item.upload.status = item.upload.handler.getUploadStatus();
             setFileList([...localFileList.current]);
-            message.success(`${item.file.name} 上传成功`);
-            upRef.current--;
           });
         });
-        item.run.on("retry", () => {
-          item.isErr = false;
-          item.errMsg = "";
+        item.upload.handler.on("progress", (p: number) => {
+          item.upload.status = item.upload.handler.getUploadStatus();
+          item.upload.progress = p;
+          console.log("状态，进度", item.upload.status, item.upload.progress);
           setFileList([...localFileList.current]);
         });
-        item.run.on("progress", (progress: number) => {
-          item.progress = progress;
+        item.upload.handler.on("error", (msg: string) => {
+          item.upload.status = item.upload.handler.getUploadStatus();
+          item.upload.remark = msg;
           setFileList([...localFileList.current]);
-        });
-        item.run.on("error", (msg: string) => {
-          item.isErr = true;
-          item.errMsg = msg;
-          setFileList([...localFileList.current]);
-          upRef.current--;
         });
         setTimeout(() => {
-          item.run.start();
+          item.upload.handler.start();
         }, 500);
+        // 先插入到ref
         localFileList.current.push(item);
+        // 再更新list
         setFileList([...localFileList.current]);
       } else {
         message.error(`${file.name} 并不是 mp4 视频文件`);
@@ -124,11 +95,6 @@ export const UploadVideoButton = (props: PropsInterface) => {
   };
 
   const closeWin = () => {
-    // if (upRef.current > 0) {
-    //   message.error(`等待上传成功后才能关闭`);
-    //   return;
-    // }
-
     if (fileList.length > 0) {
       let i = 0;
       fileList.map((item: any) => {
@@ -195,13 +161,16 @@ export const UploadVideoButton = (props: PropsInterface) => {
                     title: "视频",
                     dataIndex: "name",
                     key: "name",
+                    render: (_, record) => <span>{record.file.name}</span>,
                   },
                   {
                     title: "大小",
                     dataIndex: "size",
                     key: "size",
                     render: (_, record) => (
-                      <span>{(record.size / 1024 / 1024).toFixed(2)} M</span>
+                      <span>
+                        {(record.file.size / 1024 / 1024).toFixed(2)}M
+                      </span>
                     ),
                   },
                   {
@@ -210,12 +179,13 @@ export const UploadVideoButton = (props: PropsInterface) => {
                     key: "progress",
                     render: (_, record: FileItem) => (
                       <>
-                        {record.progress === 0 && "等待上传"}
-                        {record.progress > 0 && (
+                        {record.upload.status === 0 ? (
+                          "等待上传"
+                        ) : (
                           <Progress
                             size="small"
                             steps={20}
-                            percent={record.progress}
+                            percent={record.upload.progress}
                           />
                         )}
                       </>
@@ -226,32 +196,13 @@ export const UploadVideoButton = (props: PropsInterface) => {
                     key: "action",
                     render: (_, record) => (
                       <>
-                        {record.progress > 0 &&
-                          record.isSuc === false &&
-                          record.isErr === false && (
-                            <Button
-                              type="link"
-                              onClick={() => {
-                                record.run.cancel();
-                              }}
-                            >
-                              取消
-                            </Button>
-                          )}
+                        {record.upload.status === 5 ? (
+                          <Tag color="red">{record.upload.remark}</Tag>
+                        ) : null}
 
-                        {record.isErr && (
-                          <>
-                            <Tag color="red">{record.errMsg}</Tag>
-                            <Button
-                              type="link"
-                              onClick={() => {
-                                record.run.retry();
-                              }}
-                            >
-                              继续上传
-                            </Button>
-                          </>
-                        )}
+                        {record.upload.status === 7 ? (
+                          <Tag color="success">上传成功</Tag>
+                        ) : null}
                       </>
                     ),
                   },
