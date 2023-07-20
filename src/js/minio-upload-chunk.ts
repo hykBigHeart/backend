@@ -11,11 +11,14 @@ export class UploadChunk {
   chunkIndex: number;
   uploadId: string;
   filename: string;
+  // 上传状态[0:等待上传,3:上传中,5:上传失败,7:上传成功]
+  uploadStatus: number;
+  uploadRemark: string;
 
-  onError: ((err: string) => void | undefined) | undefined;
-  onSuccess: (() => void | undefined) | undefined;
-  onRetry: (() => void | undefined) | undefined;
-  onProgress: ((progress: number) => void) | undefined;
+  onError?: (err: string) => void | undefined;
+  onSuccess?: () => void | undefined;
+  onRetry?: () => void | undefined;
+  onProgress?: (progress: number) => void;
 
   constructor(file: File, uploadId: string, filename: string) {
     this.client = axios.create({
@@ -31,6 +34,9 @@ export class UploadChunk {
 
     this.uploadId = uploadId;
     this.filename = filename;
+
+    this.uploadStatus = 0;
+    this.uploadRemark = "";
   }
 
   on(event: string, handle: any) {
@@ -49,23 +55,25 @@ export class UploadChunk {
     if (this.isStop) {
       return;
     }
+
+    // 检测是否上传完成
     if (this.chunkIndex > this.chunkNumber) {
-      //上传完成
-      this.onSuccess && this.onSuccess();
+      this.uploadCompleted();
       return;
     }
-    this.onProgress &&
-      this.onProgress(
-        parseInt((this.chunkIndex / this.chunkNumber) * 100 + "")
-      );
+
+    // 进度更新
+    this.uploadProgressUpdated();
 
     let start = (this.chunkIndex - 1) * this.chunkSize;
     const chunkData = this.file.slice(start, start + this.chunkSize);
     const boolname = this.file.name + "-" + this.chunkIndex;
     const tmpFile = new File([chunkData], boolname);
 
+    // 首先获取上传minio的签名
     minioPreSignUrl(this.uploadId, this.filename, this.chunkIndex)
       .then((res: any) => {
+        // 拿到签名之后将分块内容上传到minio
         return this.client.put(res.data.url, tmpFile, {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -76,10 +84,13 @@ export class UploadChunk {
         this.chunkIndex += 1;
         this.start();
       })
-      .catch((e) => {
-        console.error("文件分片上传失败", e);
-        this.onError && this.onError("失败.2");
+      .catch((e: any) => {
+        this.uploadedFail(e);
       });
+  }
+
+  isOver() {
+    return this.uploadStatus === 5 || this.uploadStatus === 7;
   }
 
   cancel() {
@@ -91,5 +102,41 @@ export class UploadChunk {
     this.isStop = false;
     this.start();
     this.onRetry && this.onRetry();
+  }
+
+  uploadProgressUpdated() {
+    if (this.uploadStatus === 0) {
+      this.uploadStatus = 3;
+    }
+    this.onProgress &&
+      this.onProgress(
+        parseInt((this.chunkIndex / this.chunkNumber) * 100 + "")
+      );
+  }
+
+  uploadCompleted() {
+    this.uploadStatus = 7;
+    this.onSuccess && this.onSuccess();
+  }
+
+  uploadedFail(e: any) {
+    console.log("上传失败,错误信息:", e);
+    this.uploadStatus = 5;
+    this.onError && this.onError("失败.2");
+  }
+
+  getUploadStatus(): number {
+    return this.uploadStatus;
+  }
+
+  getUploadProgress(): number {
+    if (this.chunkNumber === 0) {
+      return 0;
+    }
+    return (this.chunkIndex / this.chunkNumber) * 100;
+  }
+
+  getUploadRemark(): string {
+    return this.uploadRemark;
   }
 }

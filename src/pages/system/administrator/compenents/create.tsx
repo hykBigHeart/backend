@@ -148,6 +148,7 @@ export const SystemAdministratorCreate: React.FC<PropInterface> = ({
               rules={[{ required: true, message: "请输入登录密码!" }]}
             >
               <Input.Password
+                autoComplete="new-password"
                 allowClear
                 style={{ width: 200 }}
                 placeholder="请输入登录密码"

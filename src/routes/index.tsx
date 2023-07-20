@@ -2,29 +2,45 @@ import { lazy } from "react";
 import { RouteObject } from "react-router-dom";
 import { login, system } from "../api";
 
-import InitPage from "../pages/init";
 import { getToken } from "../utils";
 import KeepAlive from "../compenents/keep-alive";
-
+// 页面加载
+import InitPage from "../pages/init";
 import LoginPage from "../pages/login";
 import HomePage from "../pages/home";
-import DashboardPage from "../pages/dashboard";
-import ChangePasswordPage from "../pages/change-password";
-import ResourceCategoryPage from "../pages/resource/resource-category";
-import ResourceImagesPage from "../pages/resource/images";
-import ResourceVideosPage from "../pages/resource/videos";
-import CoursePage from "../pages/course/index";
-import CourseUserPage from "../pages/course/user";
-import MemberPage from "../pages/member";
-import MemberImportPage from "../pages/member/import";
-import MemberLearnPage from "../pages/member/learn";
-import MemberDepartmentProgressPage from "../pages/member/departmentUser";
-import SystemConfigPage from "../pages/system/config";
-import SystemAdministratorPage from "../pages/system/administrator";
-import SystemAdminrolesPage from "../pages/system/adminroles";
-import DepartmentPage from "../pages/department";
-import TestPage from "../pages/test";
-import ErrorPage from "../pages/error";
+//首页
+const DashboardPage = lazy(() => import("../pages/dashboard"));
+//修改密码页面
+const ChangePasswordPage = lazy(() => import("../pages/change-password"));
+//资源管理相关
+const ResourceCategoryPage = lazy(
+  () => import("../pages/resource/resource-category")
+);
+const ResourceImagesPage = lazy(() => import("../pages/resource/images"));
+const ResourceVideosPage = lazy(() => import("../pages/resource/videos"));
+//课程相关
+const CoursePage = lazy(() => import("../pages/course/index"));
+const CourseUserPage = lazy(() => import("../pages/course/user"));
+//学员相关
+const MemberPage = lazy(() => import("../pages/member"));
+const MemberImportPage = lazy(() => import("../pages/member/import"));
+const MemberLearnPage = lazy(() => import("../pages/member/learn"));
+const MemberDepartmentProgressPage = lazy(
+  () => import("../pages/member/departmentUser")
+);
+//系统相关
+const SystemConfigPage = lazy(() => import("../pages/system/config"));
+const SystemAdministratorPage = lazy(
+  () => import("../pages/system/administrator")
+);
+const SystemAdminrolesPage = lazy(() => import("../pages/system/adminroles"));
+//部门页面
+const DepartmentPage = lazy(() => import("../pages/department"));
+//测试
+const TestPage = lazy(() => import("../pages/test"));
+//错误页面
+const ErrorPage = lazy(() => import("../pages/error"));
+
 import PrivateRoute from "../compenents/private-route";
 
 // const LoginPage = lazy(() => import("../pages/login"));
@@ -51,9 +67,6 @@ if (getToken()) {
     });
   });
 } else {
-  if (window.location.pathname !== "/login") {
-    window.location.href = "/login";
-  }
   RootPage = <InitPage />;
 }
 

@@ -11,7 +11,7 @@ import {
   Upload,
 } from "antd";
 import Dragger from "antd/es/upload/Dragger";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { generateUUID, parseVideo } from "../../utils";
 import { minioMergeVideo, minioUploadId } from "../../api/upload";
 import { UploadChunk } from "../../js/minio-upload-chunk";
@@ -21,41 +21,44 @@ interface PropsInterface {
   onUpdate: () => void;
 }
 
-interface FileItem {
-  id: string;
-  filename: string;
-  uploadId: string;
-  name: string;
-  duration: number;
-  size: number;
-  progress: number;
-  file: File;
-  resourceType: string;
-  loading: boolean;
-  run: UploadChunk;
-  isSuc: boolean;
-  isErr: boolean;
-  errMsg: string;
-  remoteName: string;
-  poster: string;
-}
-
 export const UploadVideoButton = (props: PropsInterface) => {
   const [showModal, setShowModal] = useState(false);
   const localFileList = useRef<FileItem[]>([]);
+  const intervalId = useRef<number>();
   const [fileList, setFileList] = useState<FileItem[]>([]);
-  const upRef = useRef(0);
 
   const getMinioUploadId = async () => {
     let resp: any = await minioUploadId("mp4");
     return resp.data;
   };
 
+  useEffect(() => {
+    if (showModal) {
+      intervalId.current = setInterval(() => {
+        if (localFileList.current.length === 0) {
+          return;
+        }
+        for (let i = 0; i < localFileList.current.length; i++) {
+          if (localFileList.current[i].upload.status === 0) {
+            localFileList.current[i].upload.handler.start();
+            break;
+          }
+          if (localFileList.current[i].upload.status === 3) {
+            break;
+          }
+        }
+      }, 1000);
+      console.log("定时器已创建", intervalId.current);
+    } else {
+      window.clearInterval(intervalId.current);
+      console.log("定时器已销毁");
+    }
+  }, [showModal]);
+
   const uploadProps = {
     multiple: true,
     beforeUpload: async (file: File) => {
       if (file.type === "video/mp4") {
-        upRef.current++;
         // 视频封面解析 || 视频时长解析
         let videoInfo = await parseVideo(file);
         // 添加到本地待上传
@@ -63,58 +66,47 @@ export const UploadVideoButton = (props: PropsInterface) => {
         let run = new UploadChunk(file, data["upload_id"], data["filename"]);
         let item: FileItem = {
           id: generateUUID(),
-          duration: videoInfo.duration,
-          filename: data["filename"],
-          uploadId: data["upload_id"],
-          name: file.name,
-          size: file.size,
-          progress: 0,
           file: file,
-          resourceType: data["resource_type"],
-          loading: true,
-          run: run,
-          isSuc: false,
-          isErr: false,
-          errMsg: "",
-          remoteName: data["filename"],
-          poster: videoInfo.poster,
+          upload: {
+            handler: run,
+            progress: 0,
+            status: 0,
+            remark: "",
+          },
+          video: {
+            duration: videoInfo.duration,
+            poster: videoInfo.poster,
+          },
         };
-        item.run.on("success", () => {
+        item.upload.handler.on("success", () => {
           minioMergeVideo(
-            item.filename,
-            item.uploadId,
+            data["filename"],
+            data["upload_id"],
             props.categoryIds.join(","),
-            item.name,
+            item.file.name,
             "mp4",
-            item.size,
-            item.duration,
-            item.poster
+            item.file.size,
+            item.video?.duration || 0,
+            item.video?.poster || ""
           ).then(() => {
-            item.isSuc = true;
+            item.upload.progress = 100;
+            item.upload.status = item.upload.handler.getUploadStatus();
             setFileList([...localFileList.current]);
-            message.success(`${item.file.name} 上传成功`);
-            upRef.current--;
           });
         });
-        item.run.on("retry", () => {
-          item.isErr = false;
-          item.errMsg = "";
+        item.upload.handler.on("progress", (p: number) => {
+          item.upload.status = item.upload.handler.getUploadStatus();
+          item.upload.progress = p >= 100 ? 99 : p;
           setFileList([...localFileList.current]);
         });
-        item.run.on("progress", (progress: number) => {
-          item.progress = progress;
+        item.upload.handler.on("error", (msg: string) => {
+          item.upload.status = item.upload.handler.getUploadStatus();
+          item.upload.remark = msg;
           setFileList([...localFileList.current]);
         });
-        item.run.on("error", (msg: string) => {
-          item.isErr = true;
-          item.errMsg = msg;
-          setFileList([...localFileList.current]);
-          upRef.current--;
-        });
-        setTimeout(() => {
-          item.run.start();
-        }, 500);
+        // 先插入到ref
         localFileList.current.push(item);
+        // 再更新list
         setFileList([...localFileList.current]);
       } else {
         message.error(`${file.name} 并不是 mp4 视频文件`);
@@ -124,14 +116,17 @@ export const UploadVideoButton = (props: PropsInterface) => {
   };
 
   const closeWin = () => {
-    if (upRef.current > 0) {
-      message.error(`等待上传成功后才能关闭`);
-      return;
+    if (fileList.length > 0) {
+      fileList.forEach((item) => {
+        if (item.upload.status !== 5 && item.upload.status !== 7) {
+          item.upload.handler.cancel();
+        }
+      });
     }
-    setShowModal(false);
-    setFileList([]);
-    localFileList.current = [];
     props.onUpdate();
+    localFileList.current = [];
+    setFileList([]);
+    setShowModal(false);
   };
 
   return (
@@ -145,7 +140,7 @@ export const UploadVideoButton = (props: PropsInterface) => {
         上传视频
       </Button>
 
-      {showModal && (
+      {showModal ? (
         <Modal
           width={800}
           title="上传视频"
@@ -158,6 +153,7 @@ export const UploadVideoButton = (props: PropsInterface) => {
           onOk={() => {
             closeWin();
           }}
+          okText="完成"
         >
           <Row gutter={[0, 10]}>
             <Col span={24}>
@@ -180,13 +176,16 @@ export const UploadVideoButton = (props: PropsInterface) => {
                     title: "视频",
                     dataIndex: "name",
                     key: "name",
+                    render: (_, record) => <span>{record.file.name}</span>,
                   },
                   {
                     title: "大小",
                     dataIndex: "size",
                     key: "size",
                     render: (_, record) => (
-                      <span>{(record.size / 1024 / 1024).toFixed(2)} M</span>
+                      <span>
+                        {(record.file.size / 1024 / 1024).toFixed(2)}M
+                      </span>
                     ),
                   },
                   {
@@ -195,12 +194,13 @@ export const UploadVideoButton = (props: PropsInterface) => {
                     key: "progress",
                     render: (_, record: FileItem) => (
                       <>
-                        {record.progress === 0 && "等待上传"}
-                        {record.progress > 0 && (
+                        {record.upload.status === 0 ? (
+                          "等待上传"
+                        ) : (
                           <Progress
                             size="small"
                             steps={20}
-                            percent={record.progress}
+                            percent={record.upload.progress}
                           />
                         )}
                       </>
@@ -211,32 +211,13 @@ export const UploadVideoButton = (props: PropsInterface) => {
                     key: "action",
                     render: (_, record) => (
                       <>
-                        {record.progress > 0 &&
-                          record.isSuc === false &&
-                          record.isErr === false && (
-                            <Button
-                              type="link"
-                              onClick={() => {
-                                record.run.cancel();
-                              }}
-                            >
-                              取消
-                            </Button>
-                          )}
+                        {record.upload.status === 5 ? (
+                          <Tag color="red">{record.upload.remark}</Tag>
+                        ) : null}
 
-                        {record.isErr && (
-                          <>
-                            <Tag color="red">{record.errMsg}</Tag>
-                            <Button
-                              type="link"
-                              onClick={() => {
-                                record.run.retry();
-                              }}
-                            >
-                              继续上传
-                            </Button>
-                          </>
-                        )}
+                        {record.upload.status === 7 ? (
+                          <Tag color="success">上传成功</Tag>
+                        ) : null}
                       </>
                     ),
                   },
@@ -246,7 +227,7 @@ export const UploadVideoButton = (props: PropsInterface) => {
             </Col>
           </Row>
         </Modal>
-      )}
+      ) : null}
     </>
   );
 };
