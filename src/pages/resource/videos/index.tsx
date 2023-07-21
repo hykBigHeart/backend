@@ -83,7 +83,7 @@ const ResourceVideosPage = () => {
         JSON.stringify(adminUsers) !== "{}" && <span>{adminUsers[text]}</span>,
     },
     {
-      title: "视频时长",
+      title: "创建时间",
       dataIndex: "created_at",
       render: (text: string) => <span>{dateFormat(text)}</span>,
     },
