@@ -7,7 +7,9 @@ import KeepAlive from "../compenents/keep-alive";
 // 页面加载
 import InitPage from "../pages/init";
 import LoginPage from "../pages/login";
-import HomePage from "../pages/home";
+import WithHeaderWithoutFooter from "../pages/layouts/with-header-without-footer";
+import WithoutHeaderWithoutFooter from "../pages/layouts/without-header-without-footer";
+
 //首页
 const DashboardPage = lazy(() => import("../pages/dashboard"));
 //修改密码页面
@@ -77,7 +79,7 @@ const routes: RouteObject[] = [
     children: [
       {
         path: "/",
-        element: <PrivateRoute Component={<HomePage />} />,
+        element: <PrivateRoute Component={<WithHeaderWithoutFooter />} />,
         children: [
           {
             path: "/",
@@ -150,16 +152,22 @@ const routes: RouteObject[] = [
         ],
       },
       {
-        path: "/login",
-        element: <LoginPage />,
-      },
-      {
-        path: "/test",
-        element: <TestPage />,
-      },
-      {
-        path: "*",
-        element: <ErrorPage />,
+        path: "/",
+        element: <WithoutHeaderWithoutFooter />,
+        children: [
+          {
+            path: "/login",
+            element: <LoginPage />,
+          },
+          {
+            path: "/test",
+            element: <TestPage />,
+          },
+          {
+            path: "*",
+            element: <ErrorPage />,
+          },
+        ],
       },
     ],
   },
