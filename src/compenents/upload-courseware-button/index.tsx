@@ -60,8 +60,6 @@ export const UploadCoursewareButton = (props: PropsInterface) => {
     beforeUpload: async (file: File) => {
       let extension: any = file.name.split(".");
       extension = extension[extension.length - 1];
-      console.log(extension);
-      console.log(file.type);
       if (
         file.type ===
           "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
@@ -71,7 +69,7 @@ export const UploadCoursewareButton = (props: PropsInterface) => {
         file.type === "text/plain" ||
         file.type === "application/pdf" ||
         file.type === "application/x-zip-compressed" ||
-        file.type === "application/zip" ||
+        file.type === "application/octet-stream" ||
         file.type ===
           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
         file.type === "application/vnd.ms-excel" ||
@@ -81,7 +79,17 @@ export const UploadCoursewareButton = (props: PropsInterface) => {
         file.type === "application/vnd.ms-excel.template.macroEnabled.12" ||
         file.type === "application/vnd.ms-excel.addin.macroEnabled.12" ||
         file.type === "application/vnd.ms-excel.sheet.binary.macroEnabled.12" ||
-        file.type === "application/vnd.ms-powerpoint"
+        file.type === "application/vnd.ms-powerpoint" ||
+        file.type ===
+          "application/vnd.openxmlformats-officedocument.presentationml.presentation" ||
+        file.type ===
+          "application/vnd.openxmlformats-officedocument.presentationml.template" ||
+        file.type ===
+          "application/vnd.openxmlformats-officedocument.presentationml.slideshow" ||
+        file.type === "application/vnd.ms-powerpoint.addin.macroEnabled.12" ||
+        file.type ===
+          "application/vnd.ms-powerpoint.presentation.macroEnabled.12" ||
+        file.type === "application/vnd.ms-powerpoint.slideshow.macroEnabled.12"
       ) {
         // 添加到本地待上传
         let data = await getMinioUploadId(extension);
