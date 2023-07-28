@@ -104,6 +104,7 @@ export const LeftMenu: React.FC = () => {
   const children2Parent: any = {
     "^/video": ["resource"],
     "^/image": ["resource"],
+    "^/courseware": ["resource"],
     "^/member": ["user"],
     "^/department": ["user"],
     "^/course": ["courses"],
