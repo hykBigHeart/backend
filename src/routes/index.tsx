@@ -20,6 +20,9 @@ const ResourceCategoryPage = lazy(
 );
 const ResourceImagesPage = lazy(() => import("../pages/resource/images"));
 const ResourceVideosPage = lazy(() => import("../pages/resource/videos"));
+const ResourceCoursewarePage = lazy(
+  () => import("../pages/resource/courseware")
+);
 //课程相关
 const CoursePage = lazy(() => import("../pages/course/index"));
 const CourseUserPage = lazy(() => import("../pages/course/user"));
@@ -100,6 +103,10 @@ const routes: RouteObject[] = [
           {
             path: "/videos",
             element: <PrivateRoute Component={<ResourceVideosPage />} />,
+          },
+          {
+            path: "/courseware",
+            element: <PrivateRoute Component={<ResourceCoursewarePage />} />,
           },
           {
             path: "/course",

@@ -46,6 +46,7 @@ const items = [
     [
       getItem("视频", "/videos", null, null, null, null),
       getItem("图片", "/images", null, null, null, null),
+      getItem("课件", "/courseware", null, null, null, null),
     ],
     null,
     null

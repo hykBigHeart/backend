@@ -1,5 +1,14 @@
 import { useEffect, useState } from "react";
-import { Modal, Table, message, Space, Dropdown, Button } from "antd";
+import {
+  Modal,
+  Table,
+  message,
+  Space,
+  Typography,
+  Input,
+  Select,
+  Button,
+} from "antd";
 import type { MenuProps } from "antd";
 import { resource } from "../../../api";
 // import styles from "./index.module.less";
@@ -7,10 +16,7 @@ import { useLocation } from "react-router-dom";
 import { DownOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import { dateFormat } from "../../../utils/index";
-import { TreeCategory, DurationText } from "../../../compenents";
-import { UploadVideoButton } from "../../../compenents/upload-video-button";
-import { VideoPlayDialog } from "./compenents/video-play-dialog";
-import { VideosUpdateDialog } from "./compenents/update-dialog";
+import { TreeCategory, DurationText, PerButton } from "../../../compenents";
 
 const { confirm } = Modal;
 
@@ -19,13 +25,14 @@ interface DataType {
   name: string;
   created_at: string;
   disk: string;
+  number: number;
 }
 
-const ResourceVideosPage = () => {
+const ResourceCoursewarePage = () => {
   const result = new URLSearchParams(useLocation().search);
-  const [videoList, setVideoList] = useState<any>([]);
-  const [videosExtra, setVideoExtra] = useState<any>([]);
+  const [list, setList] = useState<any>([]);
   const [adminUsers, setAdminUsers] = useState<any>({});
+  const [existingTypes, setExistingTypes] = useState<any>([]);
   const [refresh, setRefresh] = useState(false);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
@@ -33,15 +40,25 @@ const ResourceVideosPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [category_ids, setCategoryIds] = useState<any>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
+  const [type, setType] = useState("WORD,EXCE,PPT,PDF,TXT,RAR,ZIP");
+  const [title, setTitle] = useState<string>("");
+  const [multiConfig, setMultiConfig] = useState<boolean>(false);
   const [selLabel, setLabel] = useState<string>(
-    result.get("label") ? String(result.get("label")) : "全部视频"
+    result.get("label") ? String(result.get("label")) : "全部课件"
   );
   const [cateId, setCateId] = useState(Number(result.get("cid")));
-  const [updateVisible, setUpdateVisible] = useState<boolean>(false);
-  const [playVisible, setPlayeVisible] = useState<boolean>(false);
-  const [multiConfig, setMultiConfig] = useState<boolean>(false);
   const [updateId, setUpdateId] = useState(0);
-  const [playUrl, setPlayUrl] = useState<string>("");
+  const [updateVisible, setUpdateVisible] = useState<boolean>(false);
+  const types = [
+    { label: "全部", value: "WORD,EXCE,PPT,PDF,TXT,RAR,ZIP" },
+    { label: "WORD", value: "WORD" },
+    { label: "EXCEL", value: "EXCE" },
+    { label: "PPT", value: "PPT" },
+    { label: "PDF", value: "PDF" },
+    { label: "TXT", value: "TXT" },
+    { label: "RAR", value: "RAR" },
+    { label: "ZIP", value: "ZIP" },
+  ];
 
   useEffect(() => {
     setCateId(Number(result.get("cid")));
@@ -52,14 +69,36 @@ const ResourceVideosPage = () => {
     }
   }, [result.get("cid")]);
 
+  // 加载课件列表
+  useEffect(() => {
+    getList();
+  }, [category_ids, refresh, page, size]);
+
+  const getList = () => {
+    setLoading(true);
+    let categoryIds = category_ids.join(",");
+    resource
+      .resourceList(page, size, "", "", title, type, categoryIds)
+      .then((res: any) => {
+        setTotal(res.data.result.total);
+        setList(res.data.result.data);
+        setExistingTypes(res.data.existing_types);
+        setAdminUsers(res.data.admin_users);
+        setLoading(false);
+      })
+      .catch((err: any) => {
+        console.log("错误,", err);
+      });
+  };
+
   const columns: ColumnsType<DataType> = [
     {
-      title: "视频名称",
+      title: "课件名称",
       dataIndex: "name",
       render: (text: string) => (
         <div className="d-flex">
           <i
-            className="iconfont icon-icon-video"
+            className="iconfont icon-icon-file"
             style={{
               fontSize: 16,
               color: "rgba(0,0,0,0.3)",
@@ -70,59 +109,36 @@ const ResourceVideosPage = () => {
       ),
     },
     {
-      title: "视频时长",
+      title: "课件格式",
       dataIndex: "id",
-      render: (id: string) => (
-        <DurationText duration={videosExtra[id].duration}></DurationText>
-      ),
+      width: 204,
+      render: (id: string) => <span>{id}</span>,
+    },
+    {
+      title: "课件大小",
+      dataIndex: "size",
+      width: 204,
+      render: (size: number) => <span>{(size / 1024 / 1024).toFixed(2)}M</span>,
     },
     {
       title: "创建人",
       dataIndex: "admin_id",
+      width: 204,
       render: (text: number) =>
         JSON.stringify(adminUsers) !== "{}" && <span>{adminUsers[text]}</span>,
     },
     {
       title: "创建时间",
       dataIndex: "created_at",
+      width: 204,
       render: (text: string) => <span>{dateFormat(text)}</span>,
     },
     {
       title: "操作",
       key: "action",
       fixed: "right",
-      width: 160,
+      width: 180,
       render: (_, record: any) => {
-        const items: MenuProps["items"] = [
-          {
-            key: "1",
-            label: (
-              <Button
-                type="link"
-                className="b-link c-red"
-                onClick={() => {
-                  setUpdateId(record.id);
-                  setUpdateVisible(true);
-                }}
-              >
-                编辑
-              </Button>
-            ),
-          },
-          {
-            key: "2",
-            label: (
-              <Button
-                type="link"
-                className="b-link c-red"
-                onClick={() => removeResource(record.id)}
-              >
-                删除
-              </Button>
-            ),
-          },
-        ];
-
         return (
           <Space size="small">
             <Button
@@ -130,110 +146,35 @@ const ResourceVideosPage = () => {
               size="small"
               className="b-n-link c-red"
               onClick={() => {
-                setUpdateId(record.id);
-                setPlayUrl(record.url);
-                setPlayeVisible(true);
+                downLoadFile(record.id);
               }}
             >
-              预览
+              下载
             </Button>
             <div className="form-column"></div>
-            <Dropdown menu={{ items }}>
-              <Button
-                type="link"
-                className="b-link c-red"
-                onClick={(e) => e.preventDefault()}
-              >
-                <Space size="small" align="center">
-                  更多
-                  <DownOutlined />
-                </Space>
-              </Button>
-            </Dropdown>
+            <Button
+              type="link"
+              className="b-link c-red"
+              onClick={() => {
+                setUpdateId(record.id);
+                setUpdateVisible(true);
+              }}
+            >
+              编辑
+            </Button>
+            <div className="form-column"></div>
+            <Button
+              type="link"
+              className="b-link c-red"
+              onClick={() => removeResource(record.id)}
+            >
+              删除
+            </Button>
           </Space>
         );
       },
     },
   ];
-
-  // 删除图片
-  const removeResource = (id: number) => {
-    if (id === 0) {
-      return;
-    }
-    confirm({
-      title: "操作确认",
-      icon: <ExclamationCircleFilled />,
-      content: "删除前请检查选中视频文件无关联课程，确认删除？",
-      centered: true,
-      okText: "确认",
-      cancelText: "取消",
-      onOk() {
-        resource.destroyResource(id).then(() => {
-          message.success("删除成功");
-          resetVideoList();
-        });
-      },
-      onCancel() {
-        console.log("Cancel");
-      },
-    });
-  };
-
-  const removeResourceMulti = () => {
-    if (selectedRowKeys.length === 0) {
-      return;
-    }
-    confirm({
-      title: "操作确认",
-      icon: <ExclamationCircleFilled />,
-      content: "删除前请检查选中视频文件无关联课程，确认删除？",
-      centered: true,
-      okText: "确认",
-      cancelText: "取消",
-      onOk() {
-        resource.destroyResourceMulti(selectedRowKeys).then(() => {
-          message.success("删除成功");
-          resetVideoList();
-        });
-      },
-      onCancel() {
-        console.log("Cancel");
-      },
-    });
-  };
-
-  // 获取视频列表
-  const getVideoList = () => {
-    setLoading(true);
-    let categoryIds = category_ids.join(",");
-    resource
-      .resourceList(page, size, "", "", "", "VIDEO", categoryIds)
-      .then((res: any) => {
-        setTotal(res.data.result.total);
-        setVideoList(res.data.result.data);
-        setVideoExtra(res.data.videos_extra);
-        setAdminUsers(res.data.admin_users);
-        setLoading(false);
-      })
-      .catch((err: any) => {
-        console.log("错误,", err);
-      });
-  };
-
-  // 重置列表
-  const resetVideoList = () => {
-    setPage(1);
-    setSize(10);
-    setVideoList([]);
-    setSelectedRowKeys([]);
-    setRefresh(!refresh);
-  };
-
-  // 加载视频列表
-  useEffect(() => {
-    getVideoList();
-  }, [category_ids, refresh, page, size]);
 
   const paginationProps = {
     current: page, //当前页码
@@ -255,6 +196,66 @@ const ResourceVideosPage = () => {
     },
   };
 
+  // 重置列表
+  const resetList = () => {
+    setPage(1);
+    setSize(10);
+    setList([]);
+    setSelectedRowKeys([]);
+    setType("WORD,EXCE,PPT,PDF,TXT,RAR,ZIP");
+    setRefresh(!refresh);
+  };
+
+  // 删除课件
+  const removeResource = (id: number) => {
+    if (id === 0) {
+      return;
+    }
+    confirm({
+      title: "操作确认",
+      icon: <ExclamationCircleFilled />,
+      content: "删除前请检查选中课件文件无关联课程，确认删除？",
+      centered: true,
+      okText: "确认",
+      cancelText: "取消",
+      onOk() {
+        resource.destroyResource(id).then(() => {
+          message.success("删除成功");
+          resetList();
+        });
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
+
+  // 批量删除课件
+  const removeResourceMulti = () => {
+    if (selectedRowKeys.length === 0) {
+      return;
+    }
+    confirm({
+      title: "操作确认",
+      icon: <ExclamationCircleFilled />,
+      content: "删除前请检查选中课件文件无关联课程，确认删除？",
+      centered: true,
+      okText: "确认",
+      cancelText: "取消",
+      onOk() {
+        resource.destroyResourceMulti(selectedRowKeys).then(() => {
+          message.success("删除成功");
+          resetList();
+        });
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
+
+  const downLoadFile = (id: number) => {};
+
   return (
     <>
       <div className="tree-main-body">
@@ -262,7 +263,7 @@ const ResourceVideosPage = () => {
           <TreeCategory
             selected={category_ids}
             type="no-cate"
-            text={"视频"}
+            text={"课件"}
             onUpdate={(keys: any, title: any) => {
               setPage(1);
               setCategoryIds(keys);
@@ -276,18 +277,10 @@ const ResourceVideosPage = () => {
         </div>
         <div className="right-box">
           <div className="d-flex playedu-main-title float-left mb-24">
-            视频 | {selLabel}
+            课件 | {selLabel}
           </div>
           <div className="float-left  j-b-flex  mb-24">
             <div>
-              <UploadVideoButton
-                categoryIds={category_ids}
-                onUpdate={() => {
-                  resetVideoList();
-                }}
-              ></UploadVideoButton>
-            </div>
-            <div className="d-flex">
               <Button
                 type="default"
                 className="mr-16"
@@ -306,6 +299,44 @@ const ResourceVideosPage = () => {
                 删除
               </Button>
             </div>
+            <div className="d-flex">
+              <div className="d-flex">
+                <div className="d-flex mr-24">
+                  <Typography.Text>名称：</Typography.Text>
+                  <Input
+                    value={title}
+                    onChange={(e) => {
+                      setTitle(e.target.value);
+                    }}
+                    allowClear
+                    style={{ width: 160 }}
+                    placeholder="请输入名称关键字"
+                  />
+                </div>
+                <div className="d-flex mr-24">
+                  <Typography.Text>格式：</Typography.Text>
+                  <Select
+                    style={{ width: 160 }}
+                    placeholder="请选择格式"
+                    value={type}
+                    onChange={(value: string) => setType(value)}
+                    options={types}
+                  />
+                </div>
+                <Button className="mr-16" onClick={resetList}>
+                  重 置
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    setPage(1);
+                    setRefresh(!refresh);
+                  }}
+                >
+                  查 询
+                </Button>
+              </div>
+            </div>
           </div>
           <div className="float-left">
             {multiConfig ? (
@@ -315,7 +346,7 @@ const ResourceVideosPage = () => {
                   ...rowSelection,
                 }}
                 columns={columns}
-                dataSource={videoList}
+                dataSource={list}
                 loading={loading}
                 pagination={paginationProps}
                 rowKey={(record) => record.id}
@@ -323,7 +354,7 @@ const ResourceVideosPage = () => {
             ) : (
               <Table
                 columns={columns}
-                dataSource={videoList}
+                dataSource={list}
                 loading={loading}
                 pagination={paginationProps}
                 rowKey={(record) => record.id}
@@ -331,24 +362,9 @@ const ResourceVideosPage = () => {
             )}
           </div>
         </div>
-        <VideoPlayDialog
-          id={Number(updateId)}
-          open={playVisible}
-          url={playUrl}
-          onCancel={() => setPlayeVisible(false)}
-        ></VideoPlayDialog>
-        <VideosUpdateDialog
-          id={Number(updateId)}
-          open={updateVisible}
-          onCancel={() => setUpdateVisible(false)}
-          onSuccess={() => {
-            setUpdateVisible(false);
-            setRefresh(!refresh);
-          }}
-        ></VideosUpdateDialog>
       </div>
     </>
   );
 };
 
-export default ResourceVideosPage;
+export default ResourceCoursewarePage;
