@@ -10,3 +10,4 @@ export * from ".//tree-adminroles";
 export * from "./duration-text";
 export * from "./upload-video-sub";
 export * from "./select-resource";
+export * from "./upload-courseware-button";

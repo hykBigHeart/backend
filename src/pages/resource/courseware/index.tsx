@@ -16,7 +16,12 @@ import { useLocation } from "react-router-dom";
 import { DownOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import { dateFormat } from "../../../utils/index";
-import { TreeCategory, DurationText, PerButton } from "../../../compenents";
+import {
+  TreeCategory,
+  DurationText,
+  PerButton,
+  UploadCoursewareButton,
+} from "../../../compenents";
 
 const { confirm } = Modal;
 
@@ -281,9 +286,15 @@ const ResourceCoursewarePage = () => {
           </div>
           <div className="float-left  j-b-flex  mb-24">
             <div>
+              <UploadCoursewareButton
+                categoryIds={category_ids}
+                onUpdate={() => {
+                  resetList();
+                }}
+              ></UploadCoursewareButton>
               <Button
                 type="default"
-                className="mr-16"
+                className="ml-16"
                 onClick={() => {
                   setSelectedRowKeys([]);
                   setMultiConfig(!multiConfig);
@@ -293,6 +304,7 @@ const ResourceCoursewarePage = () => {
               </Button>
               <Button
                 type="default"
+                className="ml-16"
                 onClick={() => removeResourceMulti()}
                 disabled={selectedRowKeys.length === 0}
               >
