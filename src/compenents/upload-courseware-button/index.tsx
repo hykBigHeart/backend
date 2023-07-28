@@ -65,11 +65,23 @@ export const UploadCoursewareButton = (props: PropsInterface) => {
       if (
         file.type ===
           "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+        file.type === "application/msword" ||
+        file.type === "application/vnd.ms-word.document.macroEnabled.12" ||
+        file.type === "application/vnd.ms-word.template.macroEnabled.12" ||
         file.type === "text/plain" ||
         file.type === "application/pdf" ||
         file.type === "application/x-zip-compressed" ||
+        file.type === "application/zip" ||
         file.type ===
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
+        file.type === "application/vnd.ms-excel" ||
+        file.type ===
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.template" ||
+        file.type === "application/vnd.ms-excel.sheet.macroEnabled.12" ||
+        file.type === "application/vnd.ms-excel.template.macroEnabled.12" ||
+        file.type === "application/vnd.ms-excel.addin.macroEnabled.12" ||
+        file.type === "application/vnd.ms-excel.sheet.binary.macroEnabled.12" ||
+        file.type === "application/vnd.ms-powerpoint"
       ) {
         // 添加到本地待上传
         let data = await getMinioUploadId(extension);

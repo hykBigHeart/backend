@@ -171,6 +171,10 @@ const routes: RouteObject[] = [
             element: <TestPage />,
           },
           {
+            path: "/error",
+            element: <ErrorPage />,
+          },
+          {
             path: "*",
             element: <ErrorPage />,
           },
