@@ -151,7 +151,7 @@ const ResourceCoursewarePage = () => {
               size="small"
               className="b-n-link c-red"
               onClick={() => {
-                downLoadFile(record.id);
+                downLoadFile(record.url);
               }}
             >
               下载
@@ -161,7 +161,7 @@ const ResourceCoursewarePage = () => {
               type="link"
               className="b-link c-red"
               onClick={() => {
-                setUpdateId(record.url);
+                setUpdateId(record.id);
                 setUpdateVisible(true);
               }}
             >
@@ -206,6 +206,7 @@ const ResourceCoursewarePage = () => {
     setPage(1);
     setSize(10);
     setList([]);
+    setTitle("");
     setSelectedRowKeys([]);
     setType("WORD,EXCEL,PPT,PDF,TXT,RAR,ZIP");
     setRefresh(!refresh);
@@ -260,7 +261,8 @@ const ResourceCoursewarePage = () => {
   };
 
   const downLoadFile = (url: string) => {
-    window.location.href = url;
+    console.log(url);
+    window.open(url);
   };
 
   return (
