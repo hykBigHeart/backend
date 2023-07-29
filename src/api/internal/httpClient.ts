@@ -43,7 +43,24 @@ export class HttpClient {
 
         if (code === 0) {
           return Promise.resolve(response);
+        } else if (code === 404) {
+          message.error(msg);
+          // 跳转到404页面
+          GoError(404);
+        } else if (code === 403) {
+          message.error(msg);
+          // 跳转到无权限页面
+          GoError(403);
+        } else if (code === 429) {
+          message.error(msg);
+          // 跳转到429页面
+          GoError(429);
+        } else if (code === 500) {
+          message.error(msg);
+          // 跳转到500异常页面
+          GoError(500);
         } else {
+          GoError(code);
           message.error(msg);
         }
         return Promise.reject(response);
@@ -66,6 +83,8 @@ export class HttpClient {
         } else if (status === 500) {
           // 跳转到500异常页面
           GoError(500);
+        } else {
+          GoError(status);
         }
         return Promise.reject(error.response);
       }
