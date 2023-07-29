@@ -1,9 +1,18 @@
 import { useEffect, useState } from "react";
-import { Table, Typography, Input, Select, Button, DatePicker } from "antd";
+import {
+  Table,
+  Typography,
+  Input,
+  Select,
+  Space,
+  Button,
+  DatePicker,
+} from "antd";
 import { adminLog } from "../../../api";
 // import styles from "./index.module.less";
 import type { ColumnsType } from "antd/es/table";
 import { dateWholeFormat } from "../../../utils/index";
+import { AdminLogDetailDialog } from "./compenents/detail-dialog";
 const { RangePicker } = DatePicker;
 import moment from "moment";
 
@@ -17,6 +26,8 @@ interface DataType {
   created_at: string;
   title: string;
   ip_area: string;
+  param: string;
+  result: string;
 }
 
 const SystemLogPage = () => {
@@ -30,6 +41,9 @@ const SystemLogPage = () => {
   const [adminId, setAdminId] = useState(0);
   const [created_at, setCreatedAt] = useState<any>([]);
   const [createdAts, setCreatedAts] = useState<any>([]);
+  const [param, setParam] = useState("");
+  const [result, setResult] = useState("");
+  const [visiable, setVisiable] = useState(false);
 
   useEffect(() => {
     getData();
@@ -115,6 +129,25 @@ const SystemLogPage = () => {
         <span>{dateWholeFormat(created_at)}</span>
       ),
     },
+    {
+      title: "操作",
+      key: "action",
+      fixed: "right",
+      width: 160,
+      render: (_, record) => (
+        <Button
+          type="link"
+          className="b-link c-red"
+          onClick={() => {
+            setParam(record.param);
+            setResult(record.result);
+            setVisiable(true);
+          }}
+        >
+          详情
+        </Button>
+      ),
+    },
   ];
 
   return (
@@ -162,6 +195,12 @@ const SystemLogPage = () => {
           pagination={paginationProps}
         />
       </div>
+      <AdminLogDetailDialog
+        param={param}
+        result={result}
+        open={visiable}
+        onCancel={() => setVisiable(false)}
+      ></AdminLogDetailDialog>
     </div>
   );
 };
