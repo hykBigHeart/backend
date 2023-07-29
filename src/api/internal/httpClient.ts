@@ -8,7 +8,7 @@ const GoLogin = () => {
 };
 
 const GoError = () => {
-  // window.location.href = "/error";
+  window.location.href = "/error";
 };
 
 export class HttpClient {
