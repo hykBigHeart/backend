@@ -224,7 +224,8 @@ export const CourseCreate: React.FC<PropInterface> = ({
         dep_ids,
         values.category_ids,
         chapters,
-        treeData
+        treeData,
+        []
       )
       .then((res: any) => {
         message.success("保存成功！");

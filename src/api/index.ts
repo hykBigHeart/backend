@@ -6,6 +6,7 @@ export * as courseCategory from "./course-category";
 export * as courseChapter from "./course-chapter";
 export * as course from "./course";
 export * as courseHour from "./course-hour";
+export * as courseAttachment from "./course-attachment";
 export * as department from "./department";
 export * as resourceCategory from "./resource-category";
 export * as resource from "./resource";
