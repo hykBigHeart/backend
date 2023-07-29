@@ -207,7 +207,7 @@ const ResourceCoursewarePage = () => {
     setSize(10);
     setList([]);
     setSelectedRowKeys([]);
-    setType("WORD,EXCE,PPT,PDF,TXT,RAR,ZIP");
+    setType("WORD,EXCEL,PPT,PDF,TXT,RAR,ZIP");
     setRefresh(!refresh);
   };
 
