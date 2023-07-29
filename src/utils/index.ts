@@ -133,3 +133,10 @@ export function checkUrl(value: any) {
   }
   return url;
 }
+
+export function dateWholeFormat(dateStr: string) {
+  if (!dateStr) {
+    return "";
+  }
+  return moment(dateStr).format("YYYY-MM-DD HH:mm:ss");
+}

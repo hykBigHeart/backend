@@ -66,6 +66,11 @@ export const SystemAdminrolesUpdate: React.FC<PropInterface> = ({
           children: [],
         },
         {
+          title: "管理员日志",
+          value: "管理员日志-n",
+          children: [],
+        },
+        {
           title: "管理员角色",
           value: "管理员角色-n",
           children: [],

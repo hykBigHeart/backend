@@ -91,6 +91,7 @@ const items = [
         null,
         "admin-user-index"
       ),
+      getItem("管理日志", "/system/adminlog", null, null, null, "admin-log"),
       // getItem("角色配置", "/system/adminroles", null, null, null, null),
     ],
     null,
