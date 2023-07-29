@@ -60,7 +60,6 @@ export const UploadCoursewareButton = (props: PropsInterface) => {
     beforeUpload: async (file: File) => {
       let extension: any = file.name.split(".");
       extension = extension[extension.length - 1];
-      console.log(file.type);
       if (
         file.type ===
           "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
