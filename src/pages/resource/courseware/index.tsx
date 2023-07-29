@@ -55,9 +55,9 @@ const ResourceCoursewarePage = () => {
   const [updateId, setUpdateId] = useState(0);
   const [updateVisible, setUpdateVisible] = useState<boolean>(false);
   const types = [
-    { label: "全部", value: "WORD,EXCE,PPT,PDF,TXT,RAR,ZIP" },
+    { label: "全部", value: "WORD,EXCEL,PPT,PDF,TXT,RAR,ZIP" },
     { label: "WORD", value: "WORD" },
-    { label: "EXCEL", value: "EXCE" },
+    { label: "EXCEL", value: "EXCEL" },
     { label: "PPT", value: "PPT" },
     { label: "PDF", value: "PDF" },
     { label: "TXT", value: "TXT" },
