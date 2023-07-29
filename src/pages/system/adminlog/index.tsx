@@ -1,13 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Table,
-  Typography,
-  Input,
-  Select,
-  Space,
-  Button,
-  DatePicker,
-} from "antd";
+import { Table, Typography, Input, Button, DatePicker } from "antd";
 import { adminLog } from "../../../api";
 // import styles from "./index.module.less";
 import type { ColumnsType } from "antd/es/table";
@@ -38,7 +30,7 @@ const SystemLogPage = () => {
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
   const [title, setTitle] = useState("");
-  const [adminId, setAdminId] = useState(0);
+  const [adminId, setAdminId] = useState("");
   const [created_at, setCreatedAt] = useState<any>([]);
   const [createdAts, setCreatedAts] = useState<any>([]);
   const [param, setParam] = useState("");
@@ -55,7 +47,7 @@ const SystemLogPage = () => {
       .adminLogList(
         page,
         size,
-        adminId > 0 ? adminId : null,
+        adminId,
         title,
         "",
         created_at[0],
@@ -73,7 +65,7 @@ const SystemLogPage = () => {
 
   const resetData = () => {
     setTitle("");
-    setAdminId(0);
+    setAdminId("");
     setPage(1);
     setSize(10);
     setList([]);
@@ -107,7 +99,7 @@ const SystemLogPage = () => {
       render: (_, record: any) => <span>{record.id}</span>,
     },
     {
-      title: "管理员",
+      title: "管理员名称",
       width: 150,
       render: (_, record: any) => <span>{record.admin_name}</span>,
     },
@@ -156,6 +148,31 @@ const SystemLogPage = () => {
         <div className="d-flex"></div>
         <div className="d-flex">
           <div className="d-flex mr-24">
+            <Typography.Text>标题：</Typography.Text>
+            <Input
+              value={title}
+              onChange={(e) => {
+                setTitle(e.target.value);
+              }}
+              allowClear
+              style={{ width: 160 }}
+              placeholder="请输入标题"
+            />
+          </div>
+          <div className="d-flex mr-24">
+            <Typography.Text>管理员ID：</Typography.Text>
+            <Input
+              value={adminId}
+              onChange={(e) => {
+                setAdminId(e.target.value);
+              }}
+              allowClear
+              style={{ width: 160 }}
+              placeholder="请输入管理员ID"
+            />
+          </div>
+          <div className="d-flex mr-24">
+            <Typography.Text>时间：</Typography.Text>
             <RangePicker
               disabledDate={disabledDate}
               format={"YYYY-MM-DD"}

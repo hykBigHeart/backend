@@ -3,7 +3,7 @@ import client from "./internal/httpClient";
 export function adminLogList(
   page: number,
   size: number,
-  admin_id: number | null,
+  admin_id: string,
   title: string,
   opt: string,
   start_time: string,
