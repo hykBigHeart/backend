@@ -45,7 +45,7 @@ const ResourceCoursewarePage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [category_ids, setCategoryIds] = useState<any>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
-  const [type, setType] = useState("WORD,EXCE,PPT,PDF,TXT,RAR,ZIP");
+  const [type, setType] = useState("WORD,EXCEL,PPT,PDF,TXT,RAR,ZIP");
   const [title, setTitle] = useState<string>("");
   const [multiConfig, setMultiConfig] = useState<boolean>(false);
   const [selLabel, setLabel] = useState<string>(
