@@ -11,3 +11,5 @@ export * from "./duration-text";
 export * from "./upload-video-sub";
 export * from "./select-resource";
 export * from "./upload-courseware-button";
+export * from "./upload-courseware-sub";
+export * from "./select-attachment";

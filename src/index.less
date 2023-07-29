@@ -596,6 +596,7 @@ textarea.ant-input {
   .ant-checkbox-wrapper {
     margin-inline-start: 0px;
     height: 38px;
+    align-items: center !important;
   }
 
   .video-title {
@@ -660,3 +661,26 @@ textarea.ant-input {
     transform: rotate(90deg);
   }
 }
+
+.drop-item {
+  width: 140px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  &.active {
+    i {
+      transform: rotate(180deg);
+    }
+  }
+  i {
+    margin-right: 12px;
+  }
+  span {
+    font-size: 12px;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.45);
+    line-height: 32px;
+  }
+}
+
