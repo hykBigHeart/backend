@@ -16,12 +16,8 @@ import { useLocation } from "react-router-dom";
 import { DownOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import { dateFormat } from "../../../utils/index";
-import {
-  TreeCategory,
-  DurationText,
-  PerButton,
-  UploadCoursewareButton,
-} from "../../../compenents";
+import { TreeCategory, UploadCoursewareButton } from "../../../compenents";
+import { CoursewareUpdateDialog } from "./compenents/update-dialog";
 
 const { confirm } = Modal;
 
@@ -378,6 +374,15 @@ const ResourceCoursewarePage = () => {
             )}
           </div>
         </div>
+        <CoursewareUpdateDialog
+          id={Number(updateId)}
+          open={updateVisible}
+          onCancel={() => setUpdateVisible(false)}
+          onSuccess={() => {
+            setUpdateVisible(false);
+            setRefresh(!refresh);
+          }}
+        ></CoursewareUpdateDialog>
       </div>
     </>
   );
