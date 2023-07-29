@@ -29,7 +29,7 @@ interface DataType {
   id: React.Key;
   name: string;
   created_at: string;
-  disk: string;
+  type: string;
   number: number;
 }
 
@@ -100,7 +100,7 @@ const ResourceCoursewarePage = () => {
     {
       title: "课件名称",
       dataIndex: "name",
-      render: (text: string) => (
+      render: (name: string) => (
         <div className="d-flex">
           <i
             className="iconfont icon-icon-file"
@@ -109,15 +109,15 @@ const ResourceCoursewarePage = () => {
               color: "rgba(0,0,0,0.3)",
             }}
           />
-          <span className="ml-8">{text}</span>
+          <span className="ml-8">{name}</span>
         </div>
       ),
     },
     {
       title: "课件格式",
-      dataIndex: "id",
+      dataIndex: "type",
       width: 204,
-      render: (id: string) => <span>{id}</span>,
+      render: (type: string) => <span>{type}</span>,
     },
     {
       title: "课件大小",
@@ -161,7 +161,7 @@ const ResourceCoursewarePage = () => {
               type="link"
               className="b-link c-red"
               onClick={() => {
-                setUpdateId(record.id);
+                setUpdateId(record.url);
                 setUpdateVisible(true);
               }}
             >
@@ -259,7 +259,9 @@ const ResourceCoursewarePage = () => {
     });
   };
 
-  const downLoadFile = (id: number) => {};
+  const downLoadFile = (url: string) => {
+    window.location.href = url;
+  };
 
   return (
     <>
