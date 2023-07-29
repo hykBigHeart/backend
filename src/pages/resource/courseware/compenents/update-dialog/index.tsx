@@ -74,9 +74,6 @@ export const CoursewareUpdateDialog: React.FC<PropInterface> = ({
   };
 
   const onFinish = (values: any) => {
-    if (loading) {
-      return;
-    }
     setLoading(true);
     if (Array.isArray(values.category_id)) {
       values.category_id = values.category_id[0];
