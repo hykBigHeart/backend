@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Space, Button, Drawer, Form, Input, Modal, message } from "antd";
+import { Button, Drawer, Form, Input, Modal, message } from "antd";
 import styles from "./hour-update.module.less";
 import { course, courseHour, courseChapter } from "../../../api/index";
 import { SelectResource } from "../../../compenents";
@@ -12,12 +12,6 @@ interface PropInterface {
   id: number;
   open: boolean;
   onCancel: () => void;
-}
-
-interface Option {
-  value: string | number;
-  label: string;
-  children?: Option[];
 }
 
 export const CourseHourUpdate: React.FC<PropInterface> = ({

@@ -32,12 +32,6 @@ interface PropInterface {
   onCancel: () => void;
 }
 
-interface Option {
-  value: string | number;
-  title: string;
-  children?: Option[];
-}
-
 export const CourseCreate: React.FC<PropInterface> = ({
   cateIds,
   depIds,

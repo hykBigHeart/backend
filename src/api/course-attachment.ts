@@ -1,22 +1,20 @@
 import client from "./internal/httpClient";
 
-export function updateCourseAttachment(
+export function storeCourseAttachmentMulti(
   courseId: number,
-  id: number,
-  chapterId: number,
-  name: string,
-  type: string,
-  rid: number
+  attachments: number[]
 ) {
-  return client.put(`/backend/v1/course/${courseId}/attachment/create-batch`, {
-    chapter_id: chapterId,
-    name,
-    type,
-    sort: 0,
-    rid,
+  return client.post(`/backend/v1/course/${courseId}/attachment/create-batch`, {
+    attachments: attachments,
   });
 }
 
 export function destroyAttachment(courseId: number, id: number) {
   return client.destroy(`/backend/v1/course/${courseId}/attachment/${id}`);
+}
+
+export function transCourseAttachment(courseId: number, ids: number[]) {
+  return client.put(`/backend/v1/course/${courseId}/attachment/update/sort`, {
+    ids: ids,
+  });
 }

@@ -16,18 +16,10 @@ import { useSelector } from "react-redux";
 import { course, department } from "../../../api/index";
 import { UploadImageButton } from "../../../compenents";
 
-const { confirm } = Modal;
-
 interface PropInterface {
   id: number;
   open: boolean;
   onCancel: () => void;
-}
-
-interface Option {
-  value: string | number;
-  title: string;
-  children?: Option[];
 }
 
 export const CourseUpdate: React.FC<PropInterface> = ({
