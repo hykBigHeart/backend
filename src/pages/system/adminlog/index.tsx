@@ -12,10 +12,11 @@ interface DataType {
   admin_id: number;
   ip: string;
   opt: string;
-  adminName: string;
+  admin_name: string;
   module: string;
   created_at: string;
   title: string;
+  ip_area: string;
 }
 
 const SystemLogPage = () => {
@@ -87,36 +88,24 @@ const SystemLogPage = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "管理员ID",
+      title: "ID",
       width: 100,
-      render: (_, record: any) => <span>{record.admin_id}</span>,
+      render: (_, record: any) => <span>{record.id}</span>,
     },
     {
       title: "管理员",
       width: 150,
-      render: (_, record: any) => <span>{record.adminName}</span>,
+      render: (_, record: any) => <span>{record.admin_name}</span>,
     },
     {
       title: "标题",
       render: (_, record: any) => <span>{record.title}</span>,
     },
     {
-      title: "操作模块",
-      width: 100,
-      dataIndex: "module",
-      render: (module: string) => <span>{module}</span>,
-    },
-    {
-      title: "操作指令",
-      width: 100,
-      dataIndex: "opt",
-      render: (opt: string) => <span>{opt}</span>,
-    },
-    {
-      title: "IP",
-      width: 200,
-      dataIndex: "ip",
-      render: (ip: string) => <span>{ip}</span>,
+      title: "IP地区",
+      width: 250,
+      dataIndex: "ip_area",
+      render: (ip_area: string) => <span>{ip_area}</span>,
     },
     {
       title: "时间",
