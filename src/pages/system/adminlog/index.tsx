@@ -176,8 +176,8 @@ const SystemLogPage = () => {
               value={createdAts}
               style={{ marginLeft: 10 }}
               onChange={(date, dateString) => {
-                dateString[0] += " 00:00:00";
-                dateString[1] += " 23:59:59";
+                dateString[0] += "T00:00:00.000+00:00";
+                dateString[1] += "T23:59:59.000+00:00";
                 setCreatedAt(dateString);
                 setCreatedAts(date);
               }}
