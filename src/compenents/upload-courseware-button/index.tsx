@@ -189,10 +189,11 @@ export const UploadCoursewareButton = (props: PropsInterface) => {
                 <p className="ant-upload-drag-icon">
                   <InboxOutlined />
                 </p>
-                <p className="ant-upload-text">
-                  支持word、excel、ppt、pdf、zip、txt格式文件
+                <p className="ant-upload-text">请将文件拖拽到此处上传</p>
+                <p className="ant-upload-hint">
+                  支持一次上传多个 /
+                  支持word、excel、ppt、pdf、zip、rar、txt格式文件
                 </p>
-                <p className="ant-upload-hint">支持一次上传多个文件</p>
               </Dragger>
             </Col>
             <Col span={24}>
