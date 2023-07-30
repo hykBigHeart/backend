@@ -48,7 +48,6 @@ const SystemLogPage = () => {
       .adminLogList(
         page,
         size,
-        adminId,
         adminName,
         title,
         "",
