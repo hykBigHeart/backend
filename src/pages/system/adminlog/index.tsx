@@ -31,6 +31,7 @@ const SystemLogPage = () => {
   const [refresh, setRefresh] = useState(false);
   const [title, setTitle] = useState("");
   const [adminId, setAdminId] = useState("");
+  const [adminName, setAdminName] = useState("");
   const [created_at, setCreatedAt] = useState<any>([]);
   const [createdAts, setCreatedAts] = useState<any>([]);
   const [param, setParam] = useState("");
@@ -48,6 +49,7 @@ const SystemLogPage = () => {
         page,
         size,
         adminId,
+        adminName,
         title,
         "",
         created_at[0],
@@ -66,6 +68,7 @@ const SystemLogPage = () => {
   const resetData = () => {
     setTitle("");
     setAdminId("");
+    setAdminName("");
     setPage(1);
     setSize(10);
     setList([]);
@@ -143,6 +146,18 @@ const SystemLogPage = () => {
         <div className="d-flex"></div>
         <div className="d-flex">
           <div className="d-flex mr-24">
+            <Typography.Text>管理员名称：</Typography.Text>
+            <Input
+              value={adminName}
+              onChange={(e) => {
+                setAdminName(e.target.value);
+              }}
+              allowClear
+              style={{ width: 160 }}
+              placeholder="请输入管理员名称"
+            />
+          </div>
+          <div className="d-flex mr-24">
             <Typography.Text>操作：</Typography.Text>
             <Input
               value={title}
@@ -152,18 +167,6 @@ const SystemLogPage = () => {
               allowClear
               style={{ width: 160 }}
               placeholder="请输入操作"
-            />
-          </div>
-          <div className="d-flex mr-24">
-            <Typography.Text>管理员ID：</Typography.Text>
-            <Input
-              value={adminId}
-              onChange={(e) => {
-                setAdminId(e.target.value);
-              }}
-              allowClear
-              style={{ width: 160 }}
-              placeholder="请输入管理员ID"
             />
           </div>
           <div className="d-flex mr-24">
