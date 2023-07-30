@@ -95,8 +95,7 @@ const ResourceCoursewarePage = () => {
   const columns: ColumnsType<DataType> = [
     {
       title: "课件名称",
-      dataIndex: "name",
-      render: (name: string) => (
+      render: (_, record: any) => (
         <div className="d-flex">
           <i
             className="iconfont icon-icon-file"
@@ -105,7 +104,9 @@ const ResourceCoursewarePage = () => {
               color: "rgba(0,0,0,0.3)",
             }}
           />
-          <span className="ml-8">{name}</span>
+          <span className="ml-8">
+            {record.name}.{record.extension}
+          </span>
         </div>
       ),
     },
