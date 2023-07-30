@@ -3,7 +3,7 @@ import { Table, Typography, Input, Button, DatePicker } from "antd";
 import { adminLog } from "../../../api";
 // import styles from "./index.module.less";
 import type { ColumnsType } from "antd/es/table";
-import { dateWholeFormat } from "../../../utils/index";
+import { dateWholeFormat, transUtcTime } from "../../../utils/index";
 import { AdminLogDetailDialog } from "./compenents/detail-dialog";
 const { RangePicker } = DatePicker;
 import moment from "moment";
@@ -176,8 +176,10 @@ const SystemLogPage = () => {
               value={createdAts}
               style={{ marginLeft: 10 }}
               onChange={(date, dateString) => {
-                dateString[0] += "T00:00:00.000+00:00";
-                dateString[1] += "T23:59:59.000+00:00";
+                let date1 = dateString[0] + " 00:00:00";
+                let date2 = dateString[1] + " 23:59:59";
+                dateString[0] = transUtcTime(date1);
+                dateString[1] = transUtcTime(date2);
                 setCreatedAt(dateString);
                 setCreatedAts(date);
               }}

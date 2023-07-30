@@ -140,3 +140,13 @@ export function dateWholeFormat(dateStr: string) {
   }
   return moment(dateStr).format("YYYY-MM-DD HH:mm:ss");
 }
+
+export function transUtcTime(value: string) {
+  const specifiedTime = value;
+  // 创建一个新的Date对象，传入指定时间
+  const specifiedDate = new Date(specifiedTime);
+  //将指定时间转换为UTC+0时间
+  const utcTime = specifiedDate.toISOString();
+
+  return utcTime;
+}
