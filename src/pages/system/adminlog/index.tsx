@@ -94,17 +94,12 @@ const SystemLogPage = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "ID",
-      width: 100,
-      render: (_, record: any) => <span>{record.id}</span>,
-    },
-    {
       title: "管理员名称",
       width: 150,
       render: (_, record: any) => <span>{record.admin_name}</span>,
     },
     {
-      title: "标题",
+      title: "操作",
       render: (_, record: any) => <span>{record.title}</span>,
     },
     {
@@ -148,7 +143,7 @@ const SystemLogPage = () => {
         <div className="d-flex"></div>
         <div className="d-flex">
           <div className="d-flex mr-24">
-            <Typography.Text>标题：</Typography.Text>
+            <Typography.Text>操作：</Typography.Text>
             <Input
               value={title}
               onChange={(e) => {
@@ -156,7 +151,7 @@ const SystemLogPage = () => {
               }}
               allowClear
               style={{ width: 160 }}
-              placeholder="请输入标题"
+              placeholder="请输入操作"
             />
           </div>
           <div className="d-flex mr-24">

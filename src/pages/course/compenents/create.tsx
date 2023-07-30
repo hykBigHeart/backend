@@ -84,6 +84,8 @@ export const CourseCreate: React.FC<PropInterface> = ({
     setHours([]);
     setTreeData([]);
     setAttachmentData([]);
+    setAttachments([]);
+    setShowDrop(false);
   }, [form, open]);
 
   const getParams = () => {
@@ -793,7 +795,10 @@ export const CourseCreate: React.FC<PropInterface> = ({
                 className={showDrop ? "drop-item active" : "drop-item"}
                 onClick={() => setShowDrop(!showDrop)}
               >
-                <i className="iconfont icon-icon-xiala c-red" />
+                <i
+                  style={{ fontSize: 14 }}
+                  className="iconfont icon-icon-xiala c-red"
+                />
                 <span>(课程简介、课件)</span>
               </div>
             </Form.Item>
