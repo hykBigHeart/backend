@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Row, Col, Empty, Table, Pagination } from "antd";
+import { Row, Col, Empty, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { resource } from "../../api";
 import styles from "./index.module.less";
@@ -192,27 +192,6 @@ export const UploadVideoSub = (props: PropsInterface) => {
               </div>
             )}
           </div>
-          <Row
-            style={{
-              paddingLeft: 10,
-            }}
-          >
-            {videoList.length > 0 && total > 10 && (
-              <Col
-                span={24}
-                style={{ display: "flex", flexDirection: "row-reverse" }}
-              >
-                <Pagination
-                  onChange={(currentPage, currentSize) => {
-                    setPage(currentPage);
-                    setSize(currentSize);
-                  }}
-                  defaultCurrent={page}
-                  total={total}
-                />
-              </Col>
-            )}
-          </Row>
         </Col>
       </Row>
     </>
