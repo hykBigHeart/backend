@@ -192,23 +192,23 @@ const ResourceImagesPage = () => {
                   ></UploadImageSub>
                   {selectKey.length > 0 && (
                     <Button className="ml-16" onClick={() => cancelAll()}>
-                      取消选择
+                      取消操作
+                    </Button>
+                  )}
+                  {selectKey.length === 0 && (
+                    <Button className="ml-16" onClick={() => selectAll()}>
+                      批量操作
                     </Button>
                   )}
                   {imageList.length !== 0 && (
-                    <>
-                      <Button className="ml-16" onClick={() => selectAll()}>
-                        全选
-                      </Button>
-                      <Button
-                        className="ml-16"
-                        disabled={selectKey.length === 0}
-                        type="primary"
-                        onClick={() => removeResource()}
-                      >
-                        删除
-                      </Button>
-                    </>
+                    <Button
+                      className="ml-16"
+                      disabled={selectKey.length === 0}
+                      type="primary"
+                      onClick={() => removeResource()}
+                    >
+                      删除
+                    </Button>
                   )}
                 </div>
                 <div className="d-flex"></div>
