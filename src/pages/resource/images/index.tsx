@@ -183,24 +183,25 @@ const ResourceImagesPage = () => {
           <Row gutter={16} style={{ marginBottom: 24 }}>
             <Col span={24}>
               <div className="j-b-flex">
-                <UploadImageSub
-                  categoryIds={category_ids}
-                  onUpdate={() => {
-                    resetImageList();
-                  }}
-                ></UploadImageSub>
                 <div className="d-flex">
+                  <UploadImageSub
+                    categoryIds={category_ids}
+                    onUpdate={() => {
+                      resetImageList();
+                    }}
+                  ></UploadImageSub>
                   {selectKey.length > 0 && (
-                    <Button className="mr-16" onClick={() => cancelAll()}>
+                    <Button className="ml-16" onClick={() => cancelAll()}>
                       取消选择
                     </Button>
                   )}
                   {imageList.length !== 0 && (
                     <>
-                      <Button className="mr-16" onClick={() => selectAll()}>
+                      <Button className="ml-16" onClick={() => selectAll()}>
                         全选
                       </Button>
                       <Button
+                        className="ml-16"
                         disabled={selectKey.length === 0}
                         type="primary"
                         onClick={() => removeResource()}
@@ -210,6 +211,7 @@ const ResourceImagesPage = () => {
                     </>
                   )}
                 </div>
+                <div className="d-flex"></div>
               </div>
             </Col>
           </Row>

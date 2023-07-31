@@ -286,11 +286,9 @@ const ResourceVideosPage = () => {
                   resetVideoList();
                 }}
               ></UploadVideoButton>
-            </div>
-            <div className="d-flex">
               <Button
                 type="default"
-                className="mr-16"
+                className="ml-16"
                 onClick={() => {
                   setSelectedRowKeys([]);
                   setMultiConfig(!multiConfig);
@@ -299,6 +297,7 @@ const ResourceVideosPage = () => {
                 {multiConfig ? "取消操作" : "批量操作"}
               </Button>
               <Button
+                className="ml-16"
                 type="default"
                 onClick={() => removeResourceMulti()}
                 disabled={selectedRowKeys.length === 0}
@@ -306,6 +305,7 @@ const ResourceVideosPage = () => {
                 删除
               </Button>
             </div>
+            <div className="d-flex"></div>
           </div>
           <div className="float-left">
             {multiConfig ? (

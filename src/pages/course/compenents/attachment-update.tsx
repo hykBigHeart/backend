@@ -80,7 +80,6 @@ export const CourseAttachmentUpdate: React.FC<PropInterface> = ({
       message.error("请选择课件");
       return;
     }
-    console.log(hours);
 
     courseAttachment
       .storeCourseAttachmentMulti(id, hours)
