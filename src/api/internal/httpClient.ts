@@ -8,7 +8,7 @@ const GoLogin = () => {
 };
 
 const GoError = (code: number) => {
-  window.location.href = "/error?code=" + code;
+  // window.location.href = "/error?code=" + code;
 };
 
 export class HttpClient {

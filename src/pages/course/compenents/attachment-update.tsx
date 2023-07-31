@@ -69,19 +69,19 @@ export const CourseAttachmentUpdate: React.FC<PropInterface> = ({
   const selectAttachmentData = (arr: any, videos: any) => {
     const hours: any = [];
     for (let i = 0; i < videos.length; i++) {
-      if (videos[i].disabled === false) {
-        hours.push({
-          sort: attachmentData.length + i,
-          title: videos[i].name,
-          type: videos[i].type,
-          rid: videos[i].rid,
-        });
-      }
+      hours.push({
+        sort: attachmentData.length + i,
+        title: videos[i].name,
+        type: videos[i].type,
+        rid: videos[i].rid,
+      });
     }
     if (hours.length === 0) {
-      message.error("请选择视频");
+      message.error("请选择课件");
       return;
     }
+    console.log(hours);
+
     courseAttachment
       .storeCourseAttachmentMulti(id, hours)
       .then((res: any) => {

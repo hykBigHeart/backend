@@ -1,17 +1,32 @@
 import { useEffect, useState } from "react";
-import { Checkbox, Row, Col, Empty, message, Pagination } from "antd";
+import { Row, Col, Empty, Table, Pagination } from "antd";
+import type { ColumnsType } from "antd/es/table";
 import { resource } from "../../api";
 import styles from "./index.module.less";
 import { TreeCategory, UploadCoursewareButton } from "../../compenents";
-import type { CheckboxChangeEvent } from "antd/es/checkbox";
-import type { CheckboxValueType } from "antd/es/checkbox/Group";
-
-const CheckboxGroup = Checkbox.Group;
 
 interface VideoItem {
   id: number;
-  category_id: number;
   name: string;
+  created_at: string;
+  type: string;
+  url: string;
+  path: string;
+  size: number;
+  extension: string;
+  admin_id: number;
+}
+
+interface DataType {
+  id: React.Key;
+  name: string;
+  created_at: string;
+  type: string;
+  url: string;
+  path: string;
+  size: number;
+  extension: string;
+  admin_id: number;
 }
 
 interface PropsInterface {
@@ -30,14 +45,21 @@ export const UploadCoursewareSub = (props: PropsInterface) => {
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
   const [total, setTotal] = useState(0);
+  const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
 
-  const [plainOptions, setPlainOptions] = useState<any>([]);
-  const [checkedList, setCheckedList] = useState<CheckboxValueType[]>([]);
-  const [indeterminate, setIndeterminate] = useState(false);
-  const [checkAll, setCheckAll] = useState(false);
+  // 加载列表
+  useEffect(() => {
+    getvideoList();
+  }, [props.open, category_ids, refresh, page, size]);
+
+  useEffect(() => {
+    if (props.defaultCheckedList.length > 0) {
+      setSelectedRowKeys(props.defaultCheckedList);
+    }
+  }, [props.defaultCheckedList]);
 
   // 获取列表
-  const getvideoList = (defaultKeys: any[]) => {
+  const getvideoList = () => {
     let categoryIds = category_ids.join(",");
     resource
       .resourceList(
@@ -53,42 +75,12 @@ export const UploadCoursewareSub = (props: PropsInterface) => {
         setTotal(res.data.result.total);
         setExistingTypes(res.data.existing_types);
         setVideoList(res.data.result.data);
-        let data = res.data.result.data;
-        const arr = [];
-        for (let i = 0; i < data.length; i++) {
-          arr.push({
-            label: (
-              <div className="d-flex">
-                <i
-                  className="iconfont icon-icon-file"
-                  style={{
-                    fontSize: 16,
-                    color: "rgba(0,0,0,0.3)",
-                  }}
-                />
-                <div className="video-title ml-8">{data[i].name}</div>
-                <div className="video-time">{data[i].type}</div>
-              </div>
-            ),
-            value: data[i].id,
-            disabled: false,
-          });
-        }
-        if (defaultKeys.length > 0 && arr.length > 0) {
-          for (let i = 0; i < defaultKeys.length; i++) {
-            for (let j = 0; j < arr.length; j++) {
-              if (arr[j].value === defaultKeys[i]) {
-                arr[j].disabled = true;
-              }
-            }
-          }
-        }
-        setPlainOptions(arr);
       })
       .catch((err) => {
         console.log("错误,", err);
       });
   };
+
   // 重置列表
   const resetVideoList = () => {
     setPage(1);
@@ -96,76 +88,64 @@ export const UploadCoursewareSub = (props: PropsInterface) => {
     setRefresh(!refresh);
   };
 
-  // 加载列表
-  useEffect(() => {
-    const arr = [...props.defaultCheckedList];
-    setCheckedList(arr);
-    if (arr.length === 0) {
-      setIndeterminate(false);
-      setCheckAll(false);
-    }
-    getvideoList(arr);
-  }, [props.open, props.defaultCheckedList, category_ids, refresh, page, size]);
-
-  const onChange = (list: CheckboxValueType[]) => {
-    setCheckedList(list);
-    setIndeterminate(!!list.length && list.length < plainOptions.length);
-    setCheckAll(list.length === plainOptions.length);
-    const defalut = [...props.defaultCheckedList];
-    let localKeys: any = [];
-    list.map((item: any) => {
-      if (defalut.indexOf(item) === -1) {
-        localKeys.push(item);
-      }
-    });
-
-    let arrVideos: any = [];
-
-    for (let i = 0; i < localKeys.length; i++) {
-      videoList.map((item: any, index: number) => {
-        if (item.id === localKeys[i]) {
-          arrVideos.push({
-            name: item.name,
-            type: item.type,
-            rid: item.id,
-            disabled: plainOptions[index].disabled,
-          });
-        }
-      });
-    }
-    props.onSelected(localKeys, arrVideos);
+  const paginationProps = {
+    current: page, //当前页码
+    pageSize: size,
+    total: total, // 总条数
+    onChange: (page: number, pageSize: number) =>
+      handlePageChange(page, pageSize), //改变页码的函数
+    showSizeChanger: true,
   };
 
-  const onCheckAllChange = (e: CheckboxChangeEvent) => {
-    const arr = plainOptions.map((item: any) => item.value);
-    setCheckedList(e.target.checked ? arr : []);
-    setIndeterminate(false);
-    setCheckAll(e.target.checked);
-    const defalut = [...props.defaultCheckedList];
-    let localKeys: any = [];
-    arr.map((item: any) => {
-      if (defalut.indexOf(item) === -1) {
-        localKeys.push(item);
-      }
-    });
-    let arrVideos: any = [];
-    for (let i = 0; i < localKeys.length; i++) {
-      videoList.map((item: any, index: number) => {
-        if (item.id === localKeys[i]) {
-          arrVideos.push({
-            name: item.name,
-            type: item.type,
-            rid: item.id,
-            disabled: plainOptions[index].disabled,
-          });
+  const handlePageChange = (page: number, pageSize: number) => {
+    setPage(page);
+    setSize(pageSize);
+  };
+
+  const columns: ColumnsType<DataType> = [
+    {
+      title: "课件",
+      render: (_, record: any) => (
+        <div className="d-flex">
+          <i
+            className="iconfont icon-icon-file"
+            style={{
+              fontSize: 14,
+              color: "rgba(0,0,0,0.3)",
+            }}
+          />
+          <div className="video-title ml-8">{record.name}</div>
+        </div>
+      ),
+    },
+    {
+      title: "类型",
+      render: (_, record: any) => <span>{record.type}</span>,
+    },
+  ];
+
+  const rowSelection = {
+    selectedRowKeys: selectedRowKeys,
+    onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
+      let row: any = selectedRows;
+      let arrVideos: any = [];
+      if (row) {
+        for (var i = 0; i < row.length; i++) {
+          if (props.defaultCheckedList.indexOf(row[i].id) === -1) {
+            arrVideos.push({
+              name: row[i].name,
+              type: row[i].type,
+              rid: row[i].id,
+            });
+          }
         }
-      });
-    }
-    if (e.target.checked) {
-      props.onSelected(localKeys, arrVideos);
-    } else {
-      props.onSelected([], []);
-    }
+        props.onSelected(selectedRowKeys, arrVideos);
+      }
+      setSelectedRowKeys(selectedRowKeys);
+    },
+    getCheckboxProps: (record: any) => ({
+      disabled: props.defaultCheckedList.indexOf(record.id) !== -1, //禁用的条件
+    }),
   };
 
   return (
@@ -198,18 +178,16 @@ export const UploadCoursewareSub = (props: PropsInterface) => {
             )}
             {videoList.length > 0 && (
               <div className="list-select-column-box c-flex">
-                <Checkbox
-                  indeterminate={indeterminate}
-                  onChange={onCheckAllChange}
-                  checked={checkAll}
-                >
-                  全选
-                </Checkbox>
-                <CheckboxGroup
-                  className="c-flex"
-                  options={plainOptions}
-                  value={checkedList}
-                  onChange={onChange}
+                <Table
+                  rowSelection={{
+                    type: "checkbox",
+                    ...rowSelection,
+                  }}
+                  columns={columns}
+                  dataSource={videoList}
+                  loading={loading}
+                  pagination={paginationProps}
+                  rowKey={(record) => record.id}
                 />
               </div>
             )}

@@ -1,15 +1,8 @@
 import { useEffect, useState } from "react";
-import { Button, Row, Modal, message, Tabs } from "antd";
+import { Row, Modal, Tabs } from "antd";
 import styles from "./index.module.less";
 import { UploadVideoSub } from "../../compenents";
 import type { TabsProps } from "antd";
-
-interface VideoItem {
-  id: number;
-  category_id: number;
-  name: string;
-  duration: number;
-}
 
 interface PropsInterface {
   defaultKeys: any[];
@@ -23,6 +16,10 @@ export const SelectResource = (props: PropsInterface) => {
   const [tabKey, setTabKey] = useState(1);
   const [selectKeys, setSelectKeys] = useState<any>([]);
   const [selectVideos, setSelectVideos] = useState<any>([]);
+
+  useEffect(() => {
+    setRefresh(!refresh);
+  }, [props.open]);
 
   const items: TabsProps["items"] = [
     {

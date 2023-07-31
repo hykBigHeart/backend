@@ -100,16 +100,14 @@ export const CourseHourUpdate: React.FC<PropInterface> = ({
   const selectData = (arr: any, videos: any) => {
     const hours: any = [];
     for (let i = 0; i < videos.length; i++) {
-      if (videos[i].disabled === false) {
-        hours.push({
-          chapter_id: 0,
-          sort: treeData.length + i,
-          title: videos[i].name,
-          type: videos[i].type,
-          duration: videos[i].duration,
-          rid: videos[i].rid,
-        });
-      }
+      hours.push({
+        chapter_id: 0,
+        sort: treeData.length + i,
+        title: videos[i].name,
+        type: videos[i].type,
+        duration: videos[i].duration,
+        rid: videos[i].rid,
+      });
     }
     if (hours.length === 0) {
       message.error("请选择视频");
@@ -135,16 +133,14 @@ export const CourseHourUpdate: React.FC<PropInterface> = ({
     }
     const hours: any = [];
     for (let i = 0; i < videos.length; i++) {
-      if (videos[i].disabled === false) {
-        hours.push({
-          chapter_id: data[addvideoCurrent].id,
-          sort: data[addvideoCurrent].hours.length + i,
-          title: videos[i].name,
-          type: videos[i].type,
-          duration: videos[i].duration,
-          rid: videos[i].rid,
-        });
-      }
+      hours.push({
+        chapter_id: data[addvideoCurrent].id,
+        sort: data[addvideoCurrent].hours.length + i,
+        title: videos[i].name,
+        type: videos[i].type,
+        duration: videos[i].duration,
+        rid: videos[i].rid,
+      });
     }
     if (hours.length === 0) {
       message.error("请选择视频");
