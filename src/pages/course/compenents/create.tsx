@@ -14,9 +14,14 @@ import {
 import styles from "./create.module.less";
 import { useSelector } from "react-redux";
 import { course, department } from "../../../api/index";
-import { UploadImageButton, SelectResource } from "../../../compenents";
+import {
+  UploadImageButton,
+  SelectResource,
+  SelectAttachment,
+} from "../../../compenents";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import { TreeHours } from "./hours";
+import { TreeAttachments } from "./attachments";
 
 const { confirm } = Modal;
 
@@ -25,12 +30,6 @@ interface PropInterface {
   depIds: any;
   open: boolean;
   onCancel: () => void;
-}
-
-interface Option {
-  value: string | number;
-  title: string;
-  children?: Option[];
 }
 
 export const CourseCreate: React.FC<PropInterface> = ({
@@ -58,6 +57,10 @@ export const CourseCreate: React.FC<PropInterface> = ({
   const [videoVisible, setVideoVisible] = useState<boolean>(false);
   const [treeData, setTreeData] = useState<any>([]);
   const [addvideoCurrent, setAddvideoCurrent] = useState(0);
+  const [showDrop, setShowDrop] = useState<boolean>(false);
+  const [attachmentVisible, setAttachmentVisible] = useState<boolean>(false);
+  const [attachmentData, setAttachmentData] = useState<any>([]);
+  const [attachments, setAttachments] = useState<any>([]);
 
   useEffect(() => {
     if (open) {
@@ -80,6 +83,9 @@ export const CourseCreate: React.FC<PropInterface> = ({
     setChapterHours([]);
     setHours([]);
     setTreeData([]);
+    setAttachmentData([]);
+    setAttachments([]);
+    setShowDrop(false);
   }, [form, open]);
 
   const getParams = () => {
@@ -224,7 +230,8 @@ export const CourseCreate: React.FC<PropInterface> = ({
         dep_ids,
         values.category_ids,
         chapters,
-        treeData
+        treeData,
+        attachmentData
       )
       .then((res: any) => {
         message.success("保存成功！");
@@ -266,6 +273,20 @@ export const CourseCreate: React.FC<PropInterface> = ({
     setChapters(data);
     setChapterHours(keys);
     setVideoVisible(false);
+  };
+
+  const selectAttachmentData = (arr: any, videos: any) => {
+    if (arr.length === 0) {
+      message.error("请选择课件");
+      return;
+    }
+    let keys = [...attachments];
+    let data = [...attachmentData];
+    keys = keys.concat(arr);
+    data = data.concat(videos);
+    setAttachments(keys);
+    setAttachmentData(data);
+    setAttachmentVisible(false);
   };
 
   const getChapterType = (e: any) => {
@@ -324,6 +345,36 @@ export const CourseCreate: React.FC<PropInterface> = ({
       });
     }
     setTreeData(newArr);
+  };
+
+  const delAttachments = (id: number) => {
+    const data = [...attachmentData];
+    const index = data.findIndex((i: any) => i.rid === id);
+    if (index >= 0) {
+      data.splice(index, 1);
+    }
+    if (data.length > 0) {
+      setAttachmentData(data);
+      const keys = data.map((item: any) => item.rid);
+      setAttachments(keys);
+    } else {
+      setAttachmentData([]);
+      setAttachments([]);
+    }
+  };
+
+  const transAttachments = (arr: any) => {
+    setAttachments(arr);
+    const data = [...attachmentData];
+    const newArr: any = [];
+    for (let i = 0; i < arr.length; i++) {
+      data.map((item: any) => {
+        if (item.rid === arr[i]) {
+          newArr.push(item);
+        }
+      });
+    }
+    setAttachmentData(newArr);
   };
 
   const addNewChapter = () => {
@@ -445,6 +496,16 @@ export const CourseCreate: React.FC<PropInterface> = ({
               }
             }}
           />
+          <SelectAttachment
+            defaultKeys={attachments}
+            open={attachmentVisible}
+            onCancel={() => {
+              setAttachmentVisible(false);
+            }}
+            onSelected={(arr: any, videos: any) => {
+              selectAttachmentData(arr, videos);
+            }}
+          ></SelectAttachment>
           <Form
             form={form}
             name="create-basic"
@@ -621,14 +682,6 @@ export const CourseCreate: React.FC<PropInterface> = ({
                 </div>
               </div>
             </Form.Item>
-            <Form.Item label="课程简介" name="short_desc">
-              <Input.TextArea
-                style={{ width: 424, minHeight: 80 }}
-                allowClear
-                placeholder="请输入课程简介（最多200字）"
-                maxLength={200}
-              />
-            </Form.Item>
             <Form.Item
               label="课时列表"
               name="hasChapter"
@@ -642,7 +695,7 @@ export const CourseCreate: React.FC<PropInterface> = ({
               </Radio.Group>
             </Form.Item>
             {chapterType === 0 && (
-              <div className="c-flex">
+              <div className="c-flex mb-24">
                 <Form.Item>
                   <div className="ml-120">
                     <Button
@@ -674,7 +727,7 @@ export const CourseCreate: React.FC<PropInterface> = ({
               </div>
             )}
             {chapterType === 1 && (
-              <div className="c-flex">
+              <div className="c-flex mb-24">
                 {chapters.length > 0 &&
                   chapters.map((item: any, index: number) => {
                     return (
@@ -737,6 +790,57 @@ export const CourseCreate: React.FC<PropInterface> = ({
                 </Form.Item>
               </div>
             )}
+            <Form.Item label="更多选项">
+              <div
+                className={showDrop ? "drop-item active" : "drop-item"}
+                onClick={() => setShowDrop(!showDrop)}
+              >
+                <i
+                  style={{ fontSize: 14 }}
+                  className="iconfont icon-icon-xiala c-red"
+                />
+                <span>(课程简介、课件)</span>
+              </div>
+            </Form.Item>
+            <div
+              className="c-flex"
+              style={{ display: showDrop ? "block" : "none" }}
+            >
+              <Form.Item label="课程简介" name="short_desc">
+                <Input.TextArea
+                  style={{ width: 424, minHeight: 80 }}
+                  allowClear
+                  placeholder="请输入课程简介（最多200字）"
+                  maxLength={200}
+                />
+              </Form.Item>
+              <Form.Item label="课程附件">
+                <Button
+                  onClick={() => setAttachmentVisible(true)}
+                  type="primary"
+                >
+                  添加课件
+                </Button>
+              </Form.Item>
+              <div className={styles["hous-box"]}>
+                {attachmentData.length === 0 && (
+                  <span className={styles["no-hours"]}>
+                    请点击上方按钮添加课件
+                  </span>
+                )}
+                {attachmentData.length > 0 && (
+                  <TreeAttachments
+                    data={attachmentData}
+                    onRemoveItem={(id: number) => {
+                      delAttachments(id);
+                    }}
+                    onUpdate={(arr: any[]) => {
+                      transAttachments(arr);
+                    }}
+                  />
+                )}
+              </div>
+            </div>
           </Form>
         </div>
       </Drawer>

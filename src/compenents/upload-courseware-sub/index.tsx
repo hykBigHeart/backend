@@ -3,8 +3,7 @@ import { Row, Col, Empty, Table } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { resource } from "../../api";
 import styles from "./index.module.less";
-import { UploadVideoButton } from "../upload-video-button";
-import { DurationText, TreeCategory } from "../../compenents";
+import { TreeCategory, UploadCoursewareButton } from "../../compenents";
 
 interface VideoItem {
   id: number;
@@ -37,11 +36,11 @@ interface PropsInterface {
   onSelected: (arr: any[], videos: []) => void;
 }
 
-export const UploadVideoSub = (props: PropsInterface) => {
+export const UploadCoursewareSub = (props: PropsInterface) => {
   const [category_ids, setCategoryIds] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [videoList, setVideoList] = useState<VideoItem[]>([]);
-  const [videosExtra, setVideoExtra] = useState<any>([]);
+  const [existingTypes, setExistingTypes] = useState<any>([]);
   const [refresh, setRefresh] = useState(false);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
@@ -63,10 +62,18 @@ export const UploadVideoSub = (props: PropsInterface) => {
   const getvideoList = () => {
     let categoryIds = category_ids.join(",");
     resource
-      .resourceList(page, size, "", "", "", "VIDEO", categoryIds)
+      .resourceList(
+        page,
+        size,
+        "",
+        "",
+        "",
+        "WORD,EXCEL,PPT,PDF,TXT,RAR,ZIP",
+        categoryIds
+      )
       .then((res: any) => {
         setTotal(res.data.result.total);
-        setVideoExtra(res.data.videos_extra);
+        setExistingTypes(res.data.existing_types);
         setVideoList(res.data.result.data);
       })
       .catch((err) => {
@@ -97,11 +104,11 @@ export const UploadVideoSub = (props: PropsInterface) => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "视频",
+      title: "课件",
       render: (_, record: any) => (
         <div className="d-flex">
           <i
-            className="iconfont icon-icon-video"
+            className="iconfont icon-icon-file"
             style={{
               fontSize: 14,
               color: "rgba(0,0,0,0.3)",
@@ -112,14 +119,8 @@ export const UploadVideoSub = (props: PropsInterface) => {
       ),
     },
     {
-      title: "时长",
-      render: (_, record: any) => (
-        <div>
-          <DurationText
-            duration={videosExtra[record.id].duration}
-          ></DurationText>
-        </div>
-      ),
+      title: "类型",
+      render: (_, record: any) => <span>{record.type}</span>,
     },
   ];
 
@@ -135,7 +136,6 @@ export const UploadVideoSub = (props: PropsInterface) => {
               name: row[i].name,
               type: row[i].type,
               rid: row[i].id,
-              duration: videosExtra[row[i].id].duration,
             });
           }
         }
@@ -162,18 +162,18 @@ export const UploadVideoSub = (props: PropsInterface) => {
         <Col span={17}>
           <Row style={{ marginBottom: 24, paddingLeft: 10 }}>
             <Col span={24}>
-              <UploadVideoButton
+              <UploadCoursewareButton
                 categoryIds={category_ids}
                 onUpdate={() => {
                   resetVideoList();
                 }}
-              ></UploadVideoButton>
+              ></UploadCoursewareButton>
             </Col>
           </Row>
           <div className={styles["video-list"]}>
             {videoList.length === 0 && (
               <Col span={24} style={{ marginTop: 150 }}>
-                <Empty description="暂无视频" />
+                <Empty description="暂无课件" />
               </Col>
             )}
             {videoList.length > 0 && (

@@ -46,6 +46,7 @@ const items = [
     [
       getItem("视频", "/videos", null, null, null, null),
       getItem("图片", "/images", null, null, null, null),
+      getItem("课件", "/courseware", null, null, null, null),
     ],
     null,
     null
@@ -90,6 +91,7 @@ const items = [
         null,
         "admin-user-index"
       ),
+      getItem("管理日志", "/system/adminlog", null, null, null, "admin-log"),
       // getItem("角色配置", "/system/adminroles", null, null, null, null),
     ],
     null,
@@ -103,6 +105,7 @@ export const LeftMenu: React.FC = () => {
   const children2Parent: any = {
     "^/video": ["resource"],
     "^/image": ["resource"],
+    "^/courseware": ["resource"],
     "^/member": ["user"],
     "^/department": ["user"],
     "^/course": ["courses"],

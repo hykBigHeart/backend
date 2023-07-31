@@ -27,6 +27,7 @@ import type { TabsProps } from "antd";
 import { CourseCreate } from "./compenents/create";
 import { CourseUpdate } from "./compenents/update";
 import { CourseHourUpdate } from "./compenents/hour-update";
+import { CourseAttachmentUpdate } from "./compenents/attachment-update";
 
 const { confirm } = Modal;
 
@@ -66,6 +67,8 @@ const CoursePage = () => {
   const [createVisible, setCreateVisible] = useState<boolean>(false);
   const [updateVisible, setUpdateVisible] = useState<boolean>(false);
   const [updateHourVisible, setHourUpdateVisible] = useState<boolean>(false);
+  const [updateAttachmentVisible, setUpdateAttachmentVisible] =
+    useState<boolean>(false);
   const [cid, setCid] = useState<number>(0);
   const [cateId, setCateId] = useState(Number(result.get("cid")));
   const [did, setDid] = useState(Number(result.get("did")));
@@ -241,6 +244,23 @@ const CoursePage = () => {
           },
           {
             key: "3",
+            label: (
+              <Button
+                style={{ verticalAlign: "middle" }}
+                type="link"
+                size="small"
+                className="b-n-link c-red"
+                onClick={() => {
+                  setCid(Number(record.id));
+                  setUpdateAttachmentVisible(true);
+                }}
+              >
+                课件
+              </Button>
+            ),
+          },
+          {
+            key: "4",
             label: (
               <Button
                 type="link"
@@ -452,6 +472,14 @@ const CoursePage = () => {
               open={updateVisible}
               onCancel={() => {
                 setUpdateVisible(false);
+                setRefresh(!refresh);
+              }}
+            />
+            <CourseAttachmentUpdate
+              id={cid}
+              open={updateAttachmentVisible}
+              onCancel={() => {
+                setUpdateAttachmentVisible(false);
                 setRefresh(!refresh);
               }}
             />

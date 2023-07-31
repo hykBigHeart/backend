@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Row, Modal, Tabs } from "antd";
 import styles from "./index.module.less";
-import { UploadVideoSub } from "../../compenents";
+import { UploadCoursewareSub } from "../../compenents";
 import type { TabsProps } from "antd";
 
 interface PropsInterface {
@@ -11,7 +11,7 @@ interface PropsInterface {
   onCancel: () => void;
 }
 
-export const SelectResource = (props: PropsInterface) => {
+export const SelectAttachment = (props: PropsInterface) => {
   const [refresh, setRefresh] = useState(true);
   const [tabKey, setTabKey] = useState(1);
   const [selectKeys, setSelectKeys] = useState<any>([]);
@@ -24,11 +24,11 @@ export const SelectResource = (props: PropsInterface) => {
   const items: TabsProps["items"] = [
     {
       key: "1",
-      label: `视频`,
+      label: `课件`,
       children: (
         <div className="float-left">
-          <UploadVideoSub
-            label="视频"
+          <UploadCoursewareSub
+            label="课件"
             defaultCheckedList={props.defaultKeys}
             open={refresh}
             onSelected={(arr: any[], videos: any[]) => {

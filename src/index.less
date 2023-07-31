@@ -525,7 +525,7 @@ textarea.ant-input {
   &:hover {
     box-shadow: none !important;
     color: #ff4d4f !important;
-    border-color: #ff4d4f;
+    border-color: #ff4d4f !important;
     outline: none;
   }
 }
@@ -593,21 +593,17 @@ textarea.ant-input {
 }
 
 .list-select-column-box {
-  .ant-checkbox-wrapper {
-    margin-inline-start: 0px;
-    height: 38px;
+  width: 100%;
+  height: auto;
+  float: left;
+  .ant-table-cell {
+    padding: 0px 0px;
   }
-
   .video-title {
-    width: 390px;
+    width: 360px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-  }
-  .video-time {
-    width: 80px;
-    display: flex;
-    flex-direction: row-reverse;
   }
 }
 
@@ -658,5 +654,27 @@ textarea.ant-input {
   .c-gray {
     color: rgba(0, 0, 0, 0.3);
     transform: rotate(90deg);
+  }
+}
+
+.drop-item {
+  width: 140px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  &.active {
+    i {
+      transform: rotate(180deg);
+    }
+  }
+  i {
+    margin-right: 12px;
+  }
+  span {
+    font-size: 12px;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.45);
+    line-height: 32px;
   }
 }

@@ -35,7 +35,8 @@ export function storeCourse(
   depIds: number[],
   categoryIds: number[],
   chapters: number[],
-  hours: number[]
+  hours: number[],
+  attachments: any[]
 ) {
   return client.post("/backend/v1/course/create", {
     title: title,
@@ -47,6 +48,7 @@ export function storeCourse(
     category_ids: categoryIds,
     chapters: chapters,
     hours: hours,
+    attachments: attachments,
   });
 }
 

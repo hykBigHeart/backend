@@ -7,7 +7,9 @@ import KeepAlive from "../compenents/keep-alive";
 // 页面加载
 import InitPage from "../pages/init";
 import LoginPage from "../pages/login";
-import HomePage from "../pages/home";
+import WithHeaderWithoutFooter from "../pages/layouts/with-header-without-footer";
+import WithoutHeaderWithoutFooter from "../pages/layouts/without-header-without-footer";
+
 //首页
 const DashboardPage = lazy(() => import("../pages/dashboard"));
 //修改密码页面
@@ -18,6 +20,9 @@ const ResourceCategoryPage = lazy(
 );
 const ResourceImagesPage = lazy(() => import("../pages/resource/images"));
 const ResourceVideosPage = lazy(() => import("../pages/resource/videos"));
+const ResourceCoursewarePage = lazy(
+  () => import("../pages/resource/courseware")
+);
 //课程相关
 const CoursePage = lazy(() => import("../pages/course/index"));
 const CourseUserPage = lazy(() => import("../pages/course/user"));
@@ -34,6 +39,7 @@ const SystemAdministratorPage = lazy(
   () => import("../pages/system/administrator")
 );
 const SystemAdminrolesPage = lazy(() => import("../pages/system/adminroles"));
+const SystemLogPage = lazy(() => import("../pages/system/adminlog"));
 //部门页面
 const DepartmentPage = lazy(() => import("../pages/department"));
 //测试
@@ -77,7 +83,7 @@ const routes: RouteObject[] = [
     children: [
       {
         path: "/",
-        element: <PrivateRoute Component={<HomePage />} />,
+        element: <PrivateRoute Component={<WithHeaderWithoutFooter />} />,
         children: [
           {
             path: "/",
@@ -98,6 +104,10 @@ const routes: RouteObject[] = [
           {
             path: "/videos",
             element: <PrivateRoute Component={<ResourceVideosPage />} />,
+          },
+          {
+            path: "/courseware",
+            element: <PrivateRoute Component={<ResourceCoursewarePage />} />,
           },
           {
             path: "/course",
@@ -144,22 +154,36 @@ const routes: RouteObject[] = [
             element: <PrivateRoute Component={<SystemAdminrolesPage />} />,
           },
           {
+            path: "/system/adminlog",
+            element: <PrivateRoute Component={<SystemLogPage />} />,
+          },
+          {
             path: "/department",
             element: <PrivateRoute Component={<DepartmentPage />} />,
           },
         ],
       },
       {
-        path: "/login",
-        element: <LoginPage />,
-      },
-      {
-        path: "/test",
-        element: <TestPage />,
-      },
-      {
-        path: "*",
-        element: <ErrorPage />,
+        path: "/",
+        element: <WithoutHeaderWithoutFooter />,
+        children: [
+          {
+            path: "/login",
+            element: <LoginPage />,
+          },
+          {
+            path: "/test",
+            element: <TestPage />,
+          },
+          {
+            path: "/error",
+            element: <ErrorPage />,
+          },
+          {
+            path: "*",
+            element: <ErrorPage />,
+          },
+        ],
       },
     ],
   },

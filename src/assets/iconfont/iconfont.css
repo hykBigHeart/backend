@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 3943555 */
-  src: url('iconfont.woff2?t=1679383201256') format('woff2'),
-       url('iconfont.woff?t=1679383201256') format('woff'),
-       url('iconfont.ttf?t=1679383201256') format('truetype');
+  src: url('iconfont.woff2?t=1690600882833') format('woff2'),
+       url('iconfont.woff?t=1690600882833') format('woff'),
+       url('iconfont.ttf?t=1690600882833') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,54 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-playedu:before {
+  content: "\e756";
+}
+
+.icon-icon-xuexi:before {
+  content: "\e753";
+}
+
+.icon-icon-wode:before {
+  content: "\e754";
+}
+
+.icon-icon-shouye:before {
+  content: "\e755";
+}
+
+.icon-icon-xiala:before {
+  content: "\e752";
+}
+
+.icon-close:before {
+  content: "\e751";
+}
+
+.icon-fullscreen:before {
+  content: "\e74b";
+}
+
+.icon-speed:before {
+  content: "\e74c";
+}
+
+.icon-mute:before {
+  content: "\e74d";
+}
+
+.icon-play:before {
+  content: "\e74e";
+}
+
+.icon-pause:before {
+  content: "\e74f";
+}
+
+.icon-unmute:before {
+  content: "\e750";
 }
 
 .icon-icon-tips:before {
