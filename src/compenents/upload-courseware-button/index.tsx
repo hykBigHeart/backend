@@ -61,6 +61,7 @@ export const UploadCoursewareButton = (props: PropsInterface) => {
       let extension: any = file.name.split(".");
       extension = extension[extension.length - 1];
       if (
+        extension === "rar" ||
         file.type ===
           "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
         file.type === "application/msword" ||
