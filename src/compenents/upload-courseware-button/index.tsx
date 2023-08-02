@@ -12,7 +12,7 @@ import {
 } from "antd";
 import Dragger from "antd/es/upload/Dragger";
 import { useEffect, useRef, useState } from "react";
-import { generateUUID, parseVideo } from "../../utils";
+import { generateUUID } from "../../utils";
 import { minioMergeVideo, minioUploadId } from "../../api/upload";
 import { UploadChunk } from "../../js/minio-upload-chunk";
 
@@ -58,6 +58,10 @@ export const UploadCoursewareButton = (props: PropsInterface) => {
   const uploadProps = {
     multiple: true,
     beforeUpload: async (file: File) => {
+      if (file.size === 0) {
+        message.error(`文件 ${file.name} 为空文件`);
+        return Upload.LIST_IGNORE;
+      }
       let extension: any = file.name.split(".");
       extension = extension[extension.length - 1];
       if (

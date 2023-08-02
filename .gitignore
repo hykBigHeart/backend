@@ -33,3 +33,5 @@ deploy-prod.sh
 deploy-demo.sh
 
 dist/
+
+pnpm-lock.yaml
