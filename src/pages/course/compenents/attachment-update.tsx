@@ -28,6 +28,9 @@ export const CourseAttachmentUpdate: React.FC<PropInterface> = ({
     if (id === 0) {
       return;
     }
+    setAttachmentVisible(false);
+    setAttachmentData([]);
+    setAttachments([]);
     getDetail();
   }, [id, open]);
 

@@ -32,6 +32,13 @@ export const CourseHourUpdate: React.FC<PropInterface> = ({
     if (id === 0) {
       return;
     }
+    setVideoVisible(false);
+    setChapters([]);
+    setHours([]);
+    setChapterHours([]);
+    setTreeData([]);
+    setAddvideoCurrent(0);
+    setChapterType(0);
     getDetail();
   }, [id, open]);
 
