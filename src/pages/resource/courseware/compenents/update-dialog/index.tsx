@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, Input, message, TreeSelect } from "antd";
+import { Modal, Form, Input, message, TreeSelect, Spin } from "antd";
 import { resource, resourceCategory } from "../../../../../api/index";
 
 interface PropInterface {
@@ -17,9 +17,11 @@ export const CoursewareUpdateDialog: React.FC<PropInterface> = ({
 }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState<boolean>(true);
+  const [init, setInit] = useState(true);
   const [categories, setCategories] = useState<any>([]);
 
   useEffect(() => {
+    setInit(true);
     if (id === 0) {
       return;
     }
@@ -27,7 +29,7 @@ export const CoursewareUpdateDialog: React.FC<PropInterface> = ({
       getCategory();
       getDetail();
     }
-  }, [id, open]);
+  }, [form, id, open]);
 
   const getCategory = () => {
     resourceCategory.resourceCategoryList().then((res: any) => {
@@ -46,6 +48,7 @@ export const CoursewareUpdateDialog: React.FC<PropInterface> = ({
         name: data.name,
         category_id: res.data.category_ids,
       });
+      setInit(false);
     });
   };
 
@@ -107,7 +110,15 @@ export const CoursewareUpdateDialog: React.FC<PropInterface> = ({
           onCancel={() => onCancel()}
           maskClosable={false}
         >
-          <div className="float-left mt-24">
+          {init && (
+            <div className="float-left text-center mt-30">
+              <Spin></Spin>
+            </div>
+          )}
+          <div
+            className="float-left mt-24"
+            style={{ display: init ? "none" : "block" }}
+          >
             <Form
               form={form}
               name="videos-update"

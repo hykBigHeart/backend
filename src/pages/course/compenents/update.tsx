@@ -7,9 +7,9 @@ import {
   Form,
   TreeSelect,
   Input,
-  Modal,
   message,
   Image,
+  Spin,
 } from "antd";
 import styles from "./update.module.less";
 import { useSelector } from "react-redux";
@@ -28,6 +28,7 @@ export const CourseUpdate: React.FC<PropInterface> = ({
   onCancel,
 }) => {
   const [form] = Form.useForm();
+  const [init, setInit] = useState(true);
   const courseDefaultThumbs = useSelector(
     (state: any) => state.systemConfig.value.courseDefaultThumbs
   );
@@ -41,18 +42,16 @@ export const CourseUpdate: React.FC<PropInterface> = ({
   const [type, setType] = useState<string>("open");
 
   useEffect(() => {
-    if (open) {
-      getParams();
-      getCategory();
-    }
-  }, [form, open]);
-
-  useEffect(() => {
+    setInit(true);
     if (id === 0) {
       return;
     }
-    getDetail();
-  }, [id, open]);
+    if (open) {
+      getParams();
+      getCategory();
+      getDetail();
+    }
+  }, [form, id, open]);
 
   const getCategory = () => {
     course.createCourse().then((res: any) => {
@@ -91,6 +90,7 @@ export const CourseUpdate: React.FC<PropInterface> = ({
       });
       setType(type);
       setThumb(res.data.course.thumb);
+      setInit(false);
     });
   };
 
@@ -185,7 +185,15 @@ export const CourseUpdate: React.FC<PropInterface> = ({
           }
           width={634}
         >
-          <div className="float-left mt-24">
+          {init && (
+            <div className="float-left text-center mt-30">
+              <Spin></Spin>
+            </div>
+          )}
+          <div
+            className="float-left mt-24"
+            style={{ display: init ? "none" : "block" }}
+          >
             <Form
               form={form}
               name="update-basic"

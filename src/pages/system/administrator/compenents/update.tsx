@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, Input, Select, Switch, message } from "antd";
+import { Modal, Form, Input, Select, Switch, message, Spin } from "antd";
 import styles from "./update.module.less";
 import { adminUser } from "../../../../api/index";
 
@@ -17,6 +17,7 @@ export const SystemAdministratorUpdate: React.FC<PropInterface> = ({
   onCancel,
 }) => {
   const [form] = Form.useForm();
+  const [init, setInit] = useState(true);
   const [loading, setLoading] = useState<boolean>(true);
   const [roles, setRoles] = useState<any>([]);
 
@@ -27,6 +28,7 @@ export const SystemAdministratorUpdate: React.FC<PropInterface> = ({
   }, [refresh, open]);
 
   useEffect(() => {
+    setInit(true);
     if (id === 0) {
       return;
     }
@@ -58,6 +60,7 @@ export const SystemAdministratorUpdate: React.FC<PropInterface> = ({
         is_ban_login: user.is_ban_login,
         roleIds: res.data.role_ids,
       });
+      setInit(false);
     });
   };
 
@@ -104,7 +107,15 @@ export const SystemAdministratorUpdate: React.FC<PropInterface> = ({
           onCancel={() => onCancel()}
           maskClosable={false}
         >
-          <div className="float-left mt-24">
+          {init && (
+            <div className="float-left text-center mt-30">
+              <Spin></Spin>
+            </div>
+          )}
+          <div
+            className="float-left mt-24"
+            style={{ display: init ? "none" : "block" }}
+          >
             <Form
               form={form}
               name="basic"

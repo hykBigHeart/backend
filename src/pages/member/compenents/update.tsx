@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, TreeSelect, Input, message } from "antd";
+import { Modal, Form, TreeSelect, Input, message, Spin } from "antd";
 import styles from "./update.module.less";
 import { useSelector } from "react-redux";
 import { user, department } from "../../../api/index";
@@ -24,6 +24,7 @@ export const MemberUpdate: React.FC<PropInterface> = ({
   onCancel,
 }) => {
   const [form] = Form.useForm();
+  const [init, setInit] = useState(true);
   const [loading, setLoading] = useState<boolean>(true);
   const [departments, setDepartments] = useState<any>([]);
   const memberDefaultAvatar = useSelector(
@@ -32,20 +33,18 @@ export const MemberUpdate: React.FC<PropInterface> = ({
   const [avatar, setAvatar] = useState<string>(memberDefaultAvatar);
 
   useEffect(() => {
+    setInit(true);
     if (id == 0) {
       return;
     }
-    getDetail();
-  }, [id, open]);
-
-  useEffect(() => {
     if (open) {
       getParams();
       form.setFieldsValue({
         password: "",
       });
+      getDetail();
     }
-  }, [form, open]);
+  }, [form, id, open]);
 
   const getParams = () => {
     if (id === 0) {
@@ -71,6 +70,7 @@ export const MemberUpdate: React.FC<PropInterface> = ({
         idCard: user.id_card,
         dep_ids: res.data.dep_ids,
       });
+      setInit(false);
     });
   };
 
@@ -145,7 +145,15 @@ export const MemberUpdate: React.FC<PropInterface> = ({
           onCancel={() => onCancel()}
           maskClosable={false}
         >
-          <div className="float-left mt-24">
+          {init && (
+            <div className="float-left text-center mt-30">
+              <Spin></Spin>
+            </div>
+          )}
+          <div
+            className="float-left mt-24"
+            style={{ display: init ? "none" : "block" }}
+          >
             <Form
               form={form}
               name="update-basic"

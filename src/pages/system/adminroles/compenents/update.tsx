@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Drawer, TreeSelect, Space, Button, Form, Input, message } from "antd";
+import {
+  Drawer,
+  TreeSelect,
+  Space,
+  Button,
+  Form,
+  Input,
+  message,
+  Spin,
+} from "antd";
 import styles from "./update.module.less";
 import { adminRole } from "../../../../api/index";
 
@@ -21,6 +30,7 @@ export const SystemAdminrolesUpdate: React.FC<PropInterface> = ({
   onCancel,
 }) => {
   const [form] = Form.useForm();
+  const [init, setInit] = useState(true);
   const [loading, setLoading] = useState<boolean>(true);
   const [permissions, setPermissions] = useState<any>([]);
   const [actions, setActions] = useState<any>([]);
@@ -32,6 +42,7 @@ export const SystemAdminrolesUpdate: React.FC<PropInterface> = ({
   }, [open]);
 
   useEffect(() => {
+    setInit(true);
     if (id === undefined) {
       return;
     }
@@ -136,6 +147,7 @@ export const SystemAdminrolesUpdate: React.FC<PropInterface> = ({
         permission_ids: res.data.perm_data,
         action_ids: res.data.perm_action,
       });
+      setInit(false);
     });
   };
 
@@ -181,7 +193,15 @@ export const SystemAdminrolesUpdate: React.FC<PropInterface> = ({
           }
           width={634}
         >
-          <div className="float-left mt-24">
+          {init && (
+            <div className="float-left text-center mt-30">
+              <Spin></Spin>
+            </div>
+          )}
+          <div
+            className="float-left mt-24"
+            style={{ display: init ? "none" : "block" }}
+          >
             <Form
               form={form}
               name="adminroles-update"

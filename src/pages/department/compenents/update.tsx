@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Modal, Form, Input, Cascader, message } from "antd";
+import React, { useState, useEffect } from "react";
+import { Modal, Form, Input, Cascader, message, Spin } from "antd";
 import styles from "./update.module.less";
 import { department } from "../../../api/index";
 
@@ -21,12 +21,14 @@ export const DepartmentUpdate: React.FC<PropInterface> = ({
   onCancel,
 }) => {
   const [form] = Form.useForm();
+  const [init, setInit] = useState(true);
   const [loading, setLoading] = useState<boolean>(true);
   const [departments, setDepartments] = useState<any>([]);
   const [parent_id, setParentId] = useState<number>(0);
   const [sort, setSort] = useState<number>(0);
 
   useEffect(() => {
+    setInit(true);
     if (open) {
       getParams();
     }
@@ -64,6 +66,7 @@ export const DepartmentUpdate: React.FC<PropInterface> = ({
       });
       setParentId(data.parent_id);
       setSort(data.sort);
+      setInit(false);
     });
   };
 
@@ -140,7 +143,15 @@ export const DepartmentUpdate: React.FC<PropInterface> = ({
           onCancel={() => onCancel()}
           maskClosable={false}
         >
-          <div className="float-left mt-24">
+          {init && (
+            <div className="float-left text-center mt-30">
+              <Spin></Spin>
+            </div>
+          )}
+          <div
+            className="float-left mt-24"
+            style={{ display: init ? "none" : "block" }}
+          >
             <Form
               form={form}
               name="basic"
