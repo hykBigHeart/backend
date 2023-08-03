@@ -460,6 +460,7 @@ export const CourseHourUpdate: React.FC<PropInterface> = ({
                               allowClear
                             />
                             <Button
+                              disabled={!item.name}
                               className="mr-16"
                               type="primary"
                               onClick={() => {
