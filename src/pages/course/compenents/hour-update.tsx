@@ -120,16 +120,11 @@ export const CourseHourUpdate: React.FC<PropInterface> = ({
       message.error("请选择视频");
       return;
     }
-    courseHour
-      .storeCourseHourMulti(id, hours)
-      .then((res: any) => {
-        console.log("ok");
-        setVideoVisible(false);
-        getDetail();
-      })
-      .catch((err) => {
-        message.error(err.message);
-      });
+    courseHour.storeCourseHourMulti(id, hours).then((res: any) => {
+      console.log("ok");
+      setVideoVisible(false);
+      getDetail();
+    });
   };
 
   const selectChapterData = (arr: any, videos: any) => {
@@ -153,16 +148,11 @@ export const CourseHourUpdate: React.FC<PropInterface> = ({
       message.error("请选择视频");
       return;
     }
-    courseHour
-      .storeCourseHourMulti(id, hours)
-      .then((res: any) => {
-        console.log("ok");
-        setVideoVisible(false);
-        getDetail();
-      })
-      .catch((err) => {
-        message.error(err.message);
-      });
+    courseHour.storeCourseHourMulti(id, hours).then((res: any) => {
+      console.log("ok");
+      setVideoVisible(false);
+      getDetail();
+    });
   };
 
   const delHour = (hid: number) => {
@@ -245,9 +235,6 @@ export const CourseHourUpdate: React.FC<PropInterface> = ({
         .then((res: any) => {
           console.log("ok");
           getDetail();
-        })
-        .catch((err) => {
-          message.error(err.message);
         });
     } else {
       courseChapter
@@ -255,9 +242,6 @@ export const CourseHourUpdate: React.FC<PropInterface> = ({
         .then((res: any) => {
           console.log("ok");
           getDetail();
-        })
-        .catch((err) => {
-          message.error(err.message);
         });
     }
   };
@@ -279,9 +263,6 @@ export const CourseHourUpdate: React.FC<PropInterface> = ({
             .then((res: any) => {
               console.log("ok");
               getDetail();
-            })
-            .catch((err) => {
-              message.error(err.message);
             });
         }
       },

@@ -84,16 +84,11 @@ export const CourseAttachmentUpdate: React.FC<PropInterface> = ({
       return;
     }
 
-    courseAttachment
-      .storeCourseAttachmentMulti(id, hours)
-      .then((res: any) => {
-        console.log("ok");
-        setAttachmentVisible(false);
-        getDetail();
-      })
-      .catch((err) => {
-        message.error(err.message);
-      });
+    courseAttachment.storeCourseAttachmentMulti(id, hours).then((res: any) => {
+      console.log("ok");
+      setAttachmentVisible(false);
+      getDetail();
+    });
   };
 
   const delAttachments = (hid: number) => {
