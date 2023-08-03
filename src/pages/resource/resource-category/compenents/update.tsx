@@ -127,57 +127,59 @@ export const ResourceCategoryUpdate: React.FC<PropInterface> = ({
 
   return (
     <>
-      <Modal
-        title="编辑分类"
-        centered
-        forceRender
-        open={open}
-        width={416}
-        onOk={() => form.submit()}
-        onCancel={() => onCancel()}
-        maskClosable={false}
-      >
-        <div className="float-left mt-24">
-          <Form
-            form={form}
-            name="basic"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 16 }}
-            initialValues={{ remember: true }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            autoComplete="off"
-          >
-            <Form.Item
-              label="所属上级"
-              name="parent_id"
-              rules={[{ required: true, message: "请选择所属上级!" }]}
+      {open ? (
+        <Modal
+          title="编辑分类"
+          centered
+          forceRender
+          open={true}
+          width={416}
+          onOk={() => form.submit()}
+          onCancel={() => onCancel()}
+          maskClosable={false}
+        >
+          <div className="float-left mt-24">
+            <Form
+              form={form}
+              name="basic"
+              labelCol={{ span: 8 }}
+              wrapperCol={{ span: 16 }}
+              initialValues={{ remember: true }}
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+              autoComplete="off"
             >
-              <Cascader
-                style={{ width: 200 }}
-                allowClear
-                placeholder="请选择所属上级"
-                onChange={handleChange}
-                options={categories}
-                changeOnSelect
-                expand-trigger="hover"
-                displayRender={displayRender}
-              />
-            </Form.Item>
-            <Form.Item
-              label="分类名称"
-              name="name"
-              rules={[{ required: true, message: "请输入分类名称!" }]}
-            >
-              <Input
-                style={{ width: 200 }}
-                allowClear
-                placeholder="请输入分类名称"
-              />
-            </Form.Item>
-          </Form>
-        </div>
-      </Modal>
+              <Form.Item
+                label="所属上级"
+                name="parent_id"
+                rules={[{ required: true, message: "请选择所属上级!" }]}
+              >
+                <Cascader
+                  style={{ width: 200 }}
+                  allowClear
+                  placeholder="请选择所属上级"
+                  onChange={handleChange}
+                  options={categories}
+                  changeOnSelect
+                  expand-trigger="hover"
+                  displayRender={displayRender}
+                />
+              </Form.Item>
+              <Form.Item
+                label="分类名称"
+                name="name"
+                rules={[{ required: true, message: "请输入分类名称!" }]}
+              >
+                <Input
+                  style={{ width: 200 }}
+                  allowClear
+                  placeholder="请输入分类名称"
+                />
+              </Form.Item>
+            </Form>
+          </div>
+        </Modal>
+      ) : null}
     </>
   );
 };

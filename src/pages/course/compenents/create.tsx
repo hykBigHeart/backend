@@ -464,386 +464,388 @@ export const CourseCreate: React.FC<PropInterface> = ({
 
   return (
     <>
-      <Drawer
-        title="新建课程"
-        onClose={onCancel}
-        maskClosable={false}
-        open={open}
-        footer={
-          <Space className="j-r-flex">
-            <Button onClick={() => onCancel()}>取 消</Button>
-            <Button onClick={() => form.submit()} type="primary">
-              确 认
-            </Button>
-          </Space>
-        }
-        width={634}
-      >
-        <div className="float-left mt-24">
-          <SelectResource
-            defaultKeys={
-              chapterType == 0 ? hours : changeChapterHours(chapterHours)
-            }
-            open={videoVisible}
-            onCancel={() => {
-              setVideoVisible(false);
-            }}
-            onSelected={(arr: any, videos: any) => {
-              if (chapterType === 0) {
-                selectData(arr, videos);
-              } else {
-                selectChapterData(arr, videos);
+      {open ? (
+        <Drawer
+          title="新建课程"
+          onClose={onCancel}
+          maskClosable={false}
+          open={true}
+          footer={
+            <Space className="j-r-flex">
+              <Button onClick={() => onCancel()}>取 消</Button>
+              <Button onClick={() => form.submit()} type="primary">
+                确 认
+              </Button>
+            </Space>
+          }
+          width={634}
+        >
+          <div className="float-left mt-24">
+            <SelectResource
+              defaultKeys={
+                chapterType == 0 ? hours : changeChapterHours(chapterHours)
               }
-            }}
-          />
-          <SelectAttachment
-            defaultKeys={attachments}
-            open={attachmentVisible}
-            onCancel={() => {
-              setAttachmentVisible(false);
-            }}
-            onSelected={(arr: any, videos: any) => {
-              selectAttachmentData(arr, videos);
-            }}
-          ></SelectAttachment>
-          <Form
-            form={form}
-            name="create-basic"
-            labelCol={{ span: 5 }}
-            wrapperCol={{ span: 19 }}
-            initialValues={{ remember: true }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            autoComplete="off"
-          >
-            <Form.Item
-              label="课程分类"
-              name="category_ids"
-              rules={[{ required: true, message: "请选择课程分类!" }]}
+              open={videoVisible}
+              onCancel={() => {
+                setVideoVisible(false);
+              }}
+              onSelected={(arr: any, videos: any) => {
+                if (chapterType === 0) {
+                  selectData(arr, videos);
+                } else {
+                  selectChapterData(arr, videos);
+                }
+              }}
+            />
+            <SelectAttachment
+              defaultKeys={attachments}
+              open={attachmentVisible}
+              onCancel={() => {
+                setAttachmentVisible(false);
+              }}
+              onSelected={(arr: any, videos: any) => {
+                selectAttachmentData(arr, videos);
+              }}
+            ></SelectAttachment>
+            <Form
+              form={form}
+              name="create-basic"
+              labelCol={{ span: 5 }}
+              wrapperCol={{ span: 19 }}
+              initialValues={{ remember: true }}
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+              autoComplete="off"
             >
-              <TreeSelect
-                showCheckedStrategy={TreeSelect.SHOW_ALL}
-                allowClear
-                multiple
-                style={{ width: 424 }}
-                treeData={categories}
-                placeholder="请选择课程分类"
-                treeDefaultExpandAll
-              />
-            </Form.Item>
-            <Form.Item
-              label="课程名称"
-              name="title"
-              rules={[{ required: true, message: "请在此处输入课程名称!" }]}
-            >
-              <Input
-                style={{ width: 424 }}
-                placeholder="请在此处输入课程名称"
-                allowClear
-              />
-            </Form.Item>
-            <Form.Item
-              label="课程属性"
-              name="isRequired"
-              rules={[{ required: true, message: "请选择课程属性!" }]}
-            >
-              <Radio.Group>
-                <Radio value={1}>必修课</Radio>
-                <Radio value={0} style={{ marginLeft: 22 }}>
-                  选修课
-                </Radio>
-              </Radio.Group>
-            </Form.Item>
-            <Form.Item
-              label="指派部门"
-              name="type"
-              rules={[{ required: true, message: "请选择指派部门!" }]}
-            >
-              <Radio.Group onChange={getType}>
-                <Radio value="open">全部部门</Radio>
-                <Radio value="elective">选择部门</Radio>
-              </Radio.Group>
-            </Form.Item>
-
-            {type === "elective" && (
               <Form.Item
-                label="选择部门"
-                name="dep_ids"
-                rules={[
-                  {
-                    required: true,
-                    message: "请选择部门!",
-                  },
-                ]}
+                label="课程分类"
+                name="category_ids"
+                rules={[{ required: true, message: "请选择课程分类!" }]}
               >
                 <TreeSelect
                   showCheckedStrategy={TreeSelect.SHOW_ALL}
-                  style={{ width: 424 }}
-                  treeData={departments}
-                  multiple
                   allowClear
+                  multiple
+                  style={{ width: 424 }}
+                  treeData={categories}
+                  placeholder="请选择课程分类"
                   treeDefaultExpandAll
-                  placeholder="请选择部门"
                 />
               </Form.Item>
-            )}
-
-            <Form.Item
-              label="课程封面"
-              name="thumb"
-              rules={[{ required: true, message: "请上传课程封面!" }]}
-            >
-              <div className="d-flex">
-                <Image
-                  src={thumb}
-                  width={160}
-                  height={120}
-                  style={{ borderRadius: 6 }}
-                  preview={false}
+              <Form.Item
+                label="课程名称"
+                name="title"
+                rules={[{ required: true, message: "请在此处输入课程名称!" }]}
+              >
+                <Input
+                  style={{ width: 424 }}
+                  placeholder="请在此处输入课程名称"
+                  allowClear
                 />
-                <div className="c-flex ml-8 flex-1">
-                  <div className="d-flex mb-28">
-                    <div
-                      className={
-                        thumb === defaultThumb1
-                          ? styles["thumb-item-avtive"]
-                          : styles["thumb-item"]
-                      }
-                      onClick={() => {
-                        setThumb(defaultThumb1);
-                        form.setFieldsValue({
-                          thumb: defaultThumb1,
-                        });
-                      }}
-                    >
-                      <Image
-                        src={defaultThumb1}
-                        width={80}
-                        height={60}
-                        style={{ borderRadius: 6 }}
-                        preview={false}
-                      />
+              </Form.Item>
+              <Form.Item
+                label="课程属性"
+                name="isRequired"
+                rules={[{ required: true, message: "请选择课程属性!" }]}
+              >
+                <Radio.Group>
+                  <Radio value={1}>必修课</Radio>
+                  <Radio value={0} style={{ marginLeft: 22 }}>
+                    选修课
+                  </Radio>
+                </Radio.Group>
+              </Form.Item>
+              <Form.Item
+                label="指派部门"
+                name="type"
+                rules={[{ required: true, message: "请选择指派部门!" }]}
+              >
+                <Radio.Group onChange={getType}>
+                  <Radio value="open">全部部门</Radio>
+                  <Radio value="elective">选择部门</Radio>
+                </Radio.Group>
+              </Form.Item>
+
+              {type === "elective" && (
+                <Form.Item
+                  label="选择部门"
+                  name="dep_ids"
+                  rules={[
+                    {
+                      required: true,
+                      message: "请选择部门!",
+                    },
+                  ]}
+                >
+                  <TreeSelect
+                    showCheckedStrategy={TreeSelect.SHOW_ALL}
+                    style={{ width: 424 }}
+                    treeData={departments}
+                    multiple
+                    allowClear
+                    treeDefaultExpandAll
+                    placeholder="请选择部门"
+                  />
+                </Form.Item>
+              )}
+
+              <Form.Item
+                label="课程封面"
+                name="thumb"
+                rules={[{ required: true, message: "请上传课程封面!" }]}
+              >
+                <div className="d-flex">
+                  <Image
+                    src={thumb}
+                    width={160}
+                    height={120}
+                    style={{ borderRadius: 6 }}
+                    preview={false}
+                  />
+                  <div className="c-flex ml-8 flex-1">
+                    <div className="d-flex mb-28">
+                      <div
+                        className={
+                          thumb === defaultThumb1
+                            ? styles["thumb-item-avtive"]
+                            : styles["thumb-item"]
+                        }
+                        onClick={() => {
+                          setThumb(defaultThumb1);
+                          form.setFieldsValue({
+                            thumb: defaultThumb1,
+                          });
+                        }}
+                      >
+                        <Image
+                          src={defaultThumb1}
+                          width={80}
+                          height={60}
+                          style={{ borderRadius: 6 }}
+                          preview={false}
+                        />
+                      </div>
+                      <div
+                        className={
+                          thumb === defaultThumb2
+                            ? styles["thumb-item-avtive"]
+                            : styles["thumb-item"]
+                        }
+                        onClick={() => {
+                          setThumb(defaultThumb2);
+                          form.setFieldsValue({
+                            thumb: defaultThumb2,
+                          });
+                        }}
+                      >
+                        <Image
+                          src={defaultThumb2}
+                          width={80}
+                          height={60}
+                          style={{ borderRadius: 6 }}
+                          preview={false}
+                        />
+                      </div>
+                      <div
+                        className={
+                          thumb === defaultThumb3
+                            ? styles["thumb-item-avtive"]
+                            : styles["thumb-item"]
+                        }
+                        onClick={() => {
+                          setThumb(defaultThumb3);
+                          form.setFieldsValue({
+                            thumb: defaultThumb3,
+                          });
+                        }}
+                      >
+                        <Image
+                          src={defaultThumb3}
+                          width={80}
+                          height={60}
+                          style={{ borderRadius: 6 }}
+                          preview={false}
+                        />
+                      </div>
                     </div>
-                    <div
-                      className={
-                        thumb === defaultThumb2
-                          ? styles["thumb-item-avtive"]
-                          : styles["thumb-item"]
-                      }
-                      onClick={() => {
-                        setThumb(defaultThumb2);
-                        form.setFieldsValue({
-                          thumb: defaultThumb2,
-                        });
-                      }}
-                    >
-                      <Image
-                        src={defaultThumb2}
-                        width={80}
-                        height={60}
-                        style={{ borderRadius: 6 }}
-                        preview={false}
-                      />
+                    <div className="d-flex">
+                      <UploadImageButton
+                        text="更换封面"
+                        onSelected={(url) => {
+                          setThumb(url);
+                          form.setFieldsValue({ thumb: url });
+                        }}
+                      ></UploadImageButton>
+                      <span className="helper-text ml-16">
+                        （推荐尺寸:400x300px）
+                      </span>
                     </div>
-                    <div
-                      className={
-                        thumb === defaultThumb3
-                          ? styles["thumb-item-avtive"]
-                          : styles["thumb-item"]
-                      }
-                      onClick={() => {
-                        setThumb(defaultThumb3);
-                        form.setFieldsValue({
-                          thumb: defaultThumb3,
-                        });
-                      }}
-                    >
-                      <Image
-                        src={defaultThumb3}
-                        width={80}
-                        height={60}
-                        style={{ borderRadius: 6 }}
-                        preview={false}
-                      />
-                    </div>
-                  </div>
-                  <div className="d-flex">
-                    <UploadImageButton
-                      text="更换封面"
-                      onSelected={(url) => {
-                        setThumb(url);
-                        form.setFieldsValue({ thumb: url });
-                      }}
-                    ></UploadImageButton>
-                    <span className="helper-text ml-16">
-                      （推荐尺寸:400x300px）
-                    </span>
                   </div>
                 </div>
-              </div>
-            </Form.Item>
-            <Form.Item
-              label="课时列表"
-              name="hasChapter"
-              rules={[{ required: true, message: "请选择课时列表!" }]}
-            >
-              <Radio.Group onChange={getChapterType}>
-                <Radio value={0}>无章节</Radio>
-                <Radio value={1} style={{ marginLeft: 22 }}>
-                  有章节
-                </Radio>
-              </Radio.Group>
-            </Form.Item>
-            {chapterType === 0 && (
-              <div className="c-flex mb-24">
-                <Form.Item>
-                  <div className="ml-120">
-                    <Button
-                      onClick={() => setVideoVisible(true)}
-                      type="primary"
-                    >
-                      添加课时
-                    </Button>
+              </Form.Item>
+              <Form.Item
+                label="课时列表"
+                name="hasChapter"
+                rules={[{ required: true, message: "请选择课时列表!" }]}
+              >
+                <Radio.Group onChange={getChapterType}>
+                  <Radio value={0}>无章节</Radio>
+                  <Radio value={1} style={{ marginLeft: 22 }}>
+                    有章节
+                  </Radio>
+                </Radio.Group>
+              </Form.Item>
+              {chapterType === 0 && (
+                <div className="c-flex mb-24">
+                  <Form.Item>
+                    <div className="ml-120">
+                      <Button
+                        onClick={() => setVideoVisible(true)}
+                        type="primary"
+                      >
+                        添加课时
+                      </Button>
+                    </div>
+                  </Form.Item>
+                  <div className={styles["hous-box"]}>
+                    {treeData.length === 0 && (
+                      <span className={styles["no-hours"]}>
+                        请点击上方按钮添加课时
+                      </span>
+                    )}
+                    {treeData.length > 0 && (
+                      <TreeHours
+                        data={treeData}
+                        onRemoveItem={(id: number) => {
+                          delHour(id);
+                        }}
+                        onUpdate={(arr: any[]) => {
+                          transHour(arr);
+                        }}
+                      />
+                    )}
                   </div>
+                </div>
+              )}
+              {chapterType === 1 && (
+                <div className="c-flex mb-24">
+                  {chapters.length > 0 &&
+                    chapters.map((item: any, index: number) => {
+                      return (
+                        <div
+                          key={item.hours.length + "章节" + index}
+                          className={styles["chapter-item"]}
+                        >
+                          <div className="d-flex">
+                            <div className={styles["label"]}>
+                              章节{index + 1}：
+                            </div>
+                            <Input
+                              value={item.name}
+                              className={styles["input"]}
+                              onChange={(e) => {
+                                setChapterName(index, e.target.value);
+                              }}
+                              allowClear
+                              placeholder="请在此处输入章节名称"
+                            />
+                            <Button
+                              className="mr-16"
+                              type="primary"
+                              onClick={() => {
+                                setVideoVisible(true);
+                                setAddvideoCurrent(index);
+                              }}
+                            >
+                              添加课时
+                            </Button>
+                            <Button onClick={() => delChapter(index)}>
+                              删除章节
+                            </Button>
+                          </div>
+                          <div className={styles["chapter-hous-box"]}>
+                            {item.hours.length === 0 && (
+                              <span className={styles["no-hours"]}>
+                                请点击上方按钮添加课时
+                              </span>
+                            )}
+                            {item.hours.length > 0 && (
+                              <TreeHours
+                                data={item.hours}
+                                onRemoveItem={(id: number) => {
+                                  delChapterHour(index, id);
+                                }}
+                                onUpdate={(arr: any[]) => {
+                                  transChapterHour(index, arr);
+                                }}
+                              />
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  <Form.Item>
+                    <div className="ml-120">
+                      <Button onClick={() => addNewChapter()}>添加章节</Button>
+                    </div>
+                  </Form.Item>
+                </div>
+              )}
+              <Form.Item label="更多选项">
+                <div
+                  className={showDrop ? "drop-item active" : "drop-item"}
+                  onClick={() => setShowDrop(!showDrop)}
+                >
+                  <i
+                    style={{ fontSize: 14 }}
+                    className="iconfont icon-icon-xiala c-red"
+                  />
+                  <span>(课程简介、课件)</span>
+                </div>
+              </Form.Item>
+              <div
+                className="c-flex"
+                style={{ display: showDrop ? "block" : "none" }}
+              >
+                <Form.Item label="课程简介" name="short_desc">
+                  <Input.TextArea
+                    style={{ width: 424, minHeight: 80 }}
+                    allowClear
+                    placeholder="请输入课程简介（最多200字）"
+                    maxLength={200}
+                  />
+                </Form.Item>
+                <Form.Item label="课程附件">
+                  <Button
+                    onClick={() => setAttachmentVisible(true)}
+                    type="primary"
+                  >
+                    添加课件
+                  </Button>
                 </Form.Item>
                 <div className={styles["hous-box"]}>
-                  {treeData.length === 0 && (
+                  {attachmentData.length === 0 && (
                     <span className={styles["no-hours"]}>
-                      请点击上方按钮添加课时
+                      请点击上方按钮添加课件
                     </span>
                   )}
-                  {treeData.length > 0 && (
-                    <TreeHours
-                      data={treeData}
+                  {attachmentData.length > 0 && (
+                    <TreeAttachments
+                      data={attachmentData}
                       onRemoveItem={(id: number) => {
-                        delHour(id);
+                        delAttachments(id);
                       }}
                       onUpdate={(arr: any[]) => {
-                        transHour(arr);
+                        transAttachments(arr);
                       }}
                     />
                   )}
                 </div>
               </div>
-            )}
-            {chapterType === 1 && (
-              <div className="c-flex mb-24">
-                {chapters.length > 0 &&
-                  chapters.map((item: any, index: number) => {
-                    return (
-                      <div
-                        key={item.hours.length + "章节" + index}
-                        className={styles["chapter-item"]}
-                      >
-                        <div className="d-flex">
-                          <div className={styles["label"]}>
-                            章节{index + 1}：
-                          </div>
-                          <Input
-                            value={item.name}
-                            className={styles["input"]}
-                            onChange={(e) => {
-                              setChapterName(index, e.target.value);
-                            }}
-                            allowClear
-                            placeholder="请在此处输入章节名称"
-                          />
-                          <Button
-                            className="mr-16"
-                            type="primary"
-                            onClick={() => {
-                              setVideoVisible(true);
-                              setAddvideoCurrent(index);
-                            }}
-                          >
-                            添加课时
-                          </Button>
-                          <Button onClick={() => delChapter(index)}>
-                            删除章节
-                          </Button>
-                        </div>
-                        <div className={styles["chapter-hous-box"]}>
-                          {item.hours.length === 0 && (
-                            <span className={styles["no-hours"]}>
-                              请点击上方按钮添加课时
-                            </span>
-                          )}
-                          {item.hours.length > 0 && (
-                            <TreeHours
-                              data={item.hours}
-                              onRemoveItem={(id: number) => {
-                                delChapterHour(index, id);
-                              }}
-                              onUpdate={(arr: any[]) => {
-                                transChapterHour(index, arr);
-                              }}
-                            />
-                          )}
-                        </div>
-                      </div>
-                    );
-                  })}
-                <Form.Item>
-                  <div className="ml-120">
-                    <Button onClick={() => addNewChapter()}>添加章节</Button>
-                  </div>
-                </Form.Item>
-              </div>
-            )}
-            <Form.Item label="更多选项">
-              <div
-                className={showDrop ? "drop-item active" : "drop-item"}
-                onClick={() => setShowDrop(!showDrop)}
-              >
-                <i
-                  style={{ fontSize: 14 }}
-                  className="iconfont icon-icon-xiala c-red"
-                />
-                <span>(课程简介、课件)</span>
-              </div>
-            </Form.Item>
-            <div
-              className="c-flex"
-              style={{ display: showDrop ? "block" : "none" }}
-            >
-              <Form.Item label="课程简介" name="short_desc">
-                <Input.TextArea
-                  style={{ width: 424, minHeight: 80 }}
-                  allowClear
-                  placeholder="请输入课程简介（最多200字）"
-                  maxLength={200}
-                />
-              </Form.Item>
-              <Form.Item label="课程附件">
-                <Button
-                  onClick={() => setAttachmentVisible(true)}
-                  type="primary"
-                >
-                  添加课件
-                </Button>
-              </Form.Item>
-              <div className={styles["hous-box"]}>
-                {attachmentData.length === 0 && (
-                  <span className={styles["no-hours"]}>
-                    请点击上方按钮添加课件
-                  </span>
-                )}
-                {attachmentData.length > 0 && (
-                  <TreeAttachments
-                    data={attachmentData}
-                    onRemoveItem={(id: number) => {
-                      delAttachments(id);
-                    }}
-                    onUpdate={(arr: any[]) => {
-                      transAttachments(arr);
-                    }}
-                  />
-                )}
-              </div>
-            </div>
-          </Form>
-        </div>
-      </Drawer>
+            </Form>
+          </div>
+        </Drawer>
+      ) : null}
     </>
   );
 };

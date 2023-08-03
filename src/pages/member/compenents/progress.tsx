@@ -210,43 +210,45 @@ export const MemberLearnProgressDialog: React.FC<PropInterface> = ({
 
   return (
     <>
-      <Modal
-        title="课时学习进度"
-        centered
-        forceRender
-        open={open}
-        width={1000}
-        onOk={() => onCancel()}
-        onCancel={() => onCancel()}
-        maskClosable={false}
-        footer={null}
-      >
-        <div className="d-flex mt-24">
-          <PerButton
-            type="primary"
-            text="重置学习记录"
-            class="c-white"
-            icon={null}
-            p="user-learn-destroy"
-            onClick={() => {
-              clearProgress();
-            }}
-            disabled={null}
-          />
-        </div>
-        <div
-          className="d-flex mt-24"
-          style={{ maxHeight: 800, overflowY: "auto" }}
+      {open ? (
+        <Modal
+          title="课时学习进度"
+          centered
+          forceRender
+          open={true}
+          width={1000}
+          onOk={() => onCancel()}
+          onCancel={() => onCancel()}
+          maskClosable={false}
+          footer={null}
         >
-          <Table
-            columns={column}
-            dataSource={list}
-            loading={loading}
-            rowKey={(record) => record.id}
-            pagination={false}
-          />
-        </div>
-      </Modal>
+          <div className="d-flex mt-24">
+            <PerButton
+              type="primary"
+              text="重置学习记录"
+              class="c-white"
+              icon={null}
+              p="user-learn-destroy"
+              onClick={() => {
+                clearProgress();
+              }}
+              disabled={null}
+            />
+          </div>
+          <div
+            className="d-flex mt-24"
+            style={{ maxHeight: 800, overflowY: "auto" }}
+          >
+            <Table
+              columns={column}
+              dataSource={list}
+              loading={loading}
+              rowKey={(record) => record.id}
+              pagination={false}
+            />
+          </div>
+        </Modal>
+      ) : null}
     </>
   );
 };

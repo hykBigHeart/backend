@@ -93,81 +93,83 @@ export const SystemAdministratorUpdate: React.FC<PropInterface> = ({
 
   return (
     <>
-      <Modal
-        title="编辑管理人员"
-        centered
-        forceRender
-        open={open}
-        width={416}
-        onOk={() => form.submit()}
-        onCancel={() => onCancel()}
-        maskClosable={false}
-      >
-        <div className="float-left mt-24">
-          <Form
-            form={form}
-            name="basic"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 16 }}
-            initialValues={{ remember: true }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            autoComplete="off"
-          >
-            <Form.Item
-              label="选择角色"
-              name="roleIds"
-              rules={[{ required: true, message: "请选择角色!" }]}
+      {open ? (
+        <Modal
+          title="编辑管理人员"
+          centered
+          forceRender
+          open={true}
+          width={416}
+          onOk={() => form.submit()}
+          onCancel={() => onCancel()}
+          maskClosable={false}
+        >
+          <div className="float-left mt-24">
+            <Form
+              form={form}
+              name="basic"
+              labelCol={{ span: 8 }}
+              wrapperCol={{ span: 16 }}
+              initialValues={{ remember: true }}
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+              autoComplete="off"
             >
-              <Select
-                style={{ width: 200 }}
-                mode="multiple"
-                allowClear
-                placeholder="请选择角色"
-                onChange={handleChange}
-                options={roles}
-              />
-            </Form.Item>
-            <Form.Item
-              label="管理员姓名"
-              name="name"
-              rules={[{ required: true, message: "请输入管理员姓名!" }]}
-            >
-              <Input
-                allowClear
-                style={{ width: 200 }}
-                placeholder="请输入管理员姓名"
-              />
-            </Form.Item>
-            <Form.Item
-              label="邮箱"
-              name="email"
-              rules={[{ required: true, message: "请输入学员邮箱!" }]}
-            >
-              <Input
-                allowClear
-                style={{ width: 200 }}
-                placeholder="请输入学员邮箱"
-              />
-            </Form.Item>
-            <Form.Item label="密码" name="password">
-              <Input.Password
-                autoComplete="new-password"
-                style={{ width: 200 }}
-                allowClear
-                placeholder="请输入登录密码"
-              />
-            </Form.Item>
-            <Form.Item
-              label="禁止登录"
-              name="is_ban_login"
-              valuePropName="checked"
-            >
-              <Switch onChange={onChange} />
-            </Form.Item>
-          </Form>
-        </div>
-      </Modal>
+              <Form.Item
+                label="选择角色"
+                name="roleIds"
+                rules={[{ required: true, message: "请选择角色!" }]}
+              >
+                <Select
+                  style={{ width: 200 }}
+                  mode="multiple"
+                  allowClear
+                  placeholder="请选择角色"
+                  onChange={handleChange}
+                  options={roles}
+                />
+              </Form.Item>
+              <Form.Item
+                label="管理员姓名"
+                name="name"
+                rules={[{ required: true, message: "请输入管理员姓名!" }]}
+              >
+                <Input
+                  allowClear
+                  style={{ width: 200 }}
+                  placeholder="请输入管理员姓名"
+                />
+              </Form.Item>
+              <Form.Item
+                label="邮箱"
+                name="email"
+                rules={[{ required: true, message: "请输入学员邮箱!" }]}
+              >
+                <Input
+                  allowClear
+                  style={{ width: 200 }}
+                  placeholder="请输入学员邮箱"
+                />
+              </Form.Item>
+              <Form.Item label="密码" name="password">
+                <Input.Password
+                  autoComplete="new-password"
+                  style={{ width: 200 }}
+                  allowClear
+                  placeholder="请输入登录密码"
+                />
+              </Form.Item>
+              <Form.Item
+                label="禁止登录"
+                name="is_ban_login"
+                valuePropName="checked"
+              >
+                <Switch onChange={onChange} />
+              </Form.Item>
+            </Form>
+          </div>
+        </Modal>
+      ) : null}
     </>
   );
 };

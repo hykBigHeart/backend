@@ -89,55 +89,57 @@ export const VideosUpdateDialog: React.FC<PropInterface> = ({
 
   return (
     <>
-      <Modal
-        title="编辑视频"
-        centered
-        forceRender
-        open={open}
-        width={416}
-        onOk={() => form.submit()}
-        onCancel={() => onCancel()}
-        maskClosable={false}
-      >
-        <div className="float-left mt-24">
-          <Form
-            form={form}
-            name="videos-update"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 16 }}
-            initialValues={{ remember: true }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            autoComplete="off"
-          >
-            <Form.Item
-              label="视频分类"
-              name="category_id"
-              rules={[{ required: true, message: "请选择视频分类!" }]}
+      {open ? (
+        <Modal
+          title="编辑视频"
+          centered
+          forceRender
+          open={true}
+          width={416}
+          onOk={() => form.submit()}
+          onCancel={() => onCancel()}
+          maskClosable={false}
+        >
+          <div className="float-left mt-24">
+            <Form
+              form={form}
+              name="videos-update"
+              labelCol={{ span: 8 }}
+              wrapperCol={{ span: 16 }}
+              initialValues={{ remember: true }}
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+              autoComplete="off"
             >
-              <TreeSelect
-                showCheckedStrategy={TreeSelect.SHOW_ALL}
-                allowClear
-                style={{ width: 200 }}
-                treeData={categories}
-                placeholder="视频分类"
-                treeDefaultExpandAll
-              />
-            </Form.Item>
-            <Form.Item
-              label="视频名称"
-              name="name"
-              rules={[{ required: true, message: "请输入视频名称!" }]}
-            >
-              <Input
-                allowClear
-                style={{ width: 200 }}
-                placeholder="请输入视频名称"
-              />
-            </Form.Item>
-          </Form>
-        </div>
-      </Modal>
+              <Form.Item
+                label="视频分类"
+                name="category_id"
+                rules={[{ required: true, message: "请选择视频分类!" }]}
+              >
+                <TreeSelect
+                  showCheckedStrategy={TreeSelect.SHOW_ALL}
+                  allowClear
+                  style={{ width: 200 }}
+                  treeData={categories}
+                  placeholder="视频分类"
+                  treeDefaultExpandAll
+                />
+              </Form.Item>
+              <Form.Item
+                label="视频名称"
+                name="name"
+                rules={[{ required: true, message: "请输入视频名称!" }]}
+              >
+                <Input
+                  allowClear
+                  style={{ width: 200 }}
+                  placeholder="请输入视频名称"
+                />
+              </Form.Item>
+            </Form>
+          </div>
+        </Modal>
+      ) : null}
     </>
   );
 };

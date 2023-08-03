@@ -47,28 +47,30 @@ export const SelectResource = (props: PropsInterface) => {
 
   return (
     <>
-      <Modal
-        title="资源素材库"
-        centered
-        closable={false}
-        onCancel={() => {
-          setSelectKeys([]);
-          setSelectVideos([]);
-          props.onCancel();
-        }}
-        open={props.open}
-        width={800}
-        maskClosable={false}
-        onOk={() => {
-          props.onSelected(selectKeys, selectVideos);
-          setSelectKeys([]);
-          setSelectVideos([]);
-        }}
-      >
-        <Row>
-          <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
-        </Row>
-      </Modal>
+      {props.open ? (
+        <Modal
+          title="资源素材库"
+          centered
+          closable={false}
+          onCancel={() => {
+            setSelectKeys([]);
+            setSelectVideos([]);
+            props.onCancel();
+          }}
+          open={true}
+          width={800}
+          maskClosable={false}
+          onOk={() => {
+            props.onSelected(selectKeys, selectVideos);
+            setSelectKeys([]);
+            setSelectVideos([]);
+          }}
+        >
+          <Row>
+            <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
+          </Row>
+        </Modal>
+      ) : null}
     </>
   );
 };

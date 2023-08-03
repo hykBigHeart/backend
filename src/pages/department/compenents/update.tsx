@@ -129,53 +129,55 @@ export const DepartmentUpdate: React.FC<PropInterface> = ({
 
   return (
     <>
-      <Modal
-        title="编辑部门"
-        centered
-        forceRender
-        open={open}
-        width={416}
-        onOk={() => form.submit()}
-        onCancel={() => onCancel()}
-        maskClosable={false}
-      >
-        <div className="float-left mt-24">
-          <Form
-            form={form}
-            name="basic"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 16 }}
-            initialValues={{ remember: true }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            autoComplete="off"
-          >
-            <Form.Item
-              label="所属上级"
-              name="parent_id"
-              rules={[{ required: true, message: "请选择所属上级!" }]}
+      {open ? (
+        <Modal
+          title="编辑部门"
+          centered
+          forceRender
+          open={true}
+          width={416}
+          onOk={() => form.submit()}
+          onCancel={() => onCancel()}
+          maskClosable={false}
+        >
+          <div className="float-left mt-24">
+            <Form
+              form={form}
+              name="basic"
+              labelCol={{ span: 8 }}
+              wrapperCol={{ span: 16 }}
+              initialValues={{ remember: true }}
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+              autoComplete="off"
             >
-              <Cascader
-                style={{ width: 200 }}
-                allowClear
-                placeholder="请选择所属上级"
-                onChange={handleChange}
-                options={departments}
-                changeOnSelect
-                expand-trigger="hover"
-                displayRender={displayRender}
-              />
-            </Form.Item>
-            <Form.Item
-              label="部门名称"
-              name="name"
-              rules={[{ required: true, message: "请输入部门名称!" }]}
-            >
-              <Input style={{ width: 200 }} placeholder="请输入部门名称" />
-            </Form.Item>
-          </Form>
-        </div>
-      </Modal>
+              <Form.Item
+                label="所属上级"
+                name="parent_id"
+                rules={[{ required: true, message: "请选择所属上级!" }]}
+              >
+                <Cascader
+                  style={{ width: 200 }}
+                  allowClear
+                  placeholder="请选择所属上级"
+                  onChange={handleChange}
+                  options={departments}
+                  changeOnSelect
+                  expand-trigger="hover"
+                  displayRender={displayRender}
+                />
+              </Form.Item>
+              <Form.Item
+                label="部门名称"
+                name="name"
+                rules={[{ required: true, message: "请输入部门名称!" }]}
+              >
+                <Input style={{ width: 200 }} placeholder="请输入部门名称" />
+              </Form.Item>
+            </Form>
+          </div>
+        </Modal>
+      ) : null}
     </>
   );
 };
