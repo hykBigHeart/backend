@@ -71,6 +71,7 @@ const MemberPage = () => {
     {
       title: "学员",
       dataIndex: "name",
+      width: 300,
       render: (_, record: any) => (
         <>
           <Image
@@ -104,10 +105,13 @@ const MemberPage = () => {
     },
     {
       title: "登录邮箱",
+      width: 200,
       dataIndex: "email",
+      render: (email: string) => <span>{email}</span>,
     },
     {
       title: "加入时间",
+      width: 200,
       dataIndex: "created_at",
       render: (text: string) => <span>{dateFormat(text)}</span>,
     },
