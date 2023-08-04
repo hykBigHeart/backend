@@ -40,23 +40,25 @@ export const CreateResourceCategory = (props: PropInterface) => {
         shape="circle"
         icon={<PlusOutlined />}
       />
-      <Modal
-        onCancel={() => {
-          setShowModal(false);
-        }}
-        onOk={confirm}
-        open={showModal}
-        title="创建分类"
-      >
-        <Input
-          placeholder="请输入分类名"
-          value={name}
-          onChange={(e) => {
-            setName(e.target.value);
+      {showModal ? (
+        <Modal
+          onCancel={() => {
+            setShowModal(false);
           }}
-          allowClear
-        />
-      </Modal>
+          onOk={confirm}
+          open={true}
+          title="创建分类"
+        >
+          <Input
+            placeholder="请输入分类名"
+            value={name}
+            onChange={(e) => {
+              setName(e.target.value);
+            }}
+            allowClear
+          />
+        </Modal>
+      ) : null}
     </>
   );
 };

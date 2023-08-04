@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Drawer, TreeSelect, Space, Button, Form, Input, message } from "antd";
+import {
+  Drawer,
+  TreeSelect,
+  Space,
+  Button,
+  Form,
+  Input,
+  message,
+  Spin,
+} from "antd";
 import styles from "./update.module.less";
 import { adminRole } from "../../../../api/index";
 
@@ -21,6 +30,7 @@ export const SystemAdminrolesUpdate: React.FC<PropInterface> = ({
   onCancel,
 }) => {
   const [form] = Form.useForm();
+  const [init, setInit] = useState(true);
   const [loading, setLoading] = useState<boolean>(true);
   const [permissions, setPermissions] = useState<any>([]);
   const [actions, setActions] = useState<any>([]);
@@ -32,6 +42,7 @@ export const SystemAdminrolesUpdate: React.FC<PropInterface> = ({
   }, [open]);
 
   useEffect(() => {
+    setInit(true);
     if (id === undefined) {
       return;
     }
@@ -136,6 +147,7 @@ export const SystemAdminrolesUpdate: React.FC<PropInterface> = ({
         permission_ids: res.data.perm_data,
         action_ids: res.data.perm_action,
       });
+      setInit(false);
     });
   };
 
@@ -165,68 +177,78 @@ export const SystemAdminrolesUpdate: React.FC<PropInterface> = ({
 
   return (
     <>
-      <Drawer
-        title="编辑角色权限"
-        onClose={onCancel}
-        maskClosable={false}
-        open={open}
-        footer={
-          <Space className="j-r-flex">
-            <Button onClick={() => onCancel()}>取 消</Button>
-            <Button onClick={() => form.submit()} type="primary">
-              确 认
-            </Button>
-          </Space>
-        }
-        width={634}
-      >
-        <div className="float-left mt-24">
-          <Form
-            form={form}
-            name="adminroles-update"
-            labelCol={{ span: 5 }}
-            wrapperCol={{ span: 19 }}
-            initialValues={{ remember: true }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            autoComplete="off"
+      {open ? (
+        <Drawer
+          title="编辑角色权限"
+          onClose={onCancel}
+          maskClosable={false}
+          open={true}
+          footer={
+            <Space className="j-r-flex">
+              <Button onClick={() => onCancel()}>取 消</Button>
+              <Button onClick={() => form.submit()} type="primary">
+                确 认
+              </Button>
+            </Space>
+          }
+          width={634}
+        >
+          {init && (
+            <div className="float-left text-center mt-30">
+              <Spin></Spin>
+            </div>
+          )}
+          <div
+            className="float-left mt-24"
+            style={{ display: init ? "none" : "block" }}
           >
-            <Form.Item
-              label="角色名"
-              name="name"
-              rules={[{ required: true, message: "请输入角色名!" }]}
+            <Form
+              form={form}
+              name="adminroles-update"
+              labelCol={{ span: 5 }}
+              wrapperCol={{ span: 19 }}
+              initialValues={{ remember: true }}
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+              autoComplete="off"
             >
-              <Input
-                style={{ width: 424 }}
-                allowClear
-                placeholder="请输入角色名"
-              />
-            </Form.Item>
-            <Form.Item label="操作权限" name="action_ids">
-              <TreeSelect
-                style={{ width: 424 }}
-                listHeight={600}
-                treeCheckable={true}
-                placeholder="请选择权限"
-                multiple
-                allowClear
-                treeData={actions}
-              />
-            </Form.Item>
-            <Form.Item label="数据权限" name="permission_ids">
-              <TreeSelect
-                style={{ width: 424 }}
-                listHeight={600}
-                treeCheckable={true}
-                placeholder="请选择权限"
-                multiple
-                allowClear
-                treeData={permissions}
-              />
-            </Form.Item>
-          </Form>
-        </div>
-      </Drawer>
+              <Form.Item
+                label="角色名"
+                name="name"
+                rules={[{ required: true, message: "请输入角色名!" }]}
+              >
+                <Input
+                  style={{ width: 424 }}
+                  allowClear
+                  placeholder="请输入角色名"
+                />
+              </Form.Item>
+              <Form.Item label="操作权限" name="action_ids">
+                <TreeSelect
+                  style={{ width: 424 }}
+                  listHeight={600}
+                  treeCheckable={true}
+                  placeholder="请选择权限"
+                  multiple
+                  allowClear
+                  treeData={actions}
+                />
+              </Form.Item>
+              <Form.Item label="数据权限" name="permission_ids">
+                <TreeSelect
+                  style={{ width: 424 }}
+                  listHeight={600}
+                  treeCheckable={true}
+                  placeholder="请选择权限"
+                  multiple
+                  allowClear
+                  treeData={permissions}
+                />
+              </Form.Item>
+            </Form>
+          </div>
+        </Drawer>
+      ) : null}
     </>
   );
 };

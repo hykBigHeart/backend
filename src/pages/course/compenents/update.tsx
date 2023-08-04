@@ -7,9 +7,9 @@ import {
   Form,
   TreeSelect,
   Input,
-  Modal,
   message,
   Image,
+  Spin,
 } from "antd";
 import styles from "./update.module.less";
 import { useSelector } from "react-redux";
@@ -28,6 +28,7 @@ export const CourseUpdate: React.FC<PropInterface> = ({
   onCancel,
 }) => {
   const [form] = Form.useForm();
+  const [init, setInit] = useState(true);
   const courseDefaultThumbs = useSelector(
     (state: any) => state.systemConfig.value.courseDefaultThumbs
   );
@@ -41,18 +42,16 @@ export const CourseUpdate: React.FC<PropInterface> = ({
   const [type, setType] = useState<string>("open");
 
   useEffect(() => {
-    if (open) {
-      getParams();
-      getCategory();
-    }
-  }, [form, open]);
-
-  useEffect(() => {
+    setInit(true);
     if (id === 0) {
       return;
     }
-    getDetail();
-  }, [id, open]);
+    if (open) {
+      getParams();
+      getCategory();
+      getDetail();
+    }
+  }, [form, id, open]);
 
   const getCategory = () => {
     course.createCourse().then((res: any) => {
@@ -91,6 +90,7 @@ export const CourseUpdate: React.FC<PropInterface> = ({
       });
       setType(type);
       setThumb(res.data.course.thumb);
+      setInit(false);
     });
   };
 
@@ -169,209 +169,219 @@ export const CourseUpdate: React.FC<PropInterface> = ({
 
   return (
     <>
-      <Drawer
-        title="编辑课程"
-        onClose={onCancel}
-        maskClosable={false}
-        open={open}
-        footer={
-          <Space className="j-r-flex">
-            <Button onClick={() => onCancel()}>取 消</Button>
-            <Button onClick={() => form.submit()} type="primary">
-              确 认
-            </Button>
-          </Space>
-        }
-        width={634}
-      >
-        <div className="float-left mt-24">
-          <Form
-            form={form}
-            name="update-basic"
-            labelCol={{ span: 5 }}
-            wrapperCol={{ span: 19 }}
-            initialValues={{ remember: true }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            autoComplete="off"
+      {open ? (
+        <Drawer
+          title="编辑课程"
+          onClose={onCancel}
+          maskClosable={false}
+          open={true}
+          footer={
+            <Space className="j-r-flex">
+              <Button onClick={() => onCancel()}>取 消</Button>
+              <Button onClick={() => form.submit()} type="primary">
+                确 认
+              </Button>
+            </Space>
+          }
+          width={634}
+        >
+          {init && (
+            <div className="float-left text-center mt-30">
+              <Spin></Spin>
+            </div>
+          )}
+          <div
+            className="float-left mt-24"
+            style={{ display: init ? "none" : "block" }}
           >
-            <Form.Item
-              label="课程分类"
-              name="category_ids"
-              rules={[{ required: true, message: "请选择课程分类!" }]}
+            <Form
+              form={form}
+              name="update-basic"
+              labelCol={{ span: 5 }}
+              wrapperCol={{ span: 19 }}
+              initialValues={{ remember: true }}
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+              autoComplete="off"
             >
-              <TreeSelect
-                showCheckedStrategy={TreeSelect.SHOW_ALL}
-                allowClear
-                multiple
-                style={{ width: 424 }}
-                treeData={categories}
-                placeholder="请选择课程分类"
-                treeDefaultExpandAll
-              />
-            </Form.Item>
-            <Form.Item
-              label="课程名称"
-              name="title"
-              rules={[{ required: true, message: "请在此处输入课程名称!" }]}
-            >
-              <Input
-                allowClear
-                style={{ width: 424 }}
-                placeholder="请在此处输入课程名称"
-              />
-            </Form.Item>
-            <Form.Item
-              label="课程属性"
-              name="isRequired"
-              rules={[{ required: true, message: "请选择课程属性!" }]}
-            >
-              <Radio.Group>
-                <Radio value={1}>必修课</Radio>
-                <Radio value={0} style={{ marginLeft: 22 }}>
-                  选修课
-                </Radio>
-              </Radio.Group>
-            </Form.Item>
-            <Form.Item
-              label="指派部门"
-              name="type"
-              rules={[{ required: true, message: "请选择指派部门!" }]}
-            >
-              <Radio.Group onChange={getType}>
-                <Radio value="open">全部部门</Radio>
-                <Radio value="elective">选择部门</Radio>
-              </Radio.Group>
-            </Form.Item>
-
-            {type === "elective" && (
               <Form.Item
-                label="选择部门"
-                name="dep_ids"
-                rules={[
-                  {
-                    required: true,
-                    message: "请选择部门!",
-                  },
-                ]}
+                label="课程分类"
+                name="category_ids"
+                rules={[{ required: true, message: "请选择课程分类!" }]}
               >
                 <TreeSelect
                   showCheckedStrategy={TreeSelect.SHOW_ALL}
-                  style={{ width: 424 }}
-                  treeData={departments}
-                  multiple
                   allowClear
+                  multiple
+                  style={{ width: 424 }}
+                  treeData={categories}
+                  placeholder="请选择课程分类"
                   treeDefaultExpandAll
-                  placeholder="请选择部门"
                 />
               </Form.Item>
-            )}
-
-            <Form.Item
-              label="课程封面"
-              name="thumb"
-              rules={[{ required: true, message: "请上传课程封面!" }]}
-            >
-              <div className="d-flex">
-                <Image
-                  src={thumb}
-                  width={160}
-                  height={120}
-                  style={{ borderRadius: 6 }}
-                  preview={false}
+              <Form.Item
+                label="课程名称"
+                name="title"
+                rules={[{ required: true, message: "请在此处输入课程名称!" }]}
+              >
+                <Input
+                  allowClear
+                  style={{ width: 424 }}
+                  placeholder="请在此处输入课程名称"
                 />
-                <div className="c-flex ml-8 flex-1">
-                  <div className="d-flex mb-28">
-                    <div
-                      className={
-                        thumb === defaultThumb1
-                          ? styles["thumb-item-avtive"]
-                          : styles["thumb-item"]
-                      }
-                      onClick={() => {
-                        setThumb(defaultThumb1);
-                        form.setFieldsValue({
-                          thumb: defaultThumb1,
-                        });
-                      }}
-                    >
-                      <Image
-                        src={defaultThumb1}
-                        width={80}
-                        height={60}
-                        style={{ borderRadius: 6 }}
-                        preview={false}
-                      />
+              </Form.Item>
+              <Form.Item
+                label="课程属性"
+                name="isRequired"
+                rules={[{ required: true, message: "请选择课程属性!" }]}
+              >
+                <Radio.Group>
+                  <Radio value={1}>必修课</Radio>
+                  <Radio value={0} style={{ marginLeft: 22 }}>
+                    选修课
+                  </Radio>
+                </Radio.Group>
+              </Form.Item>
+              <Form.Item
+                label="指派部门"
+                name="type"
+                rules={[{ required: true, message: "请选择指派部门!" }]}
+              >
+                <Radio.Group onChange={getType}>
+                  <Radio value="open">全部部门</Radio>
+                  <Radio value="elective">选择部门</Radio>
+                </Radio.Group>
+              </Form.Item>
+
+              {type === "elective" && (
+                <Form.Item
+                  label="选择部门"
+                  name="dep_ids"
+                  rules={[
+                    {
+                      required: true,
+                      message: "请选择部门!",
+                    },
+                  ]}
+                >
+                  <TreeSelect
+                    showCheckedStrategy={TreeSelect.SHOW_ALL}
+                    style={{ width: 424 }}
+                    treeData={departments}
+                    multiple
+                    allowClear
+                    treeDefaultExpandAll
+                    placeholder="请选择部门"
+                  />
+                </Form.Item>
+              )}
+
+              <Form.Item
+                label="课程封面"
+                name="thumb"
+                rules={[{ required: true, message: "请上传课程封面!" }]}
+              >
+                <div className="d-flex">
+                  <Image
+                    src={thumb}
+                    width={160}
+                    height={120}
+                    style={{ borderRadius: 6 }}
+                    preview={false}
+                  />
+                  <div className="c-flex ml-8 flex-1">
+                    <div className="d-flex mb-28">
+                      <div
+                        className={
+                          thumb === defaultThumb1
+                            ? styles["thumb-item-avtive"]
+                            : styles["thumb-item"]
+                        }
+                        onClick={() => {
+                          setThumb(defaultThumb1);
+                          form.setFieldsValue({
+                            thumb: defaultThumb1,
+                          });
+                        }}
+                      >
+                        <Image
+                          src={defaultThumb1}
+                          width={80}
+                          height={60}
+                          style={{ borderRadius: 6 }}
+                          preview={false}
+                        />
+                      </div>
+                      <div
+                        className={
+                          thumb === defaultThumb2
+                            ? styles["thumb-item-avtive"]
+                            : styles["thumb-item"]
+                        }
+                        onClick={() => {
+                          setThumb(defaultThumb2);
+                          form.setFieldsValue({
+                            thumb: defaultThumb2,
+                          });
+                        }}
+                      >
+                        <Image
+                          src={defaultThumb2}
+                          width={80}
+                          height={60}
+                          style={{ borderRadius: 6 }}
+                          preview={false}
+                        />
+                      </div>
+                      <div
+                        className={
+                          thumb === defaultThumb3
+                            ? styles["thumb-item-avtive"]
+                            : styles["thumb-item"]
+                        }
+                        onClick={() => {
+                          setThumb(defaultThumb3);
+                          form.setFieldsValue({
+                            thumb: defaultThumb3,
+                          });
+                        }}
+                      >
+                        <Image
+                          src={defaultThumb3}
+                          width={80}
+                          height={60}
+                          style={{ borderRadius: 6 }}
+                          preview={false}
+                        />
+                      </div>
                     </div>
-                    <div
-                      className={
-                        thumb === defaultThumb2
-                          ? styles["thumb-item-avtive"]
-                          : styles["thumb-item"]
-                      }
-                      onClick={() => {
-                        setThumb(defaultThumb2);
-                        form.setFieldsValue({
-                          thumb: defaultThumb2,
-                        });
-                      }}
-                    >
-                      <Image
-                        src={defaultThumb2}
-                        width={80}
-                        height={60}
-                        style={{ borderRadius: 6 }}
-                        preview={false}
-                      />
+                    <div className="d-flex">
+                      <UploadImageButton
+                        text="更换封面"
+                        onSelected={(url) => {
+                          setThumb(url);
+                          form.setFieldsValue({ thumb: url });
+                        }}
+                      ></UploadImageButton>
+                      <span className="helper-text ml-16">
+                        （推荐尺寸:400x300px）
+                      </span>
                     </div>
-                    <div
-                      className={
-                        thumb === defaultThumb3
-                          ? styles["thumb-item-avtive"]
-                          : styles["thumb-item"]
-                      }
-                      onClick={() => {
-                        setThumb(defaultThumb3);
-                        form.setFieldsValue({
-                          thumb: defaultThumb3,
-                        });
-                      }}
-                    >
-                      <Image
-                        src={defaultThumb3}
-                        width={80}
-                        height={60}
-                        style={{ borderRadius: 6 }}
-                        preview={false}
-                      />
-                    </div>
-                  </div>
-                  <div className="d-flex">
-                    <UploadImageButton
-                      text="更换封面"
-                      onSelected={(url) => {
-                        setThumb(url);
-                        form.setFieldsValue({ thumb: url });
-                      }}
-                    ></UploadImageButton>
-                    <span className="helper-text ml-16">
-                      （推荐尺寸:400x300px）
-                    </span>
                   </div>
                 </div>
-              </div>
-            </Form.Item>
-            <Form.Item label="课程简介" name="short_desc">
-              <Input.TextArea
-                style={{ width: 424, minHeight: 80 }}
-                allowClear
-                placeholder="请输入课程简介（最多200字）"
-                maxLength={200}
-              />
-            </Form.Item>
-          </Form>
-        </div>
-      </Drawer>
+              </Form.Item>
+              <Form.Item label="课程简介" name="short_desc">
+                <Input.TextArea
+                  style={{ width: 424, minHeight: 80 }}
+                  allowClear
+                  placeholder="请输入课程简介（最多200字）"
+                  maxLength={200}
+                />
+              </Form.Item>
+            </Form>
+          </div>
+        </Drawer>
+      ) : null}
     </>
   );
 };

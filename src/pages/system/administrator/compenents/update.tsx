@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, Input, Select, Switch, message } from "antd";
+import { Modal, Form, Input, Select, Switch, message, Spin } from "antd";
 import styles from "./update.module.less";
 import { adminUser } from "../../../../api/index";
 
@@ -17,6 +17,7 @@ export const SystemAdministratorUpdate: React.FC<PropInterface> = ({
   onCancel,
 }) => {
   const [form] = Form.useForm();
+  const [init, setInit] = useState(true);
   const [loading, setLoading] = useState<boolean>(true);
   const [roles, setRoles] = useState<any>([]);
 
@@ -27,6 +28,7 @@ export const SystemAdministratorUpdate: React.FC<PropInterface> = ({
   }, [refresh, open]);
 
   useEffect(() => {
+    setInit(true);
     if (id === 0) {
       return;
     }
@@ -58,6 +60,7 @@ export const SystemAdministratorUpdate: React.FC<PropInterface> = ({
         is_ban_login: user.is_ban_login,
         roleIds: res.data.role_ids,
       });
+      setInit(false);
     });
   };
 
@@ -93,81 +96,91 @@ export const SystemAdministratorUpdate: React.FC<PropInterface> = ({
 
   return (
     <>
-      <Modal
-        title="编辑管理人员"
-        centered
-        forceRender
-        open={open}
-        width={416}
-        onOk={() => form.submit()}
-        onCancel={() => onCancel()}
-        maskClosable={false}
-      >
-        <div className="float-left mt-24">
-          <Form
-            form={form}
-            name="basic"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 16 }}
-            initialValues={{ remember: true }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            autoComplete="off"
+      {open ? (
+        <Modal
+          title="编辑管理人员"
+          centered
+          forceRender
+          open={true}
+          width={416}
+          onOk={() => form.submit()}
+          onCancel={() => onCancel()}
+          maskClosable={false}
+        >
+          {init && (
+            <div className="float-left text-center mt-30">
+              <Spin></Spin>
+            </div>
+          )}
+          <div
+            className="float-left mt-24"
+            style={{ display: init ? "none" : "block" }}
           >
-            <Form.Item
-              label="选择角色"
-              name="roleIds"
-              rules={[{ required: true, message: "请选择角色!" }]}
+            <Form
+              form={form}
+              name="basic"
+              labelCol={{ span: 8 }}
+              wrapperCol={{ span: 16 }}
+              initialValues={{ remember: true }}
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+              autoComplete="off"
             >
-              <Select
-                style={{ width: 200 }}
-                mode="multiple"
-                allowClear
-                placeholder="请选择角色"
-                onChange={handleChange}
-                options={roles}
-              />
-            </Form.Item>
-            <Form.Item
-              label="管理员姓名"
-              name="name"
-              rules={[{ required: true, message: "请输入管理员姓名!" }]}
-            >
-              <Input
-                allowClear
-                style={{ width: 200 }}
-                placeholder="请输入管理员姓名"
-              />
-            </Form.Item>
-            <Form.Item
-              label="邮箱"
-              name="email"
-              rules={[{ required: true, message: "请输入学员邮箱!" }]}
-            >
-              <Input
-                allowClear
-                style={{ width: 200 }}
-                placeholder="请输入学员邮箱"
-              />
-            </Form.Item>
-            <Form.Item label="密码" name="password">
-              <Input.Password
-                autoComplete="new-password"
-                style={{ width: 200 }}
-                allowClear
-                placeholder="请输入登录密码"
-              />
-            </Form.Item>
-            <Form.Item
-              label="禁止登录"
-              name="is_ban_login"
-              valuePropName="checked"
-            >
-              <Switch onChange={onChange} />
-            </Form.Item>
-          </Form>
-        </div>
-      </Modal>
+              <Form.Item
+                label="选择角色"
+                name="roleIds"
+                rules={[{ required: true, message: "请选择角色!" }]}
+              >
+                <Select
+                  style={{ width: 200 }}
+                  mode="multiple"
+                  allowClear
+                  placeholder="请选择角色"
+                  onChange={handleChange}
+                  options={roles}
+                />
+              </Form.Item>
+              <Form.Item
+                label="管理员姓名"
+                name="name"
+                rules={[{ required: true, message: "请输入管理员姓名!" }]}
+              >
+                <Input
+                  allowClear
+                  style={{ width: 200 }}
+                  placeholder="请输入管理员姓名"
+                />
+              </Form.Item>
+              <Form.Item
+                label="邮箱"
+                name="email"
+                rules={[{ required: true, message: "请输入学员邮箱!" }]}
+              >
+                <Input
+                  allowClear
+                  style={{ width: 200 }}
+                  placeholder="请输入学员邮箱"
+                />
+              </Form.Item>
+              <Form.Item label="密码" name="password">
+                <Input.Password
+                  autoComplete="new-password"
+                  style={{ width: 200 }}
+                  allowClear
+                  placeholder="请输入登录密码"
+                />
+              </Form.Item>
+              <Form.Item
+                label="禁止登录"
+                name="is_ban_login"
+                valuePropName="checked"
+              >
+                <Switch onChange={onChange} />
+              </Form.Item>
+            </Form>
+          </div>
+        </Modal>
+      ) : null}
     </>
   );
 };

@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Modal, Form, Input, Cascader, message } from "antd";
+import React, { useState, useEffect } from "react";
+import { Modal, Form, Input, Cascader, message, Spin } from "antd";
 import styles from "./update.module.less";
 import { resourceCategory } from "../../../../api/index";
 
@@ -21,12 +21,14 @@ export const ResourceCategoryUpdate: React.FC<PropInterface> = ({
   onCancel,
 }) => {
   const [form] = Form.useForm();
+  const [init, setInit] = useState(true);
   const [loading, setLoading] = useState<boolean>(true);
   const [categories, setCategories] = useState<any>([]);
   const [parent_id, setParentId] = useState<number>(0);
   const [sort, setSort] = useState<number>(0);
 
   useEffect(() => {
+    setInit(true);
     if (open) {
       getParams();
     }
@@ -64,6 +66,7 @@ export const ResourceCategoryUpdate: React.FC<PropInterface> = ({
       });
       setParentId(data.parent_id);
       setSort(data.sort);
+      setInit(false);
     });
   };
 
@@ -127,57 +130,67 @@ export const ResourceCategoryUpdate: React.FC<PropInterface> = ({
 
   return (
     <>
-      <Modal
-        title="编辑分类"
-        centered
-        forceRender
-        open={open}
-        width={416}
-        onOk={() => form.submit()}
-        onCancel={() => onCancel()}
-        maskClosable={false}
-      >
-        <div className="float-left mt-24">
-          <Form
-            form={form}
-            name="basic"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 16 }}
-            initialValues={{ remember: true }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            autoComplete="off"
+      {open ? (
+        <Modal
+          title="编辑分类"
+          centered
+          forceRender
+          open={true}
+          width={416}
+          onOk={() => form.submit()}
+          onCancel={() => onCancel()}
+          maskClosable={false}
+        >
+          {init && (
+            <div className="float-left text-center mt-30">
+              <Spin></Spin>
+            </div>
+          )}
+          <div
+            className="float-left mt-24"
+            style={{ display: init ? "none" : "block" }}
           >
-            <Form.Item
-              label="所属上级"
-              name="parent_id"
-              rules={[{ required: true, message: "请选择所属上级!" }]}
+            <Form
+              form={form}
+              name="basic"
+              labelCol={{ span: 8 }}
+              wrapperCol={{ span: 16 }}
+              initialValues={{ remember: true }}
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+              autoComplete="off"
             >
-              <Cascader
-                style={{ width: 200 }}
-                allowClear
-                placeholder="请选择所属上级"
-                onChange={handleChange}
-                options={categories}
-                changeOnSelect
-                expand-trigger="hover"
-                displayRender={displayRender}
-              />
-            </Form.Item>
-            <Form.Item
-              label="分类名称"
-              name="name"
-              rules={[{ required: true, message: "请输入分类名称!" }]}
-            >
-              <Input
-                style={{ width: 200 }}
-                allowClear
-                placeholder="请输入分类名称"
-              />
-            </Form.Item>
-          </Form>
-        </div>
-      </Modal>
+              <Form.Item
+                label="所属上级"
+                name="parent_id"
+                rules={[{ required: true, message: "请选择所属上级!" }]}
+              >
+                <Cascader
+                  style={{ width: 200 }}
+                  allowClear
+                  placeholder="请选择所属上级"
+                  onChange={handleChange}
+                  options={categories}
+                  changeOnSelect
+                  expand-trigger="hover"
+                  displayRender={displayRender}
+                />
+              </Form.Item>
+              <Form.Item
+                label="分类名称"
+                name="name"
+                rules={[{ required: true, message: "请输入分类名称!" }]}
+              >
+                <Input
+                  style={{ width: 200 }}
+                  allowClear
+                  placeholder="请输入分类名称"
+                />
+              </Form.Item>
+            </Form>
+          </div>
+        </Modal>
+      ) : null}
     </>
   );
 };

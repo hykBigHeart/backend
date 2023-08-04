@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, Input, message, TreeSelect } from "antd";
+import { Modal, Form, Input, message, TreeSelect, Spin } from "antd";
 import { resource, resourceCategory } from "../../../../../api/index";
 
 interface PropInterface {
@@ -17,9 +17,11 @@ export const VideosUpdateDialog: React.FC<PropInterface> = ({
 }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState<boolean>(true);
+  const [init, setInit] = useState(true);
   const [categories, setCategories] = useState<any>([]);
 
   useEffect(() => {
+    setInit(true);
     if (id === 0) {
       return;
     }
@@ -27,7 +29,7 @@ export const VideosUpdateDialog: React.FC<PropInterface> = ({
       getCategory();
       getDetail();
     }
-  }, [id, open]);
+  }, [form, id, open]);
 
   const getCategory = () => {
     resourceCategory.resourceCategoryList().then((res: any) => {
@@ -46,6 +48,7 @@ export const VideosUpdateDialog: React.FC<PropInterface> = ({
         name: data.name,
         category_id: res.data.category_ids,
       });
+      setInit(false);
     });
   };
 
@@ -89,55 +92,65 @@ export const VideosUpdateDialog: React.FC<PropInterface> = ({
 
   return (
     <>
-      <Modal
-        title="编辑视频"
-        centered
-        forceRender
-        open={open}
-        width={416}
-        onOk={() => form.submit()}
-        onCancel={() => onCancel()}
-        maskClosable={false}
-      >
-        <div className="float-left mt-24">
-          <Form
-            form={form}
-            name="videos-update"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 16 }}
-            initialValues={{ remember: true }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            autoComplete="off"
+      {open ? (
+        <Modal
+          title="编辑视频"
+          centered
+          forceRender
+          open={true}
+          width={416}
+          onOk={() => form.submit()}
+          onCancel={() => onCancel()}
+          maskClosable={false}
+        >
+          {init && (
+            <div className="float-left text-center mt-30">
+              <Spin></Spin>
+            </div>
+          )}
+          <div
+            className="float-left mt-24"
+            style={{ display: init ? "none" : "block" }}
           >
-            <Form.Item
-              label="视频分类"
-              name="category_id"
-              rules={[{ required: true, message: "请选择视频分类!" }]}
+            <Form
+              form={form}
+              name="videos-update"
+              labelCol={{ span: 8 }}
+              wrapperCol={{ span: 16 }}
+              initialValues={{ remember: true }}
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+              autoComplete="off"
             >
-              <TreeSelect
-                showCheckedStrategy={TreeSelect.SHOW_ALL}
-                allowClear
-                style={{ width: 200 }}
-                treeData={categories}
-                placeholder="视频分类"
-                treeDefaultExpandAll
-              />
-            </Form.Item>
-            <Form.Item
-              label="视频名称"
-              name="name"
-              rules={[{ required: true, message: "请输入视频名称!" }]}
-            >
-              <Input
-                allowClear
-                style={{ width: 200 }}
-                placeholder="请输入视频名称"
-              />
-            </Form.Item>
-          </Form>
-        </div>
-      </Modal>
+              <Form.Item
+                label="视频分类"
+                name="category_id"
+                rules={[{ required: true, message: "请选择视频分类!" }]}
+              >
+                <TreeSelect
+                  showCheckedStrategy={TreeSelect.SHOW_ALL}
+                  allowClear
+                  style={{ width: 200 }}
+                  treeData={categories}
+                  placeholder="视频分类"
+                  treeDefaultExpandAll
+                />
+              </Form.Item>
+              <Form.Item
+                label="视频名称"
+                name="name"
+                rules={[{ required: true, message: "请输入视频名称!" }]}
+              >
+                <Input
+                  allowClear
+                  style={{ width: 200 }}
+                  placeholder="请输入视频名称"
+                />
+              </Form.Item>
+            </Form>
+          </div>
+        </Modal>
+      ) : null}
     </>
   );
 };

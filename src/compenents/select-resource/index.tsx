@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Row, Modal, Tabs } from "antd";
+import { Row, Modal, Tabs, Spin } from "antd";
 import styles from "./index.module.less";
 import { UploadVideoSub } from "../../compenents";
 import type { TabsProps } from "antd";
@@ -13,11 +13,13 @@ interface PropsInterface {
 
 export const SelectResource = (props: PropsInterface) => {
   const [refresh, setRefresh] = useState(true);
+  const [init, setInit] = useState(true);
   const [tabKey, setTabKey] = useState(1);
   const [selectKeys, setSelectKeys] = useState<any>([]);
   const [selectVideos, setSelectVideos] = useState<any>([]);
 
   useEffect(() => {
+    setInit(true);
     setRefresh(!refresh);
   }, [props.open]);
 
@@ -26,7 +28,10 @@ export const SelectResource = (props: PropsInterface) => {
       key: "1",
       label: `视频`,
       children: (
-        <div className="float-left">
+        <div
+          className="float-left"
+          style={{ display: init ? "none" : "block" }}
+        >
           <UploadVideoSub
             label="视频"
             defaultCheckedList={props.defaultKeys}
@@ -34,6 +39,9 @@ export const SelectResource = (props: PropsInterface) => {
             onSelected={(arr: any[], videos: any[]) => {
               setSelectKeys(arr);
               setSelectVideos(videos);
+            }}
+            onSuccess={() => {
+              setInit(false);
             }}
           />
         </div>
@@ -47,28 +55,35 @@ export const SelectResource = (props: PropsInterface) => {
 
   return (
     <>
-      <Modal
-        title="资源素材库"
-        centered
-        closable={false}
-        onCancel={() => {
-          setSelectKeys([]);
-          setSelectVideos([]);
-          props.onCancel();
-        }}
-        open={props.open}
-        width={800}
-        maskClosable={false}
-        onOk={() => {
-          props.onSelected(selectKeys, selectVideos);
-          setSelectKeys([]);
-          setSelectVideos([]);
-        }}
-      >
-        <Row>
-          <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
-        </Row>
-      </Modal>
+      {props.open ? (
+        <Modal
+          title="资源素材库"
+          centered
+          closable={false}
+          onCancel={() => {
+            setSelectKeys([]);
+            setSelectVideos([]);
+            props.onCancel();
+          }}
+          open={true}
+          width={800}
+          maskClosable={false}
+          onOk={() => {
+            props.onSelected(selectKeys, selectVideos);
+            setSelectKeys([]);
+            setSelectVideos([]);
+          }}
+        >
+          <Row>
+            <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
+          </Row>
+          {init && (
+            <div className="float-left text-center mt-30">
+              <Spin></Spin>
+            </div>
+          )}
+        </Modal>
+      ) : null}
     </>
   );
 };

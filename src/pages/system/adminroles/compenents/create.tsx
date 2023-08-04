@@ -151,68 +151,70 @@ export const SystemAdminrolesCreate: React.FC<PropInterface> = ({
 
   return (
     <>
-      <Drawer
-        title="新建角色"
-        onClose={onCancel}
-        maskClosable={false}
-        open={open}
-        footer={
-          <Space className="j-r-flex">
-            <Button onClick={() => onCancel()}>取 消</Button>
-            <Button onClick={() => form.submit()} type="primary">
-              确 认
-            </Button>
-          </Space>
-        }
-        width={634}
-      >
-        <div className="float-left mt-24">
-          <Form
-            form={form}
-            name="adminroles-create"
-            labelCol={{ span: 5 }}
-            wrapperCol={{ span: 19 }}
-            initialValues={{ remember: true }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            autoComplete="off"
-          >
-            <Form.Item
-              label="角色名称"
-              name="name"
-              rules={[{ required: true, message: "请输入角色名称!" }]}
+      {open ? (
+        <Drawer
+          title="新建角色"
+          onClose={onCancel}
+          maskClosable={false}
+          open={true}
+          footer={
+            <Space className="j-r-flex">
+              <Button onClick={() => onCancel()}>取 消</Button>
+              <Button onClick={() => form.submit()} type="primary">
+                确 认
+              </Button>
+            </Space>
+          }
+          width={634}
+        >
+          <div className="float-left mt-24">
+            <Form
+              form={form}
+              name="adminroles-create"
+              labelCol={{ span: 5 }}
+              wrapperCol={{ span: 19 }}
+              initialValues={{ remember: true }}
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+              autoComplete="off"
             >
-              <Input
-                style={{ width: 424 }}
-                placeholder="请在此处输入角色名称"
-                allowClear
-              />
-            </Form.Item>
-            <Form.Item label="操作权限" name="action_ids">
-              <TreeSelect
-                listHeight={600}
-                style={{ width: 424 }}
-                treeCheckable={true}
-                placeholder="请选择权限"
-                multiple
-                allowClear
-                treeData={actions}
-              />
-            </Form.Item>
-            <Form.Item label="数据权限" name="permission_ids">
-              <TreeSelect
-                listHeight={600}
-                style={{ width: 424 }}
-                treeCheckable={true}
-                placeholder="请选择权限"
-                multiple
-                allowClear
-                treeData={permissions}
-              />
-            </Form.Item>
-          </Form>
-        </div>
-      </Drawer>
+              <Form.Item
+                label="角色名称"
+                name="name"
+                rules={[{ required: true, message: "请输入角色名称!" }]}
+              >
+                <Input
+                  style={{ width: 424 }}
+                  placeholder="请在此处输入角色名称"
+                  allowClear
+                />
+              </Form.Item>
+              <Form.Item label="操作权限" name="action_ids">
+                <TreeSelect
+                  listHeight={600}
+                  style={{ width: 424 }}
+                  treeCheckable={true}
+                  placeholder="请选择权限"
+                  multiple
+                  allowClear
+                  treeData={actions}
+                />
+              </Form.Item>
+              <Form.Item label="数据权限" name="permission_ids">
+                <TreeSelect
+                  listHeight={600}
+                  style={{ width: 424 }}
+                  treeCheckable={true}
+                  placeholder="请选择权限"
+                  multiple
+                  allowClear
+                  treeData={permissions}
+                />
+              </Form.Item>
+            </Form>
+          </div>
+        </Drawer>
+      ) : null}
     </>
   );
 };

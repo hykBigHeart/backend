@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, TreeSelect, Input, message } from "antd";
+import { Modal, Form, TreeSelect, Input, message, Spin } from "antd";
 import styles from "./update.module.less";
 import { useSelector } from "react-redux";
 import { user, department } from "../../../api/index";
@@ -24,6 +24,7 @@ export const MemberUpdate: React.FC<PropInterface> = ({
   onCancel,
 }) => {
   const [form] = Form.useForm();
+  const [init, setInit] = useState(true);
   const [loading, setLoading] = useState<boolean>(true);
   const [departments, setDepartments] = useState<any>([]);
   const memberDefaultAvatar = useSelector(
@@ -32,20 +33,18 @@ export const MemberUpdate: React.FC<PropInterface> = ({
   const [avatar, setAvatar] = useState<string>(memberDefaultAvatar);
 
   useEffect(() => {
+    setInit(true);
     if (id == 0) {
       return;
     }
-    getDetail();
-  }, [id, open]);
-
-  useEffect(() => {
     if (open) {
       getParams();
       form.setFieldsValue({
         password: "",
       });
+      getDetail();
     }
-  }, [form, open]);
+  }, [form, id, open]);
 
   const getParams = () => {
     if (id === 0) {
@@ -71,6 +70,7 @@ export const MemberUpdate: React.FC<PropInterface> = ({
         idCard: user.id_card,
         dep_ids: res.data.dep_ids,
       });
+      setInit(false);
     });
   };
 
@@ -134,102 +134,112 @@ export const MemberUpdate: React.FC<PropInterface> = ({
 
   return (
     <>
-      <Modal
-        title="编辑学员"
-        centered
-        forceRender
-        open={open}
-        width={484}
-        onOk={() => form.submit()}
-        onCancel={() => onCancel()}
-        maskClosable={false}
-      >
-        <div className="float-left mt-24">
-          <Form
-            form={form}
-            name="update-basic"
-            labelCol={{ span: 7 }}
-            wrapperCol={{ span: 17 }}
-            initialValues={{ remember: true }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            autoComplete="off"
+      {open ? (
+        <Modal
+          title="编辑学员"
+          centered
+          forceRender
+          open={true}
+          width={484}
+          onOk={() => form.submit()}
+          onCancel={() => onCancel()}
+          maskClosable={false}
+        >
+          {init && (
+            <div className="float-left text-center mt-30">
+              <Spin></Spin>
+            </div>
+          )}
+          <div
+            className="float-left mt-24"
+            style={{ display: init ? "none" : "block" }}
           >
-            <Form.Item
-              label="学员头像"
-              labelCol={{ style: { marginTop: 15, marginLeft: 46 } }}
-              name="avatar"
-              rules={[{ required: true, message: "请上传学员头像!" }]}
+            <Form
+              form={form}
+              name="update-basic"
+              labelCol={{ span: 7 }}
+              wrapperCol={{ span: 17 }}
+              initialValues={{ remember: true }}
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+              autoComplete="off"
             >
-              <div className="d-flex">
-                {avatar && (
-                  <img className="form-avatar mr-16" src={avatar} alt="" />
-                )}
+              <Form.Item
+                label="学员头像"
+                labelCol={{ style: { marginTop: 15, marginLeft: 46 } }}
+                name="avatar"
+                rules={[{ required: true, message: "请上传学员头像!" }]}
+              >
                 <div className="d-flex">
-                  <UploadImageButton
-                    text="更换头像"
-                    onSelected={(url) => {
-                      setAvatar(url);
-                      form.setFieldsValue({ avatar: url });
-                    }}
-                  ></UploadImageButton>
+                  {avatar && (
+                    <img className="form-avatar mr-16" src={avatar} alt="" />
+                  )}
+                  <div className="d-flex">
+                    <UploadImageButton
+                      text="更换头像"
+                      onSelected={(url) => {
+                        setAvatar(url);
+                        form.setFieldsValue({ avatar: url });
+                      }}
+                    ></UploadImageButton>
+                  </div>
                 </div>
-              </div>
-            </Form.Item>
-            <Form.Item
-              label="学员姓名"
-              name="name"
-              rules={[{ required: true, message: "请输入学员姓名!" }]}
-            >
-              <Input
-                allowClear
-                style={{ width: 274 }}
-                placeholder="请填写学员姓名"
-              />
-            </Form.Item>
-            <Form.Item
-              label="登录邮箱"
-              name="email"
-              rules={[{ required: true, message: "请输入登录邮箱!" }]}
-            >
-              <Input
-                style={{ width: 274 }}
-                allowClear
-                placeholder="请输入学员登录邮箱"
-              />
-            </Form.Item>
-            <Form.Item label="登录密码" name="password">
-              <Input.Password
-                style={{ width: 274 }}
-                allowClear
-                placeholder="请输入登录密码"
-              />
-            </Form.Item>
-            <Form.Item
-              label="所属部门"
-              name="dep_ids"
-              rules={[{ required: true, message: "请选择学员所属部门!" }]}
-            >
-              <TreeSelect
-                showCheckedStrategy={TreeSelect.SHOW_ALL}
-                style={{ width: 274 }}
-                treeData={departments}
-                multiple
-                allowClear
-                treeDefaultExpandAll
-                placeholder="请选择学员所属部门"
-              />
-            </Form.Item>
-            <Form.Item label="身份证号" name="idCard">
-              <Input
-                allowClear
-                style={{ width: 274 }}
-                placeholder="请填写学员身份证号"
-              />
-            </Form.Item>
-          </Form>
-        </div>
-      </Modal>
+              </Form.Item>
+              <Form.Item
+                label="学员姓名"
+                name="name"
+                rules={[{ required: true, message: "请输入学员姓名!" }]}
+              >
+                <Input
+                  allowClear
+                  style={{ width: 274 }}
+                  placeholder="请填写学员姓名"
+                />
+              </Form.Item>
+              <Form.Item
+                label="登录邮箱"
+                name="email"
+                rules={[{ required: true, message: "请输入登录邮箱!" }]}
+              >
+                <Input
+                  style={{ width: 274 }}
+                  allowClear
+                  placeholder="请输入学员登录邮箱"
+                />
+              </Form.Item>
+              <Form.Item label="登录密码" name="password">
+                <Input.Password
+                  style={{ width: 274 }}
+                  allowClear
+                  placeholder="请输入登录密码"
+                />
+              </Form.Item>
+              <Form.Item
+                label="所属部门"
+                name="dep_ids"
+                rules={[{ required: true, message: "请选择学员所属部门!" }]}
+              >
+                <TreeSelect
+                  showCheckedStrategy={TreeSelect.SHOW_ALL}
+                  style={{ width: 274 }}
+                  treeData={departments}
+                  multiple
+                  allowClear
+                  treeDefaultExpandAll
+                  placeholder="请选择学员所属部门"
+                />
+              </Form.Item>
+              <Form.Item label="身份证号" name="idCard">
+                <Input
+                  allowClear
+                  style={{ width: 274 }}
+                  placeholder="请填写学员身份证号"
+                />
+              </Form.Item>
+            </Form>
+          </div>
+        </Modal>
+      ) : null}
     </>
   );
 };

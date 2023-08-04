@@ -25,33 +25,35 @@ export const AdminLogDetailDialog: React.FC<PropInterface> = ({
 
   return (
     <>
-      <Modal
-        title="日志详情"
-        centered
-        forceRender
-        open={open}
-        width={416}
-        onOk={() => onCancel()}
-        onCancel={() => onCancel()}
-        footer={null}
-        maskClosable={false}
-      >
-        <div className="mt-24">
-          <Form
-            form={form}
-            name="adminlog-detail"
-            labelCol={{ span: 5 }}
-            wrapperCol={{ span: 19 }}
-            initialValues={{ remember: true }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            autoComplete="off"
-          >
-            <Form.Item label="Param">{param}</Form.Item>
-            <Form.Item label="Result">{result}</Form.Item>
-          </Form>
-        </div>
-      </Modal>
+      {open ? (
+        <Modal
+          title="日志详情"
+          centered
+          forceRender
+          open={true}
+          width={416}
+          onOk={() => onCancel()}
+          onCancel={() => onCancel()}
+          footer={null}
+          maskClosable={false}
+        >
+          <div className="mt-24">
+            <Form
+              form={form}
+              name="adminlog-detail"
+              labelCol={{ span: 5 }}
+              wrapperCol={{ span: 19 }}
+              initialValues={{ remember: true }}
+              onFinish={onFinish}
+              onFinishFailed={onFinishFailed}
+              autoComplete="off"
+            >
+              <Form.Item label="Param">{param}</Form.Item>
+              <Form.Item label="Result">{result}</Form.Item>
+            </Form>
+          </div>
+        </Modal>
+      ) : null}
     </>
   );
 };

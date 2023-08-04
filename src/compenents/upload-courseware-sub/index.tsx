@@ -34,6 +34,7 @@ interface PropsInterface {
   label: string;
   open: boolean;
   onSelected: (arr: any[], videos: []) => void;
+  onSuccess: () => void;
 }
 
 export const UploadCoursewareSub = (props: PropsInterface) => {
@@ -75,6 +76,7 @@ export const UploadCoursewareSub = (props: PropsInterface) => {
         setTotal(res.data.result.total);
         setExistingTypes(res.data.existing_types);
         setVideoList(res.data.result.data);
+        props.onSuccess();
       })
       .catch((err) => {
         console.log("错误,", err);
