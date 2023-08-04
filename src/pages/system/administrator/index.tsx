@@ -15,29 +15,48 @@ const { confirm } = Modal;
 
 interface DataType {
   id: React.Key;
-  name: string;
+  created_at: string;
   email: string;
+  is_ban_login: number;
   login_at: string;
   login_ip: string;
-  is_ban_login: number;
+  login_times: number;
+  name: string;
+  updated_at: string;
 }
+
+type RolesModel = {
+  [key: number]: RoleModel[];
+};
+
+type RoleModel = {
+  created_at: string;
+  id: number;
+  name: string;
+  slug: string;
+  updated_at: string;
+};
+
+type RoleIdsModel = {
+  [key: number]: number[];
+};
 
 const SystemAdministratorPage = () => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
-  const [list, setList] = useState<any>([]);
-  const [roles, setRoles] = useState<any>([]);
-  const [userRoleIds, setUserRoleIds] = useState<any>({});
+  const [list, setList] = useState<DataType[]>([]);
+  const [roles, setRoles] = useState<RolesModel>({});
+  const [userRoleIds, setUserRoleIds] = useState<RoleIdsModel>({});
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
-  const [createVisible, setCreateVisible] = useState<boolean>(false);
-  const [updateVisible, setUpdateVisible] = useState<boolean>(false);
-  const [createRoleVisible, setCreateRoleVisible] = useState<boolean>(false);
-  const [updateRoleVisible, setUpdateRoleVisible] = useState<boolean>(false);
-  const [cid, setCid] = useState<number>(0);
-  const [role_ids, setRoleIds] = useState<any>([]);
+  const [createVisible, setCreateVisible] = useState(false);
+  const [updateVisible, setUpdateVisible] = useState(false);
+  const [createRoleVisible, setCreateRoleVisible] = useState(false);
+  const [updateRoleVisible, setUpdateRoleVisible] = useState(false);
+  const [cid, setCid] = useState(0);
+  const [role_ids, setRoleIds] = useState<number[]>([]);
   const [selLabel, setLabel] = useState<string>("全部管理员");
   const [roleDelSuccess, setRoleDelSuccess] = useState(false);
   const [isSuper, setIsSuper] = useState(false);

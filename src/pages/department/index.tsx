@@ -25,8 +25,8 @@ const DepartmentPage = () => {
   );
   const [loading, setLoading] = useState<boolean>(true);
   const [refresh, setRefresh] = useState(false);
-  const [treeData, setTreeData] = useState<any>([]);
-  const [selectKey, setSelectKey] = useState<any>([]);
+  const [treeData, setTreeData] = useState<Option[]>([]);
+  const [selectKey, setSelectKey] = useState<number[]>([]);
 
   const [createVisible, setCreateVisible] = useState<boolean>(false);
   const [updateVisible, setUpdateVisible] = useState<boolean>(false);

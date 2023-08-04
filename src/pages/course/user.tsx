@@ -22,30 +22,61 @@ const { confirm } = Modal;
 
 interface DataType {
   id: React.Key;
-  title: string;
-  created_at: string;
-  thumb: string;
-  charge: number;
-  is_show: number;
+  avatar: string;
+  create_city?: string;
+  create_ip?: string;
+  created_at?: string;
+  credit1?: number;
+  email: string;
+  id_card?: string;
+  is_active?: number;
+  is_lock?: number;
+  is_set_password?: number;
+  is_verify?: number;
+  login_at?: string;
+  name: string;
+  updated_at?: string;
+  verify_at?: string;
 }
+
+type UserCourseRecordsModel = {
+  [key: number]: CourseRecordModel;
+};
+
+type CourseRecordModel = {
+  course_id: number;
+  created_at: string;
+  finished_at?: string;
+  finished_count: number;
+  hour_count: number;
+  id: number;
+  is_finished: number;
+  progress: number;
+  updated_at: string;
+  user_id: number;
+};
+
+type HourCountModel = {
+  [key: number]: string;
+};
 
 const CourseUserPage = () => {
   const params = useParams();
   const result = new URLSearchParams(useLocation().search);
-  const [list, setList] = useState<any>([]);
-  const [course, setCourse] = useState<any>({});
-  const [records, setRecords] = useState<any>({});
-  const [hourCount, setHourCount] = useState<any>({});
-  const [userDepIds, setUserDepIds] = useState<any>({});
-  const [departments, setDepartments] = useState<any>({});
+  const [list, setList] = useState<DataType[]>([]);
+  const [course, setCourse] = useState<CourseModel | null>(null);
+  const [records, setRecords] = useState<UserCourseRecordsModel>({});
+  const [hourCount, setHourCount] = useState<HourCountModel>({});
+  const [userDepIds, setUserDepIds] = useState<DepIdsModel>({});
+  const [departments, setDepartments] = useState<DepartmentsModel>({});
   const [refresh, setRefresh] = useState(false);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
   const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [name, setName] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [idCard, setIdCard] = useState<string>("");
+  const [loading, setLoading] = useState(true);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [idCard, setIdCard] = useState("");
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
   const [title, setTitle] = useState<string>(String(result.get("title")));
 
@@ -95,7 +126,7 @@ const CourseUserPage = () => {
           {(records[record.id] && records[record.id].finished_count) ||
             0} /{" "}
           {(records[record.id] && records[record.id].hour_count) ||
-            course.class_hour}
+            course?.class_hour}
         </span>
       ),
     },
@@ -116,11 +147,11 @@ const CourseUserPage = () => {
     },
     {
       title: "学习完成时间",
-      dataIndex: "finished_at",
+      dataIndex: "id",
       render: (_, record: any) => (
         <>
           {records[record.id] ? (
-            <span>{dateFormat(records[record.id].finished_at)}</span>
+            <span>{dateFormat(String(records[record.id].finished_at))}</span>
           ) : (
             <span>-</span>
           )}

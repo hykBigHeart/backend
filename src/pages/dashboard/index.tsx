@@ -12,10 +12,38 @@ import { dashboard } from "../../api/index";
 import { timeFormat } from "../../utils/index";
 import * as echarts from "echarts";
 
+type BasicDataModel = {
+  admin_user_total: number;
+  course_total: number;
+  department_total: number;
+  resource_category_total: number;
+  resource_image_total: number;
+  resource_video_total: number;
+  user_learn_today: number;
+  user_learn_top10?: Top10Model[];
+  user_learn_top10_users?: Top10UserModel;
+  user_learn_yesterday: number;
+  user_today: number;
+  user_total: number;
+  user_yesterday: number;
+  version: string;
+};
+
+type Top10Model = {
+  created_date: string;
+  duration: number;
+  id: number;
+  user_id: number;
+};
+
+type Top10UserModel = {
+  [key: number]: UserModel;
+};
+
 const DashboardPage = () => {
   let chartRef = useRef(null);
   const navigate = useNavigate();
-  const [basicData, setBasicData] = useState<any>([]);
+  const [basicData, setBasicData] = useState<BasicDataModel | null>(null);
 
   const getData = () => {
     dashboard.dashboardList().then((res: any) => {
@@ -164,31 +192,35 @@ const DashboardPage = () => {
                 <div className={styles["label"]}>今日学习学员</div>
                 <div className={styles["info"]}>
                   <div className={styles["num"]}>
-                    {basicData.user_learn_today}
+                    {basicData?.user_learn_today}
                   </div>
-                  <div className={styles["compare"]}>
-                    <span className="mr-5">较昨日</span>
-                    {compareNum(
-                      basicData.user_learn_today,
-                      basicData.user_learn_yesterday
-                    )}
-                  </div>
+                  {basicData && (
+                    <div className={styles["compare"]}>
+                      <span className="mr-5">较昨日</span>
+                      {compareNum(
+                        basicData.user_learn_today,
+                        basicData.user_learn_yesterday
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
               <div className={styles["label-item"]}>
                 <div className={styles["label"]}>总学员数</div>
                 <div className={styles["info"]}>
-                  <div className={styles["num"]}>{basicData.user_total}</div>
-                  <div className={styles["compare"]}>
-                    <span className="mr-5">较昨日</span>
-                    {compareNum(basicData.user_today, 0)}
-                  </div>
+                  <div className={styles["num"]}>{basicData?.user_total}</div>
+                  {basicData && (
+                    <div className={styles["compare"]}>
+                      <span className="mr-5">较昨日</span>
+                      {compareNum(basicData.user_today, 0)}
+                    </div>
+                  )}
                 </div>
               </div>
               <div className={styles["label-item"]}>
                 <div className={styles["label"]}>线上课数</div>
                 <div className={styles["info"]}>
-                  <div className={styles["num"]}>{basicData.course_total}</div>
+                  <div className={styles["num"]}>{basicData?.course_total}</div>
                 </div>
               </div>
             </div>
@@ -249,7 +281,7 @@ const DashboardPage = () => {
           <div className="playedu-main-top mt-24" style={{ minHeight: 376 }}>
             <div className={styles["large-title"]}>今日学习排行</div>
             <div className={styles["rank-list"]}>
-              {basicData.user_learn_top10 && (
+              {basicData?.user_learn_top10 && (
                 <div className={styles["half-list"]}>
                   <div className={styles["rank-item"]}>
                     <div className={styles["left-item"]}>
@@ -258,15 +290,16 @@ const DashboardPage = () => {
                         src={iconN1}
                         alt=""
                       />
-                      {basicData.user_learn_top10[0] && (
-                        <div className={styles["item-name"]}>
-                          {
-                            basicData.user_learn_top10_users[
-                              basicData.user_learn_top10[0].user_id
-                            ]?.name
-                          }
-                        </div>
-                      )}
+                      {basicData.user_learn_top10[0] &&
+                        basicData.user_learn_top10_users && (
+                          <div className={styles["item-name"]}>
+                            {
+                              basicData.user_learn_top10_users[
+                                basicData.user_learn_top10[0].user_id
+                              ]?.name
+                            }
+                          </div>
+                        )}
                     </div>
                     {basicData.user_learn_top10[0] && (
                       <div className={styles["item-time"]}>
@@ -283,15 +316,16 @@ const DashboardPage = () => {
                         src={iconN2}
                         alt=""
                       />
-                      {basicData.user_learn_top10[1] && (
-                        <div className={styles["item-name"]}>
-                          {
-                            basicData.user_learn_top10_users[
-                              basicData.user_learn_top10[1].user_id
-                            ]?.name
-                          }
-                        </div>
-                      )}
+                      {basicData.user_learn_top10[1] &&
+                        basicData.user_learn_top10_users && (
+                          <div className={styles["item-name"]}>
+                            {
+                              basicData.user_learn_top10_users[
+                                basicData.user_learn_top10[1].user_id
+                              ]?.name
+                            }
+                          </div>
+                        )}
                     </div>
                     {basicData.user_learn_top10[1] && (
                       <div className={styles["item-time"]}>
@@ -308,15 +342,16 @@ const DashboardPage = () => {
                         src={iconN3}
                         alt=""
                       />
-                      {basicData.user_learn_top10[2] && (
-                        <div className={styles["item-name"]}>
-                          {
-                            basicData.user_learn_top10_users[
-                              basicData.user_learn_top10[2].user_id
-                            ]?.name
-                          }
-                        </div>
-                      )}
+                      {basicData.user_learn_top10[2] &&
+                        basicData.user_learn_top10_users && (
+                          <div className={styles["item-name"]}>
+                            {
+                              basicData.user_learn_top10_users[
+                                basicData.user_learn_top10[2].user_id
+                              ]?.name
+                            }
+                          </div>
+                        )}
                     </div>
                     {basicData.user_learn_top10[2] && (
                       <div className={styles["item-time"]}>
@@ -329,15 +364,16 @@ const DashboardPage = () => {
                   <div className={styles["rank-item"]}>
                     <div className={styles["left-item"]}>
                       <div className={styles["item-num"]}>4</div>
-                      {basicData.user_learn_top10[3] && (
-                        <div className={styles["item-name"]}>
-                          {
-                            basicData.user_learn_top10_users[
-                              basicData.user_learn_top10[3].user_id
-                            ]?.name
-                          }
-                        </div>
-                      )}
+                      {basicData.user_learn_top10[3] &&
+                        basicData.user_learn_top10_users && (
+                          <div className={styles["item-name"]}>
+                            {
+                              basicData.user_learn_top10_users[
+                                basicData.user_learn_top10[3].user_id
+                              ]?.name
+                            }
+                          </div>
+                        )}
                     </div>
                     {basicData.user_learn_top10[3] && (
                       <div className={styles["item-time"]}>
@@ -350,15 +386,16 @@ const DashboardPage = () => {
                   <div className={styles["rank-item"]}>
                     <div className={styles["left-item"]}>
                       <div className={styles["item-num"]}>5</div>
-                      {basicData.user_learn_top10[4] && (
-                        <div className={styles["item-name"]}>
-                          {
-                            basicData.user_learn_top10_users[
-                              basicData.user_learn_top10[4].user_id
-                            ]?.name
-                          }
-                        </div>
-                      )}
+                      {basicData.user_learn_top10[4] &&
+                        basicData.user_learn_top10_users && (
+                          <div className={styles["item-name"]}>
+                            {
+                              basicData.user_learn_top10_users[
+                                basicData.user_learn_top10[4].user_id
+                              ]?.name
+                            }
+                          </div>
+                        )}
                     </div>
                     {basicData.user_learn_top10[4] && (
                       <div className={styles["item-time"]}>
@@ -370,20 +407,21 @@ const DashboardPage = () => {
                   </div>
                 </div>
               )}
-              {basicData.user_learn_top10 && (
+              {basicData?.user_learn_top10 && (
                 <div className={styles["half-list"]}>
                   <div className={styles["rank-item"]}>
                     <div className={styles["left-item"]}>
                       <div className={styles["item-num"]}>6</div>
-                      {basicData.user_learn_top10[5] && (
-                        <div className={styles["item-name"]}>
-                          {
-                            basicData.user_learn_top10_users[
-                              basicData.user_learn_top10[5].user_id
-                            ]?.name
-                          }
-                        </div>
-                      )}
+                      {basicData.user_learn_top10[5] &&
+                        basicData.user_learn_top10_users && (
+                          <div className={styles["item-name"]}>
+                            {
+                              basicData.user_learn_top10_users[
+                                basicData.user_learn_top10[5].user_id
+                              ]?.name
+                            }
+                          </div>
+                        )}
                     </div>
                     {basicData.user_learn_top10[5] && (
                       <div className={styles["item-time"]}>
@@ -396,15 +434,16 @@ const DashboardPage = () => {
                   <div className={styles["rank-item"]}>
                     <div className={styles["left-item"]}>
                       <div className={styles["item-num"]}>7</div>
-                      {basicData.user_learn_top10[6] && (
-                        <div className={styles["item-name"]}>
-                          {
-                            basicData.user_learn_top10_users[
-                              basicData.user_learn_top10[6].user_id
-                            ]?.name
-                          }
-                        </div>
-                      )}
+                      {basicData.user_learn_top10[6] &&
+                        basicData.user_learn_top10_users && (
+                          <div className={styles["item-name"]}>
+                            {
+                              basicData.user_learn_top10_users[
+                                basicData.user_learn_top10[6].user_id
+                              ]?.name
+                            }
+                          </div>
+                        )}
                     </div>
                     {basicData.user_learn_top10[6] && (
                       <div className={styles["item-time"]}>
@@ -417,15 +456,16 @@ const DashboardPage = () => {
                   <div className={styles["rank-item"]}>
                     <div className={styles["left-item"]}>
                       <div className={styles["item-num"]}>8</div>
-                      {basicData.user_learn_top10[7] && (
-                        <div className={styles["item-name"]}>
-                          {
-                            basicData.user_learn_top10_users[
-                              basicData.user_learn_top10[7].user_id
-                            ]?.name
-                          }
-                        </div>
-                      )}
+                      {basicData.user_learn_top10[7] &&
+                        basicData.user_learn_top10_users && (
+                          <div className={styles["item-name"]}>
+                            {
+                              basicData.user_learn_top10_users[
+                                basicData.user_learn_top10[7].user_id
+                              ]?.name
+                            }
+                          </div>
+                        )}
                     </div>
                     {basicData.user_learn_top10[7] && (
                       <div className={styles["item-time"]}>
@@ -438,15 +478,16 @@ const DashboardPage = () => {
                   <div className={styles["rank-item"]}>
                     <div className={styles["left-item"]}>
                       <div className={styles["item-num"]}>9</div>
-                      {basicData.user_learn_top10[8] && (
-                        <div className={styles["item-name"]}>
-                          {
-                            basicData.user_learn_top10_users[
-                              basicData.user_learn_top10[8].user_id
-                            ]?.name
-                          }
-                        </div>
-                      )}
+                      {basicData.user_learn_top10[8] &&
+                        basicData.user_learn_top10_users && (
+                          <div className={styles["item-name"]}>
+                            {
+                              basicData.user_learn_top10_users[
+                                basicData.user_learn_top10[8].user_id
+                              ]?.name
+                            }
+                          </div>
+                        )}
                     </div>
                     {basicData.user_learn_top10[8] && (
                       <div className={styles["item-time"]}>
@@ -459,15 +500,16 @@ const DashboardPage = () => {
                   <div className={styles["rank-item"]}>
                     <div className={styles["left-item"]}>
                       <div className={styles["item-num"]}>10</div>
-                      {basicData.user_learn_top10[9] && (
-                        <div className={styles["item-name"]}>
-                          {
-                            basicData.user_learn_top10_users[
-                              basicData.user_learn_top10[9].user_id
-                            ]?.name
-                          }
-                        </div>
-                      )}
+                      {basicData.user_learn_top10[9] &&
+                        basicData.user_learn_top10_users && (
+                          <div className={styles["item-name"]}>
+                            {
+                              basicData.user_learn_top10_users[
+                                basicData.user_learn_top10[9].user_id
+                              ]?.name
+                            }
+                          </div>
+                        )}
                     </div>
                     {basicData.user_learn_top10[9] && (
                       <div className={styles["item-time"]}>
@@ -489,7 +531,7 @@ const DashboardPage = () => {
                 <div className={styles["label"]}>部门数</div>
                 <div className={styles["info"]}>
                   <div className={styles["num"]}>
-                    {basicData.department_total}
+                    {basicData?.department_total}
                   </div>
                 </div>
               </div>
@@ -497,7 +539,7 @@ const DashboardPage = () => {
                 <div className={styles["label"]}>分类数</div>
                 <div className={styles["info"]}>
                   <div className={styles["num"]}>
-                    {basicData.resource_category_total}
+                    {basicData?.resource_category_total}
                   </div>
                 </div>
               </div>
@@ -505,7 +547,7 @@ const DashboardPage = () => {
                 <div className={styles["label"]}>管理员</div>
                 <div className={styles["info"]}>
                   <div className={styles["num"]}>
-                    {basicData.admin_user_total}
+                    {basicData?.admin_user_total}
                   </div>
                 </div>
               </div>

@@ -11,33 +11,71 @@ import { MemberLearnProgressDialog } from "./compenents/progress";
 
 interface DataType {
   id: React.Key;
-  title: string;
-  type: string;
+  charge: number;
+  class_hour: number;
   created_at: string;
-  total_duration: number;
-  finished_duration: number;
-  is_finished: boolean;
+  is_required: number;
+  is_show: number;
+  short_desc: string;
+  thumb: string;
+  title: string;
 }
+
+type UserCourseRecordsModel = {
+  [key: number]: UserRecordModel;
+};
+
+type UserRecordModel = {
+  course_id: number;
+  created_at: string;
+  finished_at?: string;
+  finished_count: number;
+  hour_count: number;
+  id: number;
+  is_finished: number;
+  progress: number;
+  updated_at: string;
+  user_id: number;
+};
+
+type HourCountModel = {
+  [key: number]: number;
+};
+
+type OptionModel = {
+  label: string;
+  value: string;
+};
+
+type DepartmentsListModel = {
+  reated_at: string;
+  id: number;
+  name: string;
+  parent_chain: string;
+  parent_id: number;
+  sort: number;
+  updated_at: string;
+};
 
 const MemberLearnPage = () => {
   let chartRef = useRef(null);
   const navigate = useNavigate();
   const result = new URLSearchParams(useLocation().search);
-  const [loading2, setLoading2] = useState<boolean>(false);
-  const [list2, setList2] = useState<any>([]);
+  const [loading2, setLoading2] = useState(false);
+  const [list2, setList2] = useState<DepartmentsListModel[]>([]);
   const [courses, setCourses] = useState<any>({});
-  const [deps, setDeps] = useState<any>([]);
-  const [depValue, setDepValue] = useState<number>(0);
-  const [currentCourses, setCurrentCourses] = useState<any>([]);
-  const [openCourses, setOpenCourses] = useState<any>([]);
-  const [records, setRecords] = useState<any>({});
-  const [hourCount, setHourCount] = useState<any>({});
+  const [deps, setDeps] = useState<OptionModel[]>([]);
+  const [depValue, setDepValue] = useState(0);
+  const [currentCourses, setCurrentCourses] = useState<DataType[]>([]);
+  const [openCourses, setOpenCourses] = useState<CourseModel[]>([]);
+  const [records, setRecords] = useState<UserCourseRecordsModel>({});
+  const [hourCount, setHourCount] = useState<HourCountModel>({});
   const [total2, setTotal2] = useState(0);
   const [refresh2, setRefresh2] = useState(false);
   const [uid, setUid] = useState(Number(result.get("id")));
   const [userName, setUserName] = useState<string>(String(result.get("name")));
   const [visiable, setVisiable] = useState(false);
-  const [courseId, setcourseId] = useState<number>(0);
+  const [courseId, setcourseId] = useState(0);
 
   useEffect(() => {
     setUid(Number(result.get("id")));
@@ -157,7 +195,7 @@ const MemberLearnPage = () => {
       setHourCount(res.data.user_course_hour_count);
       setRecords(res.data.user_course_records);
       if (res.data.departments.length > 0) {
-        let box: any = [];
+        let box: OptionModel[] = [];
         res.data.departments.map((item: any) => {
           box.push({
             label: item.name,
@@ -223,7 +261,7 @@ const MemberLearnPage = () => {
       render: (_, record: any) => (
         <>
           {records[record.id] ? (
-            <span>{dateFormat(records[record.id].finished_at)}</span>
+            <span>{dateFormat(String(records[record.id].finished_at))}</span>
           ) : (
             <span>-</span>
           )}
@@ -232,7 +270,6 @@ const MemberLearnPage = () => {
     },
     {
       title: "学习进度",
-      dataIndex: "is_finished",
       render: (_, record: any) => (
         <>
           {records[record.id] ? (

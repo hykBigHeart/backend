@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Modal, Table, message, Space, Dropdown, Button } from "antd";
 import type { MenuProps } from "antd";
 import { resource } from "../../../api";
-// import styles from "./index.module.less";
 import { useLocation } from "react-router-dom";
 import { DownOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
@@ -16,32 +15,54 @@ const { confirm } = Modal;
 
 interface DataType {
   id: React.Key;
-  name: string;
+  admin_id: number;
   created_at: string;
   disk: string;
+  extension: string;
+  file_id: string;
+  name: string;
+  parent_id: number;
+  path: string;
+  size: number;
+  type: string;
+  url: string;
 }
+
+type VideosExtraModel = {
+  [key: number]: VideoModel;
+};
+
+type VideoModel = {
+  duration: number;
+  poster: string;
+  rid: number;
+};
+
+type AdminUsersModel = {
+  [key: number]: string;
+};
 
 const ResourceVideosPage = () => {
   const result = new URLSearchParams(useLocation().search);
-  const [videoList, setVideoList] = useState<any>([]);
-  const [videosExtra, setVideoExtra] = useState<any>([]);
-  const [adminUsers, setAdminUsers] = useState<any>({});
+  const [videoList, setVideoList] = useState<DataType[]>([]);
+  const [videosExtra, setVideoExtra] = useState<VideosExtraModel>({});
+  const [adminUsers, setAdminUsers] = useState<AdminUsersModel>({});
   const [refresh, setRefresh] = useState(false);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
   const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [category_ids, setCategoryIds] = useState<any>([]);
+  const [loading, setLoading] = useState(true);
+  const [category_ids, setCategoryIds] = useState<number[]>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
   const [selLabel, setLabel] = useState<string>(
     result.get("label") ? String(result.get("label")) : "全部视频"
   );
   const [cateId, setCateId] = useState(Number(result.get("cid")));
-  const [updateVisible, setUpdateVisible] = useState<boolean>(false);
-  const [playVisible, setPlayeVisible] = useState<boolean>(false);
-  const [multiConfig, setMultiConfig] = useState<boolean>(false);
+  const [updateVisible, setUpdateVisible] = useState(false);
+  const [playVisible, setPlayeVisible] = useState(false);
+  const [multiConfig, setMultiConfig] = useState(false);
   const [updateId, setUpdateId] = useState(0);
-  const [playUrl, setPlayUrl] = useState<string>("");
+  const [playUrl, setPlayUrl] = useState("");
 
   useEffect(() => {
     setCateId(Number(result.get("cid")));
@@ -72,20 +93,22 @@ const ResourceVideosPage = () => {
     {
       title: "视频时长",
       dataIndex: "id",
-      render: (id: string) => (
+      render: (id: number) => (
         <DurationText duration={videosExtra[id].duration}></DurationText>
       ),
     },
     {
       title: "创建人",
       dataIndex: "admin_id",
-      render: (text: number) =>
-        JSON.stringify(adminUsers) !== "{}" && <span>{adminUsers[text]}</span>,
+      render: (admin_id: number) =>
+        JSON.stringify(adminUsers) !== "{}" && (
+          <span>{adminUsers[admin_id]}</span>
+        ),
     },
     {
       title: "创建时间",
       dataIndex: "created_at",
-      render: (text: string) => <span>{dateFormat(text)}</span>,
+      render: (created_at: string) => <span>{dateFormat(created_at)}</span>,
     },
     {
       title: "操作",
