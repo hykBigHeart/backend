@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Drawer, Form, Input, Modal, message } from "antd";
+import { Button, Drawer, Form, Input, Modal, message, Spin } from "antd";
 import styles from "./hour-update.module.less";
 import { course, courseHour, courseChapter } from "../../../api/index";
 import { SelectResource } from "../../../compenents";
@@ -20,6 +20,7 @@ export const CourseHourUpdate: React.FC<PropInterface> = ({
   onCancel,
 }) => {
   const [form] = Form.useForm();
+  const [init, setInit] = useState(true);
   const [chapterType, setChapterType] = useState(0);
   const [chapters, setChapters] = useState<any>([]);
   const [hours, setHours] = useState<any>([]);
@@ -29,6 +30,7 @@ export const CourseHourUpdate: React.FC<PropInterface> = ({
   const [addvideoCurrent, setAddvideoCurrent] = useState(0);
 
   useEffect(() => {
+    setInit(true);
     if (id === 0) {
       return;
     }
@@ -77,6 +79,7 @@ export const CourseHourUpdate: React.FC<PropInterface> = ({
           setHours([]);
         }
       }
+      setInit(false);
     });
   };
 
@@ -373,117 +376,129 @@ export const CourseHourUpdate: React.FC<PropInterface> = ({
                 }
               }}
             />
-            <Form
-              form={form}
-              name="hour-update-basic"
-              labelCol={{ span: 5 }}
-              wrapperCol={{ span: 19 }}
-              initialValues={{ remember: true }}
-              onFinish={onFinish}
-              onFinishFailed={onFinishFailed}
-              autoComplete="off"
+            {init && (
+              <div className="float-left text-center mt-30">
+                <Spin></Spin>
+              </div>
+            )}
+            <div
+              className="float-left"
+              style={{ display: init ? "none" : "block" }}
             >
-              {chapterType === 0 && (
-                <div className="c-flex">
-                  <Form.Item>
-                    <div className="ml-42">
-                      <Button
-                        onClick={() => setVideoVisible(true)}
-                        type="primary"
-                      >
-                        添加课时
-                      </Button>
-                    </div>
-                  </Form.Item>
-                  <div className={styles["hous-box"]}>
-                    {treeData.length === 0 && (
-                      <span className={styles["no-hours"]}>
-                        请点击上方按钮添加课时
-                      </span>
-                    )}
-                    {treeData.length > 0 && (
-                      <TreeHours
-                        data={treeData}
-                        onRemoveItem={(id: number) => {
-                          delHour(id);
-                        }}
-                        onUpdate={(arr: any[]) => {
-                          transHour(arr);
-                        }}
-                      />
-                    )}
-                  </div>
-                </div>
-              )}
-              {chapterType === 1 && (
-                <div className="c-flex">
-                  {chapters.length > 0 &&
-                    chapters.map((item: any, index: number) => {
-                      return (
-                        <div
-                          key={item.hours.length + "章节" + index}
-                          className={styles["chapter-item"]}
+              <Form
+                form={form}
+                name="hour-update-basic"
+                labelCol={{ span: 5 }}
+                wrapperCol={{ span: 19 }}
+                initialValues={{ remember: true }}
+                onFinish={onFinish}
+                onFinishFailed={onFinishFailed}
+                autoComplete="off"
+              >
+                {chapterType === 0 && (
+                  <div className="c-flex">
+                    <Form.Item>
+                      <div className="ml-42">
+                        <Button
+                          onClick={() => setVideoVisible(true)}
+                          type="primary"
                         >
-                          <div className="d-flex">
-                            <div className={styles["label"]}>
-                              章节{index + 1}：
-                            </div>
-                            <Input
-                              value={item.name}
-                              className={styles["input"]}
-                              onChange={(e) => {
-                                setChapterName(index, e.target.value);
-                              }}
-                              onBlur={(e) => {
-                                saveChapterName(index, e.target.value);
-                              }}
-                              placeholder="请在此处输入章节名称"
-                              allowClear
-                            />
-                            <Button
-                              disabled={!item.name}
-                              className="mr-16"
-                              type="primary"
-                              onClick={() => {
-                                setVideoVisible(true);
-                                setAddvideoCurrent(index);
-                              }}
-                            >
-                              添加课时
-                            </Button>
-                            <Button onClick={() => delChapter(index)}>
-                              删除章节
-                            </Button>
-                          </div>
-                          <div className={styles["chapter-hous-box"]}>
-                            {item.hours.length === 0 && (
-                              <span className={styles["no-hours"]}>
-                                请点击上方按钮添加课时
-                              </span>
-                            )}
-                            {item.hours.length > 0 && (
-                              <TreeHours
-                                data={item.hours}
-                                onRemoveItem={(id: number) => {
-                                  delChapterHour(index, id);
-                                }}
-                                onUpdate={(arr: any[]) => {
-                                  transChapterHour(index, arr);
-                                }}
-                              />
-                            )}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  <Form.Item>
-                    <div className="ml-42">
-                      <Button onClick={() => addNewChapter()}>添加章节</Button>
+                          添加课时
+                        </Button>
+                      </div>
+                    </Form.Item>
+                    <div className={styles["hous-box"]}>
+                      {treeData.length === 0 && (
+                        <span className={styles["no-hours"]}>
+                          请点击上方按钮添加课时
+                        </span>
+                      )}
+                      {treeData.length > 0 && (
+                        <TreeHours
+                          data={treeData}
+                          onRemoveItem={(id: number) => {
+                            delHour(id);
+                          }}
+                          onUpdate={(arr: any[]) => {
+                            transHour(arr);
+                          }}
+                        />
+                      )}
                     </div>
-                  </Form.Item>
-                </div>
-              )}
-            </Form>
+                  </div>
+                )}
+                {chapterType === 1 && (
+                  <div className="c-flex">
+                    {chapters.length > 0 &&
+                      chapters.map((item: any, index: number) => {
+                        return (
+                          <div
+                            key={item.hours.length + "章节" + index}
+                            className={styles["chapter-item"]}
+                          >
+                            <div className="d-flex">
+                              <div className={styles["label"]}>
+                                章节{index + 1}：
+                              </div>
+                              <Input
+                                value={item.name}
+                                className={styles["input"]}
+                                onChange={(e) => {
+                                  setChapterName(index, e.target.value);
+                                }}
+                                onBlur={(e) => {
+                                  saveChapterName(index, e.target.value);
+                                }}
+                                placeholder="请在此处输入章节名称"
+                                allowClear
+                              />
+                              <Button
+                                disabled={!item.name}
+                                className="mr-16"
+                                type="primary"
+                                onClick={() => {
+                                  setVideoVisible(true);
+                                  setAddvideoCurrent(index);
+                                }}
+                              >
+                                添加课时
+                              </Button>
+                              <Button onClick={() => delChapter(index)}>
+                                删除章节
+                              </Button>
+                            </div>
+                            <div className={styles["chapter-hous-box"]}>
+                              {item.hours.length === 0 && (
+                                <span className={styles["no-hours"]}>
+                                  请点击上方按钮添加课时
+                                </span>
+                              )}
+                              {item.hours.length > 0 && (
+                                <TreeHours
+                                  data={item.hours}
+                                  onRemoveItem={(id: number) => {
+                                    delChapterHour(index, id);
+                                  }}
+                                  onUpdate={(arr: any[]) => {
+                                    transChapterHour(index, arr);
+                                  }}
+                                />
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    <Form.Item>
+                      <div className="ml-42">
+                        <Button onClick={() => addNewChapter()}>
+                          添加章节
+                        </Button>
+                      </div>
+                    </Form.Item>
+                  </div>
+                )}
+              </Form>
+            </div>
           </div>
         </Drawer>
       ) : null}

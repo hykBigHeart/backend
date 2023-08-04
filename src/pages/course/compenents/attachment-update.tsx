@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Drawer, Form, Modal, message } from "antd";
+import { Button, Drawer, Form, Modal, message, Spin } from "antd";
 import styles from "./hour-update.module.less";
 import { course, courseAttachment } from "../../../api/index";
 import { SelectAttachment } from "../../../compenents";
@@ -20,11 +20,13 @@ export const CourseAttachmentUpdate: React.FC<PropInterface> = ({
   onCancel,
 }) => {
   const [form] = Form.useForm();
+  const [init, setInit] = useState(true);
   const [attachmentVisible, setAttachmentVisible] = useState<boolean>(false);
   const [attachmentData, setAttachmentData] = useState<any>([]);
   const [attachments, setAttachments] = useState<any>([]);
 
   useEffect(() => {
+    setInit(true);
     if (id === 0) {
       return;
     }
@@ -43,6 +45,7 @@ export const CourseAttachmentUpdate: React.FC<PropInterface> = ({
         setAttachmentData(arr);
         setAttachments(keys);
       }
+      setInit(false);
     });
   };
 
@@ -169,47 +172,57 @@ export const CourseAttachmentUpdate: React.FC<PropInterface> = ({
                 selectAttachmentData(arr, videos);
               }}
             ></SelectAttachment>
-            <Form
-              form={form}
-              name="attachment-update-basic"
-              labelCol={{ span: 5 }}
-              wrapperCol={{ span: 19 }}
-              initialValues={{ remember: true }}
-              onFinish={onFinish}
-              onFinishFailed={onFinishFailed}
-              autoComplete="off"
-            >
-              <div className="c-flex">
-                <Form.Item>
-                  <div className="ml-42">
-                    <Button
-                      onClick={() => setAttachmentVisible(true)}
-                      type="primary"
-                    >
-                      添加课件
-                    </Button>
-                  </div>
-                </Form.Item>
-                <div className={styles["hous-box"]}>
-                  {attachmentData.length === 0 && (
-                    <span className={styles["no-hours"]}>
-                      请点击上方按钮添加课件
-                    </span>
-                  )}
-                  {attachmentData.length > 0 && (
-                    <TreeAttachments
-                      data={attachmentData}
-                      onRemoveItem={(id: number) => {
-                        delAttachments(id);
-                      }}
-                      onUpdate={(arr: any[]) => {
-                        transAttachments(arr);
-                      }}
-                    />
-                  )}
-                </div>
+            {init && (
+              <div className="float-left text-center mt-30">
+                <Spin></Spin>
               </div>
-            </Form>
+            )}
+            <div
+              className="float-left"
+              style={{ display: init ? "none" : "block" }}
+            >
+              <Form
+                form={form}
+                name="attachment-update-basic"
+                labelCol={{ span: 5 }}
+                wrapperCol={{ span: 19 }}
+                initialValues={{ remember: true }}
+                onFinish={onFinish}
+                onFinishFailed={onFinishFailed}
+                autoComplete="off"
+              >
+                <div className="c-flex">
+                  <Form.Item>
+                    <div className="ml-42">
+                      <Button
+                        onClick={() => setAttachmentVisible(true)}
+                        type="primary"
+                      >
+                        添加课件
+                      </Button>
+                    </div>
+                  </Form.Item>
+                  <div className={styles["hous-box"]}>
+                    {attachmentData.length === 0 && (
+                      <span className={styles["no-hours"]}>
+                        请点击上方按钮添加课件
+                      </span>
+                    )}
+                    {attachmentData.length > 0 && (
+                      <TreeAttachments
+                        data={attachmentData}
+                        onRemoveItem={(id: number) => {
+                          delAttachments(id);
+                        }}
+                        onUpdate={(arr: any[]) => {
+                          transAttachments(arr);
+                        }}
+                      />
+                    )}
+                  </div>
+                </div>
+              </Form>
+            </div>
           </div>
         </Drawer>
       ) : null}
