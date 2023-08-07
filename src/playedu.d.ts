@@ -116,6 +116,27 @@ declare global {
   interface RoleIdsModel {
     [key: number]: number[];
   }
+
+  interface CourseChaptersModel {
+    id?: number;
+    hours: CourseHourModel[];
+    name: string;
+  }
+
+  interface CourseHourModel {
+    id?: number;
+    duration: number;
+    name: string;
+    rid: number;
+    type: string;
+  }
+
+  interface AttachmentDataModel {
+    id?: number;
+    name: string;
+    rid: number;
+    type: string;
+  }
 }
 
 export {};

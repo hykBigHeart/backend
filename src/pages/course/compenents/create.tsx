@@ -57,16 +57,18 @@ export const CourseCreate: React.FC<PropInterface> = ({
   const [thumb, setThumb] = useState("");
   const [type, setType] = useState("open");
   const [chapterType, setChapterType] = useState(0);
-  const [chapters, setChapters] = useState<any>([]);
-  const [hours, setHours] = useState<any>([]);
+  const [chapters, setChapters] = useState<CourseChaptersModel[]>([]);
+  const [hours, setHours] = useState<number[]>([]);
   const [chapterHours, setChapterHours] = useState<any>([]);
   const [videoVisible, setVideoVisible] = useState(false);
-  const [treeData, setTreeData] = useState<any>([]);
+  const [treeData, setTreeData] = useState<CourseHourModel[]>([]);
   const [addvideoCurrent, setAddvideoCurrent] = useState(0);
   const [showDrop, setShowDrop] = useState(false);
   const [attachmentVisible, setAttachmentVisible] = useState(false);
-  const [attachmentData, setAttachmentData] = useState<any>([]);
-  const [attachments, setAttachments] = useState<any>([]);
+  const [attachmentData, setAttachmentData] = useState<AttachmentDataModel[]>(
+    []
+  );
+  const [attachments, setAttachments] = useState<number[]>([]);
 
   useEffect(() => {
     if (open) {
@@ -265,6 +267,7 @@ export const CourseCreate: React.FC<PropInterface> = ({
     setHours(keys);
     setTreeData(data);
     setVideoVisible(false);
+    console.log(keys, data);
   };
 
   const selectChapterData = (arr: any, videos: any) => {
@@ -444,7 +447,6 @@ export const CourseCreate: React.FC<PropInterface> = ({
     const keys = [...chapterHours];
     keys[index] = arr;
     setChapterHours(keys);
-
     const data = [...chapters];
     const newArr: any = [];
     for (let i = 0; i < arr.length; i++) {

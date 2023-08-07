@@ -22,11 +22,11 @@ export const CourseHourUpdate: React.FC<PropInterface> = ({
   const [form] = Form.useForm();
   const [init, setInit] = useState(true);
   const [chapterType, setChapterType] = useState(0);
-  const [chapters, setChapters] = useState<any>([]);
-  const [hours, setHours] = useState<any>([]);
+  const [chapters, setChapters] = useState<CourseChaptersModel[]>([]);
+  const [hours, setHours] = useState<number[]>([]);
   const [chapterHours, setChapterHours] = useState<any>([]);
   const [videoVisible, setVideoVisible] = useState<boolean>(false);
-  const [treeData, setTreeData] = useState<any>([]);
+  const [treeData, setTreeData] = useState<CourseHourModel[]>([]);
   const [addvideoCurrent, setAddvideoCurrent] = useState(0);
 
   useEffect(() => {
@@ -234,7 +234,7 @@ export const CourseHourUpdate: React.FC<PropInterface> = ({
     const arr = [...chapters];
     if (arr[index].id) {
       courseChapter
-        .updateCourseChapter(id, arr[index].id, value, arr.length)
+        .updateCourseChapter(id, Number(arr[index].id), value, arr.length)
         .then((res: any) => {
           console.log("ok");
           getDetail();
@@ -262,7 +262,7 @@ export const CourseHourUpdate: React.FC<PropInterface> = ({
       onOk() {
         if (arr[index].id) {
           courseChapter
-            .destroyCourseChapter(id, arr[index].id)
+            .destroyCourseChapter(id, Number(arr[index].id))
             .then((res: any) => {
               console.log("ok");
               getDetail();

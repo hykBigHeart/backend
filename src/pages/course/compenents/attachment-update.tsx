@@ -22,8 +22,10 @@ export const CourseAttachmentUpdate: React.FC<PropInterface> = ({
   const [form] = Form.useForm();
   const [init, setInit] = useState(true);
   const [attachmentVisible, setAttachmentVisible] = useState<boolean>(false);
-  const [attachmentData, setAttachmentData] = useState<any>([]);
-  const [attachments, setAttachments] = useState<any>([]);
+  const [attachmentData, setAttachmentData] = useState<AttachmentDataModel[]>(
+    []
+  );
+  const [attachments, setAttachments] = useState<number[]>([]);
 
   useEffect(() => {
     setInit(true);

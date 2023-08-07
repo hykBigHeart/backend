@@ -34,8 +34,8 @@ export function storeCourse(
   isRequired: number,
   depIds: number[],
   categoryIds: number[],
-  chapters: number[],
-  hours: number[],
+  chapters: any[],
+  hours: any[],
   attachments: any[]
 ) {
   return client.post("/backend/v1/course/create", {
