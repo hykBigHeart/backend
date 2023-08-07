@@ -11,11 +11,18 @@ interface PropsInterface {
   onCancel: () => void;
 }
 
+type selVideosModel = {
+  name: string;
+  rid: number;
+  type: string;
+  duration: number;
+};
+
 export const SelectResource = (props: PropsInterface) => {
   const [refresh, setRefresh] = useState(true);
   const [tabKey, setTabKey] = useState(1);
-  const [selectKeys, setSelectKeys] = useState<any>([]);
-  const [selectVideos, setSelectVideos] = useState<any>([]);
+  const [selectKeys, setSelectKeys] = useState<number[]>([]);
+  const [selectVideos, setSelectVideos] = useState<selVideosModel[]>([]);
 
   useEffect(() => {
     setRefresh(!refresh);
@@ -62,6 +69,7 @@ export const SelectResource = (props: PropsInterface) => {
           maskClosable={false}
           onOk={() => {
             props.onSelected(selectKeys, selectVideos);
+            console.log(selectKeys, selectVideos);
             setSelectKeys([]);
             setSelectVideos([]);
           }}

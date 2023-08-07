@@ -18,7 +18,7 @@ interface PropInterface {
 export const TreeCategory = (props: PropInterface) => {
   const [treeData, setTreeData] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [selectKey, setSelectKey] = useState<any>([]);
+  const [selectKey, setSelectKey] = useState<number[]>([]);
 
   useEffect(() => {
     if (props.selected && props.selected.length > 0) {
@@ -28,7 +28,7 @@ export const TreeCategory = (props: PropInterface) => {
 
   useEffect(() => {
     resourceCategory.resourceCategoryList().then((res: any) => {
-      const categories = res.data.categories;
+      const categories: CategoriesBoxModel = res.data.categories;
       if (JSON.stringify(categories) !== "{}") {
         const new_arr: Option[] = checkArr(categories, 0);
         if (props.type === "no-cate") {
@@ -43,7 +43,7 @@ export const TreeCategory = (props: PropInterface) => {
     });
   }, []);
 
-  const checkArr = (categories: any[], id: number) => {
+  const checkArr = (categories: CategoriesBoxModel, id: number) => {
     const arr = [];
     for (let i = 0; i < categories[id].length; i++) {
       if (!categories[categories[id][i].id]) {

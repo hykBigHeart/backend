@@ -11,12 +11,18 @@ interface PropsInterface {
   onCancel: () => void;
 }
 
+type selAttachmentModel = {
+  name: string;
+  rid: number;
+  type: string;
+};
+
 export const SelectAttachment = (props: PropsInterface) => {
   const [refresh, setRefresh] = useState(true);
 
   const [tabKey, setTabKey] = useState(1);
-  const [selectKeys, setSelectKeys] = useState<any>([]);
-  const [selectVideos, setSelectVideos] = useState<any>([]);
+  const [selectKeys, setSelectKeys] = useState<number[]>([]);
+  const [selectVideos, setSelectVideos] = useState<selAttachmentModel[]>([]);
 
   useEffect(() => {
     setRefresh(!refresh);

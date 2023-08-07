@@ -32,8 +32,8 @@ export const TreeDepartment = (props: PropInterface) => {
   useEffect(() => {
     setLoading(true);
     department.departmentList().then((res: any) => {
-      const departments = res.data.departments;
-      const departCount = res.data.dep_user_count;
+      const departments: DepartmentsBoxModel = res.data.departments;
+      const departCount: DepIdsModel = res.data.dep_user_count;
       setUserTotal(res.data.user_total);
       if (JSON.stringify(departments) !== "{}") {
         if (props.showNum) {
@@ -57,7 +57,11 @@ export const TreeDepartment = (props: PropInterface) => {
     });
   }, [props.refresh]);
 
-  const checkNewArr = (departments: any[], id: number, counts: any) => {
+  const checkNewArr = (
+    departments: DepartmentsBoxModel,
+    id: number,
+    counts: any
+  ) => {
     const arr = [];
     for (let i = 0; i < departments[id].length; i++) {
       if (!departments[departments[id][i].id]) {
@@ -89,7 +93,7 @@ export const TreeDepartment = (props: PropInterface) => {
     return arr;
   };
 
-  const checkArr = (departments: any[], id: number) => {
+  const checkArr = (departments: DepartmentsBoxModel, id: number) => {
     const arr = [];
     for (let i = 0; i < departments[id].length; i++) {
       if (!departments[departments[id][i].id]) {
