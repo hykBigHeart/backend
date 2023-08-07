@@ -35,7 +35,7 @@ const SystemLogPage = () => {
   const [title, setTitle] = useState("");
   const [adminId, setAdminId] = useState("");
   const [adminName, setAdminName] = useState("");
-  const [created_at, setCreatedAt] = useState<any>([]);
+  const [created_at, setCreatedAt] = useState<string[]>([]);
   const [createdAts, setCreatedAts] = useState<any>([]);
   const [param, setParam] = useState("");
   const [result, setResult] = useState("");

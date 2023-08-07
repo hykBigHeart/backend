@@ -35,6 +35,18 @@ declare global {
     verify_at?: string;
   }
 
+  interface AdminUserDetailModel {
+    created_at: string;
+    email: string;
+    id: number;
+    is_ban_login: number;
+    login_at: string;
+    login_ip: string;
+    login_times: number;
+    name: string;
+    updated_at: string;
+  }
+
   interface CourseModel {
     charge: number;
     class_hour: number;
@@ -87,6 +99,22 @@ declare global {
     parent_id: number;
     sort: number;
     updated_at: string;
+  }
+
+  interface RolesModel {
+    [key: number]: RoleModel[];
+  }
+
+  interface RoleModel {
+    created_at: string;
+    id: number;
+    name: string;
+    slug: string;
+    updated_at: string;
+  }
+
+  interface RoleIdsModel {
+    [key: number]: number[];
   }
 }
 

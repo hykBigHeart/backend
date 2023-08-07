@@ -32,6 +32,12 @@ interface PropInterface {
   onCancel: () => void;
 }
 
+interface Option {
+  value: string | number;
+  title: string;
+  children?: Option[];
+}
+
 export const CourseCreate: React.FC<PropInterface> = ({
   cateIds,
   depIds,
@@ -45,20 +51,20 @@ export const CourseCreate: React.FC<PropInterface> = ({
   const defaultThumb1 = courseDefaultThumbs[0];
   const defaultThumb2 = courseDefaultThumbs[1];
   const defaultThumb3 = courseDefaultThumbs[2];
-  const [loading, setLoading] = useState<boolean>(true);
-  const [departments, setDepartments] = useState<any>([]);
-  const [categories, setCategories] = useState<any>([]);
-  const [thumb, setThumb] = useState<string>("");
-  const [type, setType] = useState<string>("open");
+  const [loading, setLoading] = useState(true);
+  const [departments, setDepartments] = useState<Option[]>([]);
+  const [categories, setCategories] = useState<Option[]>([]);
+  const [thumb, setThumb] = useState("");
+  const [type, setType] = useState("open");
   const [chapterType, setChapterType] = useState(0);
   const [chapters, setChapters] = useState<any>([]);
   const [hours, setHours] = useState<any>([]);
   const [chapterHours, setChapterHours] = useState<any>([]);
-  const [videoVisible, setVideoVisible] = useState<boolean>(false);
+  const [videoVisible, setVideoVisible] = useState(false);
   const [treeData, setTreeData] = useState<any>([]);
   const [addvideoCurrent, setAddvideoCurrent] = useState(0);
-  const [showDrop, setShowDrop] = useState<boolean>(false);
-  const [attachmentVisible, setAttachmentVisible] = useState<boolean>(false);
+  const [showDrop, setShowDrop] = useState(false);
+  const [attachmentVisible, setAttachmentVisible] = useState(false);
   const [attachmentData, setAttachmentData] = useState<any>([]);
   const [attachments, setAttachments] = useState<any>([]);
 
@@ -91,7 +97,7 @@ export const CourseCreate: React.FC<PropInterface> = ({
   const getParams = () => {
     department.departmentList().then((res: any) => {
       const departments = res.data.departments;
-      const departCount = res.data.dep_user_count;
+      const departCount: DepIdsModel = res.data.dep_user_count;
       if (JSON.stringify(departments) !== "{}") {
         const new_arr: any = checkArr(departments, 0, departCount);
         setDepartments(new_arr);

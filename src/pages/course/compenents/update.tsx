@@ -22,6 +22,12 @@ interface PropInterface {
   onCancel: () => void;
 }
 
+interface Option {
+  value: string | number;
+  title: string;
+  children?: Option[];
+}
+
 export const CourseUpdate: React.FC<PropInterface> = ({
   id,
   open,
@@ -36,10 +42,10 @@ export const CourseUpdate: React.FC<PropInterface> = ({
   const defaultThumb2 = courseDefaultThumbs[1];
   const defaultThumb3 = courseDefaultThumbs[2];
   const [loading, setLoading] = useState<boolean>(true);
-  const [departments, setDepartments] = useState<any>([]);
-  const [categories, setCategories] = useState<any>([]);
-  const [thumb, setThumb] = useState<string>("");
-  const [type, setType] = useState<string>("open");
+  const [departments, setDepartments] = useState<Option[]>([]);
+  const [categories, setCategories] = useState<Option[]>([]);
+  const [thumb, setThumb] = useState("");
+  const [type, setType] = useState("open");
 
   useEffect(() => {
     setInit(true);

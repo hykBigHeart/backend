@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Modal, Form } from "antd";
 
 interface PropInterface {
@@ -15,7 +15,7 @@ export const AdminLogDetailDialog: React.FC<PropInterface> = ({
   result,
 }) => {
   const [form] = Form.useForm();
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
 
   const onFinish = (values: any) => {};
 

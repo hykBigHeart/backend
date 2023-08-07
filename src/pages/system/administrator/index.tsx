@@ -25,22 +25,6 @@ interface DataType {
   updated_at: string;
 }
 
-type RolesModel = {
-  [key: number]: RoleModel[];
-};
-
-type RoleModel = {
-  created_at: string;
-  id: number;
-  name: string;
-  slug: string;
-  updated_at: string;
-};
-
-type RoleIdsModel = {
-  [key: number]: number[];
-};
-
 const SystemAdministratorPage = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -57,11 +41,10 @@ const SystemAdministratorPage = () => {
   const [updateRoleVisible, setUpdateRoleVisible] = useState(false);
   const [cid, setCid] = useState(0);
   const [role_ids, setRoleIds] = useState<number[]>([]);
-  const [selLabel, setLabel] = useState<string>("全部管理员");
+  const [selLabel, setLabel] = useState("全部管理员");
   const [roleDelSuccess, setRoleDelSuccess] = useState(false);
   const [isSuper, setIsSuper] = useState(false);
-
-  const [name, setName] = useState<string>("");
+  const [name, setName] = useState("");
 
   const columns: ColumnsType<DataType> = [
     {

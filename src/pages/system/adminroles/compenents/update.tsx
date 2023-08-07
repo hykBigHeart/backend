@@ -31,9 +31,9 @@ export const SystemAdminrolesUpdate: React.FC<PropInterface> = ({
 }) => {
   const [form] = Form.useForm();
   const [init, setInit] = useState(true);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [permissions, setPermissions] = useState<any>([]);
-  const [actions, setActions] = useState<any>([]);
+  const [loading, setLoading] = useState(true);
+  const [permissions, setPermissions] = useState<Option[]>([]);
+  const [actions, setActions] = useState<Option[]>([]);
 
   useEffect(() => {
     if (open) {

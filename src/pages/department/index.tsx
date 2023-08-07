@@ -23,13 +23,13 @@ const DepartmentPage = () => {
   const permissions = useSelector(
     (state: any) => state.loginUser.value.permissions
   );
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const [refresh, setRefresh] = useState(false);
   const [treeData, setTreeData] = useState<Option[]>([]);
   const [selectKey, setSelectKey] = useState<number[]>([]);
 
-  const [createVisible, setCreateVisible] = useState<boolean>(false);
-  const [updateVisible, setUpdateVisible] = useState<boolean>(false);
+  const [createVisible, setCreateVisible] = useState(false);
+  const [updateVisible, setUpdateVisible] = useState(false);
   const [did, setDid] = useState<number>(0);
   const [modal, contextHolder] = Modal.useModal();
 
