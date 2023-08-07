@@ -20,7 +20,7 @@ interface PropInterface {
 export const TreeDepartment = (props: PropInterface) => {
   const [treeData, setTreeData] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [selectKey, setSelectKey] = useState<any>([]);
+  const [selectKey, setSelectKey] = useState<number[]>([]);
   const [userTotal, setUserTotal] = useState(0);
 
   useEffect(() => {

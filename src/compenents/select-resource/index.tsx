@@ -69,7 +69,6 @@ export const SelectResource = (props: PropsInterface) => {
           maskClosable={false}
           onOk={() => {
             props.onSelected(selectKeys, selectVideos);
-            console.log(selectKeys, selectVideos);
             setSelectKeys([]);
             setSelectVideos([]);
           }}
