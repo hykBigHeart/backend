@@ -267,7 +267,6 @@ export const CourseCreate: React.FC<PropInterface> = ({
     setHours(keys);
     setTreeData(data);
     setVideoVisible(false);
-    console.log(keys, data);
   };
 
   const selectChapterData = (arr: any, videos: any) => {
