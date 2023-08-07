@@ -51,7 +51,7 @@ const DepartmentPage = () => {
   const getData = () => {
     setLoading(true);
     department.departmentList().then((res: any) => {
-      const departments = res.data.departments;
+      const departments: DepartmentsBoxModel = res.data.departments;
       if (JSON.stringify(departments) !== "{}") {
         const new_arr: Option[] = checkArr(departments, 0);
         setTreeData(new_arr);
@@ -61,7 +61,7 @@ const DepartmentPage = () => {
     });
   };
 
-  const checkArr = (departments: any[], id: number) => {
+  const checkArr = (departments: DepartmentsBoxModel, id: number) => {
     const arr = [];
     for (let i = 0; i < departments[id].length; i++) {
       if (!departments[departments[id][i].id]) {

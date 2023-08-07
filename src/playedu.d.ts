@@ -47,6 +47,18 @@ declare global {
     title: string;
   }
 
+  interface CategoriesBoxModel {
+    [key: number]: CategoriesItemModel[];
+  }
+
+  interface CategoriesItemModel {
+    id: number;
+    name: string;
+    parent_chain: string;
+    parent_id: number;
+    sort: number;
+  }
+
   interface CategoriesModel {
     [key: number]: string;
   }
@@ -61,6 +73,20 @@ declare global {
 
   interface CategoryIdsModel {
     [key: number]: number[];
+  }
+
+  interface DepartmentsBoxModel {
+    [key: number]: DepartmentsItemModel[];
+  }
+
+  interface DepartmentsItemModel {
+    created_at: string;
+    id: number;
+    name: string;
+    parent_chain: string;
+    parent_id: number;
+    sort: number;
+    updated_at: string;
   }
 }
 

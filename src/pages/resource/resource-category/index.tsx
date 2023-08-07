@@ -50,7 +50,7 @@ const ResourceCategoryPage = () => {
   const getData = () => {
     setLoading(true);
     resourceCategory.resourceCategoryList().then((res: any) => {
-      const categories = res.data.categories;
+      const categories: CategoriesBoxModel = res.data.categories;
       if (JSON.stringify(categories) !== "{}") {
         const new_arr: Option[] = checkArr(categories, 0);
         setTreeData(new_arr);
@@ -59,7 +59,7 @@ const ResourceCategoryPage = () => {
     });
   };
 
-  const checkArr = (categories: any[], id: number) => {
+  const checkArr = (categories: CategoriesBoxModel, id: number) => {
     const arr = [];
     for (let i = 0; i < categories[id].length; i++) {
       if (!categories[categories[id][i].id]) {
