@@ -3,18 +3,18 @@ import { useState, useEffect } from "react";
 import type { DataNode, TreeProps } from "antd/es/tree";
 
 interface Option {
-  id: number;
-  name: string;
+  key: string | number;
+  title: any;
 }
 
 interface PropInterface {
-  data: Option[];
+  data: CourseHourModel[];
   onRemoveItem: (id: number) => void;
   onUpdate: (arr: any[]) => void;
 }
 
 export const TreeHours = (props: PropInterface) => {
-  const [treeData, setTreeData] = useState<any>([]);
+  const [treeData, setTreeData] = useState<Option[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   useEffect(() => {
     const hours = props.data;

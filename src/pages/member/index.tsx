@@ -28,34 +28,43 @@ const { confirm } = Modal;
 
 interface DataType {
   id: React.Key;
-  name: string;
+  avatar: string;
+  create_city?: string;
+  create_ip?: string;
+  created_at?: string;
+  credit1?: number;
   email: string;
-  created_at: string;
-  credit1: number;
-  id_card: string;
-  is_lock: number;
+  id_card?: string;
+  is_active?: number;
+  is_lock?: number;
+  is_set_password?: number;
+  is_verify?: number;
+  login_at?: string;
+  name: string;
+  updated_at?: string;
+  verify_at?: string;
 }
 
 const MemberPage = () => {
   const result = new URLSearchParams(useLocation().search);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
-  const [list, setList] = useState<any>([]);
+  const [list, setList] = useState<DataType[]>([]);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
 
-  const [nickname, setNickname] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [dep_ids, setDepIds] = useState<any>([]);
+  const [nickname, setNickname] = useState("");
+  const [email, setEmail] = useState("");
+  const [dep_ids, setDepIds] = useState<number[]>([]);
   const [selLabel, setLabel] = useState<string>(
     result.get("label") ? String(result.get("label")) : "全部部门"
   );
-  const [createVisible, setCreateVisible] = useState<boolean>(false);
-  const [updateVisible, setUpdateVisible] = useState<boolean>(false);
-  const [mid, setMid] = useState<number>(0);
-  const [user_dep_ids, setUserDepIds] = useState<any>({});
-  const [departments, setDepartments] = useState<any>({});
+  const [createVisible, setCreateVisible] = useState(false);
+  const [updateVisible, setUpdateVisible] = useState(false);
+  const [mid, setMid] = useState(0);
+  const [user_dep_ids, setUserDepIds] = useState<DepIdsModel>({});
+  const [departments, setDepartments] = useState<DepartmentsModel>({});
   const [did, setDid] = useState(Number(result.get("did")));
 
   useEffect(() => {

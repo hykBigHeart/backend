@@ -20,10 +20,10 @@ import type { CheckboxChangeEvent } from "antd/es/checkbox";
 
 const SystemConfigPage = () => {
   const [form] = Form.useForm();
-  const [loading, setLoading] = useState<boolean>(false);
-  const [logo, setLogo] = useState<string>("");
-  const [thumb, setThumb] = useState<string>("");
-  const [avatar, setAvatar] = useState<string>("");
+  const [loading, setLoading] = useState(false);
+  const [logo, setLogo] = useState("");
+  const [thumb, setThumb] = useState("");
+  const [avatar, setAvatar] = useState("");
   const [tabKey, setTabKey] = useState(1);
   const [nameChecked, setNameChecked] = useState(false);
   const [emailChecked, setEmailChecked] = useState(false);

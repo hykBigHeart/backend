@@ -23,13 +23,13 @@ const DepartmentPage = () => {
   const permissions = useSelector(
     (state: any) => state.loginUser.value.permissions
   );
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const [refresh, setRefresh] = useState(false);
-  const [treeData, setTreeData] = useState<any>([]);
-  const [selectKey, setSelectKey] = useState<any>([]);
+  const [treeData, setTreeData] = useState<Option[]>([]);
+  const [selectKey, setSelectKey] = useState<number[]>([]);
 
-  const [createVisible, setCreateVisible] = useState<boolean>(false);
-  const [updateVisible, setUpdateVisible] = useState<boolean>(false);
+  const [createVisible, setCreateVisible] = useState(false);
+  const [updateVisible, setUpdateVisible] = useState(false);
   const [did, setDid] = useState<number>(0);
   const [modal, contextHolder] = Modal.useModal();
 
@@ -51,7 +51,7 @@ const DepartmentPage = () => {
   const getData = () => {
     setLoading(true);
     department.departmentList().then((res: any) => {
-      const departments = res.data.departments;
+      const departments: DepartmentsBoxModel = res.data.departments;
       if (JSON.stringify(departments) !== "{}") {
         const new_arr: Option[] = checkArr(departments, 0);
         setTreeData(new_arr);
@@ -61,7 +61,7 @@ const DepartmentPage = () => {
     });
   };
 
-  const checkArr = (departments: any[], id: number) => {
+  const checkArr = (departments: DepartmentsBoxModel, id: number) => {
     const arr = [];
     for (let i = 0; i < departments[id].length; i++) {
       if (!departments[departments[id][i].id]) {

@@ -14,7 +14,7 @@ import { resource } from "../../../api";
 import { useLocation } from "react-router-dom";
 import styles from "./index.module.less";
 import { UploadImageSub } from "../../../compenents/upload-image-button/upload-image-sub";
-import { TreeCategory, PerButton } from "../../../compenents";
+import { TreeCategory } from "../../../compenents";
 import { ExclamationCircleFilled, CheckOutlined } from "@ant-design/icons";
 
 const { confirm } = Modal;
@@ -39,14 +39,14 @@ const ResourceImagesPage = () => {
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(32);
   const [total, setTotal] = useState(0);
-  const [category_ids, setCategoryIds] = useState<any>([]);
-  const [selectKey, setSelectKey] = useState<any>([]);
-  const [visibleArr, setVisibleArr] = useState<any>([]);
-  const [hoverArr, setHoverArr] = useState<any>([]);
+  const [category_ids, setCategoryIds] = useState<number[]>([]);
+  const [selectKey, setSelectKey] = useState<number[]>([]);
+  const [visibleArr, setVisibleArr] = useState<boolean[]>([]);
+  const [hoverArr, setHoverArr] = useState<boolean[]>([]);
   const [selLabel, setLabel] = useState<string>(
     result.get("label") ? String(result.get("label")) : "全部图片"
   );
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState(false);
   const [cateId, setCateId] = useState(Number(result.get("cid")));
 
   useEffect(() => {
@@ -96,7 +96,7 @@ const ResourceImagesPage = () => {
       .then((res: any) => {
         setTotal(res.data.result.total);
         setImageList(res.data.result.data);
-        let data = res.data.result.data;
+        let data: ImageItem[] = res.data.result.data;
         let arr = [];
         for (let i = 0; i < data.length; i++) {
           arr.push(false);

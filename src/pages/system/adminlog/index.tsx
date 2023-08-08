@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Table, Typography, Input, Button, DatePicker } from "antd";
 import { adminLog } from "../../../api";
-// import styles from "./index.module.less";
 import type { ColumnsType } from "antd/es/table";
 import { dateWholeFormat, transUtcTime } from "../../../utils/index";
 import { AdminLogDetailDialog } from "./compenents/detail-dialog";
@@ -11,28 +10,32 @@ import moment from "moment";
 interface DataType {
   id: React.Key;
   admin_id: number;
-  ip: string;
-  opt: string;
   admin_name: string;
-  module: string;
   created_at: string;
-  title: string;
+  error_msg?: string;
+  ip: string;
   ip_area: string;
+  method: string;
+  module: string;
+  opt: number;
   param: string;
+  request_method: string;
   result: string;
+  title: string;
+  url: string;
 }
 
 const SystemLogPage = () => {
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
-  const [list, setList] = useState<any>([]);
+  const [list, setList] = useState<DataType[]>([]);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
   const [title, setTitle] = useState("");
   const [adminId, setAdminId] = useState("");
   const [adminName, setAdminName] = useState("");
-  const [created_at, setCreatedAt] = useState<any>([]);
+  const [created_at, setCreatedAt] = useState<string[]>([]);
   const [createdAts, setCreatedAts] = useState<any>([]);
   const [param, setParam] = useState("");
   const [result, setResult] = useState("");
