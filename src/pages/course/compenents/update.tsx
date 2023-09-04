@@ -6,6 +6,7 @@ import {
   Drawer,
   Form,
   TreeSelect,
+  DatePicker,
   Input,
   message,
   Image,
@@ -15,6 +16,8 @@ import styles from "./update.module.less";
 import { useSelector } from "react-redux";
 import { course, department } from "../../../api/index";
 import { UploadImageButton } from "../../../compenents";
+import dayjs from "dayjs";
+import moment from "moment";
 
 interface PropInterface {
   id: number;
@@ -93,6 +96,9 @@ export const CourseUpdate: React.FC<PropInterface> = ({
         type: type,
         short_desc: res.data.course.short_desc,
         hasChapter: chapterType,
+        published_at: res.data.published_at
+          ? dayjs(res.data.published_at, "YYYY-MM-DD HH:mm:ss")
+          : "",
       });
       setType(type);
       setThumb(res.data.course.thumb);
@@ -157,7 +163,8 @@ export const CourseUpdate: React.FC<PropInterface> = ({
         dep_ids,
         values.category_ids,
         [],
-        []
+        [],
+        values.published_at
       )
       .then((res: any) => {
         message.success("保存成功！");
@@ -383,6 +390,25 @@ export const CourseUpdate: React.FC<PropInterface> = ({
                   placeholder="请输入课程简介（最多200字）"
                   maxLength={200}
                 />
+              </Form.Item>
+              <Form.Item label="上架时间" required={true}>
+                <Space align="baseline" style={{ height: 32 }}>
+                  <Form.Item
+                    name="published_at"
+                    rules={[{ required: true, message: "请选择上架时间!" }]}
+                  >
+                    <DatePicker
+                      format="YYYY-MM-DD HH:mm:ss"
+                      style={{ width: 240 }}
+                      showTime
+                      placeholder="请选择上架时间"
+                    />
+                  </Form.Item>
+
+                  <div className="helper-text ml-24">
+                    上架时间越晚，排序越靠前
+                  </div>
+                </Space>
               </Form.Item>
             </Form>
           </div>
