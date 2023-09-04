@@ -97,7 +97,7 @@ export const CourseUpdate: React.FC<PropInterface> = ({
         short_desc: res.data.course.short_desc,
         hasChapter: chapterType,
         published_at: res.data.published_at
-          ? dayjs(res.data.published_at, "YYYY-MM-DD HH:mm")
+          ? dayjs(res.data.published_at, "YYYY-MM-DD HH:mm:ss")
           : "",
       });
       setType(type);
@@ -152,9 +152,6 @@ export const CourseUpdate: React.FC<PropInterface> = ({
     if (type === "elective") {
       dep_ids = values.dep_ids;
     }
-    values.published_at = moment(new Date(values.published_at)).format(
-      "YYYY-MM-DD HH:mm"
-    );
     course
       .updateCourse(
         id,
@@ -401,7 +398,7 @@ export const CourseUpdate: React.FC<PropInterface> = ({
                     rules={[{ required: true, message: "请选择上架时间!" }]}
                   >
                     <DatePicker
-                      format="YYYY-MM-DD HH:mm"
+                      format="YYYY-MM-DD HH:mm:ss"
                       style={{ width: 240 }}
                       showTime
                       placeholder="请选择上架时间"
