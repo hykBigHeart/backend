@@ -141,6 +141,34 @@ const SystemConfigPage = () => {
           form.setFieldsValue({
             "minio.domain": configData[i].key_value,
           });
+        } else if (configData[i].key_name === "ldap.enabled") {
+          let value = 0;
+          if (configData[i].key_value === "1") {
+            value = 1;
+          }
+          form.setFieldsValue({
+            "ldap.enabled": value,
+          });
+        } else if (configData[i].key_name === "ldap.url") {
+          form.setFieldsValue({
+            "ldap.url": configData[i].key_value,
+          });
+        } else if (configData[i].key_name === "ldap.admin_user") {
+          form.setFieldsValue({
+            "ldap.admin_user": configData[i].key_value,
+          });
+        } else if (configData[i].key_name === "ldap.admin_pass") {
+          form.setFieldsValue({
+            "ldap.admin_pass": configData[i].key_value,
+          });
+        } else if (configData[i].key_name === "ldap.base_dn") {
+          form.setFieldsValue({
+            "ldap.base_dn": configData[i].key_value,
+          });
+        } else if (configData[i].key_name === "ldap.user_dn_prefix") {
+          form.setFieldsValue({
+            "ldap.user_dn_prefix": configData[i].key_value,
+          });
         }
       }
     });
@@ -216,6 +244,14 @@ const SystemConfigPage = () => {
 
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
+  };
+
+  const onLDAPChange = (checked: boolean) => {
+    if (checked) {
+      form.setFieldsValue({ "ldap.enabled": 1 });
+    } else {
+      form.setFieldsValue({ "ldap.enabled": 0 });
+    }
   };
 
   const items: TabsProps["items"] = [
@@ -627,6 +663,100 @@ const SystemConfigPage = () => {
               allowClear
               placeholder="请填写Domain"
             />
+          </Form.Item>
+          <Form.Item
+            style={{ marginBottom: 30 }}
+            wrapperCol={{ offset: 3, span: 21 }}
+          >
+            <Button type="primary" htmlType="submit" loading={loading}>
+              保存
+            </Button>
+          </Form.Item>
+        </Form>
+      ),
+    },
+    {
+      key: "5",
+      label: `LDAP配置`,
+      children: (
+        <Form
+          form={form}
+          name="LDAP-basic"
+          labelCol={{ span: 3 }}
+          wrapperCol={{ span: 21 }}
+          style={{ width: 1000, paddingTop: 30 }}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          autoComplete="off"
+        >
+          <Form.Item
+            style={{ marginBottom: 30 }}
+            label="启用"
+            name="ldap.enabled"
+            valuePropName="checked"
+          >
+            <Switch onChange={onLDAPChange} />
+          </Form.Item>
+          <Form.Item style={{ marginBottom: 30 }} label="服务地址">
+            <Space align="baseline" style={{ height: 32 }}>
+              <Form.Item name="ldap.url">
+                <Input
+                  style={{ width: 274 }}
+                  allowClear
+                  placeholder="请填写服务地址"
+                />
+              </Form.Item>
+              <div className="helper-text ml-24">
+                LDAP的对外服务地址。例如：ldap.example.com
+              </div>
+            </Space>
+          </Form.Item>
+          <Form.Item style={{ marginBottom: 30 }} label="用户名">
+            <Space align="baseline" style={{ height: 32 }}>
+              <Form.Item name="ldap.admin_user">
+                <Input
+                  style={{ width: 274 }}
+                  allowClear
+                  placeholder="请填写用户名"
+                />
+              </Form.Item>
+              <div className="helper-text ml-24">
+                用户登录到LDAP。例子：cn=admin,dc=playedu,dc=xyz
+              </div>
+            </Space>
+          </Form.Item>
+          <Form.Item
+            style={{ marginBottom: 30 }}
+            name="ldap.admin_pass"
+            label="密码"
+          >
+            <Input style={{ width: 274 }} allowClear placeholder="请填写密码" />
+          </Form.Item>
+          <Form.Item style={{ marginBottom: 30 }} label="基本DN">
+            <Space align="baseline" style={{ height: 32 }}>
+              <Form.Item name="ldap.base_dn">
+                <Input
+                  style={{ width: 274 }}
+                  allowClear
+                  placeholder="请填写基本DN"
+                />
+              </Form.Item>
+              <div className="helper-text ml-24">从LDAP根节点搜索用户</div>
+            </Space>
+          </Form.Item>
+          <Form.Item style={{ marginBottom: 30 }} label="附件用户DN">
+            <Space align="baseline" style={{ height: 32 }}>
+              <Form.Item name="ldap.user_dn_prefix">
+                <Input
+                  style={{ width: 274 }}
+                  allowClear
+                  placeholder="请填写基本DN"
+                />
+              </Form.Item>
+              <div className="helper-text ml-24">
+                搜索用户时，基于基础DN的搜索范围限制
+              </div>
+            </Space>
           </Form.Item>
           <Form.Item
             style={{ marginBottom: 30 }}
