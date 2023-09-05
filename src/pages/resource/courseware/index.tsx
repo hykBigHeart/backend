@@ -122,26 +122,22 @@ const ResourceCoursewarePage = () => {
     {
       title: "课件格式",
       dataIndex: "type",
-      width: 204,
       render: (type: string) => <span>{type}</span>,
     },
     {
       title: "课件大小",
       dataIndex: "size",
-      width: 204,
       render: (size: number) => <span>{(size / 1024 / 1024).toFixed(2)}M</span>,
     },
     {
       title: "创建人",
       dataIndex: "admin_id",
-      width: 204,
       render: (text: number) =>
         JSON.stringify(adminUsers) !== "{}" && <span>{adminUsers[text]}</span>,
     },
     {
       title: "创建时间",
       dataIndex: "created_at",
-      width: 204,
       render: (text: string) => <span>{dateFormat(text)}</span>,
     },
     {

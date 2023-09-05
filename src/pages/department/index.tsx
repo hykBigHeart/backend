@@ -389,7 +389,6 @@ const DepartmentPage = () => {
               blockNode
               onDragEnter={onDragEnter}
               onDrop={onDrop}
-              defaultExpandAll={true}
               switcherIcon={<i className="iconfont icon-icon-fold c-gray" />}
             />
           )}
