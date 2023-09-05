@@ -44,7 +44,7 @@ export const CourseUpdate: React.FC<PropInterface> = ({
   const defaultThumb1 = courseDefaultThumbs[0];
   const defaultThumb2 = courseDefaultThumbs[1];
   const defaultThumb3 = courseDefaultThumbs[2];
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(false);
   const [departments, setDepartments] = useState<Option[]>([]);
   const [categories, setCategories] = useState<Option[]>([]);
   const [thumb, setThumb] = useState("");
@@ -148,10 +148,14 @@ export const CourseUpdate: React.FC<PropInterface> = ({
   };
 
   const onFinish = (values: any) => {
+    if (loading) {
+      return;
+    }
     let dep_ids: any[] = [];
     if (type === "elective") {
       dep_ids = values.dep_ids;
     }
+    setLoading(true);
     course
       .updateCourse(
         id,
@@ -167,8 +171,12 @@ export const CourseUpdate: React.FC<PropInterface> = ({
         values.published_at
       )
       .then((res: any) => {
+        setLoading(false);
         message.success("保存成功！");
         onCancel();
+      })
+      .catch((e) => {
+        setLoading(false);
       });
   };
 
@@ -191,7 +199,11 @@ export const CourseUpdate: React.FC<PropInterface> = ({
           footer={
             <Space className="j-r-flex">
               <Button onClick={() => onCancel()}>取 消</Button>
-              <Button onClick={() => form.submit()} type="primary">
+              <Button
+                loading={loading}
+                onClick={() => form.submit()}
+                type="primary"
+              >
                 确 认
               </Button>
             </Space>

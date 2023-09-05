@@ -19,7 +19,7 @@ export const ResourceCategoryCreate: React.FC<PropInterface> = ({
   onCancel,
 }) => {
   const [form] = Form.useForm();
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState<any>([]);
   const [parent_id, setParentId] = useState<number>(0);
 
@@ -78,11 +78,19 @@ export const ResourceCategoryCreate: React.FC<PropInterface> = ({
   };
 
   const onFinish = (values: any) => {
+    if (loading) {
+      return;
+    }
+    setLoading(true);
     resourceCategory
       .storeResourceCategory(values.name, parent_id || 0, 0)
       .then((res: any) => {
+        setLoading(false);
         message.success("保存成功！");
         onCancel();
+      })
+      .catch((e) => {
+        setLoading(false);
       });
   };
 
