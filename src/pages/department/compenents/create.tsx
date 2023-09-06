@@ -123,6 +123,7 @@ export const DepartmentCreate: React.FC<PropInterface> = ({
           onOk={() => form.submit()}
           onCancel={() => onCancel()}
           maskClosable={false}
+          okButtonProps={{ loading: loading }}
         >
           <div className="float-left mt-24">
             <Form
