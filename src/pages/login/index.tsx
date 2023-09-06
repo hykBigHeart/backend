@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styles from "./index.module.less";
 import { Input, Button, message } from "antd";
 import { login as loginApi, system } from "../../api/index";
@@ -59,6 +59,7 @@ const LoginPage = () => {
   const getSystemConfig = async () => {
     let res: any = await system.getSystemConfig();
     let data: SystemConfigStoreInterface = {
+      "ldap-enabled": res.data["ldap-enabled"],
       systemName: res.data["system.name"],
       systemLogo: res.data["system.logo"],
       systemApiUrl: res.data["system.api_url"],

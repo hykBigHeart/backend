@@ -9,6 +9,12 @@ interface PropInterface {
   onSuccess: () => void;
 }
 
+interface Option {
+  value: string | number;
+  title: string;
+  children?: Option[];
+}
+
 export const VideosUpdateDialog: React.FC<PropInterface> = ({
   id,
   open,
@@ -16,9 +22,9 @@ export const VideosUpdateDialog: React.FC<PropInterface> = ({
   onSuccess,
 }) => {
   const [form] = Form.useForm();
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const [init, setInit] = useState(true);
-  const [categories, setCategories] = useState<any>([]);
+  const [categories, setCategories] = useState<Option[]>([]);
 
   useEffect(() => {
     setInit(true);
@@ -33,7 +39,7 @@ export const VideosUpdateDialog: React.FC<PropInterface> = ({
 
   const getCategory = () => {
     resourceCategory.resourceCategoryList().then((res: any) => {
-      const categories = res.data.categories;
+      const categories: CategoriesBoxModel = res.data.categories;
       if (JSON.stringify(categories) !== "{}") {
         const new_arr: any = checkArr(categories, 0, null);
         setCategories(new_arr);
@@ -52,7 +58,11 @@ export const VideosUpdateDialog: React.FC<PropInterface> = ({
     });
   };
 
-  const checkArr = (departments: any[], id: number, counts: any) => {
+  const checkArr = (
+    departments: CategoriesBoxModel,
+    id: number,
+    counts: any
+  ) => {
     const arr = [];
     for (let i = 0; i < departments[id].length; i++) {
       if (!departments[departments[id][i].id]) {

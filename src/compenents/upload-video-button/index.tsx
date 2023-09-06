@@ -11,7 +11,7 @@ import {
   Upload,
 } from "antd";
 import Dragger from "antd/es/upload/Dragger";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { generateUUID, parseVideo } from "../../utils";
 import { minioMergeVideo, minioUploadId } from "../../api/upload";
 import { UploadChunk } from "../../js/minio-upload-chunk";
@@ -24,36 +24,12 @@ interface PropsInterface {
 export const UploadVideoButton = (props: PropsInterface) => {
   const [showModal, setShowModal] = useState(false);
   const localFileList = useRef<FileItem[]>([]);
-  const intervalId = useRef<number>();
   const [fileList, setFileList] = useState<FileItem[]>([]);
 
   const getMinioUploadId = async () => {
     let resp: any = await minioUploadId("mp4");
     return resp.data;
   };
-
-  useEffect(() => {
-    if (showModal) {
-      intervalId.current = setInterval(() => {
-        if (localFileList.current.length === 0) {
-          return;
-        }
-        for (let i = 0; i < localFileList.current.length; i++) {
-          if (localFileList.current[i].upload.status === 0) {
-            localFileList.current[i].upload.handler.start();
-            break;
-          }
-          if (localFileList.current[i].upload.status === 3) {
-            break;
-          }
-        }
-      }, 1000);
-      console.log("定时器已创建", intervalId.current);
-    } else {
-      window.clearInterval(intervalId.current);
-      console.log("定时器已销毁");
-    }
-  }, [showModal]);
 
   const uploadProps = {
     multiple: true,
@@ -104,6 +80,7 @@ export const UploadVideoButton = (props: PropsInterface) => {
           item.upload.remark = msg;
           setFileList([...localFileList.current]);
         });
+        item.upload.handler.start();
         // 先插入到ref
         localFileList.current.push(item);
         // 再更新list
@@ -212,7 +189,18 @@ export const UploadVideoButton = (props: PropsInterface) => {
                     render: (_, record) => (
                       <>
                         {record.upload.status === 5 ? (
-                          <Tag color="red">{record.upload.remark}</Tag>
+                          <>
+                            <Button
+                              type="link"
+                              size="small"
+                              className="b-n-link c-red"
+                              onClick={() => {
+                                record.upload.handler.retry();
+                              }}
+                            >
+                              失败.重试
+                            </Button>
+                          </>
                         ) : null}
 
                         {record.upload.status === 7 ? (

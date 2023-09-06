@@ -29,7 +29,7 @@ export class UploadChunk {
     this.progress = 0;
     this.isStop = false;
     this.chunkIndex = 1;
-    this.chunkSize = 6 * 1024 * 1024;
+    this.chunkSize = 5 * 1024 * 1024; //分块大小-5mb
     this.chunkNumber = Math.ceil(file.size / this.chunkSize);
 
     this.uploadId = uploadId;
@@ -100,6 +100,7 @@ export class UploadChunk {
 
   retry() {
     this.isStop = false;
+    this.uploadStatus = 0;
     this.start();
     this.onRetry && this.onRetry();
   }

@@ -31,9 +31,9 @@ export const SystemAdminrolesUpdate: React.FC<PropInterface> = ({
 }) => {
   const [form] = Form.useForm();
   const [init, setInit] = useState(true);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [permissions, setPermissions] = useState<any>([]);
-  const [actions, setActions] = useState<any>([]);
+  const [loading, setLoading] = useState(false);
+  const [permissions, setPermissions] = useState<Option[]>([]);
+  const [actions, setActions] = useState<Option[]>([]);
 
   useEffect(() => {
     if (open) {
@@ -152,6 +152,9 @@ export const SystemAdminrolesUpdate: React.FC<PropInterface> = ({
   };
 
   const onFinish = (values: any) => {
+    if (loading) {
+      return;
+    }
     let pids = [];
     let aids = [];
     if (values.permission_ids.length === 0 && values.action_ids.length === 0) {
@@ -164,11 +167,18 @@ export const SystemAdminrolesUpdate: React.FC<PropInterface> = ({
     if (values.action_ids) {
       aids = values.action_ids;
     }
+    setLoading(true);
     const params = aids.concat(pids);
-    adminRole.updateAdminRole(id, values.name, params).then((res: any) => {
-      message.success("保存成功！");
-      onCancel();
-    });
+    adminRole
+      .updateAdminRole(id, values.name, params)
+      .then((res: any) => {
+        setLoading(false);
+        message.success("保存成功！");
+        onCancel();
+      })
+      .catch((e) => {
+        setLoading(false);
+      });
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -186,7 +196,11 @@ export const SystemAdminrolesUpdate: React.FC<PropInterface> = ({
           footer={
             <Space className="j-r-flex">
               <Button onClick={() => onCancel()}>取 消</Button>
-              <Button onClick={() => form.submit()} type="primary">
+              <Button
+                loading={loading}
+                onClick={() => form.submit()}
+                type="primary"
+              >
                 确 认
               </Button>
             </Space>

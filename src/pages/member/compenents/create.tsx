@@ -24,7 +24,7 @@ export const MemberCreate: React.FC<PropInterface> = ({
   onCancel,
 }) => {
   const [form] = Form.useForm();
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(false);
   const [departments, setDepartments] = useState<any>([]);
   const memberDefaultAvatar = useSelector(
     (state: any) => state.systemConfig.value.memberDefaultAvatar
@@ -80,10 +80,14 @@ export const MemberCreate: React.FC<PropInterface> = ({
   };
 
   const onFinish = (values: any) => {
+    if (loading) {
+      return;
+    }
     if (values.idCard !== "" && !ValidataCredentials(values.idCard)) {
       message.error("请输入正确的身份证号！");
       return;
     }
+    setLoading(true);
     user
       .storeUser(
         values.email,
@@ -94,8 +98,12 @@ export const MemberCreate: React.FC<PropInterface> = ({
         values.dep_ids
       )
       .then((res: any) => {
+        setLoading(false);
         message.success("保存成功！");
         onCancel();
+      })
+      .catch((e) => {
+        setLoading(false);
       });
   };
 
@@ -115,6 +123,7 @@ export const MemberCreate: React.FC<PropInterface> = ({
           onOk={() => form.submit()}
           onCancel={() => onCancel()}
           maskClosable={false}
+          okButtonProps={{ loading: loading }}
         >
           <div className="member-form float-left mt-24">
             <Form
@@ -161,6 +170,7 @@ export const MemberCreate: React.FC<PropInterface> = ({
                 rules={[{ required: true, message: "请输入登录邮箱!" }]}
               >
                 <Input
+                  autoComplete="off"
                   allowClear
                   style={{ width: 274 }}
                   placeholder="请输入学员登录邮箱"
@@ -172,6 +182,7 @@ export const MemberCreate: React.FC<PropInterface> = ({
                 rules={[{ required: true, message: "请输入登录密码!" }]}
               >
                 <Input.Password
+                  autoComplete="off"
                   allowClear
                   style={{ width: 274 }}
                   placeholder="请输入登录密码"

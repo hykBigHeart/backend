@@ -1,21 +1,35 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Form } from "antd";
+import { adminLog } from "../../../../api";
 
 interface PropInterface {
-  param: string;
-  result: string;
+  id: number;
   open: boolean;
   onCancel: () => void;
 }
 
 export const AdminLogDetailDialog: React.FC<PropInterface> = ({
-  param,
+  id,
   open,
   onCancel,
-  result,
 }) => {
   const [form] = Form.useForm();
-  const [loading, setLoading] = useState<boolean>(true);
+  const [param, setParam] = useState("");
+  const [result, setResult] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (open && id > 0) {
+      getDetail();
+    }
+  }, [open, id]);
+
+  const getDetail = () => {
+    adminLog.adminLogDetail(id).then((res: any) => {
+      setParam(res.data.param);
+      setResult(res.data.result);
+    });
+  };
 
   const onFinish = (values: any) => {};
 
@@ -31,18 +45,21 @@ export const AdminLogDetailDialog: React.FC<PropInterface> = ({
           centered
           forceRender
           open={true}
-          width={416}
+          width={600}
           onOk={() => onCancel()}
           onCancel={() => onCancel()}
           footer={null}
           maskClosable={false}
         >
-          <div className="mt-24">
+          <div
+            className="mt-24"
+            style={{ maxHeight: 600, overflowY: "auto", overflowX: "hidden" }}
+          >
             <Form
               form={form}
               name="adminlog-detail"
-              labelCol={{ span: 5 }}
-              wrapperCol={{ span: 19 }}
+              labelCol={{ span: 3 }}
+              wrapperCol={{ span: 21 }}
               initialValues={{ remember: true }}
               onFinish={onFinish}
               onFinishFailed={onFinishFailed}

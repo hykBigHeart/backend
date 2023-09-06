@@ -21,6 +21,7 @@ import {
 import { user } from "../../api/index";
 import { dateFormat } from "../../utils/index";
 import { Link, Navigate, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { TreeDepartment, PerButton } from "../../compenents";
 import { MemberCreate } from "./compenents/create";
 import { MemberUpdate } from "./compenents/update";
@@ -28,35 +29,47 @@ const { confirm } = Modal;
 
 interface DataType {
   id: React.Key;
-  name: string;
+  avatar: string;
+  create_city?: string;
+  create_ip?: string;
+  created_at?: string;
+  credit1?: number;
   email: string;
-  created_at: string;
-  credit1: number;
-  id_card: string;
-  is_lock: number;
+  id_card?: string;
+  is_active?: number;
+  is_lock?: number;
+  is_set_password?: number;
+  is_verify?: number;
+  login_at?: string;
+  name: string;
+  updated_at?: string;
+  verify_at?: string;
 }
 
 const MemberPage = () => {
   const result = new URLSearchParams(useLocation().search);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
-  const [list, setList] = useState<any>([]);
+  const [list, setList] = useState<DataType[]>([]);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
 
-  const [nickname, setNickname] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [dep_ids, setDepIds] = useState<any>([]);
+  const [nickname, setNickname] = useState("");
+  const [email, setEmail] = useState("");
+  const [dep_ids, setDepIds] = useState<number[]>([]);
   const [selLabel, setLabel] = useState<string>(
     result.get("label") ? String(result.get("label")) : "全部部门"
   );
-  const [createVisible, setCreateVisible] = useState<boolean>(false);
-  const [updateVisible, setUpdateVisible] = useState<boolean>(false);
-  const [mid, setMid] = useState<number>(0);
-  const [user_dep_ids, setUserDepIds] = useState<any>({});
-  const [departments, setDepartments] = useState<any>({});
+  const [createVisible, setCreateVisible] = useState(false);
+  const [updateVisible, setUpdateVisible] = useState(false);
+  const [mid, setMid] = useState(0);
+  const [user_dep_ids, setUserDepIds] = useState<DepIdsModel>({});
+  const [departments, setDepartments] = useState<DepartmentsModel>({});
   const [did, setDid] = useState(Number(result.get("did")));
+  const ldapEnabled = useSelector(
+    (state: any) => state.systemConfig.value["ldap-enabled"]
+  );
 
   useEffect(() => {
     setDid(Number(result.get("did")));
@@ -171,19 +184,23 @@ const MemberPage = () => {
                 disabled={null}
               />
             </Link>
-            <div className="form-column"></div>
-            <Dropdown menu={{ items }}>
-              <Button
-                type="link"
-                className="b-link c-red"
-                onClick={(e) => e.preventDefault()}
-              >
-                <Space size="small" align="center">
-                  更多
-                  <DownOutlined />
-                </Space>
-              </Button>
-            </Dropdown>
+            {!ldapEnabled && (
+              <>
+                <div className="form-column"></div>
+                <Dropdown menu={{ items }}>
+                  <Button
+                    type="link"
+                    className="b-link c-red"
+                    onClick={(e) => e.preventDefault()}
+                  >
+                    <Space size="small" align="center">
+                      更多
+                      <DownOutlined />
+                    </Space>
+                  </Button>
+                </Dropdown>
+              </>
+            )}
           </Space>
         );
       },
@@ -288,16 +305,18 @@ const MemberPage = () => {
           </div>
           <div className="float-left j-b-flex mb-24">
             <div className="d-flex">
-              <PerButton
-                type="primary"
-                text="添加学员"
-                class="mr-16"
-                icon={<PlusOutlined />}
-                p="user-store"
-                onClick={() => setCreateVisible(true)}
-                disabled={null}
-              />
-              {dep_ids.length === 0 && (
+              {!ldapEnabled && (
+                <PerButton
+                  type="primary"
+                  text="添加学员"
+                  class="mr-16"
+                  icon={<PlusOutlined />}
+                  p="user-store"
+                  onClick={() => setCreateVisible(true)}
+                  disabled={null}
+                />
+              )}
+              {!ldapEnabled && dep_ids.length === 0 && (
                 <Link style={{ textDecoration: "none" }} to={`/member/import`}>
                   <PerButton
                     type="default"

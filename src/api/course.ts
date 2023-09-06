@@ -34,8 +34,8 @@ export function storeCourse(
   isRequired: number,
   depIds: number[],
   categoryIds: number[],
-  chapters: number[],
-  hours: number[],
+  chapters: any[],
+  hours: any[],
   attachments: any[]
 ) {
   return client.post("/backend/v1/course/create", {
@@ -66,7 +66,8 @@ export function updateCourse(
   depIds: number[],
   categoryIds: number[],
   chapters: number[],
-  hours: number[]
+  hours: number[],
+  publishedAt: string
 ) {
   return client.put(`/backend/v1/course/${id}`, {
     title: title,
@@ -78,6 +79,7 @@ export function updateCourse(
     category_ids: categoryIds,
     chapters: chapters,
     hours: hours,
+    published_at: publishedAt,
   });
 }
 

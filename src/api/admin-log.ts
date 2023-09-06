@@ -19,3 +19,7 @@ export function adminLogList(
     end_time: end_time,
   });
 }
+
+export function adminLogDetail(id: number) {
+  return client.get(`/backend/v1/admin/log/detail/${id}`, {});
+}

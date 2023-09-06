@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Row, Col, Empty, Table } from "antd";
+import { Row, Col, Empty, Table, Spin } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { resource } from "../../api";
 import styles from "./index.module.less";
@@ -34,10 +34,10 @@ interface PropsInterface {
   label: string;
   open: boolean;
   onSelected: (arr: any[], videos: []) => void;
-  onSuccess: () => void;
 }
 
 export const UploadCoursewareSub = (props: PropsInterface) => {
+  const [init, setInit] = useState(true);
   const [category_ids, setCategoryIds] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [videoList, setVideoList] = useState<VideoItem[]>([]);
@@ -50,6 +50,7 @@ export const UploadCoursewareSub = (props: PropsInterface) => {
 
   // 加载列表
   useEffect(() => {
+    setInit(true);
     getvideoList();
   }, [props.open, category_ids, refresh, page, size]);
 
@@ -61,6 +62,7 @@ export const UploadCoursewareSub = (props: PropsInterface) => {
 
   // 获取列表
   const getvideoList = () => {
+    setLoading(true);
     let categoryIds = category_ids.join(",");
     resource
       .resourceList(
@@ -76,9 +78,12 @@ export const UploadCoursewareSub = (props: PropsInterface) => {
         setTotal(res.data.result.total);
         setExistingTypes(res.data.existing_types);
         setVideoList(res.data.result.data);
-        props.onSuccess();
+        setLoading(false);
+        setInit(false);
       })
       .catch((err) => {
+        setLoading(false);
+        setInit(false);
         console.log("错误,", err);
       });
   };
@@ -154,12 +159,22 @@ export const UploadCoursewareSub = (props: PropsInterface) => {
     <>
       <Row style={{ width: 752, minHeight: 520 }}>
         <Col span={7}>
-          <TreeCategory
-            selected={[]}
-            type="no-cate"
-            text={props.label}
-            onUpdate={(keys: any) => setCategoryIds(keys)}
-          />
+          {init && (
+            <div className="float-left text-center mt-30">
+              <Spin></Spin>
+            </div>
+          )}
+          <div
+            className="float-left"
+            style={{ display: init ? "none" : "block" }}
+          >
+            <TreeCategory
+              selected={[]}
+              type="no-cate"
+              text={props.label}
+              onUpdate={(keys: any) => setCategoryIds(keys)}
+            />
+          </div>
         </Col>
         <Col span={17}>
           <Row style={{ marginBottom: 24, paddingLeft: 10 }}>
@@ -172,7 +187,15 @@ export const UploadCoursewareSub = (props: PropsInterface) => {
               ></UploadCoursewareButton>
             </Col>
           </Row>
-          <div className={styles["video-list"]}>
+          {init && (
+            <div className="float-left text-center mt-30">
+              <Spin></Spin>
+            </div>
+          )}
+          <div
+            className={styles["video-list"]}
+            style={{ display: init ? "none" : "block" }}
+          >
             {videoList.length === 0 && (
               <Col span={24} style={{ marginTop: 150 }}>
                 <Empty description="暂无课件" />

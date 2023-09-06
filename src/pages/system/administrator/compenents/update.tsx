@@ -10,6 +10,11 @@ interface PropInterface {
   onCancel: () => void;
 }
 
+type selRoleModel = {
+  label: string;
+  value: number;
+};
+
 export const SystemAdministratorUpdate: React.FC<PropInterface> = ({
   id,
   refresh,
@@ -18,8 +23,8 @@ export const SystemAdministratorUpdate: React.FC<PropInterface> = ({
 }) => {
   const [form] = Form.useForm();
   const [init, setInit] = useState(true);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [roles, setRoles] = useState<any>([]);
+  const [loading, setLoading] = useState(false);
+  const [roles, setRoles] = useState<selRoleModel[]>([]);
 
   useEffect(() => {
     if (open) {
@@ -40,7 +45,7 @@ export const SystemAdministratorUpdate: React.FC<PropInterface> = ({
   const getParams = () => {
     adminUser.createAdminUser().then((res: any) => {
       const arr = [];
-      let roles = res.data.roles;
+      let roles: RoleModel[] = res.data.roles;
       for (let i = 0; i < roles.length; i++) {
         arr.push({
           label: roles[i].name,
@@ -53,7 +58,7 @@ export const SystemAdministratorUpdate: React.FC<PropInterface> = ({
 
   const getDetail = () => {
     adminUser.AdminUser(id).then((res: any) => {
-      let user = res.data.user;
+      let user: AdminUserDetailModel = res.data.user;
       form.setFieldsValue({
         email: user.email,
         name: user.name,
@@ -65,6 +70,10 @@ export const SystemAdministratorUpdate: React.FC<PropInterface> = ({
   };
 
   const onFinish = (values: any) => {
+    if (loading) {
+      return;
+    }
+    setLoading(true);
     adminUser
       .updateAdminUser(
         id,
@@ -75,8 +84,12 @@ export const SystemAdministratorUpdate: React.FC<PropInterface> = ({
         values.roleIds
       )
       .then((res: any) => {
+        setLoading(false);
         message.success("保存成功！");
         onCancel();
+      })
+      .catch((e) => {
+        setLoading(false);
       });
   };
 
@@ -106,6 +119,7 @@ export const SystemAdministratorUpdate: React.FC<PropInterface> = ({
           onOk={() => form.submit()}
           onCancel={() => onCancel()}
           maskClosable={false}
+          okButtonProps={{ loading: loading }}
         >
           {init && (
             <div className="float-left text-center mt-30">

@@ -12,18 +12,23 @@ import {
   Slider,
   Space,
 } from "antd";
-// import styles from "./index.module.less";
-import { appConfig } from "../../../api/index";
+import { appConfig, system } from "../../../api/index";
 import { UploadImageButton } from "../../../compenents";
+import { useDispatch } from "react-redux";
 import type { TabsProps } from "antd";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
+import {
+  SystemConfigStoreInterface,
+  saveConfigAction,
+} from "../../../store/system/systemConfigSlice";
 
 const SystemConfigPage = () => {
+  const dispatch = useDispatch();
   const [form] = Form.useForm();
-  const [loading, setLoading] = useState<boolean>(false);
-  const [logo, setLogo] = useState<string>("");
-  const [thumb, setThumb] = useState<string>("");
-  const [avatar, setAvatar] = useState<string>("");
+  const [loading, setLoading] = useState(false);
+  const [logo, setLogo] = useState("");
+  const [thumb, setThumb] = useState("");
+  const [avatar, setAvatar] = useState("");
   const [tabKey, setTabKey] = useState(1);
   const [nameChecked, setNameChecked] = useState(false);
   const [emailChecked, setEmailChecked] = useState(false);
@@ -141,6 +146,34 @@ const SystemConfigPage = () => {
           form.setFieldsValue({
             "minio.domain": configData[i].key_value,
           });
+        } else if (configData[i].key_name === "ldap.enabled") {
+          let value = 0;
+          if (configData[i].key_value === "1") {
+            value = 1;
+          }
+          form.setFieldsValue({
+            "ldap.enabled": value,
+          });
+        } else if (configData[i].key_name === "ldap.url") {
+          form.setFieldsValue({
+            "ldap.url": configData[i].key_value,
+          });
+        } else if (configData[i].key_name === "ldap.admin_user") {
+          form.setFieldsValue({
+            "ldap.admin_user": configData[i].key_value,
+          });
+        } else if (configData[i].key_name === "ldap.admin_pass") {
+          form.setFieldsValue({
+            "ldap.admin_pass": configData[i].key_value,
+          });
+        } else if (configData[i].key_name === "ldap.base_dn") {
+          form.setFieldsValue({
+            "ldap.base_dn": configData[i].key_value,
+          });
+        } else if (configData[i].key_name === "ldap.user_dn_prefix") {
+          form.setFieldsValue({
+            "ldap.user_dn_prefix": configData[i].key_value,
+          });
         }
       }
     });
@@ -211,11 +244,36 @@ const SystemConfigPage = () => {
       message.success("保存成功！");
       setLoading(false);
       getDetail();
+      getSystemConfig();
+    });
+  };
+
+  const getSystemConfig = async () => {
+    system.getSystemConfig().then((res: any) => {
+      let data: SystemConfigStoreInterface = {
+        "ldap-enabled": res.data["ldap-enabled"],
+        systemName: res.data["system.name"],
+        systemLogo: res.data["system.logo"],
+        systemApiUrl: res.data["system.api_url"],
+        systemPcUrl: res.data["system.pc_url"],
+        systemH5Url: res.data["system.h5_url"],
+        memberDefaultAvatar: res.data["member.default_avatar"],
+        courseDefaultThumbs: res.data["default.course_thumbs"],
+      };
+      dispatch(saveConfigAction(data));
     });
   };
 
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
+  };
+
+  const onLDAPChange = (checked: boolean) => {
+    if (checked) {
+      form.setFieldsValue({ "ldap.enabled": 1 });
+    } else {
+      form.setFieldsValue({ "ldap.enabled": 0 });
+    }
   };
 
   const items: TabsProps["items"] = [
@@ -251,7 +309,7 @@ const SystemConfigPage = () => {
                     }}
                   ></UploadImageButton>
                 </div>
-                <div className="helper-text ml-24">
+                <div className="helper-text ml-8">
                   （推荐尺寸:240x80px，支持JPG、PNG）
                 </div>
               </div>
@@ -273,7 +331,7 @@ const SystemConfigPage = () => {
                     }}
                   ></UploadImageButton>
                 </div>
-                <div className="helper-text ml-24">
+                <div className="helper-text ml-8">
                   （推荐尺寸:240x80px，支持JPG、PNG）
                 </div>
               </div>
@@ -352,7 +410,7 @@ const SystemConfigPage = () => {
               <Form.Item name="player.disabled_drag" valuePropName="checked">
                 <Switch onChange={onDragChange} />
               </Form.Item>
-              <div className="helper-text ml-24">
+              <div className="helper-text">
                 （打开后禁止学员在首次学习中拖动进度条，以防刷课）
               </div>
             </Space>
@@ -365,7 +423,7 @@ const SystemConfigPage = () => {
               >
                 <Switch onChange={onSwitchChange} />
               </Form.Item>
-              <div className="helper-text ml-24">
+              <div className="helper-text">
                 （打开后播放器会随机出现跑马灯水印，以防录屏传播）
               </div>
             </Space>
@@ -446,7 +504,7 @@ const SystemConfigPage = () => {
                       form.setFieldsValue({ "player.poster": url });
                     }}
                   ></UploadImageButton>
-                  <div className="helper-text ml-24">
+                  <div className="helper-text ml-8">
                     （推荐尺寸:1920x1080px，视频播放未开始时展示）
                   </div>
                 </div>
@@ -468,7 +526,7 @@ const SystemConfigPage = () => {
                       form.setFieldsValue({ "player.poster": url });
                     }}
                   ></UploadImageButton>
-                  <div className="helper-text ml-24">
+                  <div className="helper-text ml-8">
                     （推荐尺寸:1920x1080px，视频播放未开始时展示）
                   </div>
                 </div>
@@ -523,7 +581,7 @@ const SystemConfigPage = () => {
                       form.setFieldsValue({ "member.default_avatar": url });
                     }}
                   ></UploadImageButton>
-                  <div className="helper-text ml-24">（新学员的默认头像）</div>
+                  <div className="helper-text ml-8">（新学员的默认头像）</div>
                 </div>
               </div>
             </Form.Item>
@@ -543,7 +601,7 @@ const SystemConfigPage = () => {
                       form.setFieldsValue({ "member.default_avatar": url });
                     }}
                   ></UploadImageButton>
-                  <div className="helper-text ml-24">（新学员的默认头像）</div>
+                  <div className="helper-text ml-8">（新学员的默认头像）</div>
                 </div>
               </div>
             </Form.Item>
@@ -627,6 +685,100 @@ const SystemConfigPage = () => {
               allowClear
               placeholder="请填写Domain"
             />
+          </Form.Item>
+          <Form.Item
+            style={{ marginBottom: 30 }}
+            wrapperCol={{ offset: 3, span: 21 }}
+          >
+            <Button type="primary" htmlType="submit" loading={loading}>
+              保存
+            </Button>
+          </Form.Item>
+        </Form>
+      ),
+    },
+    {
+      key: "5",
+      label: `LDAP配置`,
+      children: (
+        <Form
+          form={form}
+          name="LDAP-basic"
+          labelCol={{ span: 3 }}
+          wrapperCol={{ span: 21 }}
+          style={{ width: 1000, paddingTop: 30 }}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          autoComplete="off"
+        >
+          <Form.Item
+            style={{ marginBottom: 30 }}
+            label="启用"
+            name="ldap.enabled"
+            valuePropName="checked"
+          >
+            <Switch onChange={onLDAPChange} />
+          </Form.Item>
+          <Form.Item style={{ marginBottom: 30 }} label="服务地址">
+            <Space align="baseline" style={{ height: 32 }}>
+              <Form.Item name="ldap.url">
+                <Input
+                  style={{ width: 274 }}
+                  allowClear
+                  placeholder="请填写服务地址"
+                />
+              </Form.Item>
+              <div className="helper-text">
+                （LDAP的对外服务地址。例如：ldap.example.com）
+              </div>
+            </Space>
+          </Form.Item>
+          <Form.Item style={{ marginBottom: 30 }} label="用户名">
+            <Space align="baseline" style={{ height: 32 }}>
+              <Form.Item name="ldap.admin_user">
+                <Input
+                  style={{ width: 274 }}
+                  allowClear
+                  placeholder="请填写用户名"
+                />
+              </Form.Item>
+              <div className="helper-text">
+                （用户登录到LDAP。例子：cn=admin,dc=playedu,dc=xyz）
+              </div>
+            </Space>
+          </Form.Item>
+          <Form.Item
+            style={{ marginBottom: 30 }}
+            name="ldap.admin_pass"
+            label="密码"
+          >
+            <Input style={{ width: 274 }} allowClear placeholder="请填写密码" />
+          </Form.Item>
+          <Form.Item style={{ marginBottom: 30 }} label="基本DN">
+            <Space align="baseline" style={{ height: 32 }}>
+              <Form.Item name="ldap.base_dn">
+                <Input
+                  style={{ width: 274 }}
+                  allowClear
+                  placeholder="请填写基本DN"
+                />
+              </Form.Item>
+              <div className="helper-text">（从LDAP根节点搜索用户）</div>
+            </Space>
+          </Form.Item>
+          <Form.Item style={{ marginBottom: 30 }} label="附件用户DN">
+            <Space align="baseline" style={{ height: 32 }}>
+              <Form.Item name="ldap.user_dn_prefix">
+                <Input
+                  style={{ width: 274 }}
+                  allowClear
+                  placeholder="请填写基本DN"
+                />
+              </Form.Item>
+              <div className="helper-text">
+                （搜索用户时，基于基础DN的搜索范围限制）
+              </div>
+            </Space>
           </Form.Item>
           <Form.Item
             style={{ marginBottom: 30 }}

@@ -6,6 +6,7 @@ import {
   Drawer,
   Form,
   TreeSelect,
+  DatePicker,
   Input,
   message,
   Image,
@@ -15,11 +16,19 @@ import styles from "./update.module.less";
 import { useSelector } from "react-redux";
 import { course, department } from "../../../api/index";
 import { UploadImageButton } from "../../../compenents";
+import dayjs from "dayjs";
+import moment from "moment";
 
 interface PropInterface {
   id: number;
   open: boolean;
   onCancel: () => void;
+}
+
+interface Option {
+  value: string | number;
+  title: string;
+  children?: Option[];
 }
 
 export const CourseUpdate: React.FC<PropInterface> = ({
@@ -35,11 +44,11 @@ export const CourseUpdate: React.FC<PropInterface> = ({
   const defaultThumb1 = courseDefaultThumbs[0];
   const defaultThumb2 = courseDefaultThumbs[1];
   const defaultThumb3 = courseDefaultThumbs[2];
-  const [loading, setLoading] = useState<boolean>(true);
-  const [departments, setDepartments] = useState<any>([]);
-  const [categories, setCategories] = useState<any>([]);
-  const [thumb, setThumb] = useState<string>("");
-  const [type, setType] = useState<string>("open");
+  const [loading, setLoading] = useState(false);
+  const [departments, setDepartments] = useState<Option[]>([]);
+  const [categories, setCategories] = useState<Option[]>([]);
+  const [thumb, setThumb] = useState("");
+  const [type, setType] = useState("open");
 
   useEffect(() => {
     setInit(true);
@@ -87,10 +96,14 @@ export const CourseUpdate: React.FC<PropInterface> = ({
         type: type,
         short_desc: res.data.course.short_desc,
         hasChapter: chapterType,
+        published_at: res.data.course.published_at
+          ? dayjs(res.data.course.published_at)
+          : "",
       });
       setType(type);
       setThumb(res.data.course.thumb);
       setInit(false);
+      console.log(dayjs(res.data.course.published_at, "YYYY-MM-DD HH:mm:ss"));
     });
   };
 
@@ -136,10 +149,14 @@ export const CourseUpdate: React.FC<PropInterface> = ({
   };
 
   const onFinish = (values: any) => {
+    if (loading) {
+      return;
+    }
     let dep_ids: any[] = [];
     if (type === "elective") {
       dep_ids = values.dep_ids;
     }
+    setLoading(true);
     course
       .updateCourse(
         id,
@@ -151,11 +168,16 @@ export const CourseUpdate: React.FC<PropInterface> = ({
         dep_ids,
         values.category_ids,
         [],
-        []
+        [],
+        values.published_at
       )
       .then((res: any) => {
+        setLoading(false);
         message.success("保存成功！");
         onCancel();
+      })
+      .catch((e) => {
+        setLoading(false);
       });
   };
 
@@ -165,6 +187,10 @@ export const CourseUpdate: React.FC<PropInterface> = ({
 
   const getType = (e: any) => {
     setType(e.target.value);
+  };
+
+  const disabledDate = (current: any) => {
+    return current && current >= moment().add(0, "days"); // 选择时间要大于等于当前天。若今天不能被选择，去掉等号即可。
   };
 
   return (
@@ -178,7 +204,11 @@ export const CourseUpdate: React.FC<PropInterface> = ({
           footer={
             <Space className="j-r-flex">
               <Button onClick={() => onCancel()}>取 消</Button>
-              <Button onClick={() => form.submit()} type="primary">
+              <Button
+                loading={loading}
+                onClick={() => form.submit()}
+                type="primary"
+              >
                 确 认
               </Button>
             </Space>
@@ -363,7 +393,7 @@ export const CourseUpdate: React.FC<PropInterface> = ({
                           form.setFieldsValue({ thumb: url });
                         }}
                       ></UploadImageButton>
-                      <span className="helper-text ml-16">
+                      <span className="helper-text ml-8">
                         （推荐尺寸:400x300px）
                       </span>
                     </div>
@@ -377,6 +407,22 @@ export const CourseUpdate: React.FC<PropInterface> = ({
                   placeholder="请输入课程简介（最多200字）"
                   maxLength={200}
                 />
+              </Form.Item>
+              <Form.Item label="上架时间">
+                <Space align="baseline" style={{ height: 32 }}>
+                  <Form.Item name="published_at">
+                    <DatePicker
+                      disabledDate={disabledDate}
+                      format="YYYY-MM-DD HH:mm:ss"
+                      style={{ width: 240 }}
+                      showTime
+                      placeholder="请选择上架时间"
+                    />
+                  </Form.Item>
+                  <div className="helper-text">
+                    （上架时间越晚，排序越靠前）
+                  </div>
+                </Space>
               </Form.Item>
             </Form>
           </div>

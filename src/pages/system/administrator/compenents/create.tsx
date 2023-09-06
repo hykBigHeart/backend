@@ -10,6 +10,11 @@ interface PropInterface {
   onCancel: () => void;
 }
 
+type selRoleModel = {
+  label: string;
+  value: number;
+};
+
 export const SystemAdministratorCreate: React.FC<PropInterface> = ({
   roleId,
   refresh,
@@ -17,8 +22,8 @@ export const SystemAdministratorCreate: React.FC<PropInterface> = ({
   onCancel,
 }) => {
   const [form] = Form.useForm();
-  const [loading, setLoading] = useState<boolean>(true);
-  const [roles, setRoles] = useState<any>([]);
+  const [loading, setLoading] = useState(false);
+  const [roles, setRoles] = useState<selRoleModel[]>([]);
 
   useEffect(() => {
     if (open) {
@@ -43,7 +48,7 @@ export const SystemAdministratorCreate: React.FC<PropInterface> = ({
   const getParams = () => {
     adminUser.createAdminUser().then((res: any) => {
       const arr = [];
-      let roles = res.data.roles;
+      let roles: RoleModel[] = res.data.roles;
       for (let i = 0; i < roles.length; i++) {
         arr.push({
           label: roles[i].name,
@@ -55,6 +60,10 @@ export const SystemAdministratorCreate: React.FC<PropInterface> = ({
   };
 
   const onFinish = (values: any) => {
+    if (loading) {
+      return;
+    }
+    setLoading(true);
     adminUser
       .storeAdminUser(
         values.name,
@@ -64,8 +73,12 @@ export const SystemAdministratorCreate: React.FC<PropInterface> = ({
         values.roleIds
       )
       .then((res: any) => {
+        setLoading(false);
         message.success("保存成功！");
         onCancel();
+      })
+      .catch((e) => {
+        setLoading(false);
       });
   };
 
@@ -95,6 +108,7 @@ export const SystemAdministratorCreate: React.FC<PropInterface> = ({
           onOk={() => form.submit()}
           onCancel={() => onCancel()}
           maskClosable={false}
+          okButtonProps={{ loading: loading }}
         >
           <div className="float-left mt-24">
             <Form

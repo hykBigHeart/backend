@@ -32,6 +32,12 @@ interface PropInterface {
   onCancel: () => void;
 }
 
+interface Option {
+  value: string | number;
+  title: string;
+  children?: Option[];
+}
+
 export const CourseCreate: React.FC<PropInterface> = ({
   cateIds,
   depIds,
@@ -45,22 +51,24 @@ export const CourseCreate: React.FC<PropInterface> = ({
   const defaultThumb1 = courseDefaultThumbs[0];
   const defaultThumb2 = courseDefaultThumbs[1];
   const defaultThumb3 = courseDefaultThumbs[2];
-  const [loading, setLoading] = useState<boolean>(true);
-  const [departments, setDepartments] = useState<any>([]);
-  const [categories, setCategories] = useState<any>([]);
-  const [thumb, setThumb] = useState<string>("");
-  const [type, setType] = useState<string>("open");
+  const [loading, setLoading] = useState(false);
+  const [departments, setDepartments] = useState<Option[]>([]);
+  const [categories, setCategories] = useState<Option[]>([]);
+  const [thumb, setThumb] = useState("");
+  const [type, setType] = useState("open");
   const [chapterType, setChapterType] = useState(0);
-  const [chapters, setChapters] = useState<any>([]);
-  const [hours, setHours] = useState<any>([]);
+  const [chapters, setChapters] = useState<CourseChaptersModel[]>([]);
+  const [hours, setHours] = useState<number[]>([]);
   const [chapterHours, setChapterHours] = useState<any>([]);
-  const [videoVisible, setVideoVisible] = useState<boolean>(false);
-  const [treeData, setTreeData] = useState<any>([]);
+  const [videoVisible, setVideoVisible] = useState(false);
+  const [treeData, setTreeData] = useState<CourseHourModel[]>([]);
   const [addvideoCurrent, setAddvideoCurrent] = useState(0);
-  const [showDrop, setShowDrop] = useState<boolean>(false);
-  const [attachmentVisible, setAttachmentVisible] = useState<boolean>(false);
-  const [attachmentData, setAttachmentData] = useState<any>([]);
-  const [attachments, setAttachments] = useState<any>([]);
+  const [showDrop, setShowDrop] = useState(false);
+  const [attachmentVisible, setAttachmentVisible] = useState(false);
+  const [attachmentData, setAttachmentData] = useState<AttachmentDataModel[]>(
+    []
+  );
+  const [attachments, setAttachments] = useState<number[]>([]);
 
   useEffect(() => {
     if (open) {
@@ -91,7 +99,7 @@ export const CourseCreate: React.FC<PropInterface> = ({
   const getParams = () => {
     department.departmentList().then((res: any) => {
       const departments = res.data.departments;
-      const departCount = res.data.dep_user_count;
+      const departCount: DepIdsModel = res.data.dep_user_count;
       if (JSON.stringify(departments) !== "{}") {
         const new_arr: any = checkArr(departments, 0, departCount);
         setDepartments(new_arr);
@@ -212,6 +220,9 @@ export const CourseCreate: React.FC<PropInterface> = ({
   };
 
   const onFinish = (values: any) => {
+    if (loading) {
+      return;
+    }
     let dep_ids: any[] = [];
     if (type === "elective") {
       dep_ids = values.dep_ids;
@@ -220,6 +231,7 @@ export const CourseCreate: React.FC<PropInterface> = ({
       message.error("请配置课时");
       return;
     }
+    setLoading(true);
     course
       .storeCourse(
         values.title,
@@ -234,8 +246,12 @@ export const CourseCreate: React.FC<PropInterface> = ({
         attachmentData
       )
       .then((res: any) => {
+        setLoading(false);
         message.success("保存成功！");
         onCancel();
+      })
+      .catch((e) => {
+        setLoading(false);
       });
   };
 
@@ -438,7 +454,6 @@ export const CourseCreate: React.FC<PropInterface> = ({
     const keys = [...chapterHours];
     keys[index] = arr;
     setChapterHours(keys);
-
     const data = [...chapters];
     const newArr: any = [];
     for (let i = 0; i < arr.length; i++) {
@@ -473,7 +488,11 @@ export const CourseCreate: React.FC<PropInterface> = ({
           footer={
             <Space className="j-r-flex">
               <Button onClick={() => onCancel()}>取 消</Button>
-              <Button onClick={() => form.submit()} type="primary">
+              <Button
+                loading={loading}
+                onClick={() => form.submit()}
+                type="primary"
+              >
                 确 认
               </Button>
             </Space>
@@ -676,7 +695,7 @@ export const CourseCreate: React.FC<PropInterface> = ({
                           form.setFieldsValue({ thumb: url });
                         }}
                       ></UploadImageButton>
-                      <span className="helper-text ml-16">
+                      <span className="helper-text ml-8">
                         （推荐尺寸:400x300px）
                       </span>
                     </div>

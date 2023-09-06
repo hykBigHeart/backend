@@ -19,7 +19,7 @@ export const DepartmentCreate: React.FC<PropInterface> = ({
   onCancel,
 }) => {
   const [form] = Form.useForm();
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(false);
   const [departments, setDepartments] = useState<any>([]);
   const [parent_id, setParentId] = useState<number>(0);
 
@@ -78,11 +78,19 @@ export const DepartmentCreate: React.FC<PropInterface> = ({
   };
 
   const onFinish = (values: any) => {
+    if (loading) {
+      return;
+    }
+    setLoading(true);
     department
       .storeDepartment(values.name, parent_id || 0, 0)
       .then((res: any) => {
+        setLoading(false);
         message.success("保存成功！");
         onCancel();
+      })
+      .catch((e) => {
+        setLoading(false);
       });
   };
 
@@ -115,6 +123,7 @@ export const DepartmentCreate: React.FC<PropInterface> = ({
           onOk={() => form.submit()}
           onCancel={() => onCancel()}
           maskClosable={false}
+          okButtonProps={{ loading: loading }}
         >
           <div className="float-left mt-24">
             <Form

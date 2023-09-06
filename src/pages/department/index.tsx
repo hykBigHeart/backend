@@ -23,15 +23,18 @@ const DepartmentPage = () => {
   const permissions = useSelector(
     (state: any) => state.loginUser.value.permissions
   );
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
   const [refresh, setRefresh] = useState(false);
-  const [treeData, setTreeData] = useState<any>([]);
-  const [selectKey, setSelectKey] = useState<any>([]);
+  const [treeData, setTreeData] = useState<Option[]>([]);
+  const [selectKey, setSelectKey] = useState<number[]>([]);
 
-  const [createVisible, setCreateVisible] = useState<boolean>(false);
-  const [updateVisible, setUpdateVisible] = useState<boolean>(false);
+  const [createVisible, setCreateVisible] = useState(false);
+  const [updateVisible, setUpdateVisible] = useState(false);
   const [did, setDid] = useState<number>(0);
   const [modal, contextHolder] = Modal.useModal();
+  const ldapEnabled = useSelector(
+    (state: any) => state.systemConfig.value["ldap-enabled"]
+  );
 
   const onSelect = (selectedKeys: any, info: any) => {
     setSelectKey(selectedKeys);
@@ -45,13 +48,13 @@ const DepartmentPage = () => {
   };
 
   useEffect(() => {
+    setLoading(true);
     getData();
   }, [refresh, permissions]);
 
   const getData = () => {
-    setLoading(true);
     department.departmentList().then((res: any) => {
-      const departments = res.data.departments;
+      const departments: DepartmentsBoxModel = res.data.departments;
       if (JSON.stringify(departments) !== "{}") {
         const new_arr: Option[] = checkArr(departments, 0);
         setTreeData(new_arr);
@@ -61,89 +64,112 @@ const DepartmentPage = () => {
     });
   };
 
-  const checkArr = (departments: any[], id: number) => {
+  const checkArr = (departments: DepartmentsBoxModel, id: number) => {
     const arr = [];
     for (let i = 0; i < departments[id].length; i++) {
       if (!departments[departments[id][i].id]) {
-        arr.push({
-          title: (
-            <>
-              <div className="tree-title-elli">{departments[id][i].name}</div>
-              <div className="d-flex">
-                <Tooltip placement="top" title="可拖拽排序">
-                  <i
-                    className="iconfont icon-icon-drag mr-16"
-                    style={{ fontSize: 24 }}
-                  />
-                </Tooltip>
-                {through("department-cud") && (
-                  <>
+        if (ldapEnabled) {
+          arr.push({
+            title: (
+              <>
+                <div className="tree-title-elli">{departments[id][i].name}</div>
+              </>
+            ),
+            key: departments[id][i].id,
+          });
+        } else {
+          arr.push({
+            title: (
+              <>
+                <div className="tree-title-elli">{departments[id][i].name}</div>
+                <div className="d-flex">
+                  <Tooltip placement="top" title="可拖拽排序">
                     <i
-                      className="iconfont icon-icon-edit mr-16"
+                      className="iconfont icon-icon-drag mr-16"
                       style={{ fontSize: 24 }}
-                      onClick={() => {
-                        setDid(departments[id][i].id);
-                        setUpdateVisible(true);
-                      }}
                     />
-                    <i
-                      className="iconfont icon-icon-delete"
-                      style={{ fontSize: 24 }}
-                      onClick={() =>
-                        removeItem(
-                          departments[id][i].id,
-                          departments[id][i].name
-                        )
-                      }
-                    />
-                  </>
-                )}
-              </div>
-            </>
-          ),
-          key: departments[id][i].id,
-        });
+                  </Tooltip>
+                  {through("department-cud") && (
+                    <>
+                      <i
+                        className="iconfont icon-icon-edit mr-16"
+                        style={{ fontSize: 24 }}
+                        onClick={() => {
+                          setDid(departments[id][i].id);
+                          setUpdateVisible(true);
+                        }}
+                      />
+                      <i
+                        className="iconfont icon-icon-delete"
+                        style={{ fontSize: 24 }}
+                        onClick={() =>
+                          removeItem(
+                            departments[id][i].id,
+                            departments[id][i].name
+                          )
+                        }
+                      />
+                    </>
+                  )}
+                </div>
+              </>
+            ),
+            key: departments[id][i].id,
+          });
+        }
       } else {
         const new_arr: Option[] = checkArr(departments, departments[id][i].id);
-        arr.push({
-          title: (
-            <>
-              <div className="tree-title-elli">{departments[id][i].name}</div>
-              <div className="d-flex">
-                <Tooltip placement="top" title="可拖拽排序">
-                  <i
-                    className="iconfont icon-icon-drag mr-16"
-                    style={{ fontSize: 24 }}
-                  />
-                </Tooltip>
-                {through("department-cud") && (
-                  <>
+        if (ldapEnabled) {
+          arr.push({
+            title: (
+              <>
+                <div className="tree-title-elli">{departments[id][i].name}</div>
+              </>
+            ),
+            key: departments[id][i].id,
+            children: new_arr,
+          });
+        } else {
+          arr.push({
+            title: (
+              <>
+                <div className="tree-title-elli">{departments[id][i].name}</div>
+                <div className="d-flex">
+                  <Tooltip placement="top" title="可拖拽排序">
                     <i
-                      className="iconfont icon-icon-edit mr-16"
+                      className="iconfont icon-icon-drag mr-16"
                       style={{ fontSize: 24 }}
-                      onClick={() => {
-                        setDid(departments[id][i].id);
-                        setUpdateVisible(true);
-                      }}
                     />
-                    <i
-                      className="iconfont icon-icon-delete"
-                      style={{ fontSize: 24 }}
-                      onClick={() =>
-                        removeItem(
-                          departments[id][i].id,
-                          departments[id][i].name
-                        )
-                      }
-                    />
-                  </>
-                )}
-              </div>
-            </>
-          ),
-          key: departments[id][i].id,
-          children: new_arr,
-        });
+                  </Tooltip>
+                  {through("department-cud") && (
+                    <>
+                      <i
+                        className="iconfont icon-icon-edit mr-16"
+                        style={{ fontSize: 24 }}
+                        onClick={() => {
+                          setDid(departments[id][i].id);
+                          setUpdateVisible(true);
+                        }}
+                      />
+                      <i
+                        className="iconfont icon-icon-delete"
+                        style={{ fontSize: 24 }}
+                        onClick={() =>
+                          removeItem(
+                            departments[id][i].id,
+                            departments[id][i].name
+                          )
+                        }
+                      />
+                    </>
+                  )}
+                </div>
+              </>
+            ),
+            key: departments[id][i].id,
+            children: new_arr,
+          });
+        }
       }
     }
     return arr;
@@ -365,22 +391,29 @@ const DepartmentPage = () => {
 
   return (
     <>
-      <div className="playedu-main-top mb-24">
-        {contextHolder}
-        <div className="d-flex">
-          <PerButton
-            type="primary"
-            text="新建部门"
-            class="mr-16"
-            icon={<PlusOutlined />}
-            p="department-cud"
-            onClick={() => setCreateVisible(true)}
-            disabled={null}
-          />
+      {!ldapEnabled && (
+        <div className="playedu-main-top mb-24">
+          {contextHolder}
+          <div className="d-flex">
+            <PerButton
+              type="primary"
+              text="新建部门"
+              class="mr-16"
+              icon={<PlusOutlined />}
+              p="department-cud"
+              onClick={() => setCreateVisible(true)}
+              disabled={null}
+            />
+          </div>
         </div>
-      </div>
+      )}
       <div className="playedu-main-body">
-        <div style={{ width: 366 }}>
+        {loading && (
+          <div className="float-left text-center mt-30">
+            <Spin></Spin>
+          </div>
+        )}
+        <div style={{ display: loading ? "none" : "block", width: 366 }}>
           {treeData.length > 0 && (
             <Tree
               onSelect={onSelect}
@@ -389,7 +422,6 @@ const DepartmentPage = () => {
               blockNode
               onDragEnter={onDragEnter}
               onDrop={onDrop}
-              defaultExpandAll={true}
               switcherIcon={<i className="iconfont icon-icon-fold c-gray" />}
             />
           )}

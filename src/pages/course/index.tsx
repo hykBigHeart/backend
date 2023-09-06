@@ -12,7 +12,6 @@ import {
   Dropdown,
 } from "antd";
 import { course } from "../../api";
-// import styles from "./index.module.less";
 import {
   PlusOutlined,
   DownOutlined,
@@ -33,43 +32,46 @@ const { confirm } = Modal;
 
 interface DataType {
   id: React.Key;
-  title: string;
-  created_at: string;
-  thumb: string;
   charge: number;
+  class_hour: number;
+  created_at: string;
+  is_required: number;
   is_show: number;
+  short_desc: string;
+  thumb: string;
+  title: string;
 }
 
 const CoursePage = () => {
   const result = new URLSearchParams(useLocation().search);
   const navigate = useNavigate();
-  const [list, setList] = useState<any>([]);
+  const [list, setList] = useState<DataType[]>([]);
   const [refresh, setRefresh] = useState(false);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
   const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [category_ids, setCategoryIds] = useState<any>([]);
-  const [title, setTitle] = useState<string>("");
-  const [dep_ids, setDepIds] = useState<any>([]);
+  const [loading, setLoading] = useState(true);
+  const [category_ids, setCategoryIds] = useState<number[]>([]);
+  const [title, setTitle] = useState("");
+  const [dep_ids, setDepIds] = useState<number[]>([]);
   const [selLabel, setLabel] = useState<string>(
     result.get("label") ? String(result.get("label")) : "全部分类"
   );
   const [selDepLabel, setDepLabel] = useState<string>(
     result.get("label") ? String(result.get("label")) : "全部部门"
   );
-  const [course_category_ids, setCourseCategoryIds] = useState<any>({});
-  const [course_dep_ids, setCourseDepIds] = useState<any>({});
-  const [categories, setCategories] = useState<any>({});
-  const [departments, setDepartments] = useState<any>({});
+  const [course_category_ids, setCourseCategoryIds] =
+    useState<CategoryIdsModel>({});
+  const [course_dep_ids, setCourseDepIds] = useState<DepIdsModel>({});
+  const [categories, setCategories] = useState<CategoriesModel>({});
+  const [departments, setDepartments] = useState<DepartmentsModel>({});
   const [tabKey, setTabKey] = useState(result.get("did") ? "2" : "1");
 
-  const [createVisible, setCreateVisible] = useState<boolean>(false);
-  const [updateVisible, setUpdateVisible] = useState<boolean>(false);
-  const [updateHourVisible, setHourUpdateVisible] = useState<boolean>(false);
-  const [updateAttachmentVisible, setUpdateAttachmentVisible] =
-    useState<boolean>(false);
-  const [cid, setCid] = useState<number>(0);
+  const [createVisible, setCreateVisible] = useState(false);
+  const [updateVisible, setUpdateVisible] = useState(false);
+  const [updateHourVisible, setHourUpdateVisible] = useState(false);
+  const [updateAttachmentVisible, setUpdateAttachmentVisible] = useState(false);
+  const [cid, setCid] = useState(0);
   const [cateId, setCateId] = useState(Number(result.get("cid")));
   const [did, setDid] = useState(Number(result.get("did")));
 
@@ -198,8 +200,8 @@ const CoursePage = () => {
       ),
     },
     {
-      title: "创建时间",
-      dataIndex: "created_at",
+      title: "上架时间",
+      dataIndex: "published_at",
       render: (text: string) => <span>{dateFormat(text)}</span>,
     },
     {
