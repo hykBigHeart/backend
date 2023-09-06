@@ -37,9 +37,8 @@ const SystemLogPage = () => {
   const [adminName, setAdminName] = useState("");
   const [created_at, setCreatedAt] = useState<string[]>([]);
   const [createdAts, setCreatedAts] = useState<any>([]);
-  const [param, setParam] = useState("");
-  const [result, setResult] = useState("");
   const [visiable, setVisiable] = useState(false);
+  const [admId, setAdmId] = useState(0);
 
   useEffect(() => {
     getData();
@@ -131,8 +130,7 @@ const SystemLogPage = () => {
           type="link"
           className="b-link c-red"
           onClick={() => {
-            setParam(record.param);
-            setResult(record.result);
+            setAdmId(Number(record.id));
             setVisiable(true);
           }}
         >
@@ -215,8 +213,7 @@ const SystemLogPage = () => {
         />
       </div>
       <AdminLogDetailDialog
-        param={param}
-        result={result}
+        id={admId}
         open={visiable}
         onCancel={() => setVisiable(false)}
       ></AdminLogDetailDialog>

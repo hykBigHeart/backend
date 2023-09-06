@@ -97,12 +97,13 @@ export const CourseUpdate: React.FC<PropInterface> = ({
         short_desc: res.data.course.short_desc,
         hasChapter: chapterType,
         published_at: res.data.course.published_at
-          ? dayjs(res.data.course.published_at, "YYYY-MM-DD HH:mm:ss")
+          ? dayjs(res.data.course.published_at)
           : "",
       });
       setType(type);
       setThumb(res.data.course.thumb);
       setInit(false);
+      console.log(dayjs(res.data.course.published_at, "YYYY-MM-DD HH:mm:ss"));
     });
   };
 
@@ -411,7 +412,7 @@ export const CourseUpdate: React.FC<PropInterface> = ({
                 <Space align="baseline" style={{ height: 32 }}>
                   <Form.Item name="published_at">
                     <DatePicker
-                    disabledDate={disabledDate}
+                      disabledDate={disabledDate}
                       format="YYYY-MM-DD HH:mm:ss"
                       style={{ width: 240 }}
                       showTime
