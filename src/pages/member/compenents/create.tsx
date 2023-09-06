@@ -161,6 +161,7 @@ export const MemberCreate: React.FC<PropInterface> = ({
                 rules={[{ required: true, message: "请输入登录邮箱!" }]}
               >
                 <Input
+                  autoComplete="off"
                   allowClear
                   style={{ width: 274 }}
                   placeholder="请输入学员登录邮箱"
@@ -172,6 +173,7 @@ export const MemberCreate: React.FC<PropInterface> = ({
                 rules={[{ required: true, message: "请输入登录密码!" }]}
               >
                 <Input.Password
+                  autoComplete="off"
                   allowClear
                   style={{ width: 274 }}
                   placeholder="请输入登录密码"

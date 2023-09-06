@@ -102,7 +102,7 @@ export const TreeCategory = (props: PropInterface) => {
           selectedKeys={selectKey}
           onExpand={onExpand}
           treeData={treeData}
-          defaultExpandAll={true}
+          // defaultExpandAll={true}
           switcherIcon={<i className="iconfont icon-icon-fold c-gray" />}
         />
       )}

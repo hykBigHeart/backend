@@ -287,7 +287,7 @@ const SystemConfigPage = () => {
                     }}
                   ></UploadImageButton>
                 </div>
-                <div className="helper-text ml-24">
+                <div className="helper-text ml-8">
                   （推荐尺寸:240x80px，支持JPG、PNG）
                 </div>
               </div>
@@ -309,7 +309,7 @@ const SystemConfigPage = () => {
                     }}
                   ></UploadImageButton>
                 </div>
-                <div className="helper-text ml-24">
+                <div className="helper-text ml-8">
                   （推荐尺寸:240x80px，支持JPG、PNG）
                 </div>
               </div>
@@ -388,7 +388,7 @@ const SystemConfigPage = () => {
               <Form.Item name="player.disabled_drag" valuePropName="checked">
                 <Switch onChange={onDragChange} />
               </Form.Item>
-              <div className="helper-text ml-24">
+              <div className="helper-text">
                 （打开后禁止学员在首次学习中拖动进度条，以防刷课）
               </div>
             </Space>
@@ -401,7 +401,7 @@ const SystemConfigPage = () => {
               >
                 <Switch onChange={onSwitchChange} />
               </Form.Item>
-              <div className="helper-text ml-24">
+              <div className="helper-text">
                 （打开后播放器会随机出现跑马灯水印，以防录屏传播）
               </div>
             </Space>
@@ -482,7 +482,7 @@ const SystemConfigPage = () => {
                       form.setFieldsValue({ "player.poster": url });
                     }}
                   ></UploadImageButton>
-                  <div className="helper-text ml-24">
+                  <div className="helper-text ml-8">
                     （推荐尺寸:1920x1080px，视频播放未开始时展示）
                   </div>
                 </div>
@@ -504,7 +504,7 @@ const SystemConfigPage = () => {
                       form.setFieldsValue({ "player.poster": url });
                     }}
                   ></UploadImageButton>
-                  <div className="helper-text ml-24">
+                  <div className="helper-text ml-8">
                     （推荐尺寸:1920x1080px，视频播放未开始时展示）
                   </div>
                 </div>
@@ -559,7 +559,7 @@ const SystemConfigPage = () => {
                       form.setFieldsValue({ "member.default_avatar": url });
                     }}
                   ></UploadImageButton>
-                  <div className="helper-text ml-24">（新学员的默认头像）</div>
+                  <div className="helper-text ml-8">（新学员的默认头像）</div>
                 </div>
               </div>
             </Form.Item>
@@ -579,7 +579,7 @@ const SystemConfigPage = () => {
                       form.setFieldsValue({ "member.default_avatar": url });
                     }}
                   ></UploadImageButton>
-                  <div className="helper-text ml-24">（新学员的默认头像）</div>
+                  <div className="helper-text ml-8">（新学员的默认头像）</div>
                 </div>
               </div>
             </Form.Item>
@@ -706,8 +706,8 @@ const SystemConfigPage = () => {
                   placeholder="请填写服务地址"
                 />
               </Form.Item>
-              <div className="helper-text ml-24">
-                LDAP的对外服务地址。例如：ldap.example.com
+              <div className="helper-text">
+                （LDAP的对外服务地址。例如：ldap.example.com）
               </div>
             </Space>
           </Form.Item>
@@ -720,8 +720,8 @@ const SystemConfigPage = () => {
                   placeholder="请填写用户名"
                 />
               </Form.Item>
-              <div className="helper-text ml-24">
-                用户登录到LDAP。例子：cn=admin,dc=playedu,dc=xyz
+              <div className="helper-text">
+                （用户登录到LDAP。例子：cn=admin,dc=playedu,dc=xyz）
               </div>
             </Space>
           </Form.Item>
@@ -741,7 +741,7 @@ const SystemConfigPage = () => {
                   placeholder="请填写基本DN"
                 />
               </Form.Item>
-              <div className="helper-text ml-24">从LDAP根节点搜索用户</div>
+              <div className="helper-text">（从LDAP根节点搜索用户）</div>
             </Space>
           </Form.Item>
           <Form.Item style={{ marginBottom: 30 }} label="附件用户DN">
@@ -753,8 +753,8 @@ const SystemConfigPage = () => {
                   placeholder="请填写基本DN"
                 />
               </Form.Item>
-              <div className="helper-text ml-24">
-                搜索用户时，基于基础DN的搜索范围限制
+              <div className="helper-text">
+                （搜索用户时，基于基础DN的搜索范围限制）
               </div>
             </Space>
           </Form.Item>

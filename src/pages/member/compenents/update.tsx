@@ -202,6 +202,7 @@ export const MemberUpdate: React.FC<PropInterface> = ({
                 rules={[{ required: true, message: "请输入登录邮箱!" }]}
               >
                 <Input
+                  autoComplete="off"
                   style={{ width: 274 }}
                   allowClear
                   placeholder="请输入学员登录邮箱"
@@ -209,6 +210,7 @@ export const MemberUpdate: React.FC<PropInterface> = ({
               </Form.Item>
               <Form.Item label="登录密码" name="password">
                 <Input.Password
+                  autoComplete="off"
                   style={{ width: 274 }}
                   allowClear
                   placeholder="请输入登录密码"

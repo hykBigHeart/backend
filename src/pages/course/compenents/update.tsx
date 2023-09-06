@@ -96,8 +96,8 @@ export const CourseUpdate: React.FC<PropInterface> = ({
         type: type,
         short_desc: res.data.course.short_desc,
         hasChapter: chapterType,
-        published_at: res.data.published_at
-          ? dayjs(res.data.published_at, "YYYY-MM-DD HH:mm:ss")
+        published_at: res.data.course.published_at
+          ? dayjs(res.data.course.published_at, "YYYY-MM-DD HH:mm:ss")
           : "",
       });
       setType(type);
@@ -186,6 +186,10 @@ export const CourseUpdate: React.FC<PropInterface> = ({
 
   const getType = (e: any) => {
     setType(e.target.value);
+  };
+
+  const disabledDate = (current: any) => {
+    return current && current >= moment().add(0, "days"); // 选择时间要大于等于当前天。若今天不能被选择，去掉等号即可。
   };
 
   return (
@@ -388,7 +392,7 @@ export const CourseUpdate: React.FC<PropInterface> = ({
                           form.setFieldsValue({ thumb: url });
                         }}
                       ></UploadImageButton>
-                      <span className="helper-text ml-16">
+                      <span className="helper-text ml-8">
                         （推荐尺寸:400x300px）
                       </span>
                     </div>
@@ -403,22 +407,19 @@ export const CourseUpdate: React.FC<PropInterface> = ({
                   maxLength={200}
                 />
               </Form.Item>
-              <Form.Item label="上架时间" required={true}>
+              <Form.Item label="上架时间">
                 <Space align="baseline" style={{ height: 32 }}>
-                  <Form.Item
-                    name="published_at"
-                    rules={[{ required: true, message: "请选择上架时间!" }]}
-                  >
+                  <Form.Item name="published_at">
                     <DatePicker
+                    disabledDate={disabledDate}
                       format="YYYY-MM-DD HH:mm:ss"
                       style={{ width: 240 }}
                       showTime
                       placeholder="请选择上架时间"
                     />
                   </Form.Item>
-
-                  <div className="helper-text ml-24">
-                    上架时间越晚，排序越靠前
+                  <div className="helper-text">
+                    （上架时间越晚，排序越靠前）
                   </div>
                 </Space>
               </Form.Item>
