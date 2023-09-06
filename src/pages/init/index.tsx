@@ -19,6 +19,7 @@ const InitPage = (props: Props) => {
 
   if (props.configData) {
     let config: SystemConfigStoreInterface = {
+      "ldap-enabled": props.configData["ldap-enabled"],
       systemName: props.configData["system.name"],
       systemLogo: props.configData["system.logo"],
       systemApiUrl: props.configData["system.api_url"],

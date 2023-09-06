@@ -21,6 +21,7 @@ import {
 import { user } from "../../api/index";
 import { dateFormat } from "../../utils/index";
 import { Link, Navigate, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { TreeDepartment, PerButton } from "../../compenents";
 import { MemberCreate } from "./compenents/create";
 import { MemberUpdate } from "./compenents/update";
@@ -66,6 +67,9 @@ const MemberPage = () => {
   const [user_dep_ids, setUserDepIds] = useState<DepIdsModel>({});
   const [departments, setDepartments] = useState<DepartmentsModel>({});
   const [did, setDid] = useState(Number(result.get("did")));
+  const ldapEnabled = useSelector(
+    (state: any) => state.systemConfig.value["ldap-enabled"]
+  );
 
   useEffect(() => {
     setDid(Number(result.get("did")));
@@ -180,19 +184,23 @@ const MemberPage = () => {
                 disabled={null}
               />
             </Link>
-            <div className="form-column"></div>
-            <Dropdown menu={{ items }}>
-              <Button
-                type="link"
-                className="b-link c-red"
-                onClick={(e) => e.preventDefault()}
-              >
-                <Space size="small" align="center">
-                  更多
-                  <DownOutlined />
-                </Space>
-              </Button>
-            </Dropdown>
+            {!ldapEnabled && (
+              <>
+                <div className="form-column"></div>
+                <Dropdown menu={{ items }}>
+                  <Button
+                    type="link"
+                    className="b-link c-red"
+                    onClick={(e) => e.preventDefault()}
+                  >
+                    <Space size="small" align="center">
+                      更多
+                      <DownOutlined />
+                    </Space>
+                  </Button>
+                </Dropdown>
+              </>
+            )}
           </Space>
         );
       },
@@ -297,16 +305,18 @@ const MemberPage = () => {
           </div>
           <div className="float-left j-b-flex mb-24">
             <div className="d-flex">
-              <PerButton
-                type="primary"
-                text="添加学员"
-                class="mr-16"
-                icon={<PlusOutlined />}
-                p="user-store"
-                onClick={() => setCreateVisible(true)}
-                disabled={null}
-              />
-              {dep_ids.length === 0 && (
+              {!ldapEnabled && (
+                <PerButton
+                  type="primary"
+                  text="添加学员"
+                  class="mr-16"
+                  icon={<PlusOutlined />}
+                  p="user-store"
+                  onClick={() => setCreateVisible(true)}
+                  disabled={null}
+                />
+              )}
+              {!ldapEnabled && dep_ids.length === 0 && (
                 <Link style={{ textDecoration: "none" }} to={`/member/import`}>
                   <PerButton
                     type="default"
