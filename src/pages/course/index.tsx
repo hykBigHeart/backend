@@ -200,8 +200,8 @@ const CoursePage = () => {
       ),
     },
     {
-      title: "创建时间",
-      dataIndex: "created_at",
+      title: "上架时间",
+      dataIndex: "published_at",
       render: (text: string) => <span>{dateFormat(text)}</span>,
     },
     {

@@ -695,7 +695,7 @@ export const CourseCreate: React.FC<PropInterface> = ({
                           form.setFieldsValue({ thumb: url });
                         }}
                       ></UploadImageButton>
-                      <span className="helper-text ml-16">
+                      <span className="helper-text ml-8">
                         （推荐尺寸:400x300px）
                       </span>
                     </div>
