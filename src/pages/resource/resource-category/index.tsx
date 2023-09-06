@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Tree, Modal, message, Tooltip } from "antd";
+import { Button, Tree, Modal, message, Tooltip, Spin } from "antd";
 // import styles from "./index.module.less";
 import { PlusOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 import { resourceCategory } from "../../../api/index";
@@ -24,6 +24,7 @@ const ResourceCategoryPage = () => {
     (state: any) => state.loginUser.value.permissions
   );
   const [loading, setLoading] = useState<boolean>(true);
+  const [init, setInit] = useState(true);
   const [refresh, setRefresh] = useState(false);
   const [treeData, setTreeData] = useState<Option[]>([]);
   const [selectKey, setSelectKey] = useState<number[]>([]);
@@ -33,6 +34,7 @@ const ResourceCategoryPage = () => {
   const [modal, contextHolder] = Modal.useModal();
 
   useEffect(() => {
+    setInit(true);
     getData();
   }, [refresh, permissions]);
 
@@ -56,6 +58,7 @@ const ResourceCategoryPage = () => {
         setTreeData(new_arr);
       }
       setLoading(false);
+      setInit(false);
     });
   };
 
@@ -390,7 +393,12 @@ const ResourceCategoryPage = () => {
         </div>
       </div>
       <div className="playedu-main-body">
-        <div style={{ width: 366 }}>
+        {init && (
+          <div className="float-left text-center mt-30">
+            <Spin></Spin>
+          </div>
+        )}
+        <div style={{ display: init ? "none" : "block", width: 366 }}>
           {treeData.length > 0 && (
             <Tree
               onSelect={onSelect}

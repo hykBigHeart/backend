@@ -12,13 +12,18 @@ import {
   Slider,
   Space,
 } from "antd";
-// import styles from "./index.module.less";
-import { appConfig } from "../../../api/index";
+import { appConfig, system } from "../../../api/index";
 import { UploadImageButton } from "../../../compenents";
+import { useDispatch } from "react-redux";
 import type { TabsProps } from "antd";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
+import {
+  SystemConfigStoreInterface,
+  saveConfigAction,
+} from "../../../store/system/systemConfigSlice";
 
 const SystemConfigPage = () => {
+  const dispatch = useDispatch();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [logo, setLogo] = useState("");
@@ -239,6 +244,23 @@ const SystemConfigPage = () => {
       message.success("保存成功！");
       setLoading(false);
       getDetail();
+      getSystemConfig();
+    });
+  };
+
+  const getSystemConfig = async () => {
+    system.getSystemConfig().then((res: any) => {
+      let data: SystemConfigStoreInterface = {
+        "ldap-enabled": res.data["ldap-enabled"],
+        systemName: res.data["system.name"],
+        systemLogo: res.data["system.logo"],
+        systemApiUrl: res.data["system.api_url"],
+        systemPcUrl: res.data["system.pc_url"],
+        systemH5Url: res.data["system.h5_url"],
+        memberDefaultAvatar: res.data["member.default_avatar"],
+        courseDefaultThumbs: res.data["default.course_thumbs"],
+      };
+      dispatch(saveConfigAction(data));
     });
   };
 
