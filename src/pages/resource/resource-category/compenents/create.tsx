@@ -123,6 +123,7 @@ export const ResourceCategoryCreate: React.FC<PropInterface> = ({
           width={416}
           onOk={() => form.submit()}
           onCancel={() => onCancel()}
+          okButtonProps={{ loading: loading }}
         >
           <div className="float-left mt-24">
             <Form

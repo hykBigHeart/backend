@@ -22,7 +22,7 @@ export const SystemAdministratorCreate: React.FC<PropInterface> = ({
   onCancel,
 }) => {
   const [form] = Form.useForm();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [roles, setRoles] = useState<selRoleModel[]>([]);
 
   useEffect(() => {
@@ -60,6 +60,10 @@ export const SystemAdministratorCreate: React.FC<PropInterface> = ({
   };
 
   const onFinish = (values: any) => {
+    if (loading) {
+      return;
+    }
+    setLoading(true);
     adminUser
       .storeAdminUser(
         values.name,
@@ -69,8 +73,12 @@ export const SystemAdministratorCreate: React.FC<PropInterface> = ({
         values.roleIds
       )
       .then((res: any) => {
+        setLoading(false);
         message.success("保存成功！");
         onCancel();
+      })
+      .catch((e) => {
+        setLoading(false);
       });
   };
 
@@ -100,6 +108,7 @@ export const SystemAdministratorCreate: React.FC<PropInterface> = ({
           onOk={() => form.submit()}
           onCancel={() => onCancel()}
           maskClosable={false}
+          okButtonProps={{ loading: loading }}
         >
           <div className="float-left mt-24">
             <Form

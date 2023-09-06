@@ -150,6 +150,7 @@ export const DepartmentUpdate: React.FC<PropInterface> = ({
           onOk={() => form.submit()}
           onCancel={() => onCancel()}
           maskClosable={false}
+          okButtonProps={{ loading: loading }}
         >
           {init && (
             <div className="float-left text-center mt-30">

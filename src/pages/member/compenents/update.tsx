@@ -25,7 +25,7 @@ export const MemberUpdate: React.FC<PropInterface> = ({
 }) => {
   const [form] = Form.useForm();
   const [init, setInit] = useState(true);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(false);
   const [departments, setDepartments] = useState<any>([]);
   const memberDefaultAvatar = useSelector(
     (state: any) => state.systemConfig.value.memberDefaultAvatar
@@ -105,11 +105,14 @@ export const MemberUpdate: React.FC<PropInterface> = ({
   };
 
   const onFinish = (values: any) => {
+    if (loading) {
+      return;
+    }
     if (values.idCard !== "" && !ValidataCredentials(values.idCard)) {
       message.error("请输入正确的身份证号！");
       return;
     }
-
+    setLoading(true);
     user
       .updateUser(
         id,
@@ -121,8 +124,12 @@ export const MemberUpdate: React.FC<PropInterface> = ({
         values.dep_ids
       )
       .then((res: any) => {
+        setLoading(false);
         message.success("保存成功！");
         onCancel();
+      })
+      .catch((e) => {
+        setLoading(false);
       });
   };
 
@@ -144,6 +151,7 @@ export const MemberUpdate: React.FC<PropInterface> = ({
           onOk={() => form.submit()}
           onCancel={() => onCancel()}
           maskClosable={false}
+          okButtonProps={{ loading: loading }}
         >
           {init && (
             <div className="float-left text-center mt-30">
