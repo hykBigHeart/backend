@@ -54,3 +54,7 @@ export function dropDiffClass(id: number, parent_id: number, ids: number[]) {
 export function checkDestroy(id: number) {
   return client.get(`/backend/v1/department/${id}/destroy`, {});
 }
+
+export function ldapSync() {
+  return client.post(`/backend/v1/department/ldap-sync`, {});
+}

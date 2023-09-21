@@ -32,6 +32,8 @@ const DepartmentPage = () => {
   const [updateVisible, setUpdateVisible] = useState(false);
   const [did, setDid] = useState<number>(0);
   const [modal, contextHolder] = Modal.useModal();
+
+  // 是否启用LDAP
   const ldapEnabled = useSelector(
     (state: any) => state.systemConfig.value["ldap-enabled"]
   );
@@ -389,9 +391,22 @@ const DepartmentPage = () => {
     }
   };
 
+  const ldapSync = () => {
+    if (loading) {
+      message.warning("正在同步，请稍后...");
+      return;
+    }
+    setLoading(true);
+    department.ldapSync().then(() => {
+      message.success("操作成功");
+      setLoading(false);
+      resetData();
+    });
+  };
+
   return (
     <>
-      {!ldapEnabled && (
+      {
         <div className="playedu-main-top mb-24">
           {contextHolder}
           <div className="d-flex">
@@ -404,9 +419,21 @@ const DepartmentPage = () => {
               onClick={() => setCreateVisible(true)}
               disabled={null}
             />
+
+            {ldapEnabled ? (
+              <PerButton
+                type="primary"
+                text="一键同步LDAP部门架构"
+                class="mr-16"
+                icon={null}
+                p="department-cud"
+                onClick={() => ldapSync()}
+                disabled={null}
+              />
+            ) : null}
           </div>
         </div>
-      )}
+      }
       <div className="playedu-main-body">
         {loading && (
           <div className="float-left text-center mt-30">
