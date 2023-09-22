@@ -168,7 +168,7 @@ const MemberDepartmentProgressPage = () => {
       let arr2: any = [];
       let value = 0;
       for (let key in data2) {
-        arr.push(data2[key]);
+        arr2.push(data2[key]);
         value += data2[key].class_hour;
       }
       let w_totalHour = value;
