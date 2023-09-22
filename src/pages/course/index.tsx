@@ -20,7 +20,7 @@ import {
 import type { MenuProps } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { dateFormat } from "../../utils/index";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { TreeDepartment, TreeCategory, PerButton } from "../../compenents";
 import type { TabsProps } from "antd";
 import { CourseCreate } from "./compenents/create";
@@ -42,17 +42,30 @@ interface DataType {
   title: string;
 }
 
+interface LocalSearchParamsInterface {
+  page?: number;
+  size?: number;
+  title?: string;
+}
+
 const CoursePage = () => {
   const result = new URLSearchParams(useLocation().search);
+
+  const [searchParams, setSearchParams] = useSearchParams({
+    page: "1",
+    size: "10",
+    title: "",
+  });
+  const page = parseInt(searchParams.get("page") || "1");
+  const size = parseInt(searchParams.get("size") || "10");
+  const title = searchParams.get("title");
+
   const navigate = useNavigate();
   const [list, setList] = useState<DataType[]>([]);
-  const [refresh, setRefresh] = useState(false);
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10);
   const [total, setTotal] = useState(0);
+  const [refresh, setRefresh] = useState(false);
   const [loading, setLoading] = useState(true);
   const [category_ids, setCategoryIds] = useState<number[]>([]);
-  const [title, setTitle] = useState("");
   const [dep_ids, setDepIds] = useState<number[]>([]);
   const [selLabel, setLabel] = useState<string>(
     result.get("label") ? String(result.get("label")) : "全部分类"
@@ -105,7 +118,9 @@ const CoursePage = () => {
             type=""
             text={"分类"}
             onUpdate={(keys: any, title: any) => {
-              setPage(1);
+              resetLocalSearchParams({
+                page: 1,
+              });
               setCategoryIds(keys);
               if (typeof title === "string") {
                 setLabel(title);
@@ -129,7 +144,9 @@ const CoursePage = () => {
             type="no-course"
             text={"部门"}
             onUpdate={(keys: any, title: any) => {
-              setPage(1);
+              resetLocalSearchParams({
+                page: 1,
+              });
               setDepIds(keys);
               setDepLabel(title);
             }}
@@ -346,7 +363,7 @@ const CoursePage = () => {
       depIds = dep_ids.join(",");
     }
     course
-      .courseList(page, size, "", "", title, depIds, categoryIds)
+      .courseList(page, size, "", "", title ? title : "", depIds, categoryIds)
       .then((res: any) => {
         setTotal(res.data.total);
         setList(res.data.data);
@@ -362,10 +379,12 @@ const CoursePage = () => {
   };
   // 重置列表
   const resetList = () => {
-    setPage(1);
-    setSize(10);
+    resetLocalSearchParams({
+      page: 1,
+      size: 10,
+      title: "",
+    });
     setList([]);
-    setTitle("");
     setRefresh(!refresh);
   };
 
@@ -379,8 +398,28 @@ const CoursePage = () => {
   };
 
   const handlePageChange = (page: number, pageSize: number) => {
-    setPage(page);
-    setSize(pageSize);
+    resetLocalSearchParams({
+      page: page,
+      size: pageSize,
+    });
+  };
+
+  const resetLocalSearchParams = (params: LocalSearchParamsInterface) => {
+    setSearchParams(
+      (prev) => {
+        if (typeof params.title !== "undefined") {
+          prev.set("title", params.title);
+        }
+        if (typeof params.page !== "undefined") {
+          prev.set("page", params.page + "");
+        }
+        if (typeof params.size !== "undefined") {
+          prev.set("size", params.size + "");
+        }
+        return prev;
+      },
+      { replace: true }
+    );
   };
 
   const onChange = (key: string) => {
@@ -419,9 +458,11 @@ const CoursePage = () => {
               <div className="d-flex mr-24">
                 <Typography.Text>课程名称：</Typography.Text>
                 <Input
-                  value={title}
+                  value={title || ""}
                   onChange={(e) => {
-                    setTitle(e.target.value);
+                    resetLocalSearchParams({
+                      title: e.target.value,
+                    });
                   }}
                   allowClear
                   style={{ width: 160 }}
@@ -435,7 +476,9 @@ const CoursePage = () => {
                 <Button
                   type="primary"
                   onClick={() => {
-                    setPage(1);
+                    resetLocalSearchParams({
+                      page: 1,
+                    });
                     setRefresh(!refresh);
                   }}
                 >

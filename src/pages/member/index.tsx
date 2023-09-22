@@ -20,7 +20,7 @@ import {
 } from "@ant-design/icons";
 import { user } from "../../api/index";
 import { dateFormat } from "../../utils/index";
-import { Link, Navigate, useLocation } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { TreeDepartment, PerButton } from "../../compenents";
 import { MemberCreate } from "./compenents/create";
@@ -46,17 +46,32 @@ interface DataType {
   verify_at?: string;
 }
 
+interface LocalSearchParamsInterface {
+  page?: number;
+  size?: number;
+  nickname?: string;
+  email?: string;
+}
+
 const MemberPage = () => {
   const result = new URLSearchParams(useLocation().search);
+
+  const [searchParams, setSearchParams] = useSearchParams({
+    page: "1",
+    size: "10",
+    nickname: "",
+    email: "",
+  });
+  const page = parseInt(searchParams.get("page") || "1");
+  const size = parseInt(searchParams.get("size") || "10");
+  const nickname = searchParams.get("nickname");
+  const email = searchParams.get("email");
+
   const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10);
   const [list, setList] = useState<DataType[]>([]);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
 
-  const [nickname, setNickname] = useState("");
-  const [email, setEmail] = useState("");
   const [dep_ids, setDepIds] = useState<number[]>([]);
   const [selLabel, setLabel] = useState<string>(
     result.get("label") ? String(result.get("label")) : "全部部门"
@@ -231,10 +246,12 @@ const MemberPage = () => {
   };
 
   const resetData = () => {
-    setNickname("");
-    setEmail("");
-    setPage(1);
-    setSize(10);
+    resetLocalSearchParams({
+      page: 1,
+      size: 10,
+      nickname: "",
+      email: "",
+    });
     setList([]);
     setRefresh(!refresh);
   };
@@ -249,8 +266,31 @@ const MemberPage = () => {
   };
 
   const handlePageChange = (page: number, pageSize: number) => {
-    setPage(page);
-    setSize(pageSize);
+    resetLocalSearchParams({
+      page: page,
+      size: pageSize,
+    });
+  };
+
+  const resetLocalSearchParams = (params: LocalSearchParamsInterface) => {
+    setSearchParams(
+      (prev) => {
+        if (typeof params.nickname !== "undefined") {
+          prev.set("nickname", params.nickname);
+        }
+        if (typeof params.email !== "undefined") {
+          prev.set("email", params.email);
+        }
+        if (typeof params.page !== "undefined") {
+          prev.set("page", params.page + "");
+        }
+        if (typeof params.size !== "undefined") {
+          prev.set("size", params.size + "");
+        }
+        return prev;
+      },
+      { replace: true }
+    );
   };
 
   const delUser = (id: number) => {
@@ -287,7 +327,9 @@ const MemberPage = () => {
             type=""
             text={"部门"}
             onUpdate={(keys: any, title: any) => {
-              setPage(1);
+              resetLocalSearchParams({
+                page: 1,
+              });
               setDepIds(keys);
               var index = title.indexOf("(");
               if (index !== -1) {
@@ -352,9 +394,11 @@ const MemberPage = () => {
               <div className="d-flex mr-24">
                 <Typography.Text>姓名：</Typography.Text>
                 <Input
-                  value={nickname}
+                  value={nickname || ""}
                   onChange={(e) => {
-                    setNickname(e.target.value);
+                    resetLocalSearchParams({
+                      nickname: e.target.value,
+                    });
                   }}
                   style={{ width: 160 }}
                   placeholder="请输入姓名关键字"
@@ -364,9 +408,11 @@ const MemberPage = () => {
               <div className="d-flex mr-24">
                 <Typography.Text>邮箱：</Typography.Text>
                 <Input
-                  value={email}
+                  value={email || ""}
                   onChange={(e) => {
-                    setEmail(e.target.value);
+                    resetLocalSearchParams({
+                      email: e.target.value,
+                    });
                   }}
                   style={{ width: 160 }}
                   placeholder="请输入邮箱账号"
@@ -380,7 +426,9 @@ const MemberPage = () => {
                 <Button
                   type="primary"
                   onClick={() => {
-                    setPage(1);
+                    resetLocalSearchParams({
+                      page: 1,
+                    });
                     setRefresh(!refresh);
                   }}
                 >
