@@ -259,6 +259,8 @@ const SystemConfigPage = () => {
         systemH5Url: res.data["system.h5_url"],
         memberDefaultAvatar: res.data["member.default_avatar"],
         courseDefaultThumbs: res.data["default.course_thumbs"],
+        departments: res.data["departments"],
+        resourceCategories: res.data["resource_categories"],
       };
       dispatch(saveConfigAction(data));
     });

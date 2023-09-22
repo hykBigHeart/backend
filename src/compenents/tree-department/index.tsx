@@ -1,6 +1,7 @@
 import { Button, Input, message, Tree } from "antd";
 import { useState, useEffect } from "react";
 import { department } from "../../api/index";
+import { useSelector } from "react-redux";
 
 interface Option {
   key: string | number;
@@ -22,6 +23,9 @@ export const TreeDepartment = (props: PropInterface) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [selectKey, setSelectKey] = useState<number[]>([]);
   const [userTotal, setUserTotal] = useState(0);
+  const localDepartments = useSelector(
+    (state: any) => state.systemConfig.value.departments
+  );
 
   useEffect(() => {
     if (props.selected && props.selected.length > 0) {
@@ -31,18 +35,30 @@ export const TreeDepartment = (props: PropInterface) => {
 
   useEffect(() => {
     setLoading(true);
-    department.departmentList().then((res: any) => {
-      const departments: DepartmentsBoxModel = res.data.departments;
-      const departCount: DepIdsModel = res.data.dep_user_count;
-      setUserTotal(res.data.user_total);
-      if (JSON.stringify(departments) !== "{}") {
-        if (props.showNum) {
+    if (props.showNum) {
+      department.departmentList().then((res: any) => {
+        const departments: DepartmentsBoxModel = res.data.departments;
+        const departCount: DepIdsModel = res.data.dep_user_count;
+        setUserTotal(res.data.user_total);
+        if (JSON.stringify(departments) !== "{}") {
           const new_arr: any[] = checkNewArr(departments, 0, departCount);
           setTreeData(new_arr);
         } else {
-          const new_arr: any[] = checkArr(departments, 0);
+          const new_arr: Option[] = [
+            {
+              key: "",
+              title: "全部",
+              children: [],
+            },
+          ];
           setTreeData(new_arr);
         }
+        setLoading(false);
+      });
+    } else {
+      if (JSON.stringify(localDepartments) !== "{}") {
+        const new_arr: any[] = checkArr(localDepartments, 0);
+        setTreeData(new_arr);
       } else {
         const new_arr: Option[] = [
           {
@@ -54,8 +70,8 @@ export const TreeDepartment = (props: PropInterface) => {
         setTreeData(new_arr);
       }
       setLoading(false);
-    });
-  }, [props.refresh]);
+    }
+  }, [props.refresh, localDepartments]);
 
   const checkNewArr = (
     departments: DepartmentsBoxModel,

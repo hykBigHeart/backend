@@ -1,6 +1,6 @@
 import { Tree } from "antd";
 import { useState, useEffect } from "react";
-import { resourceCategory } from "../../api/index";
+import { useSelector } from "react-redux";
 
 interface Option {
   key: string | number;
@@ -19,6 +19,9 @@ export const TreeCategory = (props: PropInterface) => {
   const [treeData, setTreeData] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [selectKey, setSelectKey] = useState<number[]>([]);
+  const resourceCategories = useSelector(
+    (state: any) => state.systemConfig.value.resourceCategories
+  );
 
   useEffect(() => {
     if (props.selected && props.selected.length > 0) {
@@ -27,21 +30,17 @@ export const TreeCategory = (props: PropInterface) => {
   }, [props.selected]);
 
   useEffect(() => {
-    resourceCategory.resourceCategoryList().then((res: any) => {
-      const categories: CategoriesBoxModel = res.data.categories;
-      if (JSON.stringify(categories) !== "{}") {
-        const new_arr: Option[] = checkArr(categories, 0);
-        if (props.type === "no-cate") {
-          new_arr.unshift({
-            key: 0,
-            title: <span className="tree-title-elli">未分类</span>,
-          });
-        }
-
-        setTreeData(new_arr);
+    if (JSON.stringify(resourceCategories) !== "{}") {
+      const new_arr: Option[] = checkArr(resourceCategories, 0);
+      if (props.type === "no-cate") {
+        new_arr.unshift({
+          key: 0,
+          title: <span className="tree-title-elli">未分类</span>,
+        });
       }
-    });
-  }, []);
+      setTreeData(new_arr);
+    }
+  }, [resourceCategories]);
 
   const checkArr = (categories: CategoriesBoxModel, id: number) => {
     const arr = [];

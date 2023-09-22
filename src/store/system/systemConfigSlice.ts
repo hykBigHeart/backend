@@ -9,6 +9,8 @@ type SystemConfigStoreInterface = {
   systemName?: string;
   memberDefaultAvatar?: string;
   courseDefaultThumbs?: string[];
+  departments: any;
+  resourceCategories: any;
 };
 
 const systemConfigSlice = createSlice({
