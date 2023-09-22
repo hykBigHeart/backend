@@ -8,7 +8,8 @@ import type { DataNode, TreeProps } from "antd/es/tree";
 import { DepartmentCreate } from "./compenents/create";
 import { DepartmentUpdate } from "./compenents/update";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { saveDepartmentsAction } from "../../store/system/systemConfigSlice";
 
 const { confirm } = Modal;
 
@@ -19,6 +20,7 @@ interface Option {
 }
 
 const DepartmentPage = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const permissions = useSelector(
     (state: any) => state.loginUser.value.permissions
@@ -57,6 +59,7 @@ const DepartmentPage = () => {
   const getData = () => {
     department.departmentList().then((res: any) => {
       const departments: DepartmentsBoxModel = res.data.departments;
+      dispatch(saveDepartmentsAction(res.data.departments));
       if (JSON.stringify(departments) !== "{}") {
         const new_arr: Option[] = checkArr(departments, 0);
         setTreeData(new_arr);

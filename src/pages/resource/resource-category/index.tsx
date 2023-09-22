@@ -8,7 +8,8 @@ import type { DataNode, TreeProps } from "antd/es/tree";
 import { ResourceCategoryCreate } from "./compenents/create";
 import { ResourceCategoryUpdate } from "./compenents/update";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { saveCategoriesAction } from "../../../store/system/systemConfigSlice";
 
 const { confirm } = Modal;
 
@@ -19,6 +20,7 @@ interface Option {
 }
 
 const ResourceCategoryPage = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const permissions = useSelector(
     (state: any) => state.loginUser.value.permissions
@@ -53,6 +55,7 @@ const ResourceCategoryPage = () => {
     setLoading(true);
     resourceCategory.resourceCategoryList().then((res: any) => {
       const categories: CategoriesBoxModel = res.data.categories;
+      dispatch(saveCategoriesAction(res.data.categories));
       if (JSON.stringify(categories) !== "{}") {
         const new_arr: Option[] = checkArr(categories, 0);
         setTreeData(new_arr);
