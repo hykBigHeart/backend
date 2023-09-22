@@ -366,7 +366,6 @@ const MemberPage = () => {
                     class="mr-16"
                     icon={null}
                     p="user-store"
-                    onClick={() => null}
                     disabled={null}
                   />
                 </Link>
@@ -384,7 +383,6 @@ const MemberPage = () => {
                     class="mr-16"
                     icon={null}
                     p="department-user-learn"
-                    onClick={() => null}
                     disabled={null}
                   />
                 </Link>
