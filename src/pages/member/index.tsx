@@ -67,7 +67,7 @@ const MemberPage = () => {
   const nickname = searchParams.get("nickname");
   const email = searchParams.get("email");
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [list, setList] = useState<DataType[]>([]);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
@@ -226,15 +226,26 @@ const MemberPage = () => {
     getData();
   }, [refresh, page, size, dep_ids]);
 
+  useEffect(() => {
+    const handlePageBack = () => {
+      getData();
+    };
+    window.addEventListener("popstate", handlePageBack);
+    return () => {
+      window.removeEventListener("popstate", handlePageBack);
+    };
+  }, []);
+
   const getData = () => {
-    let depIds = dep_ids.join(",");
+    if (loading) {
+      return;
+    }
     setLoading(true);
     user
       .userList(page, size, {
         name: nickname,
         email: email,
-        id_card: "",
-        dep_ids: depIds,
+        dep_ids: dep_ids.join(","),
       })
       .then((res: any) => {
         setList(res.data.data);
