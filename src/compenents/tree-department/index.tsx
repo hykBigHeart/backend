@@ -10,19 +10,18 @@ interface Option {
 }
 
 interface PropInterface {
-  type: string;
   text: string;
-  refresh: boolean;
   showNum: boolean;
   selected: any;
+  depUserCount?: KeyNumberObject;
+  userCount?: number;
   onUpdate: (keys: any, title: any) => void;
 }
 
 export const TreeDepartment = (props: PropInterface) => {
   const [treeData, setTreeData] = useState<any>([]);
-  const [loading, setLoading] = useState<boolean>(true);
   const [selectKey, setSelectKey] = useState<number[]>([]);
-  const [userTotal, setUserTotal] = useState(0);
+  // 本地缓存
   const localDepartments = useSelector(
     (state: any) => state.systemConfig.value.departments
   );
@@ -34,44 +33,25 @@ export const TreeDepartment = (props: PropInterface) => {
   }, [props.selected]);
 
   useEffect(() => {
-    setLoading(true);
-    if (props.showNum) {
-      department.departmentList().then((res: any) => {
-        const departments: DepartmentsBoxModel = res.data.departments;
-        const departCount: DepIdsModel = res.data.dep_user_count;
-        setUserTotal(res.data.user_total);
-        if (JSON.stringify(departments) !== "{}") {
-          const new_arr: any[] = checkNewArr(departments, 0, departCount);
-          setTreeData(new_arr);
-        } else {
-          const new_arr: Option[] = [
-            {
-              key: "",
-              title: "全部",
-              children: [],
-            },
-          ];
-          setTreeData(new_arr);
-        }
-        setLoading(false);
-      });
-    } else {
-      if (JSON.stringify(localDepartments) !== "{}") {
-        const new_arr: any[] = checkArr(localDepartments, 0);
-        setTreeData(new_arr);
+    if (JSON.stringify(localDepartments) !== "{}") {
+      let data: any[] = [];
+      if (props.depUserCount) {
+        data = checkNewArr(localDepartments, 0, props.depUserCount);
       } else {
-        const new_arr: Option[] = [
-          {
-            key: "",
-            title: "全部",
-            children: [],
-          },
-        ];
-        setTreeData(new_arr);
+        data = checkArr(localDepartments, 0);
       }
-      setLoading(false);
+      setTreeData(data);
+    } else {
+      const data: Option[] = [
+        {
+          key: "",
+          title: "全部",
+          children: [],
+        },
+      ];
+      setTreeData(data);
     }
-  }, [props.refresh, localDepartments]);
+  }, [localDepartments, props.depUserCount]);
 
   const checkNewArr = (
     departments: DepartmentsBoxModel,
@@ -173,7 +153,7 @@ export const TreeDepartment = (props: PropInterface) => {
         onClick={() => onSelect([], "")}
       >
         全部{props.text}
-        {props.showNum && userTotal ? "(" + userTotal + ")" : ""}
+        {props.showNum && props.userCount ? "(" + props.userCount + ")" : ""}
       </div>
       {treeData.length > 0 && (
         <Tree

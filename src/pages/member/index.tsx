@@ -70,7 +70,9 @@ const MemberPage = () => {
   const [loading, setLoading] = useState(false);
   const [list, setList] = useState<DataType[]>([]);
   const [total, setTotal] = useState(0);
+  const [pureTotal, setPureTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
+  const [depUserCount, setDepUserCount] = useState<KeyNumberObject>();
 
   const [dep_ids, setDepIds] = useState<number[]>([]);
   const [selLabel, setLabel] = useState<string>(
@@ -252,6 +254,8 @@ const MemberPage = () => {
         setDepartments(res.data.departments);
         setUserDepIds(res.data.user_dep_ids);
         setTotal(res.data.total);
+        setPureTotal(res.data.pure_total);
+        setDepUserCount(res.data.dep_user_count);
         setLoading(false);
       });
   };
@@ -333,9 +337,9 @@ const MemberPage = () => {
         <div className="left-box">
           <TreeDepartment
             selected={dep_ids}
-            refresh={refresh}
             showNum={true}
-            type=""
+            userCount={pureTotal}
+            depUserCount={depUserCount}
             text={"部门"}
             onUpdate={(keys: any, title: any) => {
               resetLocalSearchParams({
