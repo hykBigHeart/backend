@@ -727,7 +727,7 @@ const SystemConfigPage = () => {
                 />
               </Form.Item>
               <div className="helper-text">
-                （LDAP的对外服务地址。例如：ldap.example.com）
+                （LDAP的对外服务地址。例如：ldap://ldap.example.com:389）
               </div>
             </Space>
           </Form.Item>
@@ -761,7 +761,7 @@ const SystemConfigPage = () => {
                   placeholder="请填写基本DN"
                 />
               </Form.Item>
-              <div className="helper-text">（从LDAP根节点搜索用户）</div>
+              <div className="helper-text">（从此节点搜索用户）</div>
             </Space>
           </Form.Item>
           <Form.Item
