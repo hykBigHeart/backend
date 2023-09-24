@@ -17,7 +17,6 @@ interface PropInterface {
 
 export const TreeCategory = (props: PropInterface) => {
   const [treeData, setTreeData] = useState<any>([]);
-  const [loading, setLoading] = useState<boolean>(true);
   const [selectKey, setSelectKey] = useState<number[]>([]);
   const resourceCategories = useSelector(
     (state: any) => state.systemConfig.value.resourceCategories
