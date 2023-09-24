@@ -6,7 +6,7 @@ interface PropInterface {
   text: string;
   p: string;
   class: string;
-  icon: any;
+  icon?: any;
   onClick?: () => void;
   disabled: any;
 }

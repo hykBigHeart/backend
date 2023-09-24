@@ -129,8 +129,10 @@ export const TreeDepartment = (props: PropInterface) => {
     if (info) {
       label = info.node.title.props.children;
     }
-    props.onUpdate(selectedKeys, label);
-    setSelectKey(selectedKeys);
+    if (selectedKeys.length <= 1) {
+      props.onUpdate(selectedKeys, label);
+      setSelectKey(selectedKeys);
+    }
   };
 
   const onExpand = (selectedKeys: any, info: any) => {
@@ -138,8 +140,10 @@ export const TreeDepartment = (props: PropInterface) => {
     if (info) {
       label = info.node.title.props.children;
     }
-    props.onUpdate(selectedKeys, label);
-    setSelectKey(selectedKeys);
+    if (selectedKeys.length <= 1) {
+      props.onUpdate(selectedKeys, label);
+      setSelectKey(selectedKeys);
+    }
   };
 
   return (

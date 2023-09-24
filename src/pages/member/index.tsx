@@ -396,7 +396,6 @@ const MemberPage = () => {
                     type="default"
                     text="部门学员进度"
                     class="mr-16"
-                    icon={null}
                     p="department-user-learn"
                     disabled={null}
                   />
