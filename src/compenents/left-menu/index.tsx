@@ -37,16 +37,16 @@ const items = [
     <i className="iconfont icon-icon-category" />,
     null,
     null,
-    null
+    "resource-category-menu"
   ),
   getItem(
     "资源管理",
     "resource",
     <i className="iconfont icon-icon-file" />,
     [
-      getItem("视频", "/videos", null, null, null, null),
-      getItem("图片", "/images", null, null, null, null),
-      getItem("课件", "/courseware", null, null, null, null),
+      getItem("视频", "/videos", null, null, null, "resource-menu"),
+      getItem("图片", "/images", null, null, null, "resource-menu"),
+      getItem("课件", "/courseware", null, null, null, "resource-menu"),
     ],
     null,
     null
@@ -92,7 +92,6 @@ const items = [
         "admin-user-index"
       ),
       getItem("管理日志", "/system/adminlog", null, null, null, "admin-log"),
-      // getItem("角色配置", "/system/adminroles", null, null, null, null),
     ],
     null,
     null
@@ -120,6 +119,7 @@ export const LeftMenu: React.FC = () => {
     }
     return [];
   };
+
   const openKeyMerge = (pathname: string): string[] => {
     let newOpenKeys = hit(pathname);
     for (let i = 0; i < openKeys.length; i++) {
@@ -166,8 +166,14 @@ export const LeftMenu: React.FC = () => {
 
     for (let i in items) {
       let menuItem = items[i];
-      if (!menuItem.children) {
-        // 一级菜单不做权限控制
+      // 一级菜单=>没有子菜单&配置了权限
+      if (menuItem.children === null) {
+        if (
+          menuItem.permission !== null &&
+          typeof permissions[menuItem.permission] === "undefined"
+        ) {
+          continue;
+        }
         menus.push(menuItem);
         continue;
       }

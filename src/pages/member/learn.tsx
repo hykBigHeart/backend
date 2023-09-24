@@ -260,7 +260,7 @@ const MemberLearnPage = () => {
       dataIndex: "finished_at",
       render: (_, record: any) => (
         <>
-          {records[record.id] ? (
+          {records[record.id] && records[record.id].finished_at ? (
             <span>{dateFormat(String(records[record.id].finished_at))}</span>
           ) : (
             <span>-</span>

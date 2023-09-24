@@ -1,4 +1,8 @@
 declare global {
+  interface KeyNumberObject {
+    [key: number]: number;
+  }
+
   interface FileItem {
     id: string; //上传文件的唯一id
     file: File; //上传的文件资源

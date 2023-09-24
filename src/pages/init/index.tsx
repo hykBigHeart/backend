@@ -27,6 +27,8 @@ const InitPage = (props: Props) => {
       systemH5Url: props.configData["system.h5_url"],
       memberDefaultAvatar: props.configData["member.default_avatar"],
       courseDefaultThumbs: props.configData["default.course_thumbs"],
+      departments: props.configData["departments"],
+      resourceCategories: props.configData["resource_categories"],
     };
     dispatch(saveConfigAction(config));
   }

@@ -7,7 +7,7 @@ interface PropInterface {
   p: string;
   class: string;
   icon: any;
-  onClick: () => void;
+  onClick?: () => void;
   disabled: any;
 }
 
@@ -30,7 +30,7 @@ export const PerButton = (props: PropInterface) => {
           danger
           icon={props.icon}
           onClick={() => {
-            props.onClick();
+            props.onClick && props.onClick();
           }}
           disabled={props.disabled}
         >
@@ -43,7 +43,7 @@ export const PerButton = (props: PropInterface) => {
           type={props.type}
           icon={props.icon}
           onClick={() => {
-            props.onClick();
+            props.onClick && props.onClick();
           }}
           disabled={props.disabled}
         >

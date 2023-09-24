@@ -117,17 +117,17 @@ const MemberDepartmentProgressPage = () => {
     setSize(pageSize);
   };
 
-  const getTotalHours = (params: any) => {
-    if (params) {
-      let value = 0;
-      for (let key in params) {
-        value += params[key].hour_count;
-      }
-      return value;
-    } else {
-      return 0;
-    }
-  };
+  // const getTotalHours = (params: any) => {
+  //   if (params) {
+  //     let value = 0;
+  //     for (let key in params) {
+  //       value += params[key].hour_count;
+  //     }
+  //     return value;
+  //   } else {
+  //     return 0;
+  //   }
+  // };
 
   const getFinishedHours = (params: any) => {
     if (params) {
@@ -164,7 +164,17 @@ const MemberDepartmentProgressPage = () => {
       let sheetName = "sheet1";
       let data = [];
       let arr = ["学员"];
-      courses.map((item: any) => {
+      let data2 = res.data.courses;
+      let arr2: any = [];
+      let value = 0;
+      for (let key in data2) {
+        arr2.push(data2[key]);
+        value += data2[key].class_hour;
+      }
+      let w_totalHour = value;
+      let w_courses = arr2;
+      let w_records = res.data.user_course_records;
+      w_courses.map((item: any) => {
         arr.push(item.title);
       });
       arr.push("总计课时");
@@ -172,21 +182,23 @@ const MemberDepartmentProgressPage = () => {
 
       res.data.data.forEach((item: any) => {
         let arr = [item.name];
-        courses.map((it: any) => {
-          if (records && records[item.id] && records[item.id][it.id]) {
-            if (records && records[item.id][it.id].is_finished === 1) {
+        w_courses.map((it: any) => {
+          if (w_records && w_records[item.id] && w_records[item.id][it.id]) {
+            if (w_records && w_records[item.id][it.id].is_finished === 1) {
               arr.push("已学完");
             } else {
               arr.push(
-                records &&
-                  records[item.id][it.id].finished_count + " / " + it.class_hour
+                w_records &&
+                  w_records[item.id][it.id].finished_count +
+                    " / " +
+                    it.class_hour
               );
             }
           } else {
             arr.push(0 + " / " + it.class_hour);
           }
         });
-        arr.push(getFinishedHours(records[item.id]) + " / " + totalHour);
+        arr.push(getFinishedHours(w_records[item.id]) + " / " + w_totalHour);
         data.push(arr);
       });
 

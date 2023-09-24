@@ -159,15 +159,7 @@ export const UploadVideoSub = (props: PropsInterface) => {
     <>
       <Row style={{ width: 752, minHeight: 520 }}>
         <Col span={7}>
-          {init && (
-            <div className="float-left text-center mt-30">
-              <Spin></Spin>
-            </div>
-          )}
-          <div
-            className="float-left"
-            style={{ display: init ? "none" : "block" }}
-          >
+          <div className="float-left">
             <TreeCategory
               selected={[]}
               type="no-cate"

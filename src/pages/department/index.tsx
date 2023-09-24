@@ -8,7 +8,8 @@ import type { DataNode, TreeProps } from "antd/es/tree";
 import { DepartmentCreate } from "./compenents/create";
 import { DepartmentUpdate } from "./compenents/update";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { saveDepartmentsAction } from "../../store/system/systemConfigSlice";
 
 const { confirm } = Modal;
 
@@ -19,6 +20,7 @@ interface Option {
 }
 
 const DepartmentPage = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const permissions = useSelector(
     (state: any) => state.loginUser.value.permissions
@@ -32,6 +34,8 @@ const DepartmentPage = () => {
   const [updateVisible, setUpdateVisible] = useState(false);
   const [did, setDid] = useState<number>(0);
   const [modal, contextHolder] = Modal.useModal();
+
+  // 是否启用LDAP
   const ldapEnabled = useSelector(
     (state: any) => state.systemConfig.value["ldap-enabled"]
   );
@@ -55,6 +59,7 @@ const DepartmentPage = () => {
   const getData = () => {
     department.departmentList().then((res: any) => {
       const departments: DepartmentsBoxModel = res.data.departments;
+      dispatch(saveDepartmentsAction(res.data.departments));
       if (JSON.stringify(departments) !== "{}") {
         const new_arr: Option[] = checkArr(departments, 0);
         setTreeData(new_arr);
@@ -389,9 +394,22 @@ const DepartmentPage = () => {
     }
   };
 
+  const ldapSync = () => {
+    if (loading) {
+      message.warning("正在同步，请稍后...");
+      return;
+    }
+    setLoading(true);
+    department.ldapSync().then(() => {
+      message.success("操作成功");
+      setLoading(false);
+      resetData();
+    });
+  };
+
   return (
     <>
-      {!ldapEnabled && (
+      {
         <div className="playedu-main-top mb-24">
           {contextHolder}
           <div className="d-flex">
@@ -404,9 +422,21 @@ const DepartmentPage = () => {
               onClick={() => setCreateVisible(true)}
               disabled={null}
             />
+
+            {ldapEnabled ? (
+              <PerButton
+                type="primary"
+                text="一键同步LDAP部门架构"
+                class="mr-16"
+                icon={null}
+                p="department-cud"
+                onClick={() => ldapSync()}
+                disabled={null}
+              />
+            ) : null}
           </div>
         </div>
-      )}
+      }
       <div className="playedu-main-body">
         {loading && (
           <div className="float-left text-center mt-30">
