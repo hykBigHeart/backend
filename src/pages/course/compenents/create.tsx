@@ -330,6 +330,10 @@ export const CourseCreate: React.FC<PropInterface> = ({
       });
     } else {
       setChapterType(e.target.value);
+      setChapters([]);
+      setHours([]);
+      setChapterHours([]);
+      setTreeData([]);
     }
   };
 
