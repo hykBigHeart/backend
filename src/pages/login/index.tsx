@@ -13,6 +13,7 @@ import {
   SystemConfigStoreInterface,
   saveConfigAction,
 } from "../../store/system/systemConfigSlice";
+import { Footer } from "../../compenents/footer";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
@@ -125,6 +126,9 @@ const LoginPage = () => {
             </Button>
           </div>
         </div>
+      </div>
+      <div className={styles["footer-box"]}>
+        <Footer type="none"></Footer>
       </div>
     </div>
   );
