@@ -111,7 +111,7 @@ export const SystemAdministratorUpdate: React.FC<PropInterface> = ({
     <>
       {open ? (
         <Modal
-          title="编辑管理人员"
+          title="编辑管理员"
           centered
           forceRender
           open={true}
