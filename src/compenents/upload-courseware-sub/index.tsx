@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Row, Col, Empty, Table, Spin } from "antd";
+import { Row, Col, Empty, Table, Spin, Typography, Input, Button } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { resource } from "../../api";
 import styles from "./index.module.less";
@@ -47,6 +47,7 @@ export const UploadCoursewareSub = (props: PropsInterface) => {
   const [size, setSize] = useState(10);
   const [total, setTotal] = useState(0);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
+  const [title, setTitle] = useState("");
 
   // 加载列表
   useEffect(() => {
@@ -70,7 +71,7 @@ export const UploadCoursewareSub = (props: PropsInterface) => {
         size,
         "",
         "",
-        "",
+        title,
         "WORD,EXCEL,PPT,PDF,TXT,RAR,ZIP",
         categoryIds
       )
@@ -92,6 +93,7 @@ export const UploadCoursewareSub = (props: PropsInterface) => {
   const resetVideoList = () => {
     setPage(1);
     setVideoList([]);
+    setTitle("");
     setRefresh(!refresh);
   };
 
@@ -178,14 +180,42 @@ export const UploadCoursewareSub = (props: PropsInterface) => {
         </Col>
         <Col span={17}>
           <Row style={{ marginBottom: 24, paddingLeft: 10 }}>
-            <Col span={24}>
+            <div className="float-left  j-b-flex">
               <UploadCoursewareButton
                 categoryIds={category_ids}
                 onUpdate={() => {
                   resetVideoList();
                 }}
               ></UploadCoursewareButton>
-            </Col>
+              <div className="d-flex">
+                <div className="d-flex mr-24">
+                  <Typography.Text>名称：</Typography.Text>
+                  <Input
+                    value={title}
+                    onChange={(e) => {
+                      setTitle(e.target.value);
+                    }}
+                    allowClear
+                    style={{ width: 160 }}
+                    placeholder="请输入名称关键字"
+                  />
+                </div>
+                <div className="d-flex">
+                  <Button className="mr-16" onClick={resetVideoList}>
+                    重 置
+                  </Button>
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      setPage(1);
+                      setRefresh(!refresh);
+                    }}
+                  >
+                    查 询
+                  </Button>
+                </div>
+              </div>
+            </div>
           </Row>
           {init && (
             <div className="float-left text-center mt-30">
