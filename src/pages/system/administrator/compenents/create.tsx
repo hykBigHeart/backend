@@ -149,12 +149,12 @@ export const SystemAdministratorCreate: React.FC<PropInterface> = ({
               <Form.Item
                 label="邮箱"
                 name="email"
-                rules={[{ required: true, message: "请输入学员邮箱!" }]}
+                rules={[{ required: true, message: "请输入管理员邮箱!" }]}
               >
                 <Input
                   allowClear
                   style={{ width: 200 }}
-                  placeholder="请输入学员邮箱"
+                  placeholder="请输入管理员邮箱"
                 />
               </Form.Item>
               <Form.Item

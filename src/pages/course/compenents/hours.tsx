@@ -96,23 +96,35 @@ export const TreeHours = (props: PropInterface) => {
 
     // Find dragObject
     let dragObj: DataNode;
-    loop(data, dragKey, (item, index, arr) => {
-      arr.splice(index, 1);
-      dragObj = item;
-    });
+    let dragLength = (info.dragNode as any).props.pos.split("-").length;
+    let dropLength = (info.node as any).props.pos.split("-").length;
 
     if (!info.dropToGap) {
       // Drop on the content
-      loop(data, dropKey, (item) => {
-        item.children = item.children || [];
-        // where to insert 示例添加到头部，可以是随意位置
-        item.children.unshift(dragObj);
-      });
+      if (
+        (dropPosition == 0 && dropPos.length == 3) ||
+        (dropPosition == 0 && dropPos.length == 2 && dragLength == 2)
+      ) {
+      } else {
+        loop(data, dragKey, (item, index, arr) => {
+          arr.splice(index, 1);
+          dragObj = item;
+        });
+        loop(data, dropKey, (item) => {
+          item.children = item.children || [];
+          // where to insert 示例添加到头部，可以是随意位置
+          item.children.unshift(dragObj);
+        });
+      }
     } else if (
       ((info.node as any).props.children || []).length > 0 && // Has children
       (info.node as any).props.expanded && // Is expanded
       dropPosition === 1 // On the bottom gap
     ) {
+      loop(data, dragKey, (item, index, arr) => {
+        arr.splice(index, 1);
+        dragObj = item;
+      });
       loop(data, dropKey, (item) => {
         item.children = item.children || [];
         // where to insert 示例添加到头部，可以是随意位置
@@ -121,6 +133,16 @@ export const TreeHours = (props: PropInterface) => {
         // item to the tail of the children
       });
     } else {
+      if (
+        (dragLength == 3 && dropLength == 2) ||
+        (dragLength == 2 && dropLength == 3)
+      ) {
+        return;
+      }
+      loop(data, dragKey, (item, index, arr) => {
+        arr.splice(index, 1);
+        dragObj = item;
+      });
       let ar: DataNode[] = [];
       let i: number;
       loop(data, dropKey, (_item, index, arr) => {

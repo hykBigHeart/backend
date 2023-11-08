@@ -111,7 +111,7 @@ export const SystemAdministratorUpdate: React.FC<PropInterface> = ({
     <>
       {open ? (
         <Modal
-          title="编辑管理人员"
+          title="编辑管理员"
           centered
           forceRender
           open={true}
@@ -168,12 +168,12 @@ export const SystemAdministratorUpdate: React.FC<PropInterface> = ({
               <Form.Item
                 label="邮箱"
                 name="email"
-                rules={[{ required: true, message: "请输入学员邮箱!" }]}
+                rules={[{ required: true, message: "请输入管理员邮箱!" }]}
               >
                 <Input
                   allowClear
                   style={{ width: 200 }}
-                  placeholder="请输入学员邮箱"
+                  placeholder="请输入管理员邮箱"
                 />
               </Form.Item>
               <Form.Item label="密码" name="password">
