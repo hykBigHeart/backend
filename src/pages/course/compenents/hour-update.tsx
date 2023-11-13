@@ -234,7 +234,7 @@ export const CourseHourUpdate: React.FC<PropInterface> = ({
     const arr = [...chapters];
     if (arr[index].id) {
       courseChapter
-        .updateCourseChapter(id, Number(arr[index].id), value, arr.length)
+        .updateCourseChapter(id, Number(arr[index].id), value, index + 1)
         .then((res: any) => {
           console.log("ok");
           getDetail();
