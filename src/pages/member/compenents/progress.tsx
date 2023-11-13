@@ -215,7 +215,7 @@ export const MemberLearnProgressDialog: React.FC<PropInterface> = ({
           maskClosable={false}
           footer={null}
         >
-          <div className="mt-24">
+          <div className="w-100 d-flex mt-24">
             <PerButton
               type="primary"
               text="重置学习记录"
@@ -228,7 +228,10 @@ export const MemberLearnProgressDialog: React.FC<PropInterface> = ({
               disabled={null}
             />
           </div>
-          <div className="mt-24" style={{ maxHeight: 800, overflowY: "auto" }}>
+          <div
+            className="w-100 d-flex mt-24"
+            style={{ maxHeight: 800, overflowY: "auto" }}
+          >
             <Table
               columns={column}
               dataSource={list}
