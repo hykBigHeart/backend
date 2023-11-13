@@ -1,5 +1,14 @@
 import { useEffect, useState } from "react";
-import { Modal, Table, message, Space, Dropdown, Button } from "antd";
+import {
+  Modal,
+  Table,
+  message,
+  Space,
+  Dropdown,
+  Typography,
+  Input,
+  Button,
+} from "antd";
 import type { MenuProps } from "antd";
 import { resource } from "../../../api";
 import { useLocation } from "react-router-dom";
@@ -63,6 +72,7 @@ const ResourceVideosPage = () => {
   const [multiConfig, setMultiConfig] = useState(false);
   const [updateId, setUpdateId] = useState(0);
   const [playUrl, setPlayUrl] = useState("");
+  const [title, setTitle] = useState("");
 
   useEffect(() => {
     setCateId(Number(result.get("cid")));
@@ -231,7 +241,7 @@ const ResourceVideosPage = () => {
     setLoading(true);
     let categoryIds = category_ids.join(",");
     resource
-      .resourceList(page, size, "", "", "", "VIDEO", categoryIds)
+      .resourceList(page, size, "", "", title, "VIDEO", categoryIds)
       .then((res: any) => {
         setTotal(res.data.result.total);
         setVideoList(res.data.result.data);
@@ -250,6 +260,7 @@ const ResourceVideosPage = () => {
     setSize(10);
     setVideoList([]);
     setSelectedRowKeys([]);
+    setTitle("");
     setRefresh(!refresh);
   };
 
@@ -328,7 +339,34 @@ const ResourceVideosPage = () => {
                 删除
               </Button>
             </div>
-            <div className="d-flex"></div>
+            <div className="d-flex">
+              <div className="d-flex mr-24">
+                <Typography.Text>名称：</Typography.Text>
+                <Input
+                  value={title}
+                  onChange={(e) => {
+                    setTitle(e.target.value);
+                  }}
+                  allowClear
+                  style={{ width: 160 }}
+                  placeholder="请输入名称关键字"
+                />
+              </div>
+              <div className="d-flex">
+                <Button className="mr-16" onClick={resetVideoList}>
+                  重 置
+                </Button>
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    setPage(1);
+                    setRefresh(!refresh);
+                  }}
+                >
+                  查 询
+                </Button>
+              </div>
+            </div>
           </div>
           <div className="float-left">
             {multiConfig ? (

@@ -59,7 +59,6 @@ export const MemberLearnProgressDialog: React.FC<PropInterface> = ({
     {
       title: "课时标题",
       dataIndex: "title",
-
       render: (title: string) => (
         <>
           <span>{title}</span>
@@ -68,7 +67,6 @@ export const MemberLearnProgressDialog: React.FC<PropInterface> = ({
     },
     {
       title: "总时长",
-      width: 120,
       dataIndex: "duration",
       render: (duration: number) => (
         <>
@@ -78,7 +76,6 @@ export const MemberLearnProgressDialog: React.FC<PropInterface> = ({
     },
     {
       title: "已学习时长",
-      width: 120,
       dataIndex: "finished_duration",
       render: (_, record: any) => (
         <>
@@ -96,7 +93,6 @@ export const MemberLearnProgressDialog: React.FC<PropInterface> = ({
     },
     {
       title: "是否学完",
-      width: 100,
       dataIndex: "is_finished",
       render: (_, record: any) => (
         <>
@@ -112,7 +108,6 @@ export const MemberLearnProgressDialog: React.FC<PropInterface> = ({
     },
     {
       title: "开始时间",
-      width: 150,
       dataIndex: "created_at",
       render: (_, record: any) => (
         <>
@@ -126,7 +121,6 @@ export const MemberLearnProgressDialog: React.FC<PropInterface> = ({
     },
     {
       title: "学完时间",
-      width: 150,
       dataIndex: "finished_at",
       render: (_, record: any) => (
         <>
@@ -142,7 +136,6 @@ export const MemberLearnProgressDialog: React.FC<PropInterface> = ({
       title: "操作",
       key: "action",
       fixed: "right",
-      width: 70,
       render: (_, record: any) => (
         <>
           {records && records[record.id] ? (
@@ -222,7 +215,7 @@ export const MemberLearnProgressDialog: React.FC<PropInterface> = ({
           maskClosable={false}
           footer={null}
         >
-          <div className="w-100 d-flex mt-24">
+          <div className="mt-24">
             <PerButton
               type="primary"
               text="重置学习记录"
@@ -235,10 +228,7 @@ export const MemberLearnProgressDialog: React.FC<PropInterface> = ({
               disabled={null}
             />
           </div>
-          <div
-            className="w-100 d-flex mt-24"
-            style={{ maxHeight: 800, overflowY: "auto" }}
-          >
+          <div className="mt-24" style={{ maxHeight: 800, overflowY: "auto" }}>
             <Table
               columns={column}
               dataSource={list}
