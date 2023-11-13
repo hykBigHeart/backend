@@ -89,13 +89,13 @@ const MemberPage = () => {
   );
 
   useEffect(() => {
-    setDid(Number(result.get("did")));
-    if (Number(result.get("did"))) {
-      let arr = [];
-      arr.push(Number(result.get("did")));
-      setDepIds(arr);
+    if (result.get("refresh")) {
+      resetLocalSearchParams({
+        page: 1,
+      });
+      setRefresh(!refresh);
     }
-  }, [result.get("did")]);
+  }, [result.get("refresh")]);
 
   const columns: ColumnsType<DataType> = [
     {
