@@ -53,101 +53,53 @@ export const SystemAdminrolesUpdate: React.FC<PropInterface> = ({
 
   const getParams = () => {
     adminRole.createAdminRole().then((res: any) => {
-      const arr: Option[] = [
-        {
-          title: "学员",
-          value: "学员-n",
-          children: [],
-        },
-        {
-          title: "管理员",
-          value: "管理员-n",
-          children: [],
-        },
-      ];
-      const arr2: Option[] = [
-        {
-          title: "学员",
-          value: "学员-n",
-          children: [],
-        },
-        {
-          title: "管理员",
-          value: "管理员-n",
-          children: [],
-        },
-        {
-          title: "管理员日志",
-          value: "管理员日志-n",
-          children: [],
-        },
-        {
-          title: "管理员角色",
-          value: "管理员角色-n",
-          children: [],
-        },
-        {
-          title: "线上课",
-          value: "线上课-n",
-          children: [],
-        },
-        {
-          title: "分类管理",
-          value: "分类管理-n",
-          children: [],
-        },
-        {
-          title: "资源管理",
-          value: "资源管理-n",
-          children: [],
-        },
-        {
-          title: "资源分类",
-          value: "资源分类-n",
-          children: [],
-        },
-        {
-          title: "部门",
-          value: "部门-n",
-          children: [],
-        },
-        {
-          title: "系统配置",
-          value: "系统配置-n",
-          children: [],
-        },
-        {
-          title: "其它",
-          value: "其它-n",
-          children: [],
-        },
-        {
-          title: "其它权限",
-          value: "其它权限-n",
-          children: [],
-        },
-      ];
+      const arr: any = [];
+      const arr2: any = [];
       let actions = res.data.perm_action.action;
       let permissions = res.data.perm_action.data;
       for (let i = 0; i < permissions.length; i++) {
-        arr.map((item: any) => {
-          if (item.title === permissions[i].group_name) {
-            item.children.push({
-              title: permissions[i].name,
-              value: permissions[i].id,
-            });
-          }
-        });
+        const key = arr.findIndex(
+          (it: any) => it.title === permissions[i].group_name
+        );
+        if (key >= 0) {
+          arr[key].children.push({
+            title: permissions[i].name,
+            value: permissions[i].id,
+          });
+        } else {
+          arr.push({
+            title: permissions[i].group_name,
+            value: permissions[i].group_name + "-n",
+            children: [
+              {
+                title: permissions[i].name,
+                value: permissions[i].id,
+              },
+            ],
+          });
+        }
       }
       for (let j = 0; j < actions.length; j++) {
-        arr2.map((item: any) => {
-          if (item.title === actions[j].group_name) {
-            item.children.push({
-              title: actions[j].name,
-              value: actions[j].id,
-            });
-          }
-        });
+        const key = arr2.findIndex(
+          (it: any) => it.title === actions[j].group_name
+        );
+        if (key >= 0) {
+          arr2[key].children.push({
+            title: actions[j].name,
+            value: actions[j].id,
+          });
+        } else {
+          arr2.push({
+            title: actions[j].group_name,
+            value: actions[j].group_name + "-n",
+            children: [
+              {
+                title: actions[j].name,
+                value: actions[j].id,
+              },
+            ],
+          });
+        }
       }
       setPermissions(arr);
       setActions(arr2);
