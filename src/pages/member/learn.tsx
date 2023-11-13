@@ -57,6 +57,22 @@ type DepartmentsListModel = {
   updated_at: string;
 };
 
+type PerCourseRecordsModel = {
+  [key: number]: {
+    course_id: number;
+    created_at: string;
+    finished_at: string;
+    finished_duration: number;
+    hour_id: number;
+    id: number;
+    is_finished: number;
+    real_duration: number;
+    total_duration: number;
+    updated_at: string;
+    user_id: number;
+  };
+};
+
 const MemberLearnPage = () => {
   let chartRef = useRef(null);
   const navigate = useNavigate();
@@ -69,6 +85,7 @@ const MemberLearnPage = () => {
   const [currentCourses, setCurrentCourses] = useState<DataType[]>([]);
   const [openCourses, setOpenCourses] = useState<CourseModel[]>([]);
   const [records, setRecords] = useState<UserCourseRecordsModel>({});
+  const [perRecords, setPerRecords] = useState<PerCourseRecordsModel>({});
   const [hourCount, setHourCount] = useState<HourCountModel>({});
   const [total2, setTotal2] = useState(0);
   const [refresh2, setRefresh2] = useState(false);
@@ -194,6 +211,7 @@ const MemberLearnPage = () => {
       setOpenCourses(res.data.open_courses);
       setHourCount(res.data.user_course_hour_count);
       setRecords(res.data.user_course_records);
+      setPerRecords(res.data.per_course_earliest_records);
       if (res.data.departments.length > 0) {
         let box: OptionModel[] = [];
         res.data.departments.map((item: any) => {
@@ -247,8 +265,8 @@ const MemberLearnPage = () => {
       dataIndex: "created_at",
       render: (_, record: any) => (
         <>
-          {records[record.id] ? (
-            <span>{dateFormat(records[record.id].created_at)}</span>
+          {perRecords[record.id] ? (
+            <span>{dateFormat(perRecords[record.id].created_at)}</span>
           ) : (
             <span>-</span>
           )}
