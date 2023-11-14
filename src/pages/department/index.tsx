@@ -413,16 +413,6 @@ const DepartmentPage = () => {
         <div className="playedu-main-top mb-24">
           {contextHolder}
           <div className="d-flex">
-            <PerButton
-              type="primary"
-              text="新建部门"
-              class="mr-16"
-              icon={<PlusOutlined />}
-              p="department-cud"
-              onClick={() => setCreateVisible(true)}
-              disabled={null}
-            />
-
             {ldapEnabled ? (
               <PerButton
                 type="primary"
@@ -433,7 +423,17 @@ const DepartmentPage = () => {
                 onClick={() => ldapSync()}
                 disabled={null}
               />
-            ) : null}
+            ) : (
+              <PerButton
+                type="primary"
+                text="新建部门"
+                class="mr-16"
+                icon={<PlusOutlined />}
+                p="department-cud"
+                onClick={() => setCreateVisible(true)}
+                disabled={null}
+              />
+            )}
           </div>
         </div>
       }
