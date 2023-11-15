@@ -21,6 +21,8 @@ import {
   SystemConfigStoreInterface,
   saveConfigAction,
 } from "../../../store/system/systemConfigSlice";
+import logoIcon from "../../../assets/logo.png";
+import memberDefaultAvatar from "../../../assets/images/commen/avatar.png";
 
 const SystemConfigPage = () => {
   const dispatch = useDispatch();
@@ -52,6 +54,8 @@ const SystemConfigPage = () => {
           });
           if (configData[i].key_value !== "") {
             setLogo(configData[i].key_value);
+          } else {
+            setLogo(logoIcon);
           }
         } else if (configData[i].key_name === "system.api_url") {
           form.setFieldsValue({
@@ -122,7 +126,11 @@ const SystemConfigPage = () => {
             "system.pc_index_footer_msg": configData[i].key_value,
           });
         } else if (configData[i].key_name === "member.default_avatar") {
-          setAvatar(configData[i].key_value);
+          if (configData[i].key_value !== "") {
+            setAvatar(configData[i].key_value);
+          } else {
+            setAvatar(memberDefaultAvatar);
+          }
           form.setFieldsValue({
             "member.default_avatar": configData[i].key_value,
           });
