@@ -60,6 +60,22 @@ type HourCountModel = {
   [key: number]: string;
 };
 
+type PerCourseRecordsModel = {
+  [key: number]: {
+    course_id: number;
+    created_at: string;
+    finished_at: string;
+    finished_duration: number;
+    hour_id: number;
+    id: number;
+    is_finished: number;
+    real_duration: number;
+    total_duration: number;
+    updated_at: string;
+    user_id: number;
+  };
+};
+
 const CourseUserPage = () => {
   const params = useParams();
   const result = new URLSearchParams(useLocation().search);
@@ -69,6 +85,7 @@ const CourseUserPage = () => {
   const [hourCount, setHourCount] = useState<HourCountModel>({});
   const [userDepIds, setUserDepIds] = useState<DepIdsModel>({});
   const [departments, setDepartments] = useState<DepartmentsModel>({});
+  const [perRecords, setPerRecords] = useState<PerCourseRecordsModel>({});
   const [refresh, setRefresh] = useState(false);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
@@ -135,8 +152,8 @@ const CourseUserPage = () => {
       dataIndex: "created_at",
       render: (_, record: any) => (
         <>
-          {records[record.id] ? (
-            <span>{dateFormat(records[record.id].created_at)}</span>
+          {perRecords[record.id] ? (
+            <span>{dateFormat(perRecords[record.id].created_at)}</span>
           ) : hourCount[record.id] ? (
             <span>{dateFormat(hourCount[record.id])}</span>
           ) : (
@@ -213,6 +230,7 @@ const CourseUserPage = () => {
         setList(res.data.data);
         setHourCount(res.data.user_course_hour_user_first_at);
         setRecords(res.data.user_course_records);
+        setPerRecords(res.data.per_user_earliest_records);
         setCourse(res.data.course);
         setDepartments(res.data.departments);
         setUserDepIds(res.data.user_dep_ids);
