@@ -558,7 +558,7 @@ const DashboardPage = () => {
             <div className={styles["usage-guide"]}>
               <img className={styles["banner"]} src={banner} alt="" />
               <Link
-                to="https://www.playedu.xyz/docs/docs/guide/"
+                to="https://www.playedu.xyz/book/opensource-handbook/article/wFymJ4SXcX"
                 target="blank"
                 className={styles["link"]}
               >
