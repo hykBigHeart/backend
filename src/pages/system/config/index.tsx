@@ -14,7 +14,7 @@ import {
 } from "antd";
 import { appConfig, system } from "../../../api/index";
 import { UploadImageButton } from "../../../compenents";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import type { TabsProps } from "antd";
 import type { CheckboxChangeEvent } from "antd/es/checkbox";
 import {
@@ -22,7 +22,6 @@ import {
   saveConfigAction,
 } from "../../../store/system/systemConfigSlice";
 import logoIcon from "../../../assets/logo.png";
-import memberDefaultAvatar from "../../../assets/images/commen/avatar.png";
 
 const SystemConfigPage = () => {
   const dispatch = useDispatch();
@@ -35,6 +34,9 @@ const SystemConfigPage = () => {
   const [nameChecked, setNameChecked] = useState(false);
   const [emailChecked, setEmailChecked] = useState(false);
   const [idCardchecked, setIdCardChecked] = useState(false);
+  const memberDefaultAvatar = useSelector(
+    (state: any) => state.systemConfig.value.memberDefaultAvatar
+  );
 
   useEffect(() => {
     getDetail();
