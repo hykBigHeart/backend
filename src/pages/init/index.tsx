@@ -5,6 +5,7 @@ import {
   SystemConfigStoreInterface,
   saveConfigAction,
 } from "../../store/system/systemConfigSlice";
+import { UploadVideoFloatButton } from "../../compenents/upload-video-float-button";
 
 interface Props {
   loginData?: any;
@@ -36,6 +37,7 @@ const InitPage = (props: Props) => {
   return (
     <>
       <Outlet />
+      <UploadVideoFloatButton></UploadVideoFloatButton>
     </>
   );
 };
