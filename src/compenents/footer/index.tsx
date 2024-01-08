@@ -17,12 +17,26 @@ export const Footer: React.FC<PropInterface> = ({ type }) => {
         textAlign: "center",
       }}
     >
-      <Link to="https://playedu.xyz/" target="blank">
+      <Link
+        to="https://playedu.xyz/"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+        target="blank"
+      >
         <i
           style={{ fontSize: 30, color: "#cccccc" }}
           className="iconfont icon-waterprint footer-icon"
           onClick={() => {}}
         ></i>
+        <span
+          className="ml-5"
+          style={{ color: "#D7D7D7", fontSize: 12, marginTop: -5 }}
+        >
+          Version 1.5
+        </span>
       </Link>
     </Layout.Footer>
   );
