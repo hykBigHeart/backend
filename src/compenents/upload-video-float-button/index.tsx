@@ -64,7 +64,18 @@ export const UploadVideoFloatButton = () => {
 
   const uploadProps = {
     multiple: true,
-    beforeUpload: async (file: File) => {
+    beforeUpload: async (file: File, fileList: any) => {
+      if (file.size > 2 * 1024 * 1024 * 1024) {
+        message.error(`${file.name} 大小超过2G`);
+        return Upload.LIST_IGNORE;
+      }
+      if (fileList.length > 10) {
+        message.config({ maxCount: 1 });
+        message.error("单次最多上传10个视频");
+        return Upload.LIST_IGNORE;
+      } else {
+        message.config({ maxCount: 10 });
+      }
       if (file.type === "video/mp4") {
         // 视频封面解析 || 视频时长解析
         let videoInfo = await parseVideo(file);
@@ -175,7 +186,7 @@ export const UploadVideoFloatButton = () => {
                   </p>
                   <p className="ant-upload-text">请将视频拖拽到此处上传</p>
                   <p className="ant-upload-hint">
-                    支持一次上传多个 / 支持 mp4 格式视频
+                    支持一次上传多个 / 支持2G以内的mp4文件
                   </p>
                 </Dragger>
               </Col>
