@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Drawer, TreeSelect, Space, Button, Form, Input, message } from "antd";
+import {
+  Drawer,
+  TreeSelect,
+  Space,
+  Button,
+  Form,
+  Input,
+  message,
+  Spin,
+} from "antd";
 import styles from "./create.module.less";
 import { adminRole } from "../../../../api/index";
 
@@ -19,11 +28,13 @@ export const SystemAdminrolesCreate: React.FC<PropInterface> = ({
   onCancel,
 }) => {
   const [form] = Form.useForm();
+  const [init, setInit] = useState(true);
   const [loading, setLoading] = useState(false);
   const [permissions, setPermissions] = useState<Option[]>([]);
   const [actions, setActions] = useState<Option[]>([]);
 
   useEffect(() => {
+    setInit(true);
     if (open) {
       getParams();
     }
@@ -89,6 +100,7 @@ export const SystemAdminrolesCreate: React.FC<PropInterface> = ({
       }
       setPermissions(arr);
       setActions(arr2);
+      setInit(false);
     });
   };
 
@@ -148,7 +160,15 @@ export const SystemAdminrolesCreate: React.FC<PropInterface> = ({
           }
           width={634}
         >
-          <div className="float-left mt-24">
+          {init && (
+            <div className="float-left text-center mt-30">
+              <Spin></Spin>
+            </div>
+          )}
+          <div
+            className="float-left mt-24"
+            style={{ display: init ? "none" : "block" }}
+          >
             <Form
               form={form}
               name="adminroles-create"

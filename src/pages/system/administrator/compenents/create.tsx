@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Select, Switch, Form, Input, message } from "antd";
+import { Modal, Select, Switch, Form, Input, message, Spin } from "antd";
 import styles from "./create.module.less";
 import { adminUser } from "../../../../api/index";
 
@@ -22,10 +22,12 @@ export const SystemAdministratorCreate: React.FC<PropInterface> = ({
   onCancel,
 }) => {
   const [form] = Form.useForm();
+  const [init, setInit] = useState(true);
   const [loading, setLoading] = useState(false);
   const [roles, setRoles] = useState<selRoleModel[]>([]);
 
   useEffect(() => {
+    setInit(true);
     if (open) {
       getParams();
     }
@@ -56,6 +58,7 @@ export const SystemAdministratorCreate: React.FC<PropInterface> = ({
         });
       }
       setRoles(arr);
+      setInit(false);
     });
   };
 
@@ -110,7 +113,15 @@ export const SystemAdministratorCreate: React.FC<PropInterface> = ({
           maskClosable={false}
           okButtonProps={{ loading: loading }}
         >
-          <div className="float-left mt-24">
+          {init && (
+            <div className="float-left text-center mt-30">
+              <Spin></Spin>
+            </div>
+          )}
+          <div
+            className="float-left mt-24"
+            style={{ display: init ? "none" : "block" }}
+          >
             <Form
               form={form}
               name="basic"

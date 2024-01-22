@@ -103,7 +103,6 @@ export const CourseUpdate: React.FC<PropInterface> = ({
       setType(type);
       setThumb(res.data.course.thumb);
       setInit(false);
-      console.log(dayjs(res.data.course.published_at, "YYYY-MM-DD HH:mm:ss"));
     });
   };
 

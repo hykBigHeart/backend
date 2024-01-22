@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, TreeSelect, Input, message } from "antd";
+import { Modal, Form, TreeSelect, Input, message, Spin } from "antd";
 import styles from "./create.module.less";
 import { useSelector } from "react-redux";
 import { user, department } from "../../../api/index";
@@ -24,6 +24,7 @@ export const MemberCreate: React.FC<PropInterface> = ({
   onCancel,
 }) => {
   const [form] = Form.useForm();
+  const [init, setInit] = useState(true);
   const [loading, setLoading] = useState(false);
   const [departments, setDepartments] = useState<any>([]);
   const memberDefaultAvatar = useSelector(
@@ -32,6 +33,7 @@ export const MemberCreate: React.FC<PropInterface> = ({
   const [avatar, setAvatar] = useState<string>(memberDefaultAvatar);
 
   useEffect(() => {
+    setInit(true);
     if (open) {
       getParams();
     }
@@ -56,6 +58,7 @@ export const MemberCreate: React.FC<PropInterface> = ({
         const new_arr: Option[] = checkArr(departments, 0);
         setDepartments(new_arr);
       }
+      setInit(false);
     });
   };
 
@@ -125,7 +128,15 @@ export const MemberCreate: React.FC<PropInterface> = ({
           maskClosable={false}
           okButtonProps={{ loading: loading }}
         >
-          <div className="member-form float-left mt-24">
+          {init && (
+            <div className="float-left text-center mt-30">
+              <Spin></Spin>
+            </div>
+          )}
+          <div
+            className="float-left mt-24"
+            style={{ display: init ? "none" : "block" }}
+          >
             <Form
               form={form}
               name="create-basic"

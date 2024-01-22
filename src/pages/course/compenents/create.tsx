@@ -10,6 +10,7 @@ import {
   message,
   Image,
   TreeSelect,
+  Spin,
 } from "antd";
 import styles from "./create.module.less";
 import { useSelector } from "react-redux";
@@ -52,6 +53,7 @@ export const CourseCreate: React.FC<PropInterface> = ({
   const defaultThumb2 = courseDefaultThumbs[1];
   const defaultThumb3 = courseDefaultThumbs[2];
   const [loading, setLoading] = useState(false);
+  const [init, setInit] = useState(true);
   const [departments, setDepartments] = useState<Option[]>([]);
   const [categories, setCategories] = useState<Option[]>([]);
   const [thumb, setThumb] = useState("");
@@ -71,9 +73,9 @@ export const CourseCreate: React.FC<PropInterface> = ({
   const [attachments, setAttachments] = useState<number[]>([]);
 
   useEffect(() => {
+    setInit(true);
     if (open) {
-      getParams();
-      getCategory();
+      initData();
     }
   }, [open, cateIds, depIds]);
 
@@ -96,43 +98,48 @@ export const CourseCreate: React.FC<PropInterface> = ({
     setShowDrop(false);
   }, [form, open]);
 
-  const getParams = () => {
-    department.departmentList().then((res: any) => {
-      const departments = res.data.departments;
-      const departCount: DepIdsModel = res.data.dep_user_count;
-      if (JSON.stringify(departments) !== "{}") {
-        const new_arr: any = checkArr(departments, 0, departCount);
-        setDepartments(new_arr);
-      }
-      let type = "open";
-      if (depIds.length !== 0 && depIds[0] !== 0) {
-        type = "elective";
-        let item = checkChild(res.data.departments, depIds[0]);
-        let arr: any[] = [];
-        if (item === undefined) {
-          arr.push(depIds[0]);
-        } else if (item.parent_chain === "") {
-          arr.push(depIds[0]);
-        } else {
-          let new_arr = item.parent_chain.split(",");
-          new_arr.map((num: any) => {
-            arr.push(Number(num));
-          });
-          arr.push(depIds[0]);
-        }
-        form.setFieldsValue({
-          dep_ids: arr,
-        });
+  const initData = async () => {
+    await getParams();
+    await getCategory();
+    setInit(false);
+  };
+
+  const getParams = async () => {
+    let res: any = await department.departmentList();
+    const departments = res.data.departments;
+    const departCount: DepIdsModel = res.data.dep_user_count;
+    if (JSON.stringify(departments) !== "{}") {
+      const new_arr: any = checkArr(departments, 0, departCount);
+      setDepartments(new_arr);
+    }
+    let type = "open";
+    if (depIds.length !== 0 && depIds[0] !== 0) {
+      type = "elective";
+      let item = checkChild(res.data.departments, depIds[0]);
+      let arr: any[] = [];
+      if (item === undefined) {
+        arr.push(depIds[0]);
+      } else if (item.parent_chain === "") {
+        arr.push(depIds[0]);
       } else {
-        form.setFieldsValue({
-          dep_ids: depIds,
+        let new_arr = item.parent_chain.split(",");
+        new_arr.map((num: any) => {
+          arr.push(Number(num));
         });
+        arr.push(depIds[0]);
       }
       form.setFieldsValue({
-        type: type,
+        dep_ids: arr,
       });
-      setType(type);
+    } else {
+      form.setFieldsValue({
+        dep_ids: depIds,
+      });
+    }
+    form.setFieldsValue({
+      type: type,
     });
+    setType(type);
   };
 
   const checkChild = (departments: any[], id: number) => {
@@ -145,37 +152,36 @@ export const CourseCreate: React.FC<PropInterface> = ({
     }
   };
 
-  const getCategory = () => {
-    course.createCourse().then((res: any) => {
-      const categories = res.data.categories;
-      if (JSON.stringify(categories) !== "{}") {
-        const new_arr: any = checkArr(categories, 0, null);
-        setCategories(new_arr);
-      }
+  const getCategory = async () => {
+    let res: any = await course.createCourse();
+    const categories = res.data.categories;
+    if (JSON.stringify(categories) !== "{}") {
+      const new_arr: any = checkArr(categories, 0, null);
+      setCategories(new_arr);
+    }
 
-      if (cateIds.length !== 0 && cateIds[0] !== 0) {
-        let item = checkChild(res.data.categories, cateIds[0]);
-        let arr: any[] = [];
-        if (item === undefined) {
-          arr.push(cateIds[0]);
-        } else if (item.parent_chain === "") {
-          arr.push(cateIds[0]);
-        } else {
-          let new_arr = item.parent_chain.split(",");
-          new_arr.map((num: any) => {
-            arr.push(Number(num));
-          });
-          arr.push(cateIds[0]);
-        }
-        form.setFieldsValue({
-          category_ids: arr,
-        });
+    if (cateIds.length !== 0 && cateIds[0] !== 0) {
+      let item = checkChild(res.data.categories, cateIds[0]);
+      let arr: any[] = [];
+      if (item === undefined) {
+        arr.push(cateIds[0]);
+      } else if (item.parent_chain === "") {
+        arr.push(cateIds[0]);
       } else {
-        form.setFieldsValue({
-          category_ids: cateIds,
+        let new_arr = item.parent_chain.split(",");
+        new_arr.map((num: any) => {
+          arr.push(Number(num));
         });
+        arr.push(cateIds[0]);
       }
-    });
+      form.setFieldsValue({
+        category_ids: arr,
+      });
+    } else {
+      form.setFieldsValue({
+        category_ids: cateIds,
+      });
+    }
   };
 
   const getNewTitle = (title: any, id: number, counts: any) => {
@@ -503,7 +509,15 @@ export const CourseCreate: React.FC<PropInterface> = ({
           }
           width={634}
         >
-          <div className="float-left mt-24">
+          {init && (
+            <div className="float-left text-center mt-30">
+              <Spin></Spin>
+            </div>
+          )}
+          <div
+            className="float-left mt-24"
+            style={{ display: init ? "none" : "block" }}
+          >
             <SelectResource
               defaultKeys={
                 chapterType == 0 ? hours : changeChapterHours(chapterHours)

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Modal, Form, Input, Cascader, message } from "antd";
+import { Modal, Form, Input, Cascader, message, Spin } from "antd";
 import styles from "./create.module.less";
 import { department } from "../../../api/index";
 
@@ -19,11 +19,13 @@ export const DepartmentCreate: React.FC<PropInterface> = ({
   onCancel,
 }) => {
   const [form] = Form.useForm();
+  const [init, setInit] = useState(true);
   const [loading, setLoading] = useState(false);
   const [departments, setDepartments] = useState<any>([]);
   const [parent_id, setParentId] = useState<number>(0);
 
   useEffect(() => {
+    setInit(true);
     if (open) {
       getParams();
     }
@@ -54,6 +56,7 @@ export const DepartmentCreate: React.FC<PropInterface> = ({
         });
         setDepartments(new_arr);
       }
+      setInit(false);
     });
   };
 
@@ -125,7 +128,15 @@ export const DepartmentCreate: React.FC<PropInterface> = ({
           maskClosable={false}
           okButtonProps={{ loading: loading }}
         >
-          <div className="float-left mt-24">
+          {init && (
+            <div className="float-left text-center mt-30">
+              <Spin></Spin>
+            </div>
+          )}
+          <div
+            className="float-left mt-24"
+            style={{ display: init ? "none" : "block" }}
+          >
             <Form
               form={form}
               name="basic"
