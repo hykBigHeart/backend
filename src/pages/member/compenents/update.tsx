@@ -239,13 +239,6 @@ export const MemberUpdate: React.FC<PropInterface> = ({
                   placeholder="请选择学员所属部门"
                 />
               </Form.Item>
-              <Form.Item label="身份证号" name="idCard">
-                <Input
-                  allowClear
-                  style={{ width: 274 }}
-                  placeholder="请填写学员身份证号"
-                />
-              </Form.Item>
             </Form>
           </div>
         </Modal>
