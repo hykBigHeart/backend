@@ -3,7 +3,7 @@ import { Row, Col, Empty, Table, Spin, Typography, Input, Button } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { resource } from "../../api";
 import styles from "./index.module.less";
-import { TreeCategory, UploadCoursewareButton } from "../../compenents";
+import { TreeCategory } from "../../compenents";
 
 interface VideoItem {
   id: number;
@@ -181,12 +181,6 @@ export const UploadCoursewareSub = (props: PropsInterface) => {
         <Col span={17}>
           <Row style={{ marginBottom: 24, paddingLeft: 10 }}>
             <div className="float-left  j-b-flex">
-              <UploadCoursewareButton
-                categoryIds={category_ids}
-                onUpdate={() => {
-                  resetVideoList();
-                }}
-              ></UploadCoursewareButton>
               <div className="d-flex">
                 <div className="d-flex mr-24">
                   <Typography.Text>名称：</Typography.Text>

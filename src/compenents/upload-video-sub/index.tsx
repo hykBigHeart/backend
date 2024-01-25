@@ -3,7 +3,6 @@ import { Row, Col, Empty, Table, Spin, Typography, Input, Button } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { resource } from "../../api";
 import styles from "./index.module.less";
-import { UploadVideoButton } from "../upload-video-button";
 import { DurationText, TreeCategory } from "../../compenents";
 
 interface VideoItem {
@@ -173,12 +172,6 @@ export const UploadVideoSub = (props: PropsInterface) => {
         <Col span={17}>
           <Row style={{ marginBottom: 24, paddingLeft: 10 }}>
             <div className="float-left  j-b-flex">
-              <UploadVideoButton
-                categoryIds={category_ids}
-                onUpdate={() => {
-                  resetVideoList();
-                }}
-              ></UploadVideoButton>
               <div className="d-flex">
                 <div className="d-flex mr-24">
                   <Typography.Text>名称：</Typography.Text>
