@@ -302,7 +302,7 @@ const SystemConfigPage = () => {
           {logo && (
             <Form.Item
               style={{ marginBottom: 30 }}
-              label="网站Logo"
+              label="PC学员端Logo"
               name="system.logo"
               labelCol={{ style: { marginTop: 4, marginLeft: 54 } }}
             >
@@ -326,7 +326,7 @@ const SystemConfigPage = () => {
           {!logo && (
             <Form.Item
               style={{ marginBottom: 30 }}
-              label="网站Logo"
+              label="PC学员端Logo"
               name="system.logo"
             >
               <div className="d-flex">
@@ -354,10 +354,10 @@ const SystemConfigPage = () => {
           </Form.Item>
           <Form.Item
             style={{ marginBottom: 30 }}
-            label="PC端访问地址"
+            label="PC学员端地址"
             name="system.pc_url"
           >
-            <Input style={{ width: 274 }} placeholder="请填写PC端访问地址" />
+            <Input style={{ width: 274 }} placeholder="请填写PC学员端地址" />
           </Form.Item>
           <Form.Item
             style={{ marginBottom: 30 }}
@@ -368,24 +368,24 @@ const SystemConfigPage = () => {
           </Form.Item>
           <Form.Item
             style={{ marginBottom: 30 }}
-            label="网站标题"
+            label="学员端标题"
             name="system.name"
           >
             <Input
               style={{ width: 274 }}
               allowClear
-              placeholder="请填写网站标题"
+              placeholder="请填写学员端标题"
             />
           </Form.Item>
           <Form.Item
             style={{ marginBottom: 30 }}
-            label="网站页脚"
+            label="学员端页脚"
             name="system.pc_index_footer_msg"
           >
             <Input
               style={{ width: 274 }}
               allowClear
-              placeholder="请填写网站页脚"
+              placeholder="请填写学员端页脚"
             />
           </Form.Item>
           <Form.Item
