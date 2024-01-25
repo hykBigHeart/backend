@@ -467,13 +467,6 @@ const SystemConfigPage = () => {
               >
                 邮箱
               </Checkbox>
-              <Checkbox
-                checked={idCardchecked}
-                className="ml-24"
-                onChange={addIdCard}
-              >
-                身份证号
-              </Checkbox>
             </Space>
           </Form.Item>
           <Form.Item

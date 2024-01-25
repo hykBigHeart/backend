@@ -107,10 +107,10 @@ const SystemLogPage = () => {
       render: (_, record: any) => <span>{record.title}</span>,
     },
     {
-      title: "IP地区",
+      title: "IP",
       width: 250,
-      dataIndex: "ip_area",
-      render: (ip_area: string) => <span>{ip_area}</span>,
+      dataIndex: "ip",
+      render: (ip: string) => <span>{ip}</span>,
     },
     {
       title: "时间",
