@@ -304,7 +304,7 @@ const SystemConfigPage = () => {
               style={{ marginBottom: 30 }}
               label="PC学员端Logo"
               name="system.logo"
-              labelCol={{ style: { marginTop: 4, marginLeft: 54 } }}
+              labelCol={{ style: { marginTop: 4, marginLeft: 24 } }}
             >
               <div className="d-flex">
                 <Image preview={false} height={40} src={logo} />
@@ -361,10 +361,10 @@ const SystemConfigPage = () => {
           </Form.Item>
           <Form.Item
             style={{ marginBottom: 30 }}
-            label="H5端访问地址"
+            label="H5学员端地址"
             name="system.h5_url"
           >
-            <Input style={{ width: 274 }} placeholder="请填写H5端访问地址" />
+            <Input style={{ width: 274 }} placeholder="请填写H5学员端地址" />
           </Form.Item>
           <Form.Item
             style={{ marginBottom: 30 }}
