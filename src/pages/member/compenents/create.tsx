@@ -86,10 +86,10 @@ export const MemberCreate: React.FC<PropInterface> = ({
     if (loading) {
       return;
     }
-    if (values.idCard !== "" && !ValidataCredentials(values.idCard)) {
-      message.error("请输入正确的身份证号！");
-      return;
-    }
+    // if (values.idCard !== "" && !ValidataCredentials(values.idCard)) {
+    //   message.error("请输入正确的身份证号！");
+    //   return;
+    // }
     setLoading(true);
     user
       .storeUser(
