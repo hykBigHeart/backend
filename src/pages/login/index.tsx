@@ -15,7 +15,7 @@ import {
 } from "../../store/system/systemConfigSlice";
 import { Footer } from "../../compenents/footer";
 
-const LoginPage = () => {
+const LoginPage = () => { 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
