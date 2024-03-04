@@ -128,7 +128,7 @@ const LoginPage = () => {
         </div>
       </div>
       <div className={styles["footer-box"]}>
-        <Footer type="none"></Footer>
+        {/* <Footer type="none"></Footer> */}
       </div>
     </div>
   );

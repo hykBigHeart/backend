@@ -191,7 +191,7 @@ const MemberLearnPage = () => {
           name: "每日学习时长",
           type: "line",
           data: valueData,
-          color: "#ff4d4f",
+          color: "#2B74EA",
         },
       ],
     });

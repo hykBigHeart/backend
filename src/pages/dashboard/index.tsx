@@ -577,7 +577,7 @@ const DashboardPage = () => {
             </div>
           </div>
         </Col>
-        <Footer></Footer>
+        {/* <Footer></Footer> */}
       </Row>
     </>
   );
