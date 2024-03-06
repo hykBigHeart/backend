@@ -15,6 +15,7 @@ import { ExclamationCircleFilled } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import { dateFormat } from "../../../utils/index";
 import { TreeCategory, UploadCoursewareButton } from "../../../compenents";
+import { PdfPreviewDialog } from "./compenents/pdf-preview-dialog";
 import { CoursewareUpdateDialog } from "./compenents/update-dialog";
 
 const { confirm } = Modal;
@@ -58,6 +59,8 @@ const ResourceCoursewarePage = () => {
   );
   const [cateId, setCateId] = useState(Number(result.get("cid")));
   const [updateId, setUpdateId] = useState(0);
+  const [pdfPreviewVisible, setPdfPreviewVisible] = useState(false);
+  const [pdfPreviewSrc, setPdfPreviewSrc] = useState('');
   const [updateVisible, setUpdateVisible] = useState(false);
   const types = [
     { label: "全部", value: "WORD,EXCEL,PPT,PDF,TXT,RAR,ZIP" },
@@ -148,6 +151,17 @@ const ResourceCoursewarePage = () => {
       render: (_, record: any) => {
         return (
           <Space size="small">
+            <Button
+              type="link"
+              size="small"
+              className="b-n-link c-red"
+              onClick={() => {
+                previewFile(record.url);
+              }}
+            >
+              预览
+            </Button>
+            <div className="form-column"></div>
             <Button
               type="link"
               size="small"
@@ -262,6 +276,11 @@ const ResourceCoursewarePage = () => {
     });
   };
 
+  const previewFile = (url: string) => {
+    console.log(url);
+    setPdfPreviewVisible(true)
+    setPdfPreviewSrc(url)
+  };
   const downLoadFile = (url: string) => {
     console.log(url);
     window.open(url);
@@ -380,6 +399,11 @@ const ResourceCoursewarePage = () => {
             )}
           </div>
         </div>
+
+          
+        <PdfPreviewDialog src={pdfPreviewSrc} open={pdfPreviewVisible}  onCancel={() => setPdfPreviewVisible(false)}>
+        </PdfPreviewDialog>
+
         <CoursewareUpdateDialog
           id={Number(updateId)}
           open={updateVisible}
