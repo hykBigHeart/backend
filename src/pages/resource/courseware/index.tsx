@@ -277,7 +277,6 @@ const ResourceCoursewarePage = () => {
   };
 
   const previewFile = (url: string) => {
-    console.log(url);
     setPdfPreviewVisible(true)
     setPdfPreviewSrc(url)
   };
@@ -400,7 +399,6 @@ const ResourceCoursewarePage = () => {
           </div>
         </div>
 
-          
         <PdfPreviewDialog src={pdfPreviewSrc} open={pdfPreviewVisible}  onCancel={() => setPdfPreviewVisible(false)}>
         </PdfPreviewDialog>
 

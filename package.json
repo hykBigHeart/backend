@@ -10,6 +10,9 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.2.3",
+    "@react-pdf-viewer/core": "^3.12.0",
+    "@react-pdf-viewer/default-layout": "^3.12.0",
+    "@react-pdf-viewer/locales": "^1.0.0",
     "@reduxjs/toolkit": "^1.9.3",
     "ahooks": "^3.7.6",
     "antd": "^5.3.2",
@@ -19,7 +22,7 @@
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.1",
     "moment": "^2.29.4",
-    "pdfjs-dist": "^4.0.379",
+    "pdfjs-dist": "2.4.456",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.5",

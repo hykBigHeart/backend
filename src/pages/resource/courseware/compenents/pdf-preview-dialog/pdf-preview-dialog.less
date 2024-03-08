@@ -1,3 +1,12 @@
-.ant-modal-content {
+.pdf-dialog .ant-modal-content {
     height: 100vh;
+}
+// 解决预览pdf时弹窗 溢出部分可以滚动
+.ant-modal-wrap {
+    overflow: hidden !important;
+}
+// 可能是样式冲突导致pdf预览插件部分功能按钮展示不出来
+// 更多下面的功能按钮, 缩放比例下的, 搜索框下的
+#rpv-core__popover-body-inner-toolbar-more-actions, #rpv-core__popover-body-inner-zoom, #rpv-core__popover-body-inner-search {
+    max-height: none !important;
 }
