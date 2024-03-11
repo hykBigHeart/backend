@@ -128,6 +128,7 @@ declare global {
   }
 
   interface CourseHourModel {
+    minMinutes: String;
     id?: number;
     duration: number;
     name: string;

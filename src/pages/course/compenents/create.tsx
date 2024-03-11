@@ -11,6 +11,7 @@ import {
   Image,
   TreeSelect,
   Spin,
+  DatePicker
 } from "antd";
 import styles from "./create.module.less";
 import { useSelector } from "react-redux";
@@ -25,6 +26,7 @@ import { TreeHours } from "./hours";
 import { TreeAttachments } from "./attachments";
 
 const { confirm } = Modal;
+const { RangePicker } = DatePicker;
 
 interface PropInterface {
   cateIds: any;
@@ -373,6 +375,15 @@ export const CourseCreate: React.FC<PropInterface> = ({
     setTreeData(newArr);
   };
 
+  // 改变课程最少需要学习的时长
+  const changeMinMinutes = (id: Number, minMinutes: String)=> {
+    console.log(id, '--', minMinutes, '--', treeData);
+    treeData.forEach(item=> {
+      if (item.rid == id) item.minMinutes = minMinutes
+    })
+    setTreeData(treeData)
+  }
+
   const delAttachments = (id: number) => {
     const data = [...attachmentData];
     const index = data.findIndex((i: any) => i.rid === id);
@@ -581,6 +592,13 @@ export const CourseCreate: React.FC<PropInterface> = ({
                 />
               </Form.Item>
               <Form.Item
+                label="学习时间"
+                name="time"
+                rules={[{ required: true, message: "请输入需要学习的时长!" }]}
+              >
+                <RangePicker format={'YYYY~MM~DD'} />
+              </Form.Item>
+              <Form.Item
                 label="课程属性"
                 name="isRequired"
                 rules={[{ required: true, message: "请选择课程属性!" }]}
@@ -721,7 +739,7 @@ export const CourseCreate: React.FC<PropInterface> = ({
                 </div>
               </Form.Item>
               <Form.Item
-                label="课时列表"
+                label="课件列表"
                 name="hasChapter"
                 rules={[{ required: true, message: "请选择课时列表!" }]}
               >
@@ -759,6 +777,7 @@ export const CourseCreate: React.FC<PropInterface> = ({
                         onUpdate={(arr: any[]) => {
                           transHour(arr);
                         }}
+                        onInputBlur={(id: number, minMinutes: String)=> {changeMinMinutes(id, minMinutes)}}
                       />
                     )}
                   </div>

@@ -1,4 +1,4 @@
-import { message, Tree, Tooltip } from "antd";
+import { message, Tree, Tooltip, Input } from "antd";
 import { useState, useEffect } from "react";
 import type { DataNode, TreeProps } from "antd/es/tree";
 
@@ -11,6 +11,7 @@ interface PropInterface {
   data: CourseHourModel[];
   onRemoveItem: (id: number) => void;
   onUpdate: (arr: any[]) => void;
+  onInputBlur: (id: number, minMinutes: String) => void;
 }
 
 export const TreeHours = (props: PropInterface) => {
@@ -30,7 +31,7 @@ export const TreeHours = (props: PropInterface) => {
       arr.push({
         title: (
           <div className="d-flex">
-            <div className="d-flex">
+            <div className="d-flex" style={{width: '390px'}}>
               <i
                 className="iconfont icon-icon-video"
                 style={{
@@ -38,7 +39,12 @@ export const TreeHours = (props: PropInterface) => {
                   color: "rgba(0,0,0,0.3)",
                 }}
               />
-              <div className="tree-video-title mr-24">{hours[i].name}</div>
+              <div className="tree-video-title mr-20" style={{width: '50%'}}>{hours[i].name}</div>
+              <div className="tree-video-input">
+                最低学时 <Input type="number" onBlur={e => {
+                  props.onInputBlur(hours[i].rid, e.target.value)
+                }}/> 分钟
+              </div>
             </div>
             <Tooltip placement="top" title="可拖拽排序">
               <i

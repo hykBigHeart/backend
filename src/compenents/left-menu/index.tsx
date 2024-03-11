@@ -55,7 +55,7 @@ const items = [
     "课程中心",
     "courses",
     <i className="iconfont icon-icon-study" />,
-    [getItem("线上课", "/course", null, null, null, "course")],
+    [getItem("课程管理", "/course", null, null, null, "course")],
     null,
     null
   ),

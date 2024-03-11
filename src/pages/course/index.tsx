@@ -242,23 +242,23 @@ const CoursePage = () => {
               </Button>
             ),
           },
-          {
-            key: "2",
-            label: (
-              <Button
-                style={{ verticalAlign: "middle" }}
-                type="link"
-                size="small"
-                className="b-n-link c-red"
-                onClick={() => {
-                  setCid(Number(record.id));
-                  setHourUpdateVisible(true);
-                }}
-              >
-                课时
-              </Button>
-            ),
-          },
+          // {
+          //   key: "2",
+          //   label: (
+          //     <Button
+          //       style={{ verticalAlign: "middle" }}
+          //       type="link"
+          //       size="small"
+          //       className="b-n-link c-red"
+          //       onClick={() => {
+          //         setCid(Number(record.id));
+          //         setHourUpdateVisible(true);
+          //       }}
+          //     >
+          //       课时
+          //     </Button>
+          //   ),
+          // },
           {
             key: "3",
             label: (
@@ -438,7 +438,7 @@ const CoursePage = () => {
         </div>
         <div className="right-box">
           <div className="playedu-main-title float-left mb-24">
-            线上课 | {tabKey === "1" ? selLabel : selDepLabel}
+            课程管理 | {tabKey === "1" ? selLabel : selDepLabel}
           </div>
           <div className="float-left j-b-flex mb-24">
             <div className="d-flex">

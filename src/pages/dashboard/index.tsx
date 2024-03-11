@@ -262,7 +262,7 @@ const DashboardPage = () => {
                   className="iconfont icon-onlinelesson"
                   style={{ color: "#B284FF", fontSize: 36 }}
                 ></i>
-                <span>线上课</span>
+                <span>课程管理</span>
               </div>
               <div
                 className={styles["link-mode"]}

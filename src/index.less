@@ -647,6 +647,20 @@ textarea.ant-input {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.tree-video-input {
+  width: '50%';
+  text-align: center;
+  input {
+    width: 40px;
+  }
+  // 取消input类型为number时后面的调数器
+  input[type=number]::-webkit-inner-spin-button, 
+  input[type=number]::-webkit-outer-spin-button { 
+      -webkit-appearance: none; 
+      margin: 0; 
+  }
+
+}
 
 .footer-icon {
   cursor: pointer;
