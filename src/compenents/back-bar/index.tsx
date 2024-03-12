@@ -17,7 +17,7 @@ export const BackBartment = (props: PropInterface) => {
         style={{ paddingLeft: 0 }}
         icon={<LeftOutlined />}
         type="link"
-        danger
+        // danger
         onClick={() => navigate(-1)}
       >
         返回

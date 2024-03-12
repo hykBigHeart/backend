@@ -27,7 +27,7 @@ export const PerButton = (props: PropInterface) => {
         <Button
           className={props.class}
           type="link"
-          danger
+          // danger
           icon={props.icon}
           onClick={() => {
             props.onClick && props.onClick();

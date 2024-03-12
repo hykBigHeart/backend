@@ -50,6 +50,7 @@ export const UploadVideoFloatButton = () => {
         ).length;
         setSuccessNum(num);
       }, 5000);
+      // 没看懂下面这一步的操作
       let timeDiv = document.createElement("div");
       document.body.appendChild(timeDiv);
       intervalId2.current = setInterval(() => {
