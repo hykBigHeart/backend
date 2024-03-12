@@ -37,7 +37,7 @@ const InitPage = (props: Props) => {
   return (
     <>
       <Outlet />
-      <UploadVideoFloatButton></UploadVideoFloatButton>
+      {/* <UploadVideoFloatButton></UploadVideoFloatButton> */}
     </>
   );
 };

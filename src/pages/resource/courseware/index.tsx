@@ -51,7 +51,7 @@ const ResourceCoursewarePage = () => {
   const [loading, setLoading] = useState(true);
   const [category_ids, setCategoryIds] = useState<number[]>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
-  const [type, setType] = useState("WORD,EXCEL,PPT,PDF,TXT,RAR,ZIP");
+  const [type, setType] = useState("WORD,EXCEL,PPT,PDF,TXT,RAR,ZIP,VIDEO");
   const [title, setTitle] = useState("");
   const [multiConfig, setMultiConfig] = useState(false);
   const [selLabel, setLabel] = useState<string>(
@@ -71,6 +71,7 @@ const ResourceCoursewarePage = () => {
     { label: "TXT", value: "TXT" },
     { label: "RAR", value: "RAR" },
     { label: "ZIP", value: "ZIP" },
+    { label: "VIDEO", value: "VIDEO" }
   ];
 
   useEffect(() => {
@@ -224,7 +225,7 @@ const ResourceCoursewarePage = () => {
     setList([]);
     setTitle("");
     setSelectedRowKeys([]);
-    setType("WORD,EXCEL,PPT,PDF,TXT,RAR,ZIP");
+    setType("WORD,EXCEL,PPT,PDF,TXT,RAR,ZIP,VIDEO");
     setRefresh(!refresh);
   };
 
