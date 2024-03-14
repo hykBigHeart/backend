@@ -16,6 +16,8 @@ import type { ColumnsType } from "antd/es/table";
 import { dateFormat } from "../../../utils/index";
 import { TreeCategory, UploadCoursewareButton } from "../../../compenents";
 import { PdfPreviewDialog } from "./compenents/pdf-preview-dialog";
+// 引入视频页面的播放组件
+import { VideoPlayDialog } from "../videos/compenents/video-play-dialog";
 import { CoursewareUpdateDialog } from "./compenents/update-dialog";
 
 const { confirm } = Modal;
@@ -60,7 +62,10 @@ const ResourceCoursewarePage = () => {
   const [cateId, setCateId] = useState(Number(result.get("cid")));
   const [updateId, setUpdateId] = useState(0);
   const [pdfPreviewVisible, setPdfPreviewVisible] = useState(false);
-  const [pdfPreviewSrc, setPdfPreviewSrc] = useState('');
+  // 预览地址公用
+  const [pdfOrplaySrc, setpdfOrplaySrc] = useState('');
+  const [playVisible, setPlayeVisible] = useState(false);
+
   const [updateVisible, setUpdateVisible] = useState(false);
   const types = [
     { label: "全部", value: "WORD,EXCEL,PPT,PDF,TXT,RAR,ZIP" },
@@ -157,7 +162,7 @@ const ResourceCoursewarePage = () => {
               size="small"
               className="b-n-link c-red"
               onClick={() => {
-                previewFile(record.url);
+                 previewFile(record.url, record.type);
               }}
             >
               预览
@@ -277,9 +282,11 @@ const ResourceCoursewarePage = () => {
     });
   };
 
-  const previewFile = (url: string) => {
-    setPdfPreviewVisible(true)
-    setPdfPreviewSrc(url)
+  const previewFile = (url: string, type: string) => {
+    if (type == "VIDEO") setPlayeVisible(true) 
+    else setPdfPreviewVisible(true)
+    
+    setpdfOrplaySrc(url)
   };
   const downLoadFile = (url: string) => {
     console.log(url);
@@ -400,8 +407,14 @@ const ResourceCoursewarePage = () => {
           </div>
         </div>
 
-        <PdfPreviewDialog src={pdfPreviewSrc} open={pdfPreviewVisible}  onCancel={() => setPdfPreviewVisible(false)}>
+        <PdfPreviewDialog src={pdfOrplaySrc} open={pdfPreviewVisible}  onCancel={() => setPdfPreviewVisible(false)}>
         </PdfPreviewDialog>
+        <VideoPlayDialog
+          id={Number(updateId)}
+          open={playVisible}
+          url={pdfOrplaySrc}
+          onCancel={() => setPlayeVisible(false)}
+        ></VideoPlayDialog>
 
         <CoursewareUpdateDialog
           id={Number(updateId)}
