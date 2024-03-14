@@ -46,7 +46,8 @@ export const CoursewareUpdateDialog: React.FC<PropInterface> = ({
       let data = res.data.resources;
       form.setFieldsValue({
         name: data.name,
-        category_id: res.data.category_ids,
+        category_id: res.data.category_ids[0],  //  课件分类是单选的值，返回数组的话首次加载会报错：Warning: `value` should not be array when `TreeSelect` is single mode.
+        
       });
       setInit(false);
     });
@@ -153,6 +154,13 @@ export const CoursewareUpdateDialog: React.FC<PropInterface> = ({
                   style={{ width: 200 }}
                   placeholder="请输入课件名称"
                 />
+              </Form.Item>
+              <Form.Item
+                label="最低学时"
+                name='minMinutes'
+                rules={[{ required: true, message: "请输入最低需要学习的时长!" }]}
+              >
+                <div><Input type="number" style={{width: 200}}/> 分钟</div>
               </Form.Item>
             </Form>
           </div>
