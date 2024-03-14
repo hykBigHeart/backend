@@ -26,7 +26,7 @@ import { TreeHours } from "./hours";
 import { TreeAttachments } from "./attachments";
 
 const { confirm } = Modal;
-const { RangePicker } = DatePicker;
+// const { RangePicker } = DatePicker;
 
 interface PropInterface {
   cateIds: any;
@@ -593,12 +593,13 @@ export const CourseCreate: React.FC<PropInterface> = ({
               </Form.Item>
               <Form.Item
                 label="学习时间"
-                name="time"
+                name="days"
                 rules={[{ required: true, message: "请输入需要学习的时长!" }]}
               >
-                <RangePicker format={'YYYY~MM~DD'} />
+                {/* <RangePicker format={'YYYY~MM~DD'} /> */}
+                <div><Input type="number" style={{ width: 200 }} placeholder="请在此处输入学习天数"/>天</div>
               </Form.Item>
-              <Form.Item
+              {/* <Form.Item
                 label="课程属性"
                 name="isRequired"
                 rules={[{ required: true, message: "请选择课程属性!" }]}
@@ -619,8 +620,7 @@ export const CourseCreate: React.FC<PropInterface> = ({
                   <Radio value="open">全部部门</Radio>
                   <Radio value="elective">选择部门</Radio>
                 </Radio.Group>
-              </Form.Item>
-
+              </Form.Item> */}
               {type === "elective" && (
                 <Form.Item
                   label="选择部门"
@@ -758,7 +758,7 @@ export const CourseCreate: React.FC<PropInterface> = ({
                         onClick={() => setVideoVisible(true)}
                         type="primary"
                       >
-                        添加课时
+                        添加课件
                       </Button>
                     </div>
                   </Form.Item>
@@ -813,7 +813,7 @@ export const CourseCreate: React.FC<PropInterface> = ({
                                 setAddvideoCurrent(index);
                               }}
                             >
-                              添加课时
+                              添加课件
                             </Button>
                             <Button onClick={() => delChapter(index)}>
                               删除章节
@@ -847,7 +847,7 @@ export const CourseCreate: React.FC<PropInterface> = ({
                   </Form.Item>
                 </div>
               )}
-              <Form.Item label="更多选项">
+              {/* <Form.Item label="更多选项">
                 <div
                   className={showDrop ? "drop-item active" : "drop-item"}
                   onClick={() => setShowDrop(!showDrop)}
@@ -858,10 +858,10 @@ export const CourseCreate: React.FC<PropInterface> = ({
                   />
                   <span>(课程简介、课件)</span>
                 </div>
-              </Form.Item>
+              </Form.Item> */}
               <div
                 className="c-flex"
-                style={{ display: showDrop ? "block" : "none" }}
+                // style={{ display: showDrop ? "block" : "none" }}
               >
                 <Form.Item label="课程简介" name="short_desc">
                   <Input.TextArea
@@ -871,7 +871,17 @@ export const CourseCreate: React.FC<PropInterface> = ({
                     maxLength={200}
                   />
                 </Form.Item>
-                <Form.Item label="课程附件">
+                <Form.Item
+                label="课程权限"
+                name="isRequired"
+                rules={[{ required: true, message: "请选择课程权限!" }]}
+              >
+                <Radio.Group>
+                  <Radio value={1}>公开</Radio>
+                  <Radio value={0} style={{ marginLeft: 22 }}>非公开</Radio>
+                </Radio.Group>
+              </Form.Item>
+                {/* <Form.Item label="课程附件">
                   <Button
                     onClick={() => setAttachmentVisible(true)}
                     type="primary"
@@ -896,7 +906,7 @@ export const CourseCreate: React.FC<PropInterface> = ({
                       }}
                     />
                   )}
-                </div>
+                </div> */}
               </div>
             </Form>
           </div>

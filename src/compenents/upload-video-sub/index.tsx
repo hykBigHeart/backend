@@ -1,3 +1,4 @@
+// 添加视频和文档公用
 import { useEffect, useState } from "react";
 import { Row, Col, Empty, Table, Spin, Typography, Input, Button } from "antd";
 import type { ColumnsType } from "antd/es/table";
@@ -66,7 +67,7 @@ export const UploadVideoSub = (props: PropsInterface) => {
     setLoading(true);
     let categoryIds = category_ids.join(",");
     resource
-      .resourceList(page, size, "", "", title, "VIDEO", categoryIds)
+      .resourceList(page, size, "", "", title, "WORD,EXCEL,PPT,PDF,TXT,RAR,ZIP,VIDEO", categoryIds)
       .then((res: any) => {
         setTotal(res.data.result.total);
         setVideoExtra(res.data.videos_extra);
@@ -105,7 +106,7 @@ export const UploadVideoSub = (props: PropsInterface) => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "视频",
+      title: "课件",
       render: (_, record: any) => (
         <div className="d-flex">
           <i
@@ -119,15 +120,19 @@ export const UploadVideoSub = (props: PropsInterface) => {
         </div>
       ),
     },
+    // {
+    //   title: "时长",
+    //   render: (_, record: any) => (
+    //     <div>
+    //       <DurationText
+    //         duration={videosExtra[record.id].duration}
+    //       ></DurationText>
+    //     </div>
+    //   ),
+    // },
     {
-      title: "时长",
-      render: (_, record: any) => (
-        <div>
-          <DurationText
-            duration={videosExtra[record.id].duration}
-          ></DurationText>
-        </div>
-      ),
+      title: "类型",
+      render: (_, record: any) => <span>{record.type}</span>,
     },
   ];
 
@@ -143,7 +148,7 @@ export const UploadVideoSub = (props: PropsInterface) => {
               name: row[i].name,
               type: row[i].type,
               rid: row[i].id,
-              duration: videosExtra[row[i].id].duration,
+              // duration: videosExtra[row[i].id].duration,
             });
           }
         }

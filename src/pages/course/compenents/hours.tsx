@@ -39,12 +39,13 @@ export const TreeHours = (props: PropInterface) => {
                   color: "rgba(0,0,0,0.3)",
                 }}
               />
-              <div className="tree-video-title mr-20" style={{width: '50%'}}>{hours[i].name}</div>
-              <div className="tree-video-input">
+              {/* style={{width: '50%'}} */}
+              <div className="tree-video-title mr-20" >{hours[i].name}</div>
+              {/* <div className="tree-video-input">
                 最低学时 <Input type="number" onBlur={e => {
                   props.onInputBlur(hours[i].rid, e.target.value)
                 }}/> 分钟
-              </div>
+              </div> */}
             </div>
             <Tooltip placement="top" title="可拖拽排序">
               <i

@@ -1,3 +1,4 @@
+// 添加视频和文档公用
 import { useEffect, useState } from "react";
 import { Row, Modal, Tabs } from "antd";
 import styles from "./index.module.less";
@@ -31,11 +32,11 @@ export const SelectResource = (props: PropsInterface) => {
   const items: TabsProps["items"] = [
     {
       key: "1",
-      label: `视频`,
+      label: `课件`,
       children: (
         <div className="float-left">
           <UploadVideoSub
-            label="视频"
+            label="课件"
             defaultCheckedList={props.defaultKeys}
             open={refresh}
             onSelected={(arr: any[], videos: any[]) => {
