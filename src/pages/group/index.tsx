@@ -7,7 +7,7 @@ import { dateWholeFormat } from "../../utils/index";
 import { group } from "../../api/index";
 import { PerButton } from "../../compenents";
 import { GroupCreate } from "./compenents/create";
-
+import { UserTransfer } from "./compenents/userTransfer";
 interface DataType {
   id: React.Key;
   name: string;
@@ -22,6 +22,7 @@ const groupPage = () => {
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
   const [createVisible, setCreateVisible] = useState(false);
+  const [transferVisible, setTransferVisible] = useState(false);
   const [list, setList] = useState<DataType[]>([]);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
@@ -91,8 +92,7 @@ const groupPage = () => {
       render: (_, record) => (
         <Button  type="link"  className="b-link c-red"  icon={<UserOutlined />}
           onClick={() => {
-            // setAdmId(Number(record.id));
-            // setVisiable(true);
+            setTransferVisible(true);
           }}
         >
           组内用户
@@ -138,15 +138,10 @@ const groupPage = () => {
           </div>
         </div>
         <div className="float-left">
-          <Table
-            loading={loading}
-            columns={columns}
-            dataSource={list}
-            rowKey={(record) => record.id}
-            pagination={paginationProps}
-          />
+          <Table loading={loading} columns={columns} dataSource={list} rowKey={(record) => record.id} pagination={paginationProps}/>
         </div>
-        <GroupCreate open={createVisible}onCancel={() => { setCreateVisible(false); setRefresh(!refresh); }}></GroupCreate>
+        <GroupCreate open={createVisible} onCancel={() => { setCreateVisible(false); setRefresh(!refresh); }}></GroupCreate>
+        <UserTransfer open={transferVisible} onCancel={() => { setTransferVisible(false); setRefresh(!refresh); }}></UserTransfer>
       </div>
     </>
   )

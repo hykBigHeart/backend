@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Modal, Form, Input, message, Spin } from "antd";
+import React, { useState, useEffect } from "react";
+import { Modal, Form, Input, message } from "antd";
 import { group } from "../../../api/index";
 
 interface PropInterface {
