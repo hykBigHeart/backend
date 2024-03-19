@@ -44,7 +44,7 @@ const items = [
     "resource",
     <i className="iconfont icon-icon-file" />,
     [
-      getItem("视频", "/videos", null, null, null, "resource-menu"),
+      // getItem("视频", "/videos", null, null, null, "resource-menu"),
       getItem("图片", "/images", null, null, null, "resource-menu"),
       getItem("课件", "/courseware", null, null, null, "resource-menu"),
     ],
@@ -66,6 +66,8 @@ const items = [
     [
       getItem("学员", "/member/index", null, null, null, "user-index"),
       getItem("部门", "/department", null, null, null, "department-cud"),
+      // group-cud
+      getItem("群组", "/group", null, null, null, "department-cud"),
     ],
     null,
     null

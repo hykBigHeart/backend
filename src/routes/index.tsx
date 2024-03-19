@@ -42,6 +42,8 @@ const SystemAdminrolesPage = lazy(() => import("../pages/system/adminroles"));
 const SystemLogPage = lazy(() => import("../pages/system/adminlog"));
 //部门页面
 const DepartmentPage = lazy(() => import("../pages/department"));
+// 群组页面
+const GroupPage = lazy(() => import("../pages/group"));
 //测试
 const TestPage = lazy(() => import("../pages/test"));
 //错误页面
@@ -160,6 +162,10 @@ const routes: RouteObject[] = [
           {
             path: "/department",
             element: <PrivateRoute Component={<DepartmentPage />} />,
+          },
+          {
+            path: "/group",
+            element: <PrivateRoute Component={<GroupPage />} />,
           },
         ],
       },
