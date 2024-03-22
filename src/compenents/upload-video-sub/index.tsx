@@ -110,7 +110,7 @@ export const UploadVideoSub = (props: PropsInterface) => {
       render: (_, record: any) => (
         <div className="d-flex">
           <i
-            className="iconfont icon-icon-video"
+            className={record.type == "VIDEO" ? "iconfont icon-icon-video" : "iconfont icon-icon-file"}
             style={{
               fontSize: 14,
               color: "rgba(0,0,0,0.3)",
@@ -144,12 +144,20 @@ export const UploadVideoSub = (props: PropsInterface) => {
       if (row) {
         for (var i = 0; i < row.length; i++) {
           if (props.defaultCheckedList.indexOf(row[i].id) === -1) {
-            arrVideos.push({
-              name: row[i].name,
-              type: row[i].type,
-              rid: row[i].id,
-              // duration: videosExtra[row[i].id].duration,
-            });
+            if (row[i].type == 'VIDEO') {
+              arrVideos.push({
+                name: row[i].name,
+                type: row[i].type,
+                rid: row[i].id,
+                duration: videosExtra[row[i].id].duration,
+              });
+            } else {
+              arrVideos.push({
+                name: row[i].name,
+                type: row[i].type,
+                rid: row[i].id,
+              });
+            }
           }
         }
         props.onSelected(selectedRowKeys, arrVideos);

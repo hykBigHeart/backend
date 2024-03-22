@@ -11,13 +11,18 @@ import {
   message,
   Image,
   Spin,
+  Modal
 } from "antd";
 import styles from "./update.module.less";
 import { useSelector } from "react-redux";
-import { course, department } from "../../../api/index";
+import { course, department, courseHour, courseChapter, courseAttachment } from "../../../api/index";
 import { UploadImageButton } from "../../../compenents";
 import dayjs from "dayjs";
 import moment from "moment";
+import { SelectResource } from "../../../compenents";
+import { TreeHours } from "./hours";
+import { ExclamationCircleFilled } from "@ant-design/icons";
+const { confirm } = Modal;
 
 interface PropInterface {
   id: number;
@@ -50,6 +55,15 @@ export const CourseUpdate: React.FC<PropInterface> = ({
   const [thumb, setThumb] = useState("");
   const [type, setType] = useState("open");
 
+  // 合并回显课件功能（Merge echo courseware function）
+  const [chapterType, setChapterType] = useState(0);
+  const [treeData, setTreeData] = useState<CourseHourModel[]>([]);
+  const [hours, setHours] = useState<number[]>([]);
+  const [chapterHours, setChapterHours] = useState<any>([]);
+  const [videoVisible, setVideoVisible] = useState<boolean>(false);
+  const [chapters, setChapters] = useState<CourseChaptersModel[]>([]);
+  const [addvideoCurrent, setAddvideoCurrent] = useState(0);
+
   useEffect(() => {
     setInit(true);
     if (id === 0) {
@@ -59,6 +73,9 @@ export const CourseUpdate: React.FC<PropInterface> = ({
       getParams();
       getCategory();
       getDetail();
+
+      setChapters([]);
+      setChapterType(0)
     }
   }, [form, id, open]);
 
@@ -85,8 +102,8 @@ export const CourseUpdate: React.FC<PropInterface> = ({
   const getDetail = () => {
     course.course(id).then((res: any) => {
       let type = res.data.dep_ids.length > 0 ? "elective" : "open";
-
       let chapterType = res.data.chapters.length > 0 ? 1 : 0;
+      setChapterType(chapterType);
       form.setFieldsValue({
         title: res.data.course.title,
         thumb: res.data.course.thumb,
@@ -99,9 +116,49 @@ export const CourseUpdate: React.FC<PropInterface> = ({
         published_at: res.data.course.published_at
           ? dayjs(res.data.course.published_at)
           : "",
+          effective_day: res.data.course.effective_day,
+          purview: res.data.course.purview
       });
       setType(type);
       setThumb(res.data.course.thumb);
+      setInit(false);
+
+      // mecf
+      let hours = res.data.hours;
+      let chapters = res.data.chapters;
+      let attachments = res.data.attachments;
+      if (chapterType === 1) {  //  有章节
+        setTreeData([]);
+        setHours([]);
+        
+        const arr: any = [];
+        const keys: any = [];
+        for (let i = 0; i < chapters.length; i++) {
+          // 筛选出不同章节的课件
+          let siftAttachments = attachments.filter((item: any) => item.chapter_id == chapters[i].id)
+          arr.push({
+            id: chapters[i].id,
+            name: chapters[i].name,
+            hours: resetHours([...(Object.keys(hours).length === 0 ? [] : hours[chapters[i].id] ? hours[chapters[i].id] : []), ...siftAttachments]).arr,
+          });
+          keys.push(resetHours([...(Object.keys(hours).length === 0 ? [] : hours[chapters[i].id] ? hours[chapters[i].id] : []), ...siftAttachments]).keys);
+        }
+        setChapters(arr);
+        setChapterHours(keys);
+      } else {  //  无章节（附件和视频可以共同展示了）
+        setChapters([]);
+        setChapterHours([]);
+        if (JSON.stringify(hours) !== "{}" || attachments.length) {
+          let mergeAttachmentsHoursArr = [...(Object.keys(hours).length === 0 ? [] : hours[0]), ...attachments]
+          const arr: any = resetHours(mergeAttachmentsHoursArr).arr;
+          const keys: any = resetHours(mergeAttachmentsHoursArr).keys;
+          setTreeData(arr);
+          setHours(keys);
+        } else {
+          setTreeData([]);
+          setHours([]);
+        }
+      }
       setInit(false);
     });
   };
@@ -163,12 +220,14 @@ export const CourseUpdate: React.FC<PropInterface> = ({
         values.thumb,
         values.short_desc,
         1,
-        values.isRequired,
+        0, // values.isRequired,
         dep_ids,
         values.category_ids,
         [],
         [],
-        values.published_at
+        values.published_at,
+        values.effective_day,
+        values.purview
       )
       .then((res: any) => {
         setLoading(false);
@@ -191,6 +250,284 @@ export const CourseUpdate: React.FC<PropInterface> = ({
   const disabledDate = (current: any) => {
     return current && current >= moment().add(0, "days"); // 选择时间要大于等于当前天。若今天不能被选择，去掉等号即可。
   };
+
+  const resetHours = (data: any) => {
+    const arr: any = [];
+    const keys: any = [];
+    if (data) {
+      for (let i = 0; i < data.length; i++) {
+        arr.push({
+          duration: data[i].duration,
+          type: data[i].type,
+          name: data[i].title,
+          rid: data[i].rid,
+          id: data[i].id,
+        });
+        keys.push(data[i].rid);
+      }
+    }
+    return { arr, keys };
+  };
+
+  const delHour = (hid: number) => {
+    const data = [...treeData];
+    confirm({
+      title: "操作确认",
+      icon: <ExclamationCircleFilled />,
+      content: "确认删除此课件？",
+      centered: true,
+      okText: "确认",
+      cancelText: "取消",
+      onOk() {
+        const index = data.findIndex((i: any) => i.rid === hid);
+        let delId = data[index].id;
+        let delType = data[index].type;
+        if (index >= 0) {
+          data.splice(index, 1);
+        }
+        if (data.length > 0) {
+          setTreeData(data);
+          const keys = data.map((item: any) => item.rid);
+          setHours(keys);
+        } else {
+          setTreeData([]);
+          setHours([]);
+        }
+        if (delId) {
+          if (delType == 'VIDEO') {
+            courseHour.destroyCourseHour(id, delId).then((res: any) => {
+              console.log("ok");
+            });
+          } else {
+            courseAttachment.destroyAttachment(id, delId).then((res: any) => {
+              console.log("ok");
+            });
+          }
+        }
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
+
+  const transHour = (arr: any) => {
+    setHours(arr);
+    const data = [...treeData];
+    const newArr: any = [];
+    const hourIds: any = [];
+    for (let i = 0; i < arr.length; i++) {
+      data.map((item: any) => {
+        if (item.rid === arr[i]) {
+          newArr.push(item);
+          hourIds.push(item.id);
+        }
+      });
+    }
+    setTreeData(newArr);
+    courseHour.transCourseHour(id, hourIds).then((res: any) => {
+      console.log("ok");
+    });
+  };
+
+  const setChapterName = (index: number, value: string) => {
+    const arr = [...chapters];
+    arr[index].name = value;
+    setChapters(arr);
+  };
+
+  const saveChapterName = (index: number, value: string) => {
+    const arr = [...chapters];
+    if (arr[index].id) {
+      courseChapter
+        .updateCourseChapter(id, Number(arr[index].id), value, index + 1)
+        .then((res: any) => {
+          console.log("ok");
+          getDetail();
+        });
+    } else {
+      courseChapter
+        .storeCourseChapter(id, value, arr.length)
+        .then((res: any) => {
+          console.log("ok");
+          getDetail();
+        });
+    }
+  };
+
+  const delChapter = (index: number) => {
+    const arr = [...chapters];
+    const keys = [...chapterHours];
+    confirm({
+      title: "操作确认",
+      icon: <ExclamationCircleFilled />,
+      content: "删除章节会清空已添加课件，确认删除？",
+      centered: true,
+      okText: "确认",
+      cancelText: "取消",
+      onOk() {
+        if (arr[index].id) {
+          courseChapter
+            .destroyCourseChapter(id, Number(arr[index].id))
+            .then((res: any) => {
+              console.log("ok");
+              getDetail();
+            });
+        }
+      },
+      onCancel() {},
+    });
+  };
+
+  const delChapterHour = (index: number, hid: number) => {
+    const keys = [...chapterHours];
+    const data = [...chapters];
+    confirm({
+      title: "操作确认",
+      icon: <ExclamationCircleFilled />,
+      content: "确认删除此课件？",
+      centered: true,
+      okText: "确认",
+      cancelText: "取消",
+      onOk() {
+        const current = data[index].hours.findIndex((i: any) => i.rid === hid);
+        let delId = data[index].hours[current].id;
+        let delType = data[index].hours[current].type;
+        if (current >= 0) {
+          data[index].hours.splice(current, 1);
+        }
+        if (data[index].hours.length > 0) {
+          setChapters(data);
+          keys[index] = data[index].hours.map((item: any) => item.rid);
+          setChapterHours(keys);
+        } else {
+          keys[index] = [];
+          data[index].hours = [];
+          setChapters(data);
+          setChapterHours(keys);
+        }
+
+        if (delId) {
+          if (delType == 'VIDEO') {
+            courseHour.destroyCourseHour(id, delId).then((res: any) => {
+              console.log("ok");
+            });
+          } else {
+            courseAttachment.destroyAttachment(id, delId).then((res: any) => {
+              console.log("ok");
+            });
+          }
+
+        }
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
+
+  const transChapterHour = (index: number, arr: any) => {
+    const keys = [...chapterHours];
+    keys[index] = arr;
+    setChapterHours(keys);
+
+    const data = [...chapters];
+    const newArr: any = [];
+    const hourIds: any = [];
+    for (let i = 0; i < arr.length; i++) {
+      data[index].hours.map((item: any) => {
+        if (item.rid === arr[i]) {
+          newArr.push(item);
+          hourIds.push(item.id);
+        }
+      });
+    }
+    data[index].hours = newArr;
+    setChapters(data);
+    courseHour.transCourseHour(id, hourIds).then((res: any) => {
+      console.log("ok");
+    });
+  };
+
+  const addNewChapter = () => {
+    const arr = [...chapters];
+    const keys = [...chapterHours];
+    arr.push({
+      name: "",
+      hours: [],
+    });
+    keys.push([]);
+    setChapters(arr);
+    setChapterHours(keys);
+  };
+
+  const changeChapterHours = (arr: any) => {
+    const newArr: any = [];
+    for (let i = 0; i < arr.length; i++) {
+      arr[i].map((item: any) => {
+        newArr.push(item);
+      });
+    }
+    return newArr;
+  };
+
+  const selectData = (arr: any, videos: any) => {
+    const hours: any = [];
+    for (let i = 0; i < videos.length; i++) {
+      hours.push({
+        chapter_id: 0,
+        sort: treeData.length + i,
+        title: videos[i].name,
+        type: videos[i].type,
+        duration: videos[i].duration,
+        rid: videos[i].rid,
+      });
+    }
+    addPublicFn(hours)
+  };
+
+  const selectChapterData = (arr: any, videos: any) => {
+    const data = [...chapters];
+    if (!data[addvideoCurrent].id) {
+      message.error("添加课件失败");
+      return;
+    }
+    const hours: any = [];
+    for (let i = 0; i < videos.length; i++) {
+      // debugger
+      hours.push({
+        chapter_id: data[addvideoCurrent].id,
+        sort: data[addvideoCurrent].hours.length + i,
+        title: videos[i].name,
+        type: videos[i].type,
+        duration: videos[i].duration,
+        rid: videos[i].rid,
+      });
+    }
+    addPublicFn(hours)
+  };
+
+  // 无章节添加和有章节添加公用一套接口报错方法
+  const addPublicFn = (hours: any) => {
+    if (hours.length === 0) {
+      message.error("请选择课件");
+      return;
+    }
+
+    // 定义保存接口的 Promise 数组
+    const promises: Promise<any>[] = [];
+
+    let videoList = hours.filter((item: any) => item.type == 'VIDEO')
+    if (videoList.length) promises.push(courseHour.storeCourseHourMulti(id, videoList))
+    let coursewareList = hours.filter((item: any) => item.type != 'VIDEO')
+    if (coursewareList.length) promises.push(courseAttachment.storeCourseAttachmentMulti(id, coursewareList))
+    
+    Promise.all(promises).then(res=> {
+      // console.log('接口都走完', res);
+      setVideoVisible(false);
+      getDetail();
+    }).catch(err=> { console.log('err', err); })
+  }
 
   return (
     <>
@@ -259,7 +596,10 @@ export const CourseUpdate: React.FC<PropInterface> = ({
                   placeholder="请在此处输入课程名称"
                 />
               </Form.Item>
-              <Form.Item
+              <Form.Item label="有效学习天数" name="effective_day" rules={[{ required: true, message: "请输入需要学习的时长!" }]}>
+                <Input type="number" style={{ width: 200 }} placeholder="请在此处输入学习天数"/>
+              </Form.Item>
+              {/* <Form.Item
                 label="课程属性"
                 name="isRequired"
                 rules={[{ required: true, message: "请选择课程属性!" }]}
@@ -280,7 +620,7 @@ export const CourseUpdate: React.FC<PropInterface> = ({
                   <Radio value="open">全部部门</Radio>
                   <Radio value="elective">选择部门</Radio>
                 </Radio.Group>
-              </Form.Item>
+              </Form.Item> */}
 
               {type === "elective" && (
                 <Form.Item
@@ -399,6 +739,57 @@ export const CourseUpdate: React.FC<PropInterface> = ({
                   </div>
                 </div>
               </Form.Item>
+              <div className={styles["top-content"]}>
+                <p>1.线上课课时调整及时生效，操作不可逆，请谨慎操作。</p>
+                <p>2.课时调整后，已有学习进度会在学员学习时重新计算。</p>
+              </div>
+              {chapterType === 0 && (
+                  <div className="c-flex">
+                    <Form.Item>
+                      <div className="ml-42">
+                        <Button onClick={() => setVideoVisible(true)} type="primary" >添加课件</Button>
+                      </div>
+                    </Form.Item>
+                    <div className={styles["hous-box"]}>
+                      {treeData.length === 0 && (
+                        <span className={styles["no-hours"]}>请点击上方按钮添加课件</span>
+                      )}
+                      {treeData.length > 0 && (
+                        <TreeHours data={treeData} onRemoveItem={(id: number) => { delHour(id); }} onUpdate={(arr: any[]) => { transHour(arr); }}/>
+                      )}
+                    </div>
+                  </div>
+                )}
+                {chapterType === 1 && (
+                  <div className="c-flex">
+                    {chapters.length > 0 &&
+                      chapters.map((item: any, index: number) => {
+                        return (
+                          <div key={item.hours.length + "章节" + index} className={styles["chapter-item"]}>
+                            <div className="d-flex">
+                              <div className={styles["label"]}>章节{index + 1}：</div>
+                              <Input value={item.name} className={styles["input"]} onChange={(e) => {   setChapterName(index, e.target.value); }} onBlur={(e) => { saveChapterName(index, e.target.value); }} placeholder="请在此处输入章节名称" allowClear/>
+                              <Button disabled={!item.name} className="mr-16" type="primary" onClick={() => { setVideoVisible(true); setAddvideoCurrent(index); }}>添加课件</Button>
+                              <Button onClick={() => delChapter(index)}>删除章节</Button>
+                            </div>
+                            <div className={styles["chapter-hous-box"]}>
+                              {item.hours.length === 0 && (
+                                <span className={styles["no-hours"]}>请点击上方按钮添加课件</span>
+                              )}
+                              {item.hours.length > 0 && (
+                                <TreeHours data={item.hours} onRemoveItem={(id: number) => { delChapterHour(index, id); }} onUpdate={(arr: any[]) => { transChapterHour(index, arr); }}/>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    <Form.Item>
+                      <div className="ml-42">
+                        <Button onClick={() => addNewChapter()}>添加章节</Button>
+                      </div>
+                    </Form.Item>
+                  </div>
+                )}
               <Form.Item label="课程简介" name="short_desc">
                 <Input.TextArea
                   style={{ width: 424, minHeight: 80 }}
@@ -406,6 +797,12 @@ export const CourseUpdate: React.FC<PropInterface> = ({
                   placeholder="请输入课程简介（最多200字）"
                   maxLength={200}
                 />
+              </Form.Item>
+              <Form.Item label="课程权限" name="purview" rules={[{ required: true, message: "请选择课程权限!" }]}>
+                <Radio.Group>
+                  <Radio value={1}>公开</Radio>
+                  <Radio value={0} style={{ marginLeft: 22 }}>非公开</Radio>
+                </Radio.Group>
               </Form.Item>
               <Form.Item label="上架时间">
                 <Space align="baseline" style={{ height: 32 }}>
@@ -424,6 +821,15 @@ export const CourseUpdate: React.FC<PropInterface> = ({
                 </Space>
               </Form.Item>
             </Form>
+            <SelectResource defaultKeys={ chapterType === 0 ? hours : changeChapterHours(chapterHours)} open={videoVisible} onCancel={() => {setVideoVisible(false); }}
+              onSelected={(arr: any, videos: any) => {
+                if (chapterType === 0) {
+                  selectData(arr, videos);
+                } else {
+                  selectChapterData(arr, videos);
+                }
+              }}
+            />
           </div>
         </Drawer>
       ) : null}

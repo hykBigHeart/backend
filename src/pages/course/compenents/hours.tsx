@@ -33,7 +33,7 @@ export const TreeHours = (props: PropInterface) => {
           <div className="d-flex">
             <div className="d-flex" style={{width: '390px'}}>
               <i
-                className="iconfont icon-icon-video"
+                className={hours[i].type == 'VIDEO' ? 'iconfont icon-icon-video' : 'iconfont icon-icon-file'}
                 style={{
                   fontSize: 16,
                   color: "rgba(0,0,0,0.3)",

@@ -36,7 +36,9 @@ export function storeCourse(
   categoryIds: number[],
   chapters: any[],
   hours: any[],
-  attachments: any[]
+  attachments: any[],
+  effectiveDay: number,
+  purview: number
 ) {
   return client.post("/backend/v1/course/create", {
     title: title,
@@ -49,6 +51,8 @@ export function storeCourse(
     chapters: chapters,
     hours: hours,
     attachments: attachments,
+    effective_day: effectiveDay,
+    purview
   });
 }
 
@@ -67,7 +71,9 @@ export function updateCourse(
   categoryIds: number[],
   chapters: number[],
   hours: number[],
-  publishedAt: string
+  publishedAt: string,
+  effectiveDay: number,
+  purview: number,
 ) {
   return client.put(`/backend/v1/course/${id}`, {
     title: title,
@@ -80,6 +86,8 @@ export function updateCourse(
     chapters: chapters,
     hours: hours,
     published_at: publishedAt,
+    effective_day: effectiveDay,
+    purview
   });
 }
 
