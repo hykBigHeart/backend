@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, Input, message, theme, Transfer, Tree } from "antd";
+import { Modal, Form, message, theme, Transfer, Tree } from "antd";
 import type { GetProp, TransferProps, TreeDataNode } from 'antd';
 import { group } from "../../../api/index";
 import './userTransfer.less'
@@ -11,15 +11,23 @@ interface PropInterface {
   onCancel: () => void;
 }
 
+interface Option {
+  key: string | number;
+  title: any;
+  children?: Option[];
+}
+
 export const UserTransfer: React.FC<PropInterface> = ({
   open,
   onCancel,
 }) => {
   const { token } = theme.useToken();
-  const { Search } = Input;
   const [loading, setLoading] = useState(false);
 
   const [targetKeys, setTargetKeys] = useState<string[]>([]);
+  const [handledSourceData, setHandledSourceData] = useState<TreeDataNode[]>([])
+  const [searchedData, setSearchedData] = useState<TreeDataNode[]>([])
+
   let treeData: TreeDataNode[] = [
     { key: '0-0', title: '0-0', personnel: [{key: '1', title: '张三'},
     {key: '2', title: '里斯'},
@@ -53,18 +61,90 @@ export const UserTransfer: React.FC<PropInterface> = ({
       ]
     },
   ];
-  let searchData: TreeDataNode[] = treeData
+
+  let sourceData = {
+    0: [
+      {
+        "id": 9,
+        "name": "山豆根",
+        "sort": 0,
+        "parent_id": 0,
+        "parent_chain": "",
+        "created_at": "2024-03-25T06:05:01.000+00:00",
+        "updated_at": "2024-03-25T06:05:01.000+00:00"
+      },
+      {
+        "id": 1,
+        "name": "海金格",
+        "sort": 2,
+        "parent_id": 0,
+        "parent_chain": "",
+        "created_at": "2024-02-21T07:23:52.000+00:00",
+        "updated_at": "2024-02-21T07:23:52.000+00:00"
+      },
+      {
+        "id": 4,
+        "name": "外包",
+        "sort": 3,
+        "parent_id": 0,
+        "parent_chain": "",
+        "created_at": "2024-03-13T02:16:32.000+00:00",
+        "updated_at": "2024-03-13T02:16:32.000+00:00"
+      }
+    ],
+    1: [
+      {
+        "id": 3,
+        "name": "运营部",
+        "sort": 1,
+        "parent_id": 1,
+        "parent_chain": "1",
+        "created_at": "2024-02-22T06:57:56.000+00:00",
+        "updated_at": "2024-02-22T06:57:56.000+00:00"
+      },
+      {
+        "id": 2,
+        "name": "研发部",
+        "sort": 2,
+        "parent_id": 1,
+        "parent_chain": "1",
+        "created_at": "2024-02-21T07:24:04.000+00:00",
+        "updated_at": "2024-02-21T07:24:04.000+00:00"
+      }
+    ],
+    4: [
+      {
+        "id": 5,
+        "name": "第一中心",
+        "sort": 0,
+        "parent_id": 4,
+        "parent_chain": "4",
+        "created_at": "2024-03-13T02:17:03.000+00:00",
+        "updated_at": "2024-03-13T02:17:03.000+00:00"
+      }
+    ],
+    5: [
+      {
+        "id": 8,
+        "name": "房贷首付",
+        "sort": 0,
+        "parent_id": 5,
+        "parent_chain": "4,5",
+        "created_at": "2024-03-25T05:43:51.000+00:00",
+        "updated_at": "2024-03-25T05:43:51.000+00:00"
+      }
+    ]
+  }
+
   // 点当前组回显的用户
   const [clickGroupUsers, setClickGroupUsers] = useState<TreeDataNode[]>([]);
   // 已经勾选右移的用户
   const [selectedUsers, setSelectedUsers] = useState<TreeDataNode[]>([]);
-  // 
-  const [rightKeys, setRightKeys] = useState<string[]>([]);
-
-
 
   useEffect(() => {
-
+    let data = checkArr(sourceData, 0)
+    setHandledSourceData(data)
+    setSearchedData(data)
   }, [open]);
 
 
@@ -102,34 +182,23 @@ const generateTree = (treeNodes: TreeDataNode[] = [], checkedKeys: string[] = []
       flatten(item.children);
     });
   }
-  flatten([...treeData, ...clickGroupUsers, ...selectedUsers]);
+  flatten([...clickGroupUsers, ...selectedUsers]);
 
   const transChange = (keys: string[], direction:string) => {
-    console.log('transChange', keys, 'direction', direction);
-    console.log('clickGroupUsers', clickGroupUsers);
-    console.log('selectedUsers', selectedUsers);
     setTargetKeys(keys);
-    // 这里有问题，有重复项
-    setSelectedUsers([...clickGroupUsers, ...selectedUsers].filter(item=> keys.some(i=> i == item.key)))
-    if (direction == 'right') {
-    } else {
-
-    }
-    console.log('之后--selectedUsers', selectedUsers);
-    
+    const set: Set<string> = new Set([...clickGroupUsers, ...selectedUsers].map((item: TreeDataNode)=> JSON.stringify(item)));
+    const uniqueArr: any[] = Array.from(set).map((item: string)=> JSON.parse(item));
+    console.log('uniqueArr', uniqueArr);
+    setSelectedUsers(uniqueArr.filter(item=> keys.some(i=> i == item.key)))
   };
 
   const handleSearch: TransferProps['onSearch'] = (dir, value) => {
-    console.log('search:', dir, value);
-    searchData = searchTree(treeData, value)
-    console.log('searchData', searchData);
+    console.log('searchedData', searchedData);
+    let data  = searchTree(handledSourceData, value)
+    console.log('data', data);
+    setSearchedData(data)
   };
 
-  interface TreeDataNode {
-    key: string;
-    title: string;
-    children?: TreeDataNode[];
-  }
 
   // 感觉会有问题
   function searchTree(treeData: TreeDataNode[], searchValue: string): TreeDataNode[] {
@@ -138,7 +207,8 @@ const generateTree = (treeNodes: TreeDataNode[] = [], checkedKeys: string[] = []
     }
     const result: TreeDataNode[] = [];
     for (const node of treeData) {
-      if (node.title.includes(searchValue)) {
+      // node.title
+      if (node.title.props.children.props.children.includes(searchValue)) {
         result.push(node);
       }
       if (node.children) {
@@ -149,13 +219,35 @@ const generateTree = (treeNodes: TreeDataNode[] = [], checkedKeys: string[] = []
     return result;
   }
 
-  // 现在无用 后续还无用删
-  const searchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    console.log('value', value);
-    console.log('transferDataSource', transferDataSource);
-    treeData = transferDataSource.filter(item=> item.title.includes(value) as TransferItem)
-    console.log('treeData', treeData);
+  // 处理数据关系结构
+  const checkArr = (departments: DepartmentsBoxModel, id: number) => {
+    const arr = [];
+    for (let i = 0; i < departments[id].length; i++) {
+      if (!departments[departments[id][i].id]) {
+        arr.push({
+          title: (
+            <>
+              <div className="tree-title-elli">{departments[id][i].name}</div>
+            </>
+          ),
+          key: departments[id][i].id,
+          oaId: departments[id][i].oaId
+        });
+      } else {
+        const new_arr: Option[] = checkArr(departments, departments[id][i].id);
+        arr.push({
+          title: (
+            <>
+              <div className="tree-title-elli">{departments[id][i].name}</div>
+            </>
+          ),
+          key: departments[id][i].id,
+          oaId: departments[id][i].oaId,
+          children: new_arr,
+        });
+      }
+    }
+    return arr;
   };
 
   return (
@@ -184,23 +276,19 @@ const generateTree = (treeNodes: TreeDataNode[] = [], checkedKeys: string[] = []
                   return (
                     <>
                       <div className="left-transfer-top-box" style={{ padding: token.paddingXS }}>
-                        {/* <Search style={{ marginBottom: 8 }} placeholder="Search" onChange={searchChange} /> */}
                         <Tree
                           blockNode
                           // checkable
                           checkStrictly
                           // defaultExpandAll
                           checkedKeys={checkedKeys}
-                          treeData={generateTree(searchData, targetKeys)}
+                          treeData={generateTree(searchedData, targetKeys)}
                           // onCheck={(_, { node: { key } }) => {
                           //   onItemSelect(key as string, !isChecked(checkedKeys, key));
                           // }}
                           onSelect={(_, e) => {
-                            // console.log(_);
-                            // console.log(e);
                             setClickGroupUsers(e.node.personnel ? e.node.personnel : [])
-                            console.log('selectedUsers', selectedUsers);
-                            
+                            // console.log('selectedUsers', selectedUsers);
                           }}
                         />
                       </div>
@@ -220,18 +308,17 @@ const generateTree = (treeNodes: TreeDataNode[] = [], checkedKeys: string[] = []
                   );
                 } 
                 else {
-                  const checkedKeys = [...selectedKeys,...rightKeys];
                   return (
                     <Tree
-                            blockNode
-                            checkable
-                            checkStrictly
-                            checkedKeys={checkedKeys}
-                            treeData={generateTree(selectedUsers, rightKeys)}
-                            onSelect={(_, { node: { key } }) => {
-                              onItemSelect(key as string, !isChecked(checkedKeys, key));
-                            }}
-                          />
+                      blockNode
+                      checkable
+                      checkStrictly
+                      checkedKeys={selectedKeys}
+                      treeData={generateTree(selectedUsers)}
+                      onSelect={(_, { node: { key } }) => {
+                        onItemSelect(key as string, !isChecked(selectedKeys, key));
+                      }}
+                    />
                   )
                 }
               }}
