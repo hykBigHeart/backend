@@ -19,6 +19,7 @@ import {
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import type { ColumnsType } from "antd/es/table";
+import styles from './index.module.less';
 import { dateFormat } from "../../utils/index";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import { TreeDepartment, TreeCategory, PerButton } from "../../compenents";
@@ -167,7 +168,7 @@ const CoursePage = () => {
             style={{ borderRadius: 6 }}
             src={record.thumb}
           ></Image>
-          <span className="ml-8">{record.title}</span>
+          <span className={`${styles['overflow-ellipsis']} ml-8`}  title={record.title}>{record.title}</span>
         </div>
       ),
     },
@@ -259,23 +260,23 @@ const CoursePage = () => {
           //     </Button>
           //   ),
           // },
-          {
-            key: "3",
-            label: (
-              <Button
-                style={{ verticalAlign: "middle" }}
-                type="link"
-                size="small"
-                className="b-n-link c-red"
-                onClick={() => {
-                  setCid(Number(record.id));
-                  setUpdateAttachmentVisible(true);
-                }}
-              >
-                课件
-              </Button>
-            ),
-          },
+          // {
+          //   key: "3",
+          //   label: (
+          //     <Button
+          //       style={{ verticalAlign: "middle" }}
+          //       type="link"
+          //       size="small"
+          //       className="b-n-link c-red"
+          //       onClick={() => {
+          //         setCid(Number(record.id));
+          //         setUpdateAttachmentVisible(true);
+          //       }}
+          //     >
+          //       课件
+          //     </Button>
+          //   ),
+          // },
           {
             key: "4",
             label: (
