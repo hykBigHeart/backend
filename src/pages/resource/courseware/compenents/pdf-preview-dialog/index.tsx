@@ -16,12 +16,13 @@ import zh_CN from '@react-pdf-viewer/locales/lib/zh_CN.json';
 
 
 interface PropInterface {
-  src: String;
+  title: string;
+  src: string;
   open: boolean;
   onCancel: () => void;
 }
 
-export const PdfPreviewDialog: React.FC<PropInterface> = ({ src, open, onCancel }) => {
+export const PdfPreviewDialog: React.FC<PropInterface> = ({ title, src, open, onCancel }) => {
   // Create new plugin instance
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
 
@@ -29,14 +30,20 @@ export const PdfPreviewDialog: React.FC<PropInterface> = ({ src, open, onCancel 
     <>
       {open ? (
         <Modal
+          title={title}
           centered
           forceRender
           open={true}
           footer={null}
           width='100vw'
+          className="pdf-dialog"
           style={{
             maxWidth: "100vw",
           }}
+          styles={{header: {
+            textAlign: "center",
+            marginBottom: 0
+          }}}
           maskClosable={false}
           onCancel={() => onCancel()}
         >

@@ -34,8 +34,8 @@ export const VideoPlayDialog: React.FC<PropInterface> = ({
       },
     });
     window.player.on("ended", () => {
-      window.player && window.player.destroy();
-      onCancel();
+      // window.player && window.player.destroy();
+      // onCancel();
     });
   };
 

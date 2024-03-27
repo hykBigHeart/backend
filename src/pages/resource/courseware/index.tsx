@@ -62,13 +62,14 @@ const ResourceCoursewarePage = () => {
   const [cateId, setCateId] = useState(Number(result.get("cid")));
   const [updateId, setUpdateId] = useState(0);
   const [pdfPreviewVisible, setPdfPreviewVisible] = useState(false);
+  const [pdfPreviewTitle, setPdfPreviewTitle] = useState('');
   // 预览地址公用
   const [pdfOrplaySrc, setpdfOrplaySrc] = useState('');
   const [playVisible, setPlayeVisible] = useState(false);
 
   const [updateVisible, setUpdateVisible] = useState(false);
   const types = [
-    { label: "全部", value: "WORD,EXCEL,PPT,PDF,TXT,RAR,ZIP" },
+    { label: "全部", value: "WORD,EXCEL,PPT,PDF,TXT,RAR,ZIP,VIDEO" },
     { label: "WORD", value: "WORD" },
     { label: "EXCEL", value: "EXCEL" },
     { label: "PPT", value: "PPT" },
@@ -116,7 +117,7 @@ const ResourceCoursewarePage = () => {
       render: (_, record: any) => (
         <div className="d-flex">
           <i
-            className="iconfont icon-icon-file"
+            className={record.type == 'VIDEO' ? 'iconfont icon-icon-video' : 'iconfont icon-icon-file'}
             style={{
               fontSize: 16,
               color: "rgba(0,0,0,0.3)",
@@ -150,6 +151,11 @@ const ResourceCoursewarePage = () => {
       render: (text: string) => <span>{dateFormat(text)}</span>,
     },
     {
+      title: "最低学时（分钟）",
+      dataIndex: "period",
+      render: (text: string) => <span>{text}</span>,
+    },
+    {
       title: "操作",
       key: "action",
       fixed: "right",
@@ -162,7 +168,7 @@ const ResourceCoursewarePage = () => {
               size="small"
               className="b-n-link c-red"
               onClick={() => {
-                 previewFile(record.url, record.type);
+                 previewFile(record.url, record.type, record.name);
               }}
             >
               预览
@@ -282,10 +288,11 @@ const ResourceCoursewarePage = () => {
     });
   };
 
-  const previewFile = (url: string, type: string) => {
+  const previewFile = (url: string, type: string, title: string) => {
     if (type == "VIDEO") setPlayeVisible(true) 
     else setPdfPreviewVisible(true)
     
+    setPdfPreviewTitle(title)
     setpdfOrplaySrc(url)
   };
   const downLoadFile = (url: string) => {
@@ -407,7 +414,7 @@ const ResourceCoursewarePage = () => {
           </div>
         </div>
 
-        <PdfPreviewDialog src={pdfOrplaySrc} open={pdfPreviewVisible}  onCancel={() => setPdfPreviewVisible(false)}>
+        <PdfPreviewDialog title={pdfPreviewTitle} src={pdfOrplaySrc} open={pdfPreviewVisible}  onCancel={() => setPdfPreviewVisible(false)}>
         </PdfPreviewDialog>
         <VideoPlayDialog
           id={Number(updateId)}
