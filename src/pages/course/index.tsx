@@ -309,7 +309,10 @@ const CoursePage = () => {
               disabled={null}
             />
             <div className="form-column"></div>
-            <Dropdown menu={{ items }}>
+            <Button type="link" size="small" className="b-n-link c-red" onClick={() => { setCid(Number(record.id)); setUpdateVisible(true); }}>编辑</Button>
+              <div className="form-column"></div>
+              <Button type="link" size="small" className="b-n-link c-red" onClick={() => delItem(record.id)}>删除</Button>
+            {/* <Dropdown menu={{ items }}>
               <Button
                 type="link"
                 className="b-link c-red"
@@ -320,7 +323,7 @@ const CoursePage = () => {
                   <DownOutlined />
                 </Space>
               </Button>
-            </Dropdown>
+            </Dropdown> */}
           </Space>
         );
       },

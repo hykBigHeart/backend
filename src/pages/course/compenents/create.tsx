@@ -85,8 +85,10 @@ export const CourseCreate: React.FC<PropInterface> = ({
     form.setFieldsValue({
       title: "",
       thumb: defaultThumb1,
+      effective_day: null,
       isRequired: 1,
       short_desc: "",
+      purview: 1,
       hasChapter: 0,
     });
     setThumb(defaultThumb1);
@@ -239,6 +241,37 @@ export const CourseCreate: React.FC<PropInterface> = ({
       message.error("请配置课时");
       return;
     }
+    let hoursList = treeData.filter((item: any)=> item.type == "VIDEO")
+    let attachmentsList: any = []
+    if (chapterType === 0) {
+      attachmentsList = treeData.filter((item: any)=> item.type != "VIDEO")
+    } else {
+      // console.log('chapters', chapters);
+      // 会改变原数组，但不影响，创建完弹窗关闭（但是如果接口返回慢的话，会有数据被删掉的感觉后续优化一下），想查看数据就要在update.tsx里查看
+      chapters.reduce((acc, item, index) => {
+        const filteredHours = item.hours.filter(hour => hour.type !== "VIDEO").map(hour => ({ ...hour, chapter_id: index }));
+        attachmentsList.push(...filteredHours);
+        item.hours = item.hours.filter(hour => hour.type === "VIDEO");
+        item.attachments = item.attachments.filter(hour => hour.type !== "VIDEO");
+        if (item.hours.length > 0 || item.attachments.length > 0) {
+            acc.push(item);
+        }
+        return acc;
+      }, []);
+
+      // 不改变原数组返回新数组
+      // const result = chapters.map((item, index) => {
+      //   const filteredHours = item.hours.filter(hour => hour.type !== "VIDEO").map(hour => ({ ...hour, chapter_id: index }));
+      //   attachmentsList.push(...filteredHours);
+      //   const videoHours = item.hours.filter(hour => hour.type === "VIDEO");
+      //   return {
+      //     ...item,
+      //     hours: videoHours,
+      //     // deletedHours: filteredHours
+      //   };
+      // });
+      // console.log('result', result);
+    }
     setLoading(true);
     course
       .storeCourse(
@@ -246,12 +279,14 @@ export const CourseCreate: React.FC<PropInterface> = ({
         values.thumb,
         values.short_desc,
         1,
-        values.isRequired,
+        0, // values.isRequired,
         dep_ids,
         values.category_ids,
         chapters,
-        treeData,
-        attachmentData
+        hoursList,  // treeData,
+        attachmentsList, // attachmentData,
+        values.effective_day,
+        values.purview
       )
       .then((res: any) => {
         setLoading(false);
@@ -272,8 +307,9 @@ export const CourseCreate: React.FC<PropInterface> = ({
   };
 
   const selectData = (arr: any, videos: any) => {
+    // debugger
     if (arr.length === 0) {
-      message.error("请选择视频");
+      message.error("请选择课件");
       return;
     }
     let keys = [...hours];
@@ -287,13 +323,14 @@ export const CourseCreate: React.FC<PropInterface> = ({
 
   const selectChapterData = (arr: any, videos: any) => {
     if (arr.length === 0) {
-      message.error("请选择视频");
+      message.error("请选择课件");
       return;
     }
     const data = [...chapters];
     const keys = [...chapterHours];
     keys[addvideoCurrent] = keys[addvideoCurrent].concat(arr);
     data[addvideoCurrent].hours = data[addvideoCurrent].hours.concat(videos);
+    data[addvideoCurrent].attachments = data[addvideoCurrent].attachments.concat(videos);    
     setChapters(data);
     setChapterHours(keys);
     setVideoVisible(false);
@@ -420,6 +457,7 @@ export const CourseCreate: React.FC<PropInterface> = ({
     arr.push({
       name: "",
       hours: [],
+      attachments: []
     });
     keys.push([]);
     setChapters(arr);
@@ -592,12 +630,12 @@ export const CourseCreate: React.FC<PropInterface> = ({
                 />
               </Form.Item>
               <Form.Item
-                label="学习时间"
-                name="days"
+                label="有效学习天数"
+                name="effective_day"
                 rules={[{ required: true, message: "请输入需要学习的时长!" }]}
               >
                 {/* <RangePicker format={'YYYY~MM~DD'} /> */}
-                <div><Input type="number" style={{ width: 200 }} placeholder="请在此处输入学习天数"/>天</div>
+                <Input type="number" style={{ width: 200 }} placeholder="请在此处输入学习天数"/>
               </Form.Item>
               {/* <Form.Item
                 label="课程属性"
@@ -873,7 +911,7 @@ export const CourseCreate: React.FC<PropInterface> = ({
                 </Form.Item>
                 <Form.Item
                 label="课程权限"
-                name="isRequired"
+                name="purview"
                 rules={[{ required: true, message: "请选择课程权限!" }]}
               >
                 <Radio.Group>
