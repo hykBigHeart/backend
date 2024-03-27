@@ -2,6 +2,7 @@ import { Tree } from "antd";
 import { useState, useEffect } from "react";
 import { department } from "../../api/index";
 import { useSelector } from "react-redux";
+import styles from "./index.module.less"
 
 interface Option {
   key: string | number;
@@ -117,10 +118,10 @@ export const TreeDepartment = (props: PropInterface) => {
     if (counts) {
       let value = counts[id] || 0;
       return (
-        <span className="tree-title-elli">{title + "(" + value + ")"}</span>
+        <span className="tree-title-elli" title={title + "(" + value + ")"}>{title + "(" + value + ")"}</span>
       );
     } else {
-      return <span className="tree-title-elli">{title}</span>;
+      return <span className="tree-title-elli" title={title}>{title}</span>;
     }
   };
 
@@ -147,7 +148,7 @@ export const TreeDepartment = (props: PropInterface) => {
   };
 
   return (
-    <div>
+    <div className={styles['tree-department']}>
       <div
         className={
           selectKey.length === 0
