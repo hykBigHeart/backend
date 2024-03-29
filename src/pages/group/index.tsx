@@ -8,6 +8,7 @@ import { group } from "../../api/index";
 import { PerButton } from "../../compenents";
 import { GroupCreate } from "./compenents/create";
 import { UserTransfer } from "./compenents/userTransfer";
+import { GroupUsers } from "./compenents/groupUsers";
 interface DataType {
   id: React.Key;
   name: string;
@@ -23,6 +24,7 @@ const groupPage = () => {
   const [size, setSize] = useState(10);
   const [createVisible, setCreateVisible] = useState(false);
   const [transferVisible, setTransferVisible] = useState(false);
+  const [groupId, setGroupId] = useState<React.Key>("");
   const [list, setList] = useState<DataType[]>([]);
   const [total, setTotal] = useState(0);
   const [refresh, setRefresh] = useState(false);
@@ -93,6 +95,8 @@ const groupPage = () => {
         <Button  type="link"  className="b-link c-red"  icon={<UserOutlined />}
           onClick={() => {
             setTransferVisible(true);
+            setGroupId(record.id)
+            setGroupName(record.name)
           }}
         >
           组内用户
@@ -141,7 +145,9 @@ const groupPage = () => {
           <Table loading={loading} columns={columns} dataSource={list} rowKey={(record) => record.id} pagination={paginationProps}/>
         </div>
         <GroupCreate open={createVisible} onCancel={() => { setCreateVisible(false); setRefresh(!refresh); }}></GroupCreate>
-        <UserTransfer open={transferVisible} onCancel={() => { setTransferVisible(false); setRefresh(!refresh); }}></UserTransfer>
+        <GroupUsers open={transferVisible} groupId={groupId} groupName={groupName} onCancel={() => { setTransferVisible(false); setRefresh(!refresh); setGroupName("")}}></GroupUsers>
+        {/* 穿梭框形式（暂时不用） */}
+        {/* <UserTransfer open={transferVisible} groupId={groupId} groupName={groupName} onCancel={() => { setTransferVisible(false); setRefresh(!refresh); setGroupName("")}}></UserTransfer> */}
       </div>
     </>
   )
