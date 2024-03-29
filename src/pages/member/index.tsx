@@ -9,6 +9,7 @@ import {
   message,
   Image,
   Dropdown,
+  Tag
 } from "antd";
 import type { MenuProps } from "antd";
 import type { ColumnsType } from "antd/es/table";
@@ -134,6 +135,12 @@ const MemberPage = () => {
       ),
     },
     {
+      title: "状态",
+      width: 200,
+      dataIndex: "is_active",
+      render: (is_active: number) => <Tag color={is_active ? 'success' : 'error'}>{is_active ? '启用' : '禁用'}</Tag>,
+    },
+    {
       title: "登录邮箱",
       width: 200,
       dataIndex: "email",
@@ -165,7 +172,7 @@ const MemberPage = () => {
                   setMid(Number(record.id));
                   setUpdateVisible(true);
                 }}
-                disabled={null}
+                disabled={record.oaId}
               />
             ),
           },
@@ -179,7 +186,7 @@ const MemberPage = () => {
                 icon={null}
                 p="user-destroy"
                 onClick={() => delUser(record.id)}
-                disabled={null}
+                disabled={record.oaId}
               />
             ),
           },

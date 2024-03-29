@@ -103,6 +103,7 @@ declare global {
     parent_id: number;
     sort: number;
     updated_at: string;
+    oaId: string
   }
 
   interface RolesModel {
@@ -122,6 +123,7 @@ declare global {
   }
 
   interface CourseChaptersModel {
+    attachments: AttachmentDataModel[];
     id?: number;
     hours: CourseHourModel[];
     name: string;

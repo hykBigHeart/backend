@@ -81,6 +81,7 @@ const DepartmentPage = () => {
               </>
             ),
             key: departments[id][i].id,
+            oaId: departments[id][i].oaId
           });
         } else {
           arr.push({
@@ -94,7 +95,7 @@ const DepartmentPage = () => {
                       style={{ fontSize: 24 }}
                     />
                   </Tooltip>
-                  {through("department-cud") && (
+                  {through("department-cud") && !departments[id][i].oaId && (
                     <>
                       <i
                         className="iconfont icon-icon-edit mr-16"
@@ -120,6 +121,7 @@ const DepartmentPage = () => {
               </>
             ),
             key: departments[id][i].id,
+            oaId: departments[id][i].oaId
           });
         }
       } else {
@@ -132,6 +134,7 @@ const DepartmentPage = () => {
               </>
             ),
             key: departments[id][i].id,
+            oaId: departments[id][i].oaId,
             children: new_arr,
           });
         } else {
@@ -146,7 +149,7 @@ const DepartmentPage = () => {
                       style={{ fontSize: 24 }}
                     />
                   </Tooltip>
-                  {through("department-cud") && (
+                  {through("department-cud") && !departments[id][i].oaId && (
                     <>
                       <i
                         className="iconfont icon-icon-edit mr-16"
@@ -172,6 +175,7 @@ const DepartmentPage = () => {
               </>
             ),
             key: departments[id][i].id,
+            oaId: departments[id][i].oaId,
             children: new_arr,
           });
         }
@@ -283,6 +287,8 @@ const DepartmentPage = () => {
   };
 
   const onDrop: TreeProps["onDrop"] = (info) => {
+    if (info.dragNode.oaId) return
+    
     const dropKey = info.node.key;
     const dragKey = info.dragNode.key;
     const dropPos = info.node.pos.split("-");
@@ -443,7 +449,7 @@ const DepartmentPage = () => {
             <Spin></Spin>
           </div>
         )}
-        <div style={{ display: loading ? "none" : "block", width: 366 }}>
+        <div style={{ display: loading ? "none" : "block", width: 500 }}>
           {treeData.length > 0 && (
             <Tree
               onSelect={onSelect}

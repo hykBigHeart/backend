@@ -96,7 +96,7 @@ export const TreeDepartment = (props: PropInterface) => {
       if (!departments[departments[id][i].id]) {
         arr.push({
           title: (
-            <span className="tree-title-elli">{departments[id][i].name}</span>
+            <span className="tree-title-elli" title={departments[id][i].name}>{departments[id][i].name}</span>
           ),
           key: departments[id][i].id,
         });
@@ -104,7 +104,7 @@ export const TreeDepartment = (props: PropInterface) => {
         const new_arr: any[] = checkArr(departments, departments[id][i].id);
         arr.push({
           title: (
-            <span className="tree-title-elli">{departments[id][i].name}</span>
+            <span className="tree-title-elli" title={departments[id][i].name}>{departments[id][i].name}</span>
           ),
           key: departments[id][i].id,
           children: new_arr,
