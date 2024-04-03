@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Table, Typography, Input, Button } from "antd";
-import { PlusOutlined, UserOutlined } from "@ant-design/icons";
+import { Table, Typography, Input, Button, Space, Modal, message } from "antd";
+import { PlusOutlined, UserOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
 import { dateWholeFormat } from "../../utils/index";
 
@@ -9,6 +9,10 @@ import { PerButton } from "../../compenents";
 import { GroupCreate } from "./compenents/create";
 import { UserTransfer } from "./compenents/userTransfer";
 import { GroupUsers } from "./compenents/groupUsers";
+import './group.less'
+
+const { confirm } = Modal;
+
 interface DataType {
   id: React.Key;
   name: string;
@@ -32,8 +36,33 @@ const groupPage = () => {
 
 
   useEffect(() => {
+    setGroupId('')
     getData();
   }, [refresh, page, size]);
+
+  // 删除课程
+  const delItem = (id: number) => {
+    if (id === 0) {
+      return;
+    }
+    confirm({
+      title: "操作确认",
+      icon: <ExclamationCircleFilled />,
+      content: "确认删除此课程？",
+      centered: true,
+      okText: "确认",
+      cancelText: "取消",
+      onOk() {
+        group.deleteGroup(id).then(() => {
+          message.success("删除成功");
+          resetData()
+        });
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
 
   const getData = () => {
     setLoading(true);
@@ -77,7 +106,7 @@ const groupPage = () => {
     },
     {
       title: "用户数量",
-      render: (_, record: any) => <span>{record.sort}</span>,
+      render: (_, record: any) => <span>{record.user_count}</span>,
     },
     {
       title: "创建时间",
@@ -92,19 +121,25 @@ const groupPage = () => {
       fixed: "right",
       width: 160,
       render: (_, record) => (
-        <Button  type="link"  className="b-link c-red"  icon={<UserOutlined />}
-          onClick={() => {
-            setTransferVisible(true);
-            setGroupId(record.id)
-            setGroupName(record.name)
-          }}
-        >
-          组内用户
-        </Button>
+        <Space size="small">
+          <Button  type="link"  className="b-link c-red"  icon={<UserOutlined />}
+            onClick={() => {
+              setTransferVisible(true);
+              setGroupId(record.id)
+              setGroupName(record.name)
+            }}
+          >
+            组内用户
+          </Button>
+          <div className="form-column"></div>
+          <Button type="link" className="b-link c-red" onClick={()=> delItem(record.id)}>删除</Button>
+        </Space>
       ),
     },
   ];
 
+  const rowClassName = (record: any, index: number)=> record.id === groupId ? 'selected-row' : ''
+  
   return (
     <>
       <div className="playedu-main-body">
@@ -142,7 +177,7 @@ const groupPage = () => {
           </div>
         </div>
         <div className="float-left">
-          <Table loading={loading} columns={columns} dataSource={list} rowKey={(record) => record.id} pagination={paginationProps}/>
+          <Table loading={loading} columns={columns} dataSource={list} rowKey={(record) => record.id} pagination={paginationProps} rowClassName={rowClassName}/>
         </div>
         <GroupCreate open={createVisible} onCancel={() => { setCreateVisible(false); setRefresh(!refresh); }}></GroupCreate>
         <GroupUsers open={transferVisible} groupId={groupId} groupName={groupName} onCancel={() => { setTransferVisible(false); setRefresh(!refresh); setGroupName("")}}></GroupUsers>

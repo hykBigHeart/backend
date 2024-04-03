@@ -11,12 +11,13 @@ import {
   Tag
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
-
-import { group, user } from "../../../api/index";
+import { group } from "../../../api/index";
 import { dateFormat } from "../../../utils/index";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 import { SelectUsers } from "./selectUsers"
+import './groupUsers.less'
 
+const { confirm } = Modal;
 interface DataType {
   id: React.Key;
   name: string;
@@ -32,6 +33,13 @@ interface PropInterface {
   onCancel: () => void;
 }
 
+interface LocalSearchParamsInterface {
+  page?: number;
+  size?: number;
+  nickname?: string;
+  email?: string;
+}
+
 export const GroupUsers: React.FC<PropInterface> = ({
   groupId,
   groupName,
@@ -40,44 +48,75 @@ export const GroupUsers: React.FC<PropInterface> = ({
 }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
-  const [type, setType] = useState("open");
+  const [searchParams, setSearchParams] = useState({
+    page: 1,
+    size: 10,
+    nickname: "",
+    email: "",
+  });
 
   const [list, setList] = useState<DataType[]>([]);
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10);
+  const page = searchParams.page || 1
+  const size = searchParams.size || 10
   const [total, setTotal] = useState(0);
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [selectUsersVisible, setSelectUsersVisible] = useState<boolean>(false);
   const [user_dep_ids, setUserDepIds] = useState<DepIdsModel>({});
   const [departments, setDepartments] = useState<DepartmentsModel>({});
-  const [pureTotal, setPureTotal] = useState(0);
-  const [depUserCount, setDepUserCount] = useState<KeyNumberObject>();
-
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     if (open) {
       getData()
     }
-  }, [form, open]);
+  }, [form, open, refresh, page, size]);
+
+  // 删除人员
+  const delItem = () => {
+    confirm({
+      title: "操作确认",
+      icon: <ExclamationCircleFilled />,
+      content: "确认要删除吗？",
+      centered: true,
+      okText: "确认",
+      cancelText: "取消",
+      onOk() {
+        setLoading(true)
+        group.deletePeople(groupId, groupName, selectedRowKeys).then(res=> {
+          message.success("删除成功");
+          setLoading(false)
+          setRefresh(!refresh)
+        })
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+    });
+  };
 
   const getData = ()=> {
     setLoading(true)
-    // group.groupUsers(groupId).then((res: any) => {
-    //   console.log('res',res);
-    // })
-    user.userList(page, size, {
-      name: '',
-      email: '',
-      dep_ids: 22,
-    }).then((res: any) => {
+    group.groupUsers(groupId, page, size).then((res: any) => {
+      // console.log('res',res);
       setList(res.data.data);
-      setDepartments(res.data.departments);
-      setUserDepIds(res.data.user_dep_ids);
       setTotal(res.data.total);
-      setPureTotal(res.data.pure_total);
-      setDepUserCount(res.data.dep_user_count);
+      setUserDepIds(res.data.user_dep_ids);
+      setDepartments(res.data.departments)
       setLoading(false);
     })
   }
+
+  // rowSelection object indicates the need for row selection
+  const rowSelection = {
+    onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
+      // console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+      setSelectedRowKeys(selectedRowKeys)
+    },
+    getCheckboxProps: (record: DataType) => ({
+      disabled: record.name === 'Disabled User', // Column configuration not to be checked
+      name: record.name,
+    }),
+  };
  
   const columns: ColumnsType<DataType> = [
     {
@@ -139,24 +178,53 @@ export const GroupUsers: React.FC<PropInterface> = ({
     current: page, //当前页码
     pageSize: size,
     total: total, // 总条数
-    // onChange: (page: number, pageSize: number) =>
-    //   handlePageChange(page, pageSize), //改变页码的函数
-    // showSizeChanger: true,
+    onChange: (page: number, pageSize: number) =>
+      handlePageChange(page, pageSize), //改变页码的函数
+    showSizeChanger: true,
   };
+  const handlePageChange = (page: number, pageSize: number) => {
+    resetLocalSearchParams({
+      page: page,
+      size: pageSize,
+    });
+  };
+
+  const resetLocalSearchParams = (params: LocalSearchParamsInterface) => {
+    // 页面没反应
+    setSearchParams(
+      (prev) => {
+        // 创建一个新的对象，并将其与原始状态合并
+        const newState = {
+          ...prev,
+          // 根据参数更新状态的相应属性
+          ...(typeof params.nickname !== "undefined" && { nickname: params.nickname }),
+          ...(typeof params.email !== "undefined" && { email: params.email }),
+          ...(typeof params.page !== "undefined" && { page: params.page }),
+          ...(typeof params.size !== "undefined" && { size: params.size }),
+        };
+        return newState;
+      },
+    );
+      // 页面有反应
+    // setSearchParams({page: params.page, size: params.size})
+  }; 
 
   return (
     <>
       {open ? (
-        <Drawer onClose={onCancel} maskClosable={false} open={true} width={'50%'}
+        <Drawer className="custom-drawer" onClose={onCancel} maskClosable={false} open={true} width={'50%'}
           extra={
-            <Space>
-              <Button icon={<PlusOutlined/>} type="primary" onClick={() => setSelectUsersVisible(true)} >添加</Button>
-              <Button  type="primary" danger>删除</Button>
-            </Space>
+            <div className="top-box">
+              <p>您正在查看群组<span className="group-name">【{groupName}】</span>的学员记录……</p>
+              <Space>
+                <Button icon={<PlusOutlined/>} type="primary" onClick={() => setSelectUsersVisible(true)} >添加</Button>
+                <Button type="primary" danger disabled={!selectedRowKeys.length} onClick={()=> delItem() }>删除</Button>
+              </Space>
+            </div>
           }
         >
-          <Table loading={loading} columns={columns} dataSource={list} rowKey={(record) => record.id} pagination={paginationProps}/>
-          <SelectUsers open={selectUsersVisible} groupId={groupId} groupName={groupName} onCancel={() => {setSelectUsersVisible(false); }}/>
+          <Table rowSelection={{type: "checkbox", ...rowSelection}} loading={loading} columns={columns} dataSource={list} rowKey={(record) => record.id} pagination={paginationProps} scroll={{y: 670}}/>
+          <SelectUsers open={selectUsersVisible} groupId={groupId} groupName={groupName} onCancel={() => { setSelectUsersVisible(false); setRefresh(!refresh) }}/>
         </Drawer>
       ) : null}
     </>

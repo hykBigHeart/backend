@@ -67,12 +67,21 @@ export const SelectUsers = (props: PropsInterface) => {
   const [pureTotal, setPureTotal] = useState(0);
   const [depUserCount, setDepUserCount] = useState<KeyNumberObject>();
   const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([]);
+  const [disabledRowKeys, setDisabledRowKeys] = useState<Key[]>([]);
 
   useEffect(() => {
     // setDepIds([-1])
     let data: any[] = checkArr(localDepartments, 0);
+    // console.log('tree', data);
     setTreeData(data);
-  if (props.open) getData()
+    if (props.open) {
+      getData()
+      setSelectKey([])
+      group.groupSelectedUsers(props.groupId).then((res: any) => {
+        console.log('sel;e', res, 'props.open', props.open);        
+        setSelectedRowKeys(Array.from(new Set(res.data)))
+      })
+    }
   }, [props.open]);
   
   useEffect(() => {
@@ -160,21 +169,49 @@ export const SelectUsers = (props: PropsInterface) => {
 
   // rowSelection object indicates the need for row selection
   const rowSelection = {
-    onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
-      // console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-      setSelectedRowKeys(selectedRowKeys)
+    selectedRowKeys,
+    onChange: (selectedRowKeyList: React.Key[], selectedRows: DataType[], info: any) => {
+      // console.log(`selectedRowKeyList: ${selectedRowKeyList}`, 'selectedRows: ', selectedRows, 'info', info);
+      if (info.type == 'all' && selectedRowKeyList.length) {
+        let uniqueKeys = Array.from(new Set(selectedRowKeys.concat( selectedRowKeyList )))
+        setSelectedRowKeys(uniqueKeys)
+      }
+      //  取消全选
+      if (info.type == 'all' && !selectedRowKeyList.length) {
+        let currKeys = list.map(item=> item.id)
+        // console.log('curr' ,currKeys);
+        // console.log('selectedRowKeys', selectedRowKeys);
+        let uniqueKeys =  selectedRowKeys.filter(item => !currKeys.includes(item))
+        // console.log('nui', uniqueKeys);
+        setSelectedRowKeys(uniqueKeys)
+      }
+
+      // console.log('selectedRowKeys', selectedRowKeys, 'info', info);
+      // setSelectedRowKeys(uniqueKeys)
+      // setSelectedRowKeys(selectedRowKeyList)
+    },
+    onSelect: (selected: any, selectedRows: boolean, changeRows: DataType[]) => {
+      // console.log('selected', selected);
+      // console.log('selectedRows', selectedRows);
+      // console.log('changeRows', changeRows);
+      let uniqueKeys = Array.from(new Set(selectedRowKeys.concat( changeRows.filter(item=> item !== undefined).map(item=> item.id) )))
+      // console.log('sdf', uniqueKeys);
+      
+      if (!selectedRows) uniqueKeys = uniqueKeys.filter(item=> item != selected.id)
+      // console.log('uni', uniqueKeys);
+      setSelectedRowKeys(uniqueKeys)
     },
     getCheckboxProps: (record: DataType) => ({
-      disabled: record.name === 'Disabled User', // Column configuration not to be checked
+      // disabled: !(disabledRowKeys.findIndex(i=> i === record.id) === -1), // Column configuration not to be checked
       name: record.name,
-    }),
+    })
   };
 
   const columns: ColumnsType<DataType> = [
     {
       title: "学员",
       dataIndex: "name",
-      width: 200,
+      // width: 200,
       render: (_, record: any) => (
         <>
           <Image
@@ -206,24 +243,24 @@ export const SelectUsers = (props: PropsInterface) => {
         </div>
       ),
     },
-    {
-      title: "状态",
-      width: 200,
-      dataIndex: "is_active",
-      render: (is_active: number) => <Tag color={is_active ? 'success' : 'error'}>{is_active ? '启用' : '禁用'}</Tag>,
-    },
+    // {
+    //   title: "状态",
+    //   width: 200,
+    //   dataIndex: "is_active",
+    //   render: (is_active: number) => <Tag color={is_active ? 'success' : 'error'}>{is_active ? '启用' : '禁用'}</Tag>,
+    // },
     {
       title: "登录邮箱",
-      width: 200,
+      // width: 200,
       dataIndex: "email",
       render: (email: string) => <span>{email}</span>,
     },
-    {
-      title: "加入时间",
-      width: 200,
-      dataIndex: "created_at",
-      render: (text: string) => <span>{dateFormat(text)}</span>,
-    },
+    // {
+    //   title: "加入时间",
+    //   width: 200,
+    //   dataIndex: "created_at",
+    //   render: (text: string) => <span>{dateFormat(text)}</span>,
+    // },
   ];
 
   const paginationProps = {
@@ -247,7 +284,7 @@ export const SelectUsers = (props: PropsInterface) => {
       if (!departments[departments[id][i].id]) {
         arr.push({
           title: (
-            <span className="tree-title-elli" title={departments[id][i].name}>{departments[id][i].name}</span>
+            <span className="tree-title-elli" title={departments[id][i].name}>{departments[id][i].name}{departments[id][i].selectedCount ? `(${departments[id][i].selectedCount})` : ''}</span>
           ),
           key: departments[id][i].id,
         });
@@ -255,7 +292,7 @@ export const SelectUsers = (props: PropsInterface) => {
         const new_arr: any[] = checkArr(departments, departments[id][i].id);
         arr.push({
           title: (
-            <span className="tree-title-elli" title={departments[id][i].name}>{departments[id][i].name}</span>
+            <span className="tree-title-elli" title={departments[id][i].name}>{departments[id][i].name}{departments[id][i].selectedCount ? `(${departments[id][i].selectedCount})` : ''}</span>
           ),
           key: departments[id][i].id,
           children: new_arr,
@@ -270,12 +307,12 @@ export const SelectUsers = (props: PropsInterface) => {
       {props.open ? (
       <Modal title="选择用户" centered onCancel={() => { props.onCancel(); setDepIds([-1]) }} open={props.open} width={1300} maskClosable={false} onOk={onFinish} >
           <Row>
-            <Col span={4} style={{maxHeight: 700, overflowY: 'scroll'}}>
+            <Col span={8} style={{maxHeight: 700, overflowY: 'scroll'}}>
               {treeData.length > 0 && (
-                <Tree selectedKeys={selectKey} onSelect={onSelect} treeData={treeData} switcherIcon={<i className="iconfont icon-icon-fold c-gray" />}/>
+                <Tree defaultExpandedKeys={[16]} selectedKeys={selectKey} onSelect={onSelect} treeData={treeData} switcherIcon={<i className="iconfont icon-icon-fold c-gray" />}/>
               )}
             </Col>
-            <Col span={20}>
+            <Col span={16}>
             <div className="d-flex" style={{marginBottom: 10}}>
               <div className="d-flex mr-24">
                 <Typography.Text>姓名：</Typography.Text>
@@ -290,7 +327,7 @@ export const SelectUsers = (props: PropsInterface) => {
                 <Button type="primary" onClick={() => { resetLocalSearchParams({ page: 1, }); setRefresh(!refresh); }} >查 询</Button>
               </div>
             </div>
-              <Table rowSelection={{type: "checkbox", ...rowSelection}} loading={loading} columns={columns} dataSource={list} rowKey={(record) => record.id} pagination={paginationProps}/>
+              <Table rowSelection={{type: "checkbox", ...rowSelection}} loading={loading} columns={columns} dataSource={list} rowKey={(record) => record.id} pagination={paginationProps} scroll={{y: 539}}/>
             </Col>
           </Row>
         </Modal>

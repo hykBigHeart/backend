@@ -12,6 +12,10 @@ export function storeGroup(name: string, description: string,) {
   });
 }
 
+export function deleteGroup(id: React.Key) {
+  return client.destroy(`backend/v1/group/${id}`);
+}
+
 export function addPeople(id: React.Key, groupName: string, userIds: Key[]) {
   return client.post(`/backend/v1/group/${id}/user/create`, {
     name: groupName,
@@ -19,6 +23,20 @@ export function addPeople(id: React.Key, groupName: string, userIds: Key[]) {
   });
 }
 
-export function groupUsers(id: React.Key) {
-  return client.get(`/backend/v1/group/${id}/users`, {});
+export function deletePeople(id: React.Key,  groupName: string, delIds: Key[]) {
+  return client.post(`backend/v1/group/${id}/user/delete`, {
+    name: groupName,
+    user_ids: delIds
+  });
+}
+
+export function groupUsers(id: React.Key, page: number, size: number) {
+  return client.get(`/backend/v1/group/${id}/users`, {
+    page,
+    size
+  });
+}
+
+export function groupSelectedUsers(id: React.Key) {
+  return client.get(`/backend/v1/group/${id}/userIds`, {});
 }
