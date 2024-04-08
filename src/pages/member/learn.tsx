@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import styles from "./learn.module.less";
-import { Row, Image, Table, Button, Select } from "antd";
+import { Row, Image, Table, Button, Select, Tag } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
 import { BackBartment, DurationText } from "../../compenents";
 import { dateFormat } from "../../utils/index";
@@ -246,6 +246,12 @@ const MemberLearnPage = () => {
           <span className="ml-8">{record.title}</span>
         </div>
       ),
+    },
+    {
+      title: "修课",
+      width: 120,
+      dataIndex: "is_active",
+      render: (is_active: number) => <Tag color={is_active ? 'success' : 'error'}>{is_active ? '必修' : '选修'}</Tag>,
     },
     {
       title: "课程进度",

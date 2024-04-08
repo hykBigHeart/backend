@@ -133,26 +133,26 @@ const CoursePage = () => {
         </div>
       ),
     },
-    {
-      key: "2",
-      label: `部门`,
-      children: (
-        <div className="float-left">
-          <TreeDepartment
-            selected={dep_ids}
-            showNum={false}
-            text={"部门"}
-            onUpdate={(keys: any, title: any) => {
-              resetLocalSearchParams({
-                page: 1,
-              });
-              setDepIds(keys);
-              setDepLabel(title);
-            }}
-          />
-        </div>
-      ),
-    },
+    // {
+    //   key: "2",
+    //   label: `部门`,
+    //   children: (
+    //     <div className="float-left">
+    //       <TreeDepartment
+    //         selected={dep_ids}
+    //         showNum={false}
+    //         text={"部门"}
+    //         onUpdate={(keys: any, title: any) => {
+    //           resetLocalSearchParams({
+    //             page: 1,
+    //           });
+    //           setDepIds(keys);
+    //           setDepLabel(title);
+    //         }}
+    //       />
+    //     </div>
+    //   ),
+    // },
   ];
 
   const columns: ColumnsType<DataType> = [
@@ -434,7 +434,7 @@ const CoursePage = () => {
         <div className="left-box">
           <Tabs
             defaultActiveKey={tabKey}
-            centered
+            // centered
             tabBarGutter={55}
             items={items}
             onChange={onChange}
