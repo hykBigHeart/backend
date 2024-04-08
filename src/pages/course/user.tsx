@@ -9,14 +9,19 @@ import {
   Table,
   message,
   Image,
+  Dropdown,
+  Space,
+  Tag
 } from "antd";
-import { course as Course } from "../../api";
+import type { MenuProps } from "antd";
+import { course as Course, group } from "../../api";
 import { useParams, useLocation } from "react-router-dom";
 import type { ColumnsType } from "antd/es/table";
 import { BackBartment } from "../../compenents";
-import { ExclamationCircleFilled } from "@ant-design/icons";
+import { ExclamationCircleFilled, DownOutlined } from "@ant-design/icons";
 import { PerButton } from "../../compenents";
 import { dateFormat } from "../../utils/index";
+import { SelectUsers } from "../group/compenents/selectUsers"
 
 const { confirm } = Modal;
 
@@ -97,6 +102,10 @@ const CourseUserPage = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
   const [title, setTitle] = useState<string>(String(result.get("title")));
 
+  const [selectUsersVisible, setSelectUsersVisible] = useState(false);
+  const [groupName, setGroupName] = useState("");
+  const [triggerValue, setTriggerValue] = useState("");
+
   const columns: ColumnsType<DataType> = [
     {
       title: "学员",
@@ -112,6 +121,12 @@ const CourseUserPage = () => {
           <span className="ml-8">{record.name}</span>
         </div>
       ),
+    },
+    {
+      title: "修课",
+      // width: 120,
+      dataIndex: "is_active",
+      render: (is_active: number) => <Tag color={is_active ? 'success' : 'error'}>{is_active ? '必修' : '选修'}</Tag>,
     },
     {
       title: "邮箱",
@@ -269,23 +284,31 @@ const CourseUserPage = () => {
   // 删除学员
   const delItem = () => {
     if (selectedRowKeys.length === 0) {
-      message.error("请选择学员后再重置");
+      message.error("请选择学员后再删除");
       return;
     }
     confirm({
       title: "操作确认",
       icon: <ExclamationCircleFilled />,
-      content: "确认重置选中学员学习记录？",
+      content: "确认删除选中学员吗？",
       centered: true,
       okText: "确认",
       cancelText: "取消",
       onOk() {
-        Course.destroyCourseUser(Number(params.courseId), selectedRowKeys).then(
-          () => {
-            message.success("清除成功");
-            resetList();
-          }
-        );
+        setLoading(true)
+        group.courseDeletePeople(params.courseId, selectedRowKeys).then(res=> {
+          message.success("删除成功");
+          setLoading(false)
+          setRefresh(!refresh)
+          setSelectedRowKeys([])
+        })
+        // 学员重置接口
+        // Course.destroyCourseUser(Number(params.courseId), selectedRowKeys).then(
+        //   () => {
+        //     message.success("清除成功");
+        //     resetList();
+        //   }
+        // );
       },
       onCancel() {
         console.log("Cancel");
@@ -294,10 +317,40 @@ const CourseUserPage = () => {
   };
 
   const rowSelection = {
+    selectedRowKeys,
     onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
       setSelectedRowKeys(selectedRowKeys);
     },
   };
+
+  const items: MenuProps["items"] = [
+    {
+      key: "1",
+      label: (
+        <Button type="link" size="small" className="b-n-link c-red"
+          onClick={() => {
+            setSelectUsersVisible(true)
+            setTriggerValue('course-department')
+          }} 
+        >
+          按部门新增
+        </Button>
+      ),
+    },
+    {
+      key: "2",
+      label: (
+        <Button style={{ verticalAlign: "middle" }} type="link" size="small" className="b-n-link c-red"
+          onClick={() => {
+            setSelectUsersVisible(true)
+            setTriggerValue('course-group')
+          }}
+        >
+          按群组新增
+        </Button>
+      ),
+    }
+  ];
 
   return (
     <>
@@ -308,7 +361,7 @@ const CourseUserPage = () => {
           </div>
           <div className="float-left j-b-flex mb-24">
             <div className="d-flex">
-              <PerButton
+              {/* <PerButton
                 type="primary"
                 text="重置学习记录"
                 class="mr-16"
@@ -316,7 +369,17 @@ const CourseUserPage = () => {
                 p="course"
                 onClick={() => delItem()}
                 disabled={selectedRowKeys.length === 0}
-              />
+              /> */}
+              {/* <PerButton type="primary" text="新增必修学员" class="mr-16" icon={null} p="course" onClick={() => {setTransferVisible(true)}} disabled={false}/> */}
+              <Dropdown menu={{ items }} className="mr-16">
+                <Button type="primary" onClick={(e) => e.preventDefault()}>
+                  <Space size="small" align="center">
+                    新增必修学员
+                    <DownOutlined />
+                  </Space>
+                </Button>
+              </Dropdown>
+              <Button type="primary" danger disabled={!selectedRowKeys.length} onClick={()=> delItem() }>删除</Button>
             </div>
             <div className="d-flex">
               <div className="d-flex mr-24">
@@ -385,6 +448,9 @@ const CourseUserPage = () => {
           </div>
         </Col>
       </Row>
+      {selectUsersVisible && (
+        <SelectUsers open={selectUsersVisible} triggerSource={triggerValue} groupId={params.courseId} groupName={groupName} onCancel={() => { setSelectUsersVisible(false); setRefresh(!refresh) }}/>
+      )}
     </>
   );
 };

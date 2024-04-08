@@ -61,6 +61,7 @@ export const GroupUsers: React.FC<PropInterface> = ({
   const [total, setTotal] = useState(0);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [selectUsersVisible, setSelectUsersVisible] = useState<boolean>(false);
+  const [triggerValue, setTriggerValue] = useState("");
   const [user_dep_ids, setUserDepIds] = useState<DepIdsModel>({});
   const [departments, setDepartments] = useState<DepartmentsModel>({});
   const [refresh, setRefresh] = useState(false);
@@ -86,6 +87,7 @@ export const GroupUsers: React.FC<PropInterface> = ({
           message.success("删除成功");
           setLoading(false)
           setRefresh(!refresh)
+          setSelectedRowKeys([])
         })
       },
       onCancel() {
@@ -108,6 +110,7 @@ export const GroupUsers: React.FC<PropInterface> = ({
 
   // rowSelection object indicates the need for row selection
   const rowSelection = {
+    selectedRowKeys,
     onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
       // console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
       setSelectedRowKeys(selectedRowKeys)
@@ -215,16 +218,16 @@ export const GroupUsers: React.FC<PropInterface> = ({
         <Drawer className="custom-drawer" onClose={onCancel} maskClosable={false} open={true} width={'50%'}
           extra={
             <div className="top-box">
-              <p>您正在查看群组<span className="group-name">【{groupName}】</span>的学员记录……</p>
+              <p>您正在查看群组<span className="group-name">【{groupName}】</span>的学员……</p>
               <Space>
-                <Button icon={<PlusOutlined/>} type="primary" onClick={() => setSelectUsersVisible(true)} >添加</Button>
+                <Button icon={<PlusOutlined/>} type="primary" onClick={() => setSelectUsersVisible(true) } >管理学员</Button>
                 <Button type="primary" danger disabled={!selectedRowKeys.length} onClick={()=> delItem() }>删除</Button>
               </Space>
             </div>
           }
         >
           <Table rowSelection={{type: "checkbox", ...rowSelection}} loading={loading} columns={columns} dataSource={list} rowKey={(record) => record.id} pagination={paginationProps} scroll={{y: 670}}/>
-          <SelectUsers open={selectUsersVisible} groupId={groupId} groupName={groupName} onCancel={() => { setSelectUsersVisible(false); setRefresh(!refresh) }}/>
+          <SelectUsers open={selectUsersVisible} triggerSource={triggerValue} groupId={groupId} groupName={groupName} onCancel={() => { setSelectUsersVisible(false); setRefresh(!refresh) }}/>
         </Drawer>
       ) : null}
     </>

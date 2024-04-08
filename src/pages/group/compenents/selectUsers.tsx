@@ -1,7 +1,7 @@
 // 添加视频和文档公用
 import { Key, useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Row, Col, Modal, Table, Tree, Image, Tag, message, Typography, Input, Button } from "antd";
+import { Row, Col, Modal, Table, Tree, Image, Tag, message, Typography, Input, Button, Select } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useSelector } from "react-redux";
 import { group, user } from "../../../api/index";
@@ -9,6 +9,7 @@ import { dateFormat } from "../../../utils/index";
 
 interface PropsInterface {
   open: boolean;
+  triggerSource: string,
   groupId: React.Key,
   groupName: string,
   onCancel: () => void;
@@ -68,24 +69,41 @@ export const SelectUsers = (props: PropsInterface) => {
   const [depUserCount, setDepUserCount] = useState<KeyNumberObject>();
   const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([]);
   const [disabledRowKeys, setDisabledRowKeys] = useState<Key[]>([]);
+  const [participateType, setParticipateType] = useState(1);
+  const types = [
+    { label: "全部", value: 0 },
+    { label: "参与", value: 1 },
+    { label: "未参与", value: 2 }
+  ];
 
   useEffect(() => {
     // setDepIds([-1])
+    setList([])
+    setSelectedRowKeys([])
     let data: any[] = checkArr(localDepartments, 0);
     // console.log('tree', data);
     setTreeData(data);
     if (props.open) {
-      getData()
-      setSelectKey([])
-      group.groupSelectedUsers(props.groupId).then((res: any) => {
-        console.log('sel;e', res, 'props.open', props.open);        
-        setSelectedRowKeys(Array.from(new Set(res.data)))
-      })
+      if (props.triggerSource !== 'course-group') {
+        getData()
+        setSelectKey([])
+        if (props.triggerSource === 'course-department') {
+          group.courseSelectedUsers(props.groupId).then((res: any) => {
+            setSelectedRowKeys(Array.from(new Set(res.data)))
+          })
+        } else {
+          group.groupSelectedUsers(props.groupId).then((res: any) => {
+            setSelectedRowKeys(Array.from(new Set(res.data)))
+          })
+        }
+      } else getGroupData()
     }
   }, [props.open]);
   
   useEffect(() => {
-    if (props.open) getData()
+    if (props.open) {
+      if (props.triggerSource !== 'course-group') getData()
+    }
   }, [refresh, page, size, dep_ids]);
 
   const onSelect = (selectedKeys: any, info: any) => {
@@ -128,7 +146,9 @@ export const SelectUsers = (props: PropsInterface) => {
       return;
     }
     setLoading(true);
-    group.addPeople(props.groupId, props.groupName, selectedRowKeys).then((res: any) => {
+    // 课程管理--按部门、群组添加确认
+    if (props.triggerSource)  {
+      group.courseAddPeople(props.groupId, selectedRowKeys, props.triggerSource).then((res: any) => {
         setDepIds([-1])
         setLoading(false);
         // resetData()
@@ -137,6 +157,17 @@ export const SelectUsers = (props: PropsInterface) => {
       }).catch((e) => {
         setLoading(false);
       });
+    } else {
+      group.addPeople(props.groupId, props.groupName, selectedRowKeys).then((res: any) => {
+        setDepIds([-1])
+        setLoading(false);
+        // resetData()
+        message.success("保存成功！");
+        props.onCancel();
+      }).catch((e) => {
+        setLoading(false);
+      });
+    }
   };
 
   const getData = ()=> {
@@ -156,6 +187,21 @@ export const SelectUsers = (props: PropsInterface) => {
       setLoading(false);
     })
   }
+
+  // 获取群组
+  const getGroupData = ()=> {
+    setLoading(true);
+    group.groupList(page, size, props.groupName).then((res: any) => {
+      setLoading(false);
+      // console.log('res',res);
+      setList(res.data.data);
+      setTotal(res.data.total);
+      setLoading(false);
+    }).catch(err=> {
+      setLoading(false);
+    })
+  }
+
   const resetData = ()=> {
     resetLocalSearchParams({
       page: 1,
@@ -211,7 +257,7 @@ export const SelectUsers = (props: PropsInterface) => {
     {
       title: "学员",
       dataIndex: "name",
-      // width: 200,
+      width: 180,
       render: (_, record: any) => (
         <>
           <Image
@@ -227,6 +273,7 @@ export const SelectUsers = (props: PropsInterface) => {
     },
     {
       title: "所属部门",
+      width: 200,
       dataIndex: "id",
       render: (id: number) => (
         <div className="float-left">
@@ -251,7 +298,7 @@ export const SelectUsers = (props: PropsInterface) => {
     // },
     {
       title: "登录邮箱",
-      // width: 200,
+      width: 200,
       dataIndex: "email",
       render: (email: string) => <span>{email}</span>,
     },
@@ -261,6 +308,30 @@ export const SelectUsers = (props: PropsInterface) => {
     //   dataIndex: "created_at",
     //   render: (text: string) => <span>{dateFormat(text)}</span>,
     // },
+  ];
+
+  // 课程里 按照部门新增学员的表列
+  const columns1: ColumnsType<DataType> = [
+    ...columns.slice(0, 2),
+    {
+      title: "状态",
+      width: 120,
+      dataIndex: "is_active",
+      render: (is_active: number) => <Tag color={is_active ? 'success' : 'error'}>{is_active ? '参与' : '未参与'}</Tag>,
+    },
+    ...columns.slice(2)
+  ]
+
+
+  const groupColumns: ColumnsType<DataType> = [
+    {
+      title: "群组名称",
+      render: (_, record: any) => <span>{record.name}</span>,
+    },
+    {
+      title: "用户数量",
+      render: (_, record: any) => <span>{record.user_count}</span>,
+    }
   ];
 
   const paginationProps = {
@@ -305,29 +376,47 @@ export const SelectUsers = (props: PropsInterface) => {
   return (
     <>
       {props.open ? (
-      <Modal title="选择用户" centered onCancel={() => { props.onCancel(); setDepIds([-1]) }} open={props.open} width={1300} maskClosable={false} onOk={onFinish} >
+      <Modal title={props.triggerSource !== 'course-group' ? '选择用户' : '选择群组'} centered onCancel={() => { props.onCancel(); setDepIds([-1]) }} open={props.open} width={1300} maskClosable={false} onOk={onFinish} >
           <Row>
-            <Col span={8} style={{maxHeight: 700, overflowY: 'scroll'}}>
-              {treeData.length > 0 && (
-                <Tree defaultExpandedKeys={[16]} selectedKeys={selectKey} onSelect={onSelect} treeData={treeData} switcherIcon={<i className="iconfont icon-icon-fold c-gray" />}/>
-              )}
-            </Col>
-            <Col span={16}>
-            <div className="d-flex" style={{marginBottom: 10}}>
-              <div className="d-flex mr-24">
-                <Typography.Text>姓名：</Typography.Text>
-                <Input value={nickname || ""} onChange={(e) => { resetLocalSearchParams({ nickname: e.target.value, }); }} style={{ width: 160 }} placeholder="请输入姓名关键字" allowClear/>
+            {props.triggerSource !== 'course-group' && (
+              <>
+                <Col span={7} style={{maxHeight: 700, overflowY: 'scroll'}}>
+                  {treeData.length > 0 && (
+                    <Tree defaultExpandedKeys={[16]} selectedKeys={selectKey} onSelect={onSelect} treeData={treeData} switcherIcon={<i className="iconfont icon-icon-fold c-gray" />}/>
+                  )}
+                </Col>
+                <Col span={1} style={{flex: '0 0 3%'}}></Col>
+              </>
+            )}
+            <Col span={ props.triggerSource === 'course-group' ? 24 : 16}>
+              <div className="d-flex" style={{marginBottom: 10}}>
+                {props.triggerSource !== 'course-group' ? (
+                  <>
+                    <div className="d-flex mr-24">
+                      <Typography.Text>姓名：</Typography.Text>
+                      <Input value={nickname || ""} onChange={(e) => { resetLocalSearchParams({ nickname: e.target.value, }); }} style={{ width: 160 }} placeholder="请输入姓名关键字" allowClear/>
+                    </div>
+                    <div className="d-flex mr-24">
+                      <Typography.Text>邮箱：</Typography.Text>
+                      <Input value={email || ""} onChange={(e) => { resetLocalSearchParams({ email: e.target.value, }); }} style={{ width: 160 }} placeholder="请输入邮箱账号" allowClear/>
+                    </div>
+                    <div style={{display: props.triggerSource === 'course-department' ? 'flex' : 'none' }} className="d-flex mr-24">
+                      <Typography.Text>状态：</Typography.Text>
+                      <Select style={{ width: 160 }} placeholder="请选择状态" value={participateType} onChange={(value: string) => setParticipateType(value)} options={types}/>
+                    </div>
+                  </>
+                ) : (
+                  <div className="d-flex mr-24">
+                    <Typography.Text>群组名称：</Typography.Text>
+                    <Input  onChange={(e) => {   }} allowClear style={{ width: 160 }} placeholder="请输入管理员名称"/>
+                  </div>
+                )}
+                <div className="d-flex">
+                  <Button className="mr-16" onClick={resetData}>重 置</Button>
+                  <Button type="primary" onClick={() => { resetLocalSearchParams({ page: 1, }); setRefresh(!refresh); }} >查 询</Button>
+                </div>
               </div>
-              <div className="d-flex mr-24">
-                <Typography.Text>邮箱：</Typography.Text>
-                <Input value={email || ""} onChange={(e) => { resetLocalSearchParams({ email: e.target.value, }); }} style={{ width: 160 }} placeholder="请输入邮箱账号" allowClear/>
-              </div>
-              <div className="d-flex">
-                <Button className="mr-16" onClick={resetData}>重 置</Button>
-                <Button type="primary" onClick={() => { resetLocalSearchParams({ page: 1, }); setRefresh(!refresh); }} >查 询</Button>
-              </div>
-            </div>
-              <Table rowSelection={{type: "checkbox", ...rowSelection}} loading={loading} columns={columns} dataSource={list} rowKey={(record) => record.id} pagination={paginationProps} scroll={{y: 539}}/>
+              <Table rowSelection={{type: "checkbox", ...rowSelection}} loading={loading} columns={ props.triggerSource === 'course-group' ? groupColumns : props.triggerSource === 'course-department' ? columns1 : columns } dataSource={list} rowKey={(record) => record.id} pagination={paginationProps} scroll={{y: 539}}/>
             </Col>
           </Row>
         </Modal>
