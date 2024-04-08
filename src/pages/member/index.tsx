@@ -146,12 +146,12 @@ const MemberPage = () => {
       dataIndex: "email",
       render: (email: string) => <span>{email}</span>,
     },
-    {
-      title: "加入时间",
-      width: 200,
-      dataIndex: "created_at",
-      render: (text: string) => <span>{dateFormat(text)}</span>,
-    },
+    // {
+    //   title: "加入时间",
+    //   width: 200,
+    //   dataIndex: "created_at",
+    //   render: (text: string) => <span>{dateFormat(text)}</span>,
+    // },
     {
       title: "操作",
       key: "action",
@@ -211,7 +211,10 @@ const MemberPage = () => {
             {!ldapEnabled && (
               <>
                 <div className="form-column"></div>
-                <Dropdown menu={{ items }}>
+                <PerButton type="link" text="编辑" class="b-link c-red" icon={null} p="user-update" onClick={() => { setMid(Number(record.id)); setUpdateVisible(true); }} disabled={record.oaId} />
+                <div className="form-column"></div>
+                <PerButton type="link" text="删除" class="b-link c-red" icon={null} p="user-destroy" onClick={() => delUser(record.id)} disabled={record.oaId}/>
+                {/* <Dropdown menu={{ items }}>
                   <Button
                     type="link"
                     className="b-link c-red"
@@ -222,7 +225,7 @@ const MemberPage = () => {
                       <DownOutlined />
                     </Space>
                   </Button>
-                </Dropdown>
+                </Dropdown> */}
               </>
             )}
           </Space>
@@ -341,7 +344,7 @@ const MemberPage = () => {
   return (
     <>
       <div className="tree-main-body">
-        <div className="left-box">
+        <div className="left-box" style={{width: 600}}>
           <TreeDepartment
             selected={dep_ids}
             showNum={true}
