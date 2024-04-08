@@ -455,6 +455,7 @@ export const CourseUpdate: React.FC<PropInterface> = ({
     arr.push({
       name: "",
       hours: [],
+      attachments: []
     });
     keys.push([]);
     setChapters(arr);

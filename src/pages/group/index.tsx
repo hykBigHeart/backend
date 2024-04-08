@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Key, useEffect, useState } from "react";
 import { Table, Typography, Input, Button, Space, Modal, message } from "antd";
 import { PlusOutlined, UserOutlined, ExclamationCircleFilled } from "@ant-design/icons";
 import type { ColumnsType } from "antd/es/table";
@@ -26,7 +26,8 @@ const groupPage = () => {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
-  const [createVisible, setCreateVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalType, setModalType] = useState('add');
   const [transferVisible, setTransferVisible] = useState(false);
   const [groupId, setGroupId] = useState<React.Key>("");
   const [list, setList] = useState<DataType[]>([]);
@@ -40,8 +41,14 @@ const groupPage = () => {
     getData();
   }, [refresh, page, size]);
 
+  const editItem = (id: Key) => {
+    setModalVisible(true)
+    setGroupId(id)
+    setModalType('edit')
+  }
+
   // 删除课程
-  const delItem = (id: number) => {
+  const delItem = (id: Key) => {
     if (id === 0) {
       return;
     }
@@ -132,6 +139,8 @@ const groupPage = () => {
             组内用户
           </Button>
           <div className="form-column"></div>
+          <Button type="link" className="b-link c-red" onClick={()=> editItem(record.id)}>编辑</Button>
+          <div className="form-column"></div>
           <Button type="link" className="b-link c-red" onClick={()=> delItem(record.id)}>删除</Button>
         </Space>
       ),
@@ -145,7 +154,7 @@ const groupPage = () => {
       <div className="playedu-main-body">
         <div className="float-left j-b-flex mb-24">
           <div className="d-flex">
-            <PerButton  type="primary" text="新建群组" class="mr-16" icon={<PlusOutlined />} p="department-cud" onClick={() => setCreateVisible(true)} disabled={null}></PerButton>
+            <PerButton  type="primary" text="新建群组" class="mr-16" icon={<PlusOutlined />} p="department-cud" onClick={() => { setModalVisible(true); setModalType('add') } } disabled={null}></PerButton>
           </div>
           <div className="d-flex">
             <div className="d-flex mr-24">
@@ -157,7 +166,7 @@ const groupPage = () => {
                 }}
                 allowClear
                 style={{ width: 160 }}
-                placeholder="请输入管理员名称"
+                placeholder="请输入群组名称"
               />
             </div>
             <div className="d-flex">
@@ -179,7 +188,7 @@ const groupPage = () => {
         <div className="float-left">
           <Table loading={loading} columns={columns} dataSource={list} rowKey={(record) => record.id} pagination={paginationProps} rowClassName={rowClassName}/>
         </div>
-        <GroupCreate open={createVisible} onCancel={() => { setCreateVisible(false); setRefresh(!refresh); }}></GroupCreate>
+        <GroupCreate open={modalVisible} groupId={groupId} modalType={modalType} onCancel={() => { setModalVisible(false); setRefresh(!refresh); }}></GroupCreate>
         <GroupUsers open={transferVisible} groupId={groupId} groupName={groupName} onCancel={() => { setTransferVisible(false); setRefresh(!refresh); setGroupName("")}}></GroupUsers>
         {/* 穿梭框形式（暂时不用） */}
         {/* <UserTransfer open={transferVisible} groupId={groupId} groupName={groupName} onCancel={() => { setTransferVisible(false); setRefresh(!refresh); setGroupName("")}}></UserTransfer> */}
