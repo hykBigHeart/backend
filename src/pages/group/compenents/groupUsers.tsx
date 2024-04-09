@@ -169,12 +169,12 @@ export const GroupUsers: React.FC<PropInterface> = ({
       dataIndex: "email",
       render: (email: string) => <span>{email}</span>,
     },
-    {
-      title: "加入时间",
-      // width: 200,
-      dataIndex: "created_at",
-      render: (text: string) => <span>{dateFormat(text)}</span>,
-    },
+    // {
+    //   title: "加入时间",
+    //   // width: 200,
+    //   dataIndex: "created_at",
+    //   render: (text: string) => <span>{dateFormat(text)}</span>,
+    // },
   ];
 
   const paginationProps = {

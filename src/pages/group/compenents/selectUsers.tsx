@@ -56,7 +56,7 @@ export const SelectUsers = (props: PropsInterface) => {
     email: "",
   });
   const [refresh, setRefresh] = useState(false);
-  const [dep_ids, setDepIds] = useState<number[]>([-1]);
+  const [dep_ids, setDepIds] = useState<number[]>([0]);
   const [list, setList] = useState<DataType[]>([]);
   const page = parseInt(searchParams.get("page") || "1");
   const size = parseInt(searchParams.get("size") || "10");
@@ -69,9 +69,10 @@ export const SelectUsers = (props: PropsInterface) => {
   const [depUserCount, setDepUserCount] = useState<KeyNumberObject>();
   const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([]);
   const [disabledRowKeys, setDisabledRowKeys] = useState<Key[]>([]);
-  const [participateType, setParticipateType] = useState(1);
+  const [participateType, setParticipateType] = useState<any>(2);
+  const [groupName, setGroupName] = useState("");
   const types = [
-    { label: "全部", value: 0 },
+    { label: "全部", value: null },
     { label: "参与", value: 1 },
     { label: "未参与", value: 2 }
   ];
@@ -92,6 +93,7 @@ export const SelectUsers = (props: PropsInterface) => {
             setSelectedRowKeys(Array.from(new Set(res.data)))
           })
         } else {
+          setParticipateType(null)
           group.groupSelectedUsers(props.groupId).then((res: any) => {
             setSelectedRowKeys(Array.from(new Set(res.data)))
           })
@@ -103,12 +105,13 @@ export const SelectUsers = (props: PropsInterface) => {
   useEffect(() => {
     if (props.open) {
       if (props.triggerSource !== 'course-group') getData()
+      else getGroupData()
     }
   }, [refresh, page, size, dep_ids]);
 
   const onSelect = (selectedKeys: any, info: any) => {
     setSelectKey(selectedKeys);
-    if (!selectedKeys.length) setDepIds([-1])
+    if (!selectedKeys.length) setDepIds([0])
     else setDepIds(selectedKeys)
   };
 
@@ -116,7 +119,7 @@ export const SelectUsers = (props: PropsInterface) => {
     console.log('onExpand', selectedKeys);
     
     setSelectKey(selectedKeys);
-    if (!selectedKeys.length) setDepIds([-1])
+    if (!selectedKeys.length) setDepIds([0])
     else setDepIds(selectedKeys)
   };
 
@@ -149,7 +152,7 @@ export const SelectUsers = (props: PropsInterface) => {
     // 课程管理--按部门、群组添加确认
     if (props.triggerSource)  {
       group.courseAddPeople(props.groupId, selectedRowKeys, props.triggerSource).then((res: any) => {
-        setDepIds([-1])
+        setDepIds([0])
         setLoading(false);
         // resetData()
         message.success("保存成功！");
@@ -159,7 +162,7 @@ export const SelectUsers = (props: PropsInterface) => {
       });
     } else {
       group.addPeople(props.groupId, props.groupName, selectedRowKeys).then((res: any) => {
-        setDepIds([-1])
+        setDepIds([0])
         setLoading(false);
         // resetData()
         message.success("保存成功！");
@@ -173,8 +176,10 @@ export const SelectUsers = (props: PropsInterface) => {
   const getData = ()=> {
     setLoading(true)
     user.userList(page, size, {
+      course_id: props.groupId,
       name: nickname,
       email: email,
+      student_course_status: participateType,
       dep_ids: dep_ids.join(","),
     }).then((res: any) => {
       // console.log('res23',res)
@@ -191,7 +196,7 @@ export const SelectUsers = (props: PropsInterface) => {
   // 获取群组
   const getGroupData = ()=> {
     setLoading(true);
-    group.groupList(page, size, props.groupName).then((res: any) => {
+    group.groupList(page, size, groupName).then((res: any) => {
       setLoading(false);
       // console.log('res',res);
       setList(res.data.data);
@@ -210,6 +215,9 @@ export const SelectUsers = (props: PropsInterface) => {
       email: "",
     });
     setList([]);
+    setGroupName("")
+    if (!props.triggerSource) setParticipateType(null)
+    else setParticipateType(2)
     setRefresh(!refresh);
   }
 
@@ -316,8 +324,8 @@ export const SelectUsers = (props: PropsInterface) => {
     {
       title: "状态",
       width: 120,
-      dataIndex: "is_active",
-      render: (is_active: number) => <Tag color={is_active ? 'success' : 'error'}>{is_active ? '参与' : '未参与'}</Tag>,
+      dataIndex: "id",
+      render: (id: number) => <Tag color={selectedRowKeys.includes(id) ? 'success' : 'error'}>{selectedRowKeys.includes(id) ? '参与' : '未参与'}</Tag>
     },
     ...columns.slice(2)
   ]
@@ -376,7 +384,7 @@ export const SelectUsers = (props: PropsInterface) => {
   return (
     <>
       {props.open ? (
-      <Modal title={props.triggerSource !== 'course-group' ? '选择用户' : '选择群组'} centered onCancel={() => { props.onCancel(); setDepIds([-1]) }} open={props.open} width={1300} maskClosable={false} onOk={onFinish} >
+      <Modal title={props.triggerSource !== 'course-group' ? '选择用户' : '选择群组'} centered onCancel={() => { props.onCancel(); setDepIds([0]) }} open={props.open} width={1300} maskClosable={false} onOk={onFinish} >
           <Row>
             {props.triggerSource !== 'course-group' && (
               <>
@@ -408,7 +416,7 @@ export const SelectUsers = (props: PropsInterface) => {
                 ) : (
                   <div className="d-flex mr-24">
                     <Typography.Text>群组名称：</Typography.Text>
-                    <Input  onChange={(e) => {   }} allowClear style={{ width: 160 }} placeholder="请输入管理员名称"/>
+                    <Input value={groupName} onChange={(e) => { setGroupName(e.target.value) }} allowClear style={{ width: 160 }} placeholder="请输入管理员名称"/>
                   </div>
                 )}
                 <div className="d-flex">
