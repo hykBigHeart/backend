@@ -515,6 +515,55 @@ export const CourseUpdate: React.FC<PropInterface> = ({
     addPublicFn(hours)
   };
 
+  // 切换有、无章节
+  const getChapterType = (e: any) => {
+    const arr = [...chapters];
+    console.log('treeData', treeData);
+    
+    if (arr.length > 0 || treeData.length > 0) {
+      confirm({
+        title: "操作确认",
+        icon: <ExclamationCircleFilled />,
+        content: "切换列表选项会清空已添加课时，确认切换？",
+        centered: true,
+        okText: "确认",
+        cancelText: "取消",
+        onOk() {
+          setChapterType(e.target.value);
+          setChapters([]);
+          setHours([]);
+          setChapterHours([]);
+          setTreeData([]);
+
+          // 批量删除课件
+          // 定义保存接口的 Promise 数组
+          const promises: Promise<any>[] = [];
+          const allCourseware = chapters.map(item=> item.hours).flat().length ? chapters.map(item=> item.hours).flat() : treeData
+          if (allCourseware.length) {
+            allCourseware.forEach(item=> {
+              if (item.type == 'VIDEO') promises.push(courseHour.destroyCourseHour(id, item.id as number))
+              else promises.push(courseAttachment.destroyAttachment(id, item.id as number))
+            })
+          }
+          Promise.all(promises).then(res=> {
+            // console.log('接口都走完', res);
+          }).catch(err=> { console.log('err', err); })
+        },
+        onCancel() {
+          form.setFieldsValue({
+            hasChapter: chapterType,
+          });
+        },
+      });
+    } else {
+      setChapterType(e.target.value);
+      setChapters([]);
+      setHours([]);
+      setChapterHours([]);
+      setTreeData([]);
+    }
+  };
+
   // 无章节添加和有章节添加公用一套接口报错方法
   const addPublicFn = (hours: any) => {
     if (hours.length === 0) {
@@ -751,6 +800,18 @@ export const CourseUpdate: React.FC<PropInterface> = ({
                 <p>1.线上课课时调整及时生效，操作不可逆，请谨慎操作。</p>
                 <p>2.课时调整后，已有学习进度会在学员学习时重新计算。</p>
               </div>
+              <Form.Item
+                label="课件列表"
+                name="hasChapter"
+                rules={[{ required: true, message: "请选择课时列表!" }]}
+              >
+                <Radio.Group onChange={getChapterType}>
+                  <Radio value={0}>无章节</Radio>
+                  <Radio value={1} style={{ marginLeft: 22 }}>
+                    有章节
+                  </Radio>
+                </Radio.Group>
+              </Form.Item>
                 {chapterType === 0 && (
                   <div className="c-flex">
                     <Form.Item>
