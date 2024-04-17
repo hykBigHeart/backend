@@ -73,8 +73,8 @@ export const SelectUsers = (props: PropsInterface) => {
   const [groupName, setGroupName] = useState("");
   const types = [
     { label: "全部", value: null },
-    { label: "参与", value: 1 },
-    { label: "未参与", value: 2 }
+    { label: "已添加必修", value: 1 },
+    { label: "未添加必修", value: 2 }
   ];
 
   useEffect(() => {
@@ -402,21 +402,21 @@ export const SelectUsers = (props: PropsInterface) => {
                   <>
                     <div className="d-flex mr-24">
                       <Typography.Text>姓名：</Typography.Text>
-                      <Input value={nickname || ""} onChange={(e) => { resetLocalSearchParams({ nickname: e.target.value, }); }} style={{ width: 160 }} placeholder="请输入姓名关键字" allowClear/>
+                      <Input value={nickname || ""} onChange={(e) => { resetLocalSearchParams({ nickname: e.target.value, }); }} style={{ width: 155 }} placeholder="请输入姓名关键字" allowClear/>
                     </div>
                     <div className="d-flex mr-24">
                       <Typography.Text>邮箱：</Typography.Text>
-                      <Input value={email || ""} onChange={(e) => { resetLocalSearchParams({ email: e.target.value, }); }} style={{ width: 160 }} placeholder="请输入邮箱账号" allowClear/>
+                      <Input value={email || ""} onChange={(e) => { resetLocalSearchParams({ email: e.target.value, }); }} style={{ width: 155 }} placeholder="请输入邮箱账号" allowClear/>
                     </div>
                     <div style={{display: props.triggerSource === 'course-department' ? 'flex' : 'none' }} className="d-flex mr-24">
-                      <Typography.Text>状态：</Typography.Text>
-                      <Select style={{ width: 160 }} placeholder="请选择状态" value={participateType} onChange={(value: string) => setParticipateType(value)} options={types}/>
+                      <Typography.Text>课程状态：</Typography.Text>
+                      <Select style={{ width: 155 }} placeholder="请选择状态" value={participateType} onChange={(value: string) => setParticipateType(value)} options={types}/>
                     </div>
                   </>
                 ) : (
                   <div className="d-flex mr-24">
                     <Typography.Text>群组名称：</Typography.Text>
-                    <Input value={groupName} onChange={(e) => { setGroupName(e.target.value) }} allowClear style={{ width: 160 }} placeholder="请输入管理员名称"/>
+                    <Input value={groupName} onChange={(e) => { setGroupName(e.target.value) }} allowClear style={{ width: 155 }} placeholder="请输入管理员名称"/>
                   </div>
                 )}
                 <div className="d-flex">

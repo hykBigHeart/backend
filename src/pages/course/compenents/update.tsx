@@ -208,6 +208,13 @@ export const CourseUpdate: React.FC<PropInterface> = ({
     if (loading) {
       return;
     }
+    
+    let isAllEmpty = chapters.every(item=> item.hours.length === 0)
+    if (!treeData.length && isAllEmpty) {
+      message.error("请选择课件");
+      return
+    }
+    
     let dep_ids: any[] = [];
     if (type === "elective") {
       dep_ids = values.dep_ids;
@@ -744,7 +751,7 @@ export const CourseUpdate: React.FC<PropInterface> = ({
                 <p>1.线上课课时调整及时生效，操作不可逆，请谨慎操作。</p>
                 <p>2.课时调整后，已有学习进度会在学员学习时重新计算。</p>
               </div>
-              {chapterType === 0 && (
+                {chapterType === 0 && (
                   <div className="c-flex">
                     <Form.Item>
                       <div className="ml-42">

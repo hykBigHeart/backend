@@ -401,7 +401,7 @@ const ResourceCategoryPage = () => {
             <Spin></Spin>
           </div>
         )}
-        <div style={{ display: init ? "none" : "block", width: 366 }}>
+        <div style={{ display: init ? "none" : "block", width: 600 }}>
           {treeData.length > 0 && (
             <Tree
               onSelect={onSelect}

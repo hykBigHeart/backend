@@ -89,18 +89,18 @@ export const UploadCoursewareButton = (props: PropsInterface) => {
       let extension: any = file.name.split(".");
       extension = extension[extension.length - 1];
       if (
-        extension === "rar" ||
+        // extension === "rar" ||
         file.type ===
           "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
         file.type === "application/msword" ||
         file.type === "application/vnd.ms-word.document.macroEnabled.12" ||
         file.type === "application/vnd.ms-word.template.macroEnabled.12" ||
-        file.type === "text/plain" ||
+        // file.type === "text/plain" ||
         file.type === "application/pdf" ||
-        file.type === "application/x-zip-compressed" ||
+        // file.type === "application/x-zip-compressed" ||
         file.type === "application/octet-stream" ||
-        file.type === "application/zip" ||
-        file.type === "application/x-rar" ||
+        // file.type === "application/zip" ||
+        // file.type === "application/x-rar" ||
         file.type ===
           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
         file.type === "application/vnd.ms-excel" ||
@@ -306,7 +306,8 @@ export const UploadCoursewareButton = (props: PropsInterface) => {
                 <p className="ant-upload-text">请将文件拖拽到此处上传</p>
                 <p className="ant-upload-hint">
                   支持一次上传多个 /
-                  支持word、excel、ppt、pdf、zip、rar、txt格式文件，以及支持2G以内的mp4文件
+                  {/* zip、rar、txt */}
+                  支持word、excel、ppt、pdf格式文件，以及支持2G以内的mp4文件
                 </p>
               </Dragger>
             </Col>

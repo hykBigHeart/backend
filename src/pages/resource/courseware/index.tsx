@@ -53,7 +53,7 @@ const ResourceCoursewarePage = () => {
   const [loading, setLoading] = useState(true);
   const [category_ids, setCategoryIds] = useState<number[]>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
-  const [type, setType] = useState("WORD,EXCEL,PPT,PDF,TXT,RAR,ZIP,VIDEO");
+  const [type, setType] = useState("WORD,EXCEL,PPT,PDF,VIDEO");
   const [title, setTitle] = useState("");
   const [multiConfig, setMultiConfig] = useState(false);
   const [selLabel, setLabel] = useState<string>(
@@ -69,14 +69,14 @@ const ResourceCoursewarePage = () => {
 
   const [updateVisible, setUpdateVisible] = useState(false);
   const types = [
-    { label: "全部", value: "WORD,EXCEL,PPT,PDF,TXT,RAR,ZIP,VIDEO" },
+    { label: "全部", value: "WORD,EXCEL,PPT,PDF,VIDEO" },
     { label: "WORD", value: "WORD" },
     { label: "EXCEL", value: "EXCEL" },
     { label: "PPT", value: "PPT" },
     { label: "PDF", value: "PDF" },
-    { label: "TXT", value: "TXT" },
-    { label: "RAR", value: "RAR" },
-    { label: "ZIP", value: "ZIP" },
+    // { label: "TXT", value: "TXT" },
+    // { label: "RAR", value: "RAR" },
+    // { label: "ZIP", value: "ZIP" },
     { label: "VIDEO", value: "VIDEO" }
   ];
 
@@ -236,7 +236,7 @@ const ResourceCoursewarePage = () => {
     setList([]);
     setTitle("");
     setSelectedRowKeys([]);
-    setType("WORD,EXCEL,PPT,PDF,TXT,RAR,ZIP,VIDEO");
+    setType("WORD,EXCEL,PPT,PDF,VIDEO");
     setRefresh(!refresh);
   };
 

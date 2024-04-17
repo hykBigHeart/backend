@@ -10,6 +10,7 @@ import {
   Space,
   Tabs,
   Dropdown,
+  Tag
 } from "antd";
 import { course } from "../../api";
 import {
@@ -158,7 +159,7 @@ const CoursePage = () => {
   const columns: ColumnsType<DataType> = [
     {
       title: "课程名称",
-      width: 350,
+      width: 550,
       render: (_, record: any) => (
         <div className="d-flex">
           <Image
@@ -171,6 +172,12 @@ const CoursePage = () => {
           <span className={`${styles['overflow-ellipsis']} ml-8`}  title={record.title}>{record.title}</span>
         </div>
       ),
+    },
+    {
+      title: "课程权限",
+      width: 200,
+      dataIndex: "purview",
+      render: (purview: number) => <Tag color={purview ? 'success' : 'error'}>{purview ? '公开' : '非公开'}</Tag>,
     },
     {
       title: "课程分类",
@@ -189,32 +196,32 @@ const CoursePage = () => {
         </div>
       ),
     },
-    {
-      title: "指派部门",
-      dataIndex: "id",
-      render: (id: number) => (
-        <div className="float-left">
-          {course_dep_ids[id] &&
-            course_dep_ids[id].map((item: any, index: number) => {
-              return (
-                <span key={index}>
-                  {index === course_dep_ids[id].length - 1
-                    ? departments[item]
-                    : departments[item] + "、"}
-                </span>
-              );
-            })}
-          {!course_dep_ids[id] && <span>全部部门</span>}
-        </div>
-      ),
-    },
-    {
-      title: "必修/选修",
-      dataIndex: "is_required",
-      render: (is_required: number) => (
-        <span>{is_required === 1 ? "必修课" : "选修课"}</span>
-      ),
-    },
+    // {
+    //   title: "指派部门",
+    //   dataIndex: "id",
+    //   render: (id: number) => (
+    //     <div className="float-left">
+    //       {course_dep_ids[id] &&
+    //         course_dep_ids[id].map((item: any, index: number) => {
+    //           return (
+    //             <span key={index}>
+    //               {index === course_dep_ids[id].length - 1
+    //                 ? departments[item]
+    //                 : departments[item] + "、"}
+    //             </span>
+    //           );
+    //         })}
+    //       {!course_dep_ids[id] && <span>全部部门</span>}
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   title: "必修/选修",
+    //   dataIndex: "is_required",
+    //   render: (is_required: number) => (
+    //     <span>{is_required === 1 ? "必修课" : "选修课"}</span>
+    //   ),
+    // },
     {
       title: "上架时间",
       dataIndex: "published_at",

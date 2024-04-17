@@ -238,7 +238,7 @@ export const CourseCreate: React.FC<PropInterface> = ({
       dep_ids = values.dep_ids;
     }
     if (chapters.length === 0 && treeData.length === 0) {
-      message.error("请配置课时");
+      message.error("请添加课件");
       return;
     }
     let hoursList = treeData.filter((item: any)=> item.type == "VIDEO")
