@@ -881,7 +881,7 @@ export const CourseUpdate: React.FC<PropInterface> = ({
                   <Radio value={0} style={{ marginLeft: 22 }}>非公开</Radio>
                 </Radio.Group>
               </Form.Item>
-              <Form.Item label="上架时间">
+              {/* <Form.Item label="上架时间">
                 <Space align="baseline" style={{ height: 32 }}>
                   <Form.Item name="published_at">
                     <DatePicker
@@ -896,7 +896,7 @@ export const CourseUpdate: React.FC<PropInterface> = ({
                     （上架时间越晚，排序越靠前）
                   </div>
                 </Space>
-              </Form.Item>
+              </Form.Item> */}
             </Form>
             <SelectResource defaultKeys={ chapterType === 0 ? hours : changeChapterHours(chapterHours)} open={videoVisible} onCancel={() => {setVideoVisible(false); }}
               onSelected={(arr: any, videos: any) => {

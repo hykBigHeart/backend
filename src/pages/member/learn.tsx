@@ -93,6 +93,9 @@ const MemberLearnPage = () => {
   const [userName, setUserName] = useState<string>(String(result.get("name")));
   const [visiable, setVisiable] = useState(false);
   const [courseId, setcourseId] = useState(0);
+  const [page, setPage] = useState(1);
+  const [size, setSize] = useState(10);
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
     setUid(Number(result.get("id")));
@@ -110,7 +113,7 @@ const MemberLearnPage = () => {
 
   useEffect(() => {
     getLearnCourses();
-  }, [refresh2, uid]);
+  }, [refresh2, uid, page, size]);
 
   useEffect(() => {
     if (depValue === 0) {
@@ -205,10 +208,11 @@ const MemberLearnPage = () => {
       return;
     }
     setLoading2(true);
-    member.learnAllCourses(uid).then((res: any) => {
+    member.learnAllCourses(uid, page, size).then((res: any) => {
       // setList2(res.data.departments);
       // setCourses(res.data.dep_courses);
       setCurrentCourses(res.data.courses)
+      setTotal(res.data.total)
       // setOpenCourses(res.data.open_courses);
       setHourCount(res.data.user_course_hour_count);
       setRecords(res.data.user_course_records);
@@ -233,9 +237,23 @@ const MemberLearnPage = () => {
     });
   };
 
+  const paginationProps = {
+    current: page, //当前页码
+    pageSize: size,
+    total: total, // 总条数
+    onChange: (page: number, pageSize: number) =>
+      handlePageChange(page, pageSize), //改变页码的函数
+    showSizeChanger: true,
+  };
+  const handlePageChange = (page: number, pageSize: number) => {
+    setPage(page);
+    setSize(pageSize);
+  };
+
   const column2: ColumnsType<DataType> = [
     {
       title: "课程名称",
+      width: 500,
       dataIndex: "title",
       render: (_, record: any) => (
         <div className="d-flex">
@@ -389,7 +407,7 @@ const MemberLearnPage = () => {
             columns={column2}
             dataSource={currentCourses}
             loading={loading2}
-            pagination={false}
+            pagination={paginationProps}
             rowKey={(record) => record.id}
           />
         </div>

@@ -109,8 +109,8 @@ export function learnCourses(
   });
 }
 
-export function learnAllCourses(id: number) {
-  return client.get(`/backend/v1/user/${id}/all-courses`, {});
+export function learnAllCourses(id: number, page: number, size: number) {
+  return client.get(`/backend/v1/user/${id}/all-courses`, {page, size});
 }
 
 export function departmentProgress(
