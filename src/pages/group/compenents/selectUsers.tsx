@@ -68,6 +68,7 @@ export const SelectUsers = (props: PropsInterface) => {
   const [pureTotal, setPureTotal] = useState(0);
   const [depUserCount, setDepUserCount] = useState<KeyNumberObject>();
   const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([]);
+  const [echoSelectedRowKeys, setEchoSelectedRowKeys] = useState<Key[]>([]);
   const [disabledRowKeys, setDisabledRowKeys] = useState<Key[]>([]);
   const [participateType, setParticipateType] = useState<any>(2);
   const [groupName, setGroupName] = useState("");
@@ -91,11 +92,13 @@ export const SelectUsers = (props: PropsInterface) => {
         if (props.triggerSource === 'course-department') {
           group.courseSelectedUsers(props.groupId).then((res: any) => {
             setSelectedRowKeys(Array.from(new Set(res.data)))
+            setEchoSelectedRowKeys(Array.from(new Set(res.data)))
           })
         } else {
           setParticipateType(null)
           group.groupSelectedUsers(props.groupId).then((res: any) => {
             setSelectedRowKeys(Array.from(new Set(res.data)))
+            setEchoSelectedRowKeys(Array.from(new Set(res.data)))
           })
         }
       } else getGroupData()
@@ -325,7 +328,7 @@ export const SelectUsers = (props: PropsInterface) => {
       title: "状态",
       width: 120,
       dataIndex: "id",
-      render: (id: number) => <Tag color={selectedRowKeys.includes(id) ? 'success' : 'error'}>{selectedRowKeys.includes(id) ? '参与' : '未参与'}</Tag>
+      render: (id: number) => <Tag color={echoSelectedRowKeys.includes(id) ? 'success' : 'error'}>{echoSelectedRowKeys.includes(id) ? '参与' : '未参与'}</Tag>
     },
     ...columns.slice(2)
   ]

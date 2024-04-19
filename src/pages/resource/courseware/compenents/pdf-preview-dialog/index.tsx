@@ -41,8 +41,11 @@ export const PdfPreviewDialog: React.FC<PropInterface> = ({ title, src, open, on
             maxWidth: "100vw",
           }}
           styles={{header: {
-            textAlign: "center",
-            marginBottom: 0
+            textAlign: "left",
+            marginBottom: 0,
+            padding: 10,
+            backgroundColor: "rgb(41, 41, 41)",
+            borderRadius: 0
           }}}
           maskClosable={false}
           onCancel={() => onCancel()}
@@ -50,6 +53,7 @@ export const PdfPreviewDialog: React.FC<PropInterface> = ({ title, src, open, on
           <Worker workerUrl="https://unpkg.com/pdfjs-dist@2.4.456/build/pdf.worker.min.js">
             <div style={{ height: '100vh' }}>
               <Viewer 
+              theme="dark"
               defaultScale={1}
               localization={zh_CN}
               plugins={[defaultLayoutPluginInstance]}

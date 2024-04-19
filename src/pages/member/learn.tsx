@@ -206,12 +206,16 @@ const MemberLearnPage = () => {
     }
     setLoading2(true);
     member.learnAllCourses(uid).then((res: any) => {
-      setList2(res.data.departments);
-      setCourses(res.data.dep_courses);
-      setOpenCourses(res.data.open_courses);
+      // setList2(res.data.departments);
+      // setCourses(res.data.dep_courses);
+      setCurrentCourses(res.data.courses)
+      // setOpenCourses(res.data.open_courses);
       setHourCount(res.data.user_course_hour_count);
       setRecords(res.data.user_course_records);
       setPerRecords(res.data.per_course_earliest_records);
+      setLoading2(false);
+      // 以下是之前的此项目的原始逻辑，跟公司系统不符合
+      return
       if (res.data.departments.length > 0) {
         let box: OptionModel[] = [];
         res.data.departments.map((item: any) => {
@@ -226,7 +230,6 @@ const MemberLearnPage = () => {
         setDepValue(0);
         setDeps([]);
       }
-      setLoading2(false);
     });
   };
 
@@ -250,8 +253,8 @@ const MemberLearnPage = () => {
     {
       title: "修课",
       width: 120,
-      dataIndex: "is_active",
-      render: (is_active: number) => <Tag color={is_active ? 'success' : 'error'}>{is_active ? '必修' : '选修'}</Tag>,
+      dataIndex: "is_required",
+      render: (is_required: number) => <Tag color={is_required ? 'success' : 'error'}>{is_required ? '必修' : '选修'}</Tag>,
     },
     {
       title: "课程进度",

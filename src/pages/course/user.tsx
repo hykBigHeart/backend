@@ -105,6 +105,7 @@ const CourseUserPage = () => {
   const [selectUsersVisible, setSelectUsersVisible] = useState(false);
   const [groupName, setGroupName] = useState("");
   const [triggerValue, setTriggerValue] = useState("");
+  const [userIdsRequired, setUserIdsRequired] = useState<DepIdsModel>({});
 
   const columns: ColumnsType<DataType> = [
     {
@@ -125,8 +126,8 @@ const CourseUserPage = () => {
     {
       title: "修课",
       // width: 120,
-      dataIndex: "is_active",
-      render: (is_active: number) => <Tag color={is_active ? 'success' : 'error'}>{is_active ? '必修' : '选修'}</Tag>,
+      dataIndex: "id",
+      render: (id: number) => <Tag color={userIdsRequired[id] ? 'success' : 'error'}>{userIdsRequired[id] ? '必修' : '选修'}</Tag>,
     },
     {
       title: "邮箱",
@@ -249,6 +250,7 @@ const CourseUserPage = () => {
         setCourse(res.data.course);
         setDepartments(res.data.departments);
         setUserDepIds(res.data.user_dep_ids);
+        setUserIdsRequired(res.data.user_ids_required);
         setLoading(false);
       })
       .catch((err: any) => {

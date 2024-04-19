@@ -518,7 +518,6 @@ export const CourseUpdate: React.FC<PropInterface> = ({
   // 切换有、无章节
   const getChapterType = (e: any) => {
     const arr = [...chapters];
-    console.log('treeData', treeData);
     
     if (arr.length > 0 || treeData.length > 0) {
       confirm({
@@ -547,6 +546,15 @@ export const CourseUpdate: React.FC<PropInterface> = ({
           }
           Promise.all(promises).then(res=> {
             // console.log('接口都走完', res);
+            const chaptersPromises: Promise<any>[] = [];
+            if (chapters.length) {
+              chapters.forEach(item=> {
+                chaptersPromises.push(courseChapter.destroyCourseChapter(id, item.id as number))
+              })
+              Promise.all(chaptersPromises).then(res=> {
+                // console.log('chapters--接口都走完', res);
+              }).catch(err=> { console.log('-chaters--err', err); })
+            }
           }).catch(err=> { console.log('err', err); })
         },
         onCancel() {
