@@ -262,7 +262,7 @@ const MemberLearnPage = () => {
             preview={false}
             width={80}
             height={60}
-            style={{ borderRadius: 6 }}
+            style={{ borderRadius: 6, minWidth: 80 }}
           />
           <span className="ml-8">{record.title}</span>
         </div>

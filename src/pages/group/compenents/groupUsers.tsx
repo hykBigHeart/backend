@@ -100,6 +100,11 @@ export const GroupUsers: React.FC<PropInterface> = ({
     setLoading(true)
     group.groupUsers(groupId, page, size).then((res: any) => {
       // console.log('res',res);
+      if (!res.data.data.length && page > 1) {
+        resetLocalSearchParams({
+          page: page - 1,
+        });
+      }
       setList(res.data.data);
       setTotal(res.data.total);
       setUserDepIds(res.data.user_dep_ids);

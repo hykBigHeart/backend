@@ -54,7 +54,7 @@ export function storeCourse(
     attachments: attachments,
     effective_day: effectiveDay,
     purview,
-    calss_hour: coursewareNum
+    class_hour: coursewareNum
   });
 }
 

@@ -49,8 +49,8 @@ export const MemberLearnProgressDialog: React.FC<PropInterface> = ({
     }
     setLoading(true);
     member.learnCoursesProgress(uid, id, {}).then((res: any) => {
-      setList(res.data.hours);
-      setRecords(res.data.learn_records);
+      setList([...res.data.hours, ...res.data.attachments]);
+      setRecords(Object.assign(res.data.learn_records, res.data.attach_learn_records));
       setLoading(false);
     });
   };
@@ -65,12 +65,21 @@ export const MemberLearnProgressDialog: React.FC<PropInterface> = ({
         </>
       ),
     },
+    // {
+    //   title: "总时长",
+    //   dataIndex: "duration",
+    //   render: (duration: number) => (
+    //     <>
+    //       <DurationText duration={duration}></DurationText>
+    //     </>
+    //   ),
+    // },
     {
-      title: "总时长",
-      dataIndex: "duration",
-      render: (duration: number) => (
+      title: "最低学时",
+      dataIndex: "period",
+      render: (period: number) => (
         <>
-          <DurationText duration={duration}></DurationText>
+          {period}分钟
         </>
       ),
     },
