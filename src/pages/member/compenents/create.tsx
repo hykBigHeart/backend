@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Form, TreeSelect, Input, message, Spin } from "antd";
+import { Modal, Form, TreeSelect, Input, message, Spin, Radio } from "antd";
 import styles from "./create.module.less";
 import { useSelector } from "react-redux";
 import { user, department } from "../../../api/index";
@@ -47,6 +47,7 @@ export const MemberCreate: React.FC<PropInterface> = ({
       avatar: memberDefaultAvatar,
       idCard: "",
       dep_ids: depIds,
+      isActive: 1
     });
     setAvatar(memberDefaultAvatar);
   }, [form, open, depIds]);
@@ -56,6 +57,7 @@ export const MemberCreate: React.FC<PropInterface> = ({
       const departments = res.data.departments;
       if (JSON.stringify(departments) !== "{}") {
         const new_arr: Option[] = checkArr(departments, 0);
+        new_arr.shift()
         setDepartments(new_arr);
       }
       setInit(false);
@@ -98,7 +100,8 @@ export const MemberCreate: React.FC<PropInterface> = ({
         values.avatar,
         values.password,
         values.idCard,
-        values.dep_ids
+        values.dep_ids,
+        values.isActive
       )
       .then((res: any) => {
         setLoading(false);
@@ -213,6 +216,16 @@ export const MemberCreate: React.FC<PropInterface> = ({
                   treeDefaultExpandAll
                   placeholder="请选择学员所属部门"
                 />
+              </Form.Item>
+              <Form.Item
+                label="状态"
+                name="isActive"
+                rules={[{ required: true, message: "请选择学员所属部门!" }]}
+              >
+                <Radio.Group>
+                  <Radio value={1}>启用</Radio>
+                  <Radio value={0} style={{ marginLeft: 22 }}>禁用</Radio>
+                </Radio.Group>
               </Form.Item>
             </Form>
           </div>

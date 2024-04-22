@@ -31,7 +31,8 @@ export function storeUser(
   avatar: string,
   password: string,
   idCard: string,
-  depIds: number[]
+  depIds: number[],
+  isActive: number
 ) {
   return client.post("/backend/v1/user/create", {
     email,
@@ -40,6 +41,7 @@ export function storeUser(
     password,
     id_card: idCard,
     dep_ids: depIds,
+    is_active: isActive
   });
 }
 
@@ -54,7 +56,8 @@ export function updateUser(
   avatar: string,
   password: string,
   idCard: string,
-  depIds: number[]
+  depIds: number[],
+  isActive: number
 ) {
   return client.put(`/backend/v1/user/${id}`, {
     email,
@@ -63,6 +66,7 @@ export function updateUser(
     password,
     id_card: idCard,
     dep_ids: depIds,
+    is_active: isActive
   });
 }
 
