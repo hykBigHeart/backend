@@ -272,6 +272,9 @@ export const CourseCreate: React.FC<PropInterface> = ({
       // });
       // console.log('result', result);
     }
+
+    const allhours = chapters.map(item=> item.hours).flat().length ? chapters.map(item=> item.hours).flat() : []
+
     setLoading(true);
     course
       .storeCourse(
@@ -286,7 +289,8 @@ export const CourseCreate: React.FC<PropInterface> = ({
         hoursList,  // treeData,
         attachmentsList, // attachmentData,
         values.effective_day,
-        values.purview
+        values.purview,
+        attachmentsList.length + hoursList.length + allhours.length
       )
       .then((res: any) => {
         setLoading(false);

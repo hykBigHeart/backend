@@ -219,6 +219,9 @@ export const CourseUpdate: React.FC<PropInterface> = ({
     if (type === "elective") {
       dep_ids = values.dep_ids;
     }
+
+    const allCourseware = chapters.map(item=> item.hours).flat().length ? chapters.map(item=> item.hours).flat() : treeData
+
     setLoading(true);
     course
       .updateCourse(
@@ -234,7 +237,8 @@ export const CourseUpdate: React.FC<PropInterface> = ({
         [],
         values.published_at,
         values.effective_day,
-        values.purview
+        values.purview,
+        allCourseware.length
       )
       .then((res: any) => {
         setLoading(false);
@@ -594,17 +598,24 @@ export const CourseUpdate: React.FC<PropInterface> = ({
     }).catch(err=> { console.log('err', err); })
   }
 
+  // 关闭记录课件数量
+  const closeRecordCoursewareNum = () => {
+    const allCourseware = chapters.map(item=> item.hours).flat().length ? chapters.map(item=> item.hours).flat() : treeData
+    course.recordCoursewareNum(id, allCourseware.length)
+    onCancel()
+  }
+
   return (
     <>
       {open ? (
         <Drawer
           title="编辑课程"
-          onClose={onCancel}
+          onClose={closeRecordCoursewareNum}
           maskClosable={false}
           open={true}
           footer={
             <Space className="j-r-flex">
-              <Button onClick={() => onCancel()}>取 消</Button>
+              <Button onClick={closeRecordCoursewareNum}>取 消</Button>
               <Button
                 loading={loading}
                 onClick={() => form.submit()}

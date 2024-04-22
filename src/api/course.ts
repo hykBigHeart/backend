@@ -38,7 +38,8 @@ export function storeCourse(
   hours: any[],
   attachments: any[],
   effectiveDay: number,
-  purview: number
+  purview: number,
+  coursewareNum: number
 ) {
   return client.post("/backend/v1/course/create", {
     title: title,
@@ -52,7 +53,8 @@ export function storeCourse(
     hours: hours,
     attachments: attachments,
     effective_day: effectiveDay,
-    purview
+    purview,
+    calss_hour: coursewareNum
   });
 }
 
@@ -74,6 +76,7 @@ export function updateCourse(
   publishedAt: string,
   effectiveDay: number,
   purview: number,
+  coursewareNum: number
 ) {
   return client.put(`/backend/v1/course/${id}`, {
     title: title,
@@ -87,7 +90,8 @@ export function updateCourse(
     hours: hours,
     published_at: publishedAt,
     effective_day: effectiveDay,
-    purview
+    purview,
+    class_hour: coursewareNum
   });
 }
 
@@ -123,3 +127,9 @@ export function destroyCourseUser(courseId: number, ids: number[]) {
     ids: ids,
   });
 }
+
+// 记录课件数
+export function recordCoursewareNum(courseId: number, count: number) {
+  return client.put(`/backend/v1/course/${courseId}/${count}`, {});
+}
+
