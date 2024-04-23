@@ -150,12 +150,14 @@ export const UploadVideoSub = (props: PropsInterface) => {
                 type: row[i].type,
                 rid: row[i].id,
                 duration: videosExtra[row[i].id].duration,
+                period: row[i].period
               });
             } else {
               arrVideos.push({
                 name: row[i].name,
                 type: row[i].type,
                 rid: row[i].id,
+                period: row[i].period
               });
             }
           }

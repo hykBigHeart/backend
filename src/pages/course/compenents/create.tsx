@@ -73,6 +73,7 @@ export const CourseCreate: React.FC<PropInterface> = ({
     []
   );
   const [attachments, setAttachments] = useState<number[]>([]);
+  let usedForJudgmentArr: any = []
 
   useEffect(() => {
     setInit(true);
@@ -580,6 +581,12 @@ export const CourseCreate: React.FC<PropInterface> = ({
                 setVideoVisible(false);
               }}
               onSelected={(arr: any, videos: any) => {
+                if (videos.length) usedForJudgmentArr = videos
+                if (usedForJudgmentArr.some((item: any)=> !item.period)) {
+                  message.error("所选课件部分未设置最低学时，请设置后使用");
+                  return;
+                }
+
                 if (chapterType === 0) {
                   selectData(arr, videos);
                 } else {
