@@ -2,12 +2,16 @@ import { useState, useEffect, useRef } from "react";
 import styles from "./learn.module.less";
 import { Row, Image, Table, Button, Select, Tag } from "antd";
 import { useLocation, useNavigate } from "react-router-dom";
+import dayjs from "dayjs";
+import duration from "dayjs/plugin/duration"
 import { BackBartment, DurationText } from "../../compenents";
 import { dateFormat } from "../../utils/index";
 import { user as member } from "../../api/index";
 import * as echarts from "echarts";
 import type { ColumnsType } from "antd/es/table";
 import { MemberLearnProgressDialog } from "./compenents/progress";
+
+dayjs.extend(duration)
 
 interface DataType {
   id: React.Key;
@@ -188,6 +192,14 @@ const MemberLearnPage = () => {
       },
       yAxis: {
         type: "value",
+        axisLabel: {
+          formatter: (value: any)=> {
+            let val = Math.floor(value / 60) + '.' + value % 60 //  233.20, 200.0, 0.0
+            let val1 = String(val).replace(/\.0+$|(\.\d+?)0+$/, '$1') //  233.2, 200, 0
+            if (Number(val1) > 10) val1 = Number(val1).toFixed()  // 10位以上保留整数 四舍五入
+            return `${val1}分钟`
+          }
+        },
       },
       series: [
         {
