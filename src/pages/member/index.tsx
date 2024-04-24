@@ -13,7 +13,7 @@ import {
 } from "antd";
 import type { MenuProps } from "antd";
 import type { ColumnsType } from "antd/es/table";
-// import styles from "./index.module.less";
+import "./index.less";
 import {
   PlusOutlined,
   DownOutlined,
@@ -343,148 +343,158 @@ const MemberPage = () => {
 
   return (
     <>
-      <div className="tree-main-body">
-        <div className="left-box" style={{width: 600}}>
-          <TreeDepartment
-            selected={dep_ids}
-            showNum={true}
-            userCount={pureTotal}
-            depUserCount={depUserCount}
-            text={"部门"}
-            onUpdate={(keys: any, title: any) => {
-              resetLocalSearchParams({
-                page: 1,
-              });
-              setDepIds(keys);
-              var index = title.indexOf("(");
-              if (index !== -1) {
-                var resolve = title.substring(0, index);
-                setLabel(resolve);
-              } else {
-                setLabel(title);
-              }
-            }}
-          />
-        </div>
-        <div className="right-box">
-          <div className="playedu-main-title float-left mb-24">
-            学员 | {selLabel}
-          </div>
-          <div className="float-left j-b-flex mb-24">
-            <div className="d-flex">
-              {!ldapEnabled && (
-                <PerButton
-                  type="primary"
-                  text="添加学员"
-                  class="mr-16"
-                  icon={<PlusOutlined />}
-                  p="user-store"
-                  onClick={() => setCreateVisible(true)}
-                  disabled={null}
-                />
-              )}
-              {!ldapEnabled && dep_ids.length === 0 && (
-                <Link style={{ textDecoration: "none" }} to={`/member/import`}>
-                  <PerButton
-                    type="default"
-                    text="批量导入学员"
-                    class="mr-16"
-                    icon={null}
-                    p="user-store"
-                    disabled={null}
-                  />
-                </Link>
-              )}
-              {dep_ids.length > 0 && (
-                <Link
-                  style={{ textDecoration: "none" }}
-                  to={`/member/departmentUser?id=${dep_ids.join(
-                    ","
-                  )}&title=${selLabel}`}
-                >
-                  <PerButton
-                    type="default"
-                    text="部门学员进度"
-                    class="mr-16"
-                    p="department-user-learn"
-                    disabled={null}
-                  />
-                </Link>
-              )}
-            </div>
-            <div className="d-flex">
-              <div className="d-flex mr-24">
-                <Typography.Text>姓名：</Typography.Text>
-                <Input
-                  value={nickname || ""}
-                  onChange={(e) => {
-                    resetLocalSearchParams({
-                      nickname: e.target.value,
-                    });
-                  }}
-                  style={{ width: 160 }}
-                  placeholder="请输入姓名关键字"
-                  allowClear
-                />
-              </div>
-              <div className="d-flex mr-24">
-                <Typography.Text>邮箱：</Typography.Text>
-                <Input
-                  value={email || ""}
-                  onChange={(e) => {
-                    resetLocalSearchParams({
-                      email: e.target.value,
-                    });
-                  }}
-                  style={{ width: 160 }}
-                  placeholder="请输入邮箱账号"
-                  allowClear
-                />
-              </div>
-              <div className="d-flex">
-                <Button className="mr-16" onClick={resetData}>
-                  重 置
-                </Button>
-                <Button
-                  type="primary"
-                  onClick={() => {
+      <div className="resize-box">
+          <div className="resize-box-left fl">
+              <div className="resize-bar horizontal limit-horizontal"></div>
+              <div className="dividing-line-horizontal"></div>
+              <div className="resize-real-box">
+                {/*  */}
+                <TreeDepartment
+                  selected={dep_ids}
+                  showNum={true}
+                  userCount={pureTotal}
+                  depUserCount={depUserCount}
+                  text={"部门"}
+                  onUpdate={(keys: any, title: any) => {
                     resetLocalSearchParams({
                       page: 1,
                     });
+                    setDepIds(keys);
+                    var index = title.indexOf("(");
+                    if (index !== -1) {
+                      var resolve = title.substring(0, index);
+                      setLabel(resolve);
+                    } else {
+                      setLabel(title);
+                    }
+                  }}
+                />
+                {/*  */}
+              </div>
+          </div>
+          <div className="resize-box-right">
+            <div className="textarea-box">
+              {/*  */}
+              <div className="playedu-main-title float-left mb-24">
+                学员 | {selLabel}
+              </div>
+              <div className="float-left j-b-flex mb-24">
+                <div className="d-flex">
+                  {!ldapEnabled && (
+                    <PerButton
+                      type="primary"
+                      text="添加学员"
+                      class="mr-16"
+                      icon={<PlusOutlined />}
+                      p="user-store"
+                      onClick={() => setCreateVisible(true)}
+                      disabled={null}
+                    />
+                  )}
+                  {!ldapEnabled && dep_ids.length === 0 && (
+                    <Link style={{ textDecoration: "none" }} to={`/member/import`}>
+                      <PerButton
+                        type="default"
+                        text="批量导入学员"
+                        class="mr-16"
+                        icon={null}
+                        p="user-store"
+                        disabled={null}
+                      />
+                    </Link>
+                  )}
+                  {dep_ids.length > 0 && (
+                    <Link
+                      style={{ textDecoration: "none" }}
+                      to={`/member/departmentUser?id=${dep_ids.join(
+                        ","
+                      )}&title=${selLabel}`}
+                    >
+                      {/* <PerButton
+                        type="default"
+                        text="部门学员进度"
+                        class="mr-16"
+                        p="department-user-learn"
+                        disabled={null}
+                      /> */}
+                    </Link>
+                  )}
+                </div>
+                <div className="d-flex">
+                  <div className="d-flex mr-24">
+                    <Typography.Text>姓名：</Typography.Text>
+                    <Input
+                      value={nickname || ""}
+                      onChange={(e) => {
+                        resetLocalSearchParams({
+                          nickname: e.target.value,
+                        });
+                      }}
+                      style={{ width: 160 }}
+                      placeholder="请输入姓名关键字"
+                      allowClear
+                    />
+                  </div>
+                  <div className="d-flex mr-24">
+                    <Typography.Text>邮箱：</Typography.Text>
+                    <Input
+                      value={email || ""}
+                      onChange={(e) => {
+                        resetLocalSearchParams({
+                          email: e.target.value,
+                        });
+                      }}
+                      style={{ width: 160 }}
+                      placeholder="请输入邮箱账号"
+                      allowClear
+                    />
+                  </div>
+                  <div className="d-flex">
+                    <Button className="mr-16" onClick={resetData}>
+                      重 置
+                    </Button>
+                    <Button
+                      type="primary"
+                      onClick={() => {
+                        resetLocalSearchParams({
+                          page: 1,
+                        });
+                        setRefresh(!refresh);
+                      }}
+                    >
+                      查 询
+                    </Button>
+                  </div>
+                </div>
+              </div>
+              <div className="float-left" style={{paddingBottom: 35}}>
+                <Table
+                  columns={columns}
+                  dataSource={list}
+                  loading={loading}
+                  pagination={paginationProps}
+                  rowKey={(record) => record.id}
+                />
+                <MemberCreate
+                  open={createVisible}
+                  depIds={dep_ids}
+                  onCancel={() => {
+                    setCreateVisible(false);
                     setRefresh(!refresh);
                   }}
-                >
-                  查 询
-                </Button>
+                />
+                <MemberUpdate
+                  id={mid}
+                  open={updateVisible}
+                  onCancel={() => {
+                    setUpdateVisible(false);
+                    setRefresh(!refresh);
+                  }}
+                />
               </div>
+              {/*  */}
             </div>
           </div>
-          <div className="float-left">
-            <Table
-              columns={columns}
-              dataSource={list}
-              loading={loading}
-              pagination={paginationProps}
-              rowKey={(record) => record.id}
-            />
-            <MemberCreate
-              open={createVisible}
-              depIds={dep_ids}
-              onCancel={() => {
-                setCreateVisible(false);
-                setRefresh(!refresh);
-              }}
-            />
-            <MemberUpdate
-              id={mid}
-              open={updateVisible}
-              onCancel={() => {
-                setUpdateVisible(false);
-                setRefresh(!refresh);
-              }}
-            />
-          </div>
-        </div>
       </div>
     </>
   );
