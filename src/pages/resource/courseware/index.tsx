@@ -69,10 +69,10 @@ const ResourceCoursewarePage = () => {
 
   const [updateVisible, setUpdateVisible] = useState(false);
   const types = [
-    { label: "全部", value: "WORD,EXCEL,PPT,PDF,VIDEO" },
-    { label: "WORD", value: "WORD" },
-    { label: "EXCEL", value: "EXCEL" },
-    { label: "PPT", value: "PPT" },
+    { label: "全部", value: "PDF,VIDEO" },
+    // { label: "WORD", value: "WORD" },
+    // { label: "EXCEL", value: "EXCEL" },
+    // { label: "PPT", value: "PPT" },
     { label: "PDF", value: "PDF" },
     // { label: "TXT", value: "TXT" },
     // { label: "RAR", value: "RAR" },
@@ -236,7 +236,7 @@ const ResourceCoursewarePage = () => {
     setList([]);
     setTitle("");
     setSelectedRowKeys([]);
-    setType("WORD,EXCEL,PPT,PDF,VIDEO");
+    setType("PDF,VIDEO");
     setRefresh(!refresh);
   };
 

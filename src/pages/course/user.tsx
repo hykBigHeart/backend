@@ -127,7 +127,7 @@ const CourseUserPage = () => {
       title: "修课",
       // width: 120,
       dataIndex: "id",
-      render: (id: number) => <Tag color={userIdsRequired[id] ? 'success' : 'error'}>{userIdsRequired[id] ? '必修' : '选修'}</Tag>,
+      render: (id: number) => <Tag color={userIdsRequired[id] ? 'error' : 'success'}>{userIdsRequired[id] ? '必修' : '选修'}</Tag>,
     },
     {
       title: "邮箱",
@@ -199,20 +199,22 @@ const CourseUserPage = () => {
           {records[record.id] ? (
             <span
               className={
-                Math.floor(
-                  (records[record.id].finished_count /
-                    records[record.id].hour_count) *
-                    100
-                ) >= 100
+                // Math.floor(
+                //   (records[record.id].finished_count /
+                //     records[record.id].hour_count) *
+                //     100
+                // )
+                Math.floor(records[record.id].progress / 100) >= 100
                   ? "c-green"
                   : "c-red"
               }
             >
-              {Math.floor(
+              {/* {Math.floor(
                 (records[record.id].finished_count /
                   records[record.id].hour_count) *
                   100
-              )}
+              )} */}
+              {Math.floor(records[record.id].progress / 100)}
               %
             </span>
           ) : hourCount[record.id] ? (

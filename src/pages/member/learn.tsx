@@ -332,20 +332,22 @@ const MemberLearnPage = () => {
           {records[record.id] ? (
             <span
               className={
-                Math.floor(
-                  (records[record.id].finished_count /
-                    records[record.id].hour_count) *
-                    100
-                ) >= 100
+                // Math.floor(
+                //   (records[record.id].finished_count /
+                //     records[record.id].hour_count) *
+                //     100
+                // )
+                Math.floor(records[record.id].progress / 100) >= 100
                   ? "c-green"
                   : "c-red"
               }
             >
-              {Math.floor(
+              {/* {Math.floor(
                 (records[record.id].finished_count /
                   records[record.id].hour_count) *
                   100
-              )}
+              )} */}
+              {Math.floor(records[record.id].progress / 100)}
               %
             </span>
           ) : hourCount[record.id] && hourCount[record.id] > 0 ? (

@@ -24,6 +24,9 @@ const HomePage = () => {
               <Outlet />{" "}
             </Suspense>
           </div>
+          <span className="ml-5" style={{ color: "#D7D7D7", fontSize: 12, textAlign: 'center', marginBottom: 20 }}>
+            Copyright © {new Date().getFullYear()} 北京海金格医药科技股份有限公司 All Rights Reserved
+          </span>
         </div>
       </div>
     </>

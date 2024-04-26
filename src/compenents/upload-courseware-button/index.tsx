@@ -90,37 +90,37 @@ export const UploadCoursewareButton = (props: PropsInterface) => {
       extension = extension[extension.length - 1];
       if (
         // extension === "rar" ||
-        file.type ===
-          "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
-        file.type === "application/msword" ||
-        file.type === "application/vnd.ms-word.document.macroEnabled.12" ||
-        file.type === "application/vnd.ms-word.template.macroEnabled.12" ||
+        // file.type ===
+        //   "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
+        // file.type === "application/msword" ||
+        // file.type === "application/vnd.ms-word.document.macroEnabled.12" ||
+        // file.type === "application/vnd.ms-word.template.macroEnabled.12" ||
         // file.type === "text/plain" ||
-        file.type === "application/pdf" ||
+        file.type === "application/pdf"
         // file.type === "application/x-zip-compressed" ||
-        file.type === "application/octet-stream" ||
+        // file.type === "application/octet-stream" ||
         // file.type === "application/zip" ||
         // file.type === "application/x-rar" ||
-        file.type ===
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
-        file.type === "application/vnd.ms-excel" ||
-        file.type ===
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.template" ||
-        file.type === "application/vnd.ms-excel.sheet.macroEnabled.12" ||
-        file.type === "application/vnd.ms-excel.template.macroEnabled.12" ||
-        file.type === "application/vnd.ms-excel.addin.macroEnabled.12" ||
-        file.type === "application/vnd.ms-excel.sheet.binary.macroEnabled.12" ||
-        file.type === "application/vnd.ms-powerpoint" ||
-        file.type ===
-          "application/vnd.openxmlformats-officedocument.presentationml.presentation" ||
-        file.type ===
-          "application/vnd.openxmlformats-officedocument.presentationml.template" ||
-        file.type ===
-          "application/vnd.openxmlformats-officedocument.presentationml.slideshow" ||
-        file.type === "application/vnd.ms-powerpoint.addin.macroEnabled.12" ||
-        file.type ===
-          "application/vnd.ms-powerpoint.presentation.macroEnabled.12" ||
-        file.type === "application/vnd.ms-powerpoint.slideshow.macroEnabled.12"
+        // file.type ===
+        //   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ||
+        // file.type === "application/vnd.ms-excel" ||
+        // file.type ===
+        //   "application/vnd.openxmlformats-officedocument.spreadsheetml.template" ||
+        // file.type === "application/vnd.ms-excel.sheet.macroEnabled.12" ||
+        // file.type === "application/vnd.ms-excel.template.macroEnabled.12" ||
+        // file.type === "application/vnd.ms-excel.addin.macroEnabled.12" ||
+        // file.type === "application/vnd.ms-excel.sheet.binary.macroEnabled.12" ||
+        // file.type === "application/vnd.ms-powerpoint" ||
+        // file.type ===
+        //   "application/vnd.openxmlformats-officedocument.presentationml.presentation" ||
+        // file.type ===
+        //   "application/vnd.openxmlformats-officedocument.presentationml.template" ||
+        // file.type ===
+        //   "application/vnd.openxmlformats-officedocument.presentationml.slideshow" ||
+        // file.type === "application/vnd.ms-powerpoint.addin.macroEnabled.12" ||
+        // file.type ===
+        //   "application/vnd.ms-powerpoint.presentation.macroEnabled.12" ||
+        // file.type === "application/vnd.ms-powerpoint.slideshow.macroEnabled.12"
       ) {
         // 添加到本地待上传
         let data = await getMinioUploadId(extension);
@@ -305,9 +305,9 @@ export const UploadCoursewareButton = (props: PropsInterface) => {
                 </p>
                 <p className="ant-upload-text">请将文件拖拽到此处上传</p>
                 <p className="ant-upload-hint">
-                  支持一次上传多个 /
-                  {/* zip、rar、txt */}
-                  支持word、excel、ppt、pdf格式文件，以及支持2G以内的mp4文件
+                  支持一次上传多个
+                  {/* / zip、rar、txt、word、excel、ppt支持 */}
+                  pdf格式文件，以及支持2G以内的mp4文件
                 </p>
               </Dragger>
             </Col>

@@ -439,13 +439,31 @@ const CoursePage = () => {
     <>
       <div className="tree-main-body">
         <div className="left-box">
-          <Tabs
+          {/* <Tabs
             defaultActiveKey={tabKey}
             // centered
             tabBarGutter={55}
             items={items}
             onChange={onChange}
+          /> */}
+          <div className="float-left">
+          <TreeCategory
+            selected={category_ids}
+            type=""
+            text={"分类"}
+            onUpdate={(keys: any, title: any) => {
+              resetLocalSearchParams({
+                page: 1,
+              });
+              setCategoryIds(keys);
+              if (typeof title === "string") {
+                setLabel(title);
+              } else {
+                setLabel(title.props.children[0]);
+              }
+            }}
           />
+        </div>
         </div>
         <div className="right-box">
           <div className="playedu-main-title float-left mb-24">
