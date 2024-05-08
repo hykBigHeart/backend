@@ -159,7 +159,7 @@ const CoursePage = () => {
   const columns: ColumnsType<DataType> = [
     {
       title: "课程名称",
-      width: 550,
+      // width: 550,
       render: (_, record: any) => (
         <div className="d-flex">
           <Image
@@ -181,6 +181,7 @@ const CoursePage = () => {
     },
     {
       title: "课程分类",
+      width: 200,
       dataIndex: "id",
       render: (id: number) => (
         <div className="float-left">
@@ -224,6 +225,7 @@ const CoursePage = () => {
     // },
     {
       title: "上架时间",
+      width: 200,
       dataIndex: "published_at",
       render: (text: string) => <span>{dateFormat(text)}</span>,
     },

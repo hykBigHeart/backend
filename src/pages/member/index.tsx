@@ -118,6 +118,7 @@ const MemberPage = () => {
     },
     {
       title: "所属部门",
+      width: 310,
       dataIndex: "id",
       render: (id: number) => (
         <div className="float-left">

@@ -53,7 +53,7 @@ const ResourceCoursewarePage = () => {
   const [loading, setLoading] = useState(true);
   const [category_ids, setCategoryIds] = useState<number[]>([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
-  const [type, setType] = useState("WORD,EXCEL,PPT,PDF,VIDEO");
+  const [type, setType] = useState("PDF,VIDEO");
   const [title, setTitle] = useState("");
   const [multiConfig, setMultiConfig] = useState(false);
   const [selLabel, setLabel] = useState<string>(
@@ -114,6 +114,7 @@ const ResourceCoursewarePage = () => {
   const columns: ColumnsType<DataType> = [
     {
       title: "课件名称",
+      width: 300,
       render: (_, record: any) => (
         <div className="d-flex">
           <i
@@ -131,27 +132,32 @@ const ResourceCoursewarePage = () => {
     },
     {
       title: "课件格式",
+      width: 180,
       dataIndex: "type",
       render: (type: string) => <span>{type}</span>,
     },
     {
       title: "课件大小",
+      width: 180,
       dataIndex: "size",
       render: (size: number) => <span>{(size / 1024 / 1024).toFixed(2)}M</span>,
     },
     {
       title: "创建人",
+      width: 180,
       dataIndex: "admin_id",
       render: (text: number) =>
         JSON.stringify(adminUsers) !== "{}" && <span>{adminUsers[text]}</span>,
     },
     {
       title: "创建时间",
+      width: 280,
       dataIndex: "created_at",
       render: (text: string) => <span>{dateFormat(text)}</span>,
     },
     {
       title: "最低学时（分钟）",
+      width: 340,
       dataIndex: "period",
       render: (text: string) => <span>{text}</span>,
     },
