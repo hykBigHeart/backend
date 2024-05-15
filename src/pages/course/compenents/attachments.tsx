@@ -31,8 +31,9 @@ export const TreeAttachments = (props: PropInterface) => {
         title: (
           <div className="d-flex">
             <div className="d-flex">
+              {/* icon-icon-file */}
               <i
-                className="iconfont icon-icon-file"
+                className="iconfont icon-file-pdf"
                 style={{
                   fontSize: 16,
                   color: "rgba(0,0,0,0.3)",

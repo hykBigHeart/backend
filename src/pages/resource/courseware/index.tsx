@@ -9,6 +9,7 @@ import {
   Select,
   Button,
 } from "antd";
+import styles from './index.module.less';
 import { resource } from "../../../api";
 import { useLocation } from "react-router-dom";
 import { ExclamationCircleFilled } from "@ant-design/icons";
@@ -117,15 +118,17 @@ const ResourceCoursewarePage = () => {
       width: 300,
       render: (_, record: any) => (
         <div className="d-flex">
+          {/* icon-icon-file */}
           <i
-            className={record.type == 'VIDEO' ? 'iconfont icon-icon-video' : 'iconfont icon-icon-file'}
+            className={record.type == 'VIDEO' ? 'iconfont icon-icon-video' : 'iconfont icon-file-pdf'}
             style={{
               fontSize: 16,
               color: "rgba(0,0,0,0.3)",
             }}
           />
-          <span className="ml-8">
-            {record.name}.{record.extension}
+          <span className={`${styles['overflow-ellipsis']} ml-8`} title={record.name}>
+            {/* {record.name}.{record.extension} */}
+            {record.name}
           </span>
         </div>
       ),

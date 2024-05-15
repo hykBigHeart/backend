@@ -155,7 +155,7 @@ const CourseUserPage = () => {
       dataIndex: "progress",
       render: (_, record: any) => (
         <span>
-          已完成课时：
+          已完成课件：
           {(records[record.id] && records[record.id].finished_count) ||
             0} /{" "}
           {(records[record.id] && records[record.id].hour_count) ||

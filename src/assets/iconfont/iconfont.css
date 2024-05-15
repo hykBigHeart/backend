@@ -5,6 +5,13 @@
        url('iconfont.ttf?t=1690600882833') format('truetype');
 }
 
+@font-face {
+  font-family: "iconfont"; /* Project id 4452258 */
+  src: url('iconfont_hyk.woff2?t=1715421737116') format('woff2'),
+       url('iconfont_hyk.woff?t=1715421737116') format('woff'),
+       url('iconfont_hyk.ttf?t=1715421737116') format('truetype');
+}
+
 .iconfont {
   font-family: "iconfont" !important;
   font-size: 16px;
@@ -141,3 +148,23 @@
   content: "\e73e";
 }
 
+/*  */
+.icon-file-pdf:before {
+  content: "\e733";
+}
+
+.icon-ContainingthePDFZIP:before {
+  content: "\e614";
+}
+
+.icon-video-fill:before {
+  content: "\e60a";
+}
+
+.icon-bg-pdf:before {
+  content: "\e639";
+}
+
+.icon-wodedaiban:before {
+  content: "\e664";
+}

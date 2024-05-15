@@ -116,8 +116,9 @@ export const UploadCoursewareSub = (props: PropsInterface) => {
       title: "课件",
       render: (_, record: any) => (
         <div className="d-flex">
+          {/* icon-icon-file */}
           <i
-            className="iconfont icon-icon-file"
+            className="iconfont icon-file-pdf"
             style={{
               fontSize: 14,
               color: "rgba(0,0,0,0.3)",

@@ -276,7 +276,7 @@ const MemberLearnPage = () => {
             height={60}
             style={{ borderRadius: 6, minWidth: 80 }}
           />
-          <span className="ml-8">{record.title}</span>
+          <span className={`${styles['overflow-ellipsis']} ml-8`} title={record.title}>{record.title}</span>
         </div>
       ),
     },
@@ -292,7 +292,7 @@ const MemberLearnPage = () => {
       render: (_, record: any) => (
         <>
           <span>
-            已完成课时：
+            已完成课件：
             {(records[record.id] && records[record.id].finished_count) ||
               0} / {record.class_hour}
           </span>

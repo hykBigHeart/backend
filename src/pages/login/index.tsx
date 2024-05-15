@@ -90,8 +90,10 @@ const LoginPage = () => {
           <img className={styles["icon"]} src={icon} alt="" />
         </div>
         <div className={styles["right-box"]}>
-          <div className={styles["title"]}>后台登录</div>
-          <div className="login-box d-flex mt-50">
+          {/* <div className={styles["title"]}>后台登录</div> */}
+          <div className={styles["title1"]}>海金格培训系统</div>
+          <div className={styles["left-blue"]}>后台登录</div>
+          <div className="login-box d-flex mt-30">
             <Input
               value={email}
               onChange={(e) => {
@@ -103,7 +105,7 @@ const LoginPage = () => {
               onKeyUp={(e) => keyUp(e)}
             />
           </div>
-          <div className="login-box d-flex mt-50">
+          <div className="login-box d-flex mt-30">
             <Input.Password
               value={password}
               onChange={(e) => {

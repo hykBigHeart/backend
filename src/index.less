@@ -127,6 +127,10 @@ code {
   margin-bottom: 28px;
 }
 
+.mt-30 {
+  margin-top: 30px;
+}
+
 .mt-50 {
   margin-top: 50px;
 }
@@ -605,7 +609,10 @@ textarea.ant-input {
 
 .list-select-column-box {
   width: 100%;
-  height: auto;
+  // height: auto;
+  max-height: 470px;
+  overflow-y: scroll;
+  overflow-x: hidden;
   float: left;
   .ant-table-cell {
     padding: 0px 0px;
@@ -702,4 +709,8 @@ textarea.ant-input {
     color: rgba(0, 0, 0, 0.45);
     line-height: 32px;
   }
+}
+
+.ant-table-body {
+  overflow-y: auto !important;
 }

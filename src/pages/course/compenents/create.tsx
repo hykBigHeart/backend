@@ -814,7 +814,7 @@ export const CourseCreate: React.FC<PropInterface> = ({
                   <div className={styles["hous-box"]}>
                     {treeData.length === 0 && (
                       <span className={styles["no-hours"]}>
-                        请点击上方按钮添加课时
+                        请点击上方按钮添加课件
                       </span>
                     )}
                     {treeData.length > 0 && (

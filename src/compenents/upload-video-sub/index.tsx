@@ -109,8 +109,9 @@ export const UploadVideoSub = (props: PropsInterface) => {
       title: "课件",
       render: (_, record: any) => (
         <div className="d-flex">
+          {/* icon-icon-file */}
           <i
-            className={record.type == "VIDEO" ? "iconfont icon-icon-video" : "iconfont icon-icon-file"}
+            className={record.type == "VIDEO" ? "iconfont icon-icon-video" : "iconfont icon-file-pdf"}
             style={{
               fontSize: 14,
               color: "rgba(0,0,0,0.3)",

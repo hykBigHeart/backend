@@ -220,7 +220,7 @@ export const GroupUsers: React.FC<PropInterface> = ({
   return (
     <>
       {open ? (
-        <Drawer className="custom-drawer" onClose={onCancel} maskClosable={false} open={true} width={'50%'}
+        <Drawer className="custom-drawer" onClose={onCancel} maskClosable={false} open={true} width={'47%'}
           extra={
             <div className="top-box">
               <p>您正在查看群组<span className="group-name">【{groupName}】</span>的学员……</p>

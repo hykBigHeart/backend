@@ -391,7 +391,7 @@ export const SelectUsers = (props: PropsInterface) => {
           <Row>
             {props.triggerSource !== 'course-group' && (
               <>
-                <Col span={7} style={{maxHeight: 700, overflowY: 'scroll'}}>
+                <Col span={7} style={{maxHeight: 580, overflowY: 'scroll'}}>
                   {treeData.length > 0 && (
                     <Tree defaultExpandedKeys={[16]} selectedKeys={selectKey} onSelect={onSelect} treeData={treeData} switcherIcon={<i className="iconfont icon-icon-fold c-gray" />}/>
                   )}
@@ -427,7 +427,7 @@ export const SelectUsers = (props: PropsInterface) => {
                   <Button type="primary" onClick={() => { resetLocalSearchParams({ page: 1, }); setRefresh(!refresh); }} >查 询</Button>
                 </div>
               </div>
-              <Table rowSelection={{type: "checkbox", ...rowSelection}} loading={loading} columns={ props.triggerSource === 'course-group' ? groupColumns : props.triggerSource === 'course-department' ? columns1 : columns } dataSource={list} rowKey={(record) => record.id} pagination={paginationProps} scroll={{y: 539}}/>
+              <Table rowSelection={{type: "checkbox", ...rowSelection}} loading={loading} columns={ props.triggerSource === 'course-group' ? groupColumns : props.triggerSource === 'course-department' ? columns1 : columns } dataSource={list} rowKey={(record) => record.id} pagination={paginationProps} scroll={{y: 425}}/>
             </Col>
           </Row>
         </Modal>

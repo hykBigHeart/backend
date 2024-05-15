@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import styles from "./progrss.module.less";
+import styles from "./progress.module.less";
 import { Table, Modal, message } from "antd";
 import { PerButton, DurationText } from "../../../compenents";
 import { user as member } from "../../../api/index";
@@ -57,11 +57,12 @@ export const MemberLearnProgressDialog: React.FC<PropInterface> = ({
 
   const column: ColumnsType<DataType> = [
     {
-      title: "课时标题",
+      title: "课件标题",
       dataIndex: "title",
+      width: 350,
       render: (title: string) => (
         <>
-          <span>{title}</span>
+          <span className={`${styles['overflow-ellipsis']}`} title={title}>{title}</span>
         </>
       ),
     },
@@ -214,7 +215,7 @@ export const MemberLearnProgressDialog: React.FC<PropInterface> = ({
     <>
       {open ? (
         <Modal
-          title="课时学习进度"
+          title="课件学习记录"
           centered
           forceRender
           open={true}
