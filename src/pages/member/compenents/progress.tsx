@@ -59,7 +59,7 @@ export const MemberLearnProgressDialog: React.FC<PropInterface> = ({
     {
       title: "课件标题",
       dataIndex: "title",
-      width: 350,
+      width: 320,
       render: (title: string) => (
         <>
           <span className={`${styles['overflow-ellipsis']}`} title={title}>{title}</span>

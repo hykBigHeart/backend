@@ -102,7 +102,7 @@ const MemberPage = () => {
     {
       title: "学员",
       dataIndex: "name",
-      width: 300,
+      // width: 300,
       render: (_, record: any) => (
         <>
           <Image
@@ -118,7 +118,7 @@ const MemberPage = () => {
     },
     {
       title: "所属部门",
-      width: 310,
+      // width: 310,
       dataIndex: "id",
       render: (id: number) => (
         <div className="float-left">
@@ -137,13 +137,13 @@ const MemberPage = () => {
     },
     {
       title: "状态",
-      width: 200,
+      // width: 200,
       dataIndex: "is_active",
       render: (is_active: number) => <Tag color={is_active ? 'success' : 'error'}>{is_active ? '启用' : '禁用'}</Tag>,
     },
     {
       title: "登录邮箱",
-      width: 200,
+      // width: 300,
       dataIndex: "email",
       render: (email: string) => <span>{email}</span>,
     },
@@ -157,7 +157,7 @@ const MemberPage = () => {
       title: "操作",
       key: "action",
       fixed: "right",
-      width: 160,
+      // width: 160,
       render: (_, record: any) => {
         const items: MenuProps["items"] = [
           {

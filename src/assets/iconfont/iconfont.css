@@ -148,23 +148,47 @@
   content: "\e73e";
 }
 
-/*  */
+/* 使用彩色图标 */
+.icon-video:before {
+  content: "\e716";
+}
+
+.icon-video1:before {
+  content: "\e64c";
+}
+
+.icon-VIDEO:before {
+  content: "\e606";
+}
+
+.icon-wenjianleixing-biaozhuntu-PDFwendang:before {
+  content: "\e6a6";
+}
+
+.icon-pdf-1:before {
+  content: "\e602";
+}
+
 .icon-file-pdf:before {
   content: "\e733";
 }
 
-.icon-ContainingthePDFZIP:before {
-  content: "\e614";
-}
-
-.icon-video-fill:before {
-  content: "\e60a";
-}
-
-.icon-bg-pdf:before {
-  content: "\e639";
-}
-
 .icon-wodedaiban:before {
   content: "\e664";
+}
+
+.icon-bofang:before {
+  content: "\e682";
+}
+
+.icon-bofang1:before {
+  content: "\e681";
+}
+
+.icon-daiban:before {
+  content: "\e61d";
+}
+
+.icon-daiban1:before {
+  content: "\e772";
 }

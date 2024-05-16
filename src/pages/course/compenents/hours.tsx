@@ -33,13 +33,16 @@ export const TreeHours = (props: PropInterface) => {
           <div className="d-flex">
             <div className="d-flex" style={{width: '390px'}}>
               {/* icon-icon-file */}
-              <i
+              {/* <i
                 className={hours[i].type == 'VIDEO' ? 'iconfont icon-icon-video' : 'iconfont icon-file-pdf'}
                 style={{
                   fontSize: 16,
                   color: "rgba(0,0,0,0.3)",
                 }}
-              />
+              /> */}
+              <svg className="icon" aria-hidden="true">
+                <use xlinkHref={`#${hours[i].type == 'VIDEO' ? 'icon-VIDEO' : 'icon-wenjianleixing-biaozhuntu-PDFwendang'}`}></use>
+              </svg>
               {/* style={{width: '50%'}} */}
               <div className="tree-video-title mr-20" >{hours[i].name}</div>
               {/* <div className="tree-video-input">

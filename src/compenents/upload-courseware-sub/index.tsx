@@ -117,13 +117,16 @@ export const UploadCoursewareSub = (props: PropsInterface) => {
       render: (_, record: any) => (
         <div className="d-flex">
           {/* icon-icon-file */}
-          <i
+          {/* <i
             className="iconfont icon-file-pdf"
             style={{
               fontSize: 14,
               color: "rgba(0,0,0,0.3)",
             }}
-          />
+          /> */}
+          <svg className="icon" aria-hidden="true">
+            <use xlinkHref="#icon-wenjianleixing-biaozhuntu-PDFwendang"></use>
+          </svg>
           <div className="video-title ml-8">{record.name}</div>
         </div>
       ),

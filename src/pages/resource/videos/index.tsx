@@ -89,13 +89,16 @@ const ResourceVideosPage = () => {
       dataIndex: "name",
       render: (text: string) => (
         <div className="d-flex">
-          <i
+          {/* <i
             className="iconfont icon-icon-video"
             style={{
               fontSize: 16,
               color: "rgba(0,0,0,0.3)",
             }}
-          />
+          /> */}
+          <svg className="icon" aria-hidden="true">
+            <use xlinkHref="#icon-VIDEO"></use>
+          </svg>
           <span className="ml-8">{text}</span>
         </div>
       ),

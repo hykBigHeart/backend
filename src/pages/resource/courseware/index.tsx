@@ -119,13 +119,16 @@ const ResourceCoursewarePage = () => {
       render: (_, record: any) => (
         <div className="d-flex">
           {/* icon-icon-file */}
-          <i
+          {/* <i
             className={record.type == 'VIDEO' ? 'iconfont icon-icon-video' : 'iconfont icon-file-pdf'}
             style={{
               fontSize: 16,
               color: "rgba(0,0,0,0.3)",
             }}
-          />
+          /> */}
+          <svg className="icon" aria-hidden="true">
+            <use xlinkHref={`#${record.type == 'VIDEO' ? 'icon-VIDEO' : 'icon-wenjianleixing-biaozhuntu-PDFwendang'}`}></use>
+          </svg>
           <span className={`${styles['overflow-ellipsis']} ml-8`} title={record.name}>
             {/* {record.name}.{record.extension} */}
             {record.name}

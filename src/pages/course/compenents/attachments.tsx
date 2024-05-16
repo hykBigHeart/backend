@@ -32,13 +32,16 @@ export const TreeAttachments = (props: PropInterface) => {
           <div className="d-flex">
             <div className="d-flex">
               {/* icon-icon-file */}
-              <i
+              {/* <i
                 className="iconfont icon-file-pdf"
                 style={{
                   fontSize: 16,
                   color: "rgba(0,0,0,0.3)",
                 }}
-              />
+              /> */}
+              <svg className="icon" aria-hidden="true">
+                <use xlinkHref="#icon-wenjianleixing-biaozhuntu-PDFwendang"></use>
+              </svg>
               <div className="tree-video-title mr-24">{hours[i].name}</div>
             </div>
             <Tooltip placement="top" title="可拖拽排序">
