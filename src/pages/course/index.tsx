@@ -175,16 +175,16 @@ const CoursePage = () => {
     },
     {
       title: "课程权限",
-      width: 200,
+      width: '12%',
       dataIndex: "purview",
       render: (purview: number) => <Tag color={purview ? 'success' : 'error'}>{purview ? '公开' : '非公开'}</Tag>,
     },
     {
       title: "课程分类",
-      width: 200,
+      width: '15%',
       dataIndex: "id",
       render: (id: number) => (
-        <div className="float-left">
+        <div className="float-left" style={{width: '80%'}}>
           {course_category_ids[id].map((item: any, index: number) => {
             return (
               <span key={index}>
@@ -225,7 +225,7 @@ const CoursePage = () => {
     // },
     {
       title: "上架时间",
-      width: 200,
+      width: '15%',
       dataIndex: "published_at",
       render: (text: string) => <span>{dateFormat(text)}</span>,
     },

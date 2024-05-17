@@ -115,7 +115,7 @@ const ResourceCoursewarePage = () => {
   const columns: ColumnsType<DataType> = [
     {
       title: "课件名称",
-      width: 300,
+      // width: 300,
       render: (_, record: any) => (
         <div className="d-flex">
           {/* icon-icon-file */}
@@ -138,32 +138,34 @@ const ResourceCoursewarePage = () => {
     },
     {
       title: "课件格式",
-      width: 180,
+      width: '9%',
       dataIndex: "type",
       render: (type: string) => <span>{type}</span>,
     },
     {
       title: "课件大小",
-      width: 180,
+      width: '9%',
       dataIndex: "size",
       render: (size: number) => <span>{(size / 1024 / 1024).toFixed(2)}M</span>,
     },
     {
       title: "创建人",
-      width: 180,
+      width: '9%',
       dataIndex: "admin_id",
       render: (text: number) =>
         JSON.stringify(adminUsers) !== "{}" && <span>{adminUsers[text]}</span>,
     },
     {
       title: "创建时间",
-      width: 280,
+      // width: '13.4%',
+      width: 150,
       dataIndex: "created_at",
       render: (text: string) => <span>{dateFormat(text)}</span>,
     },
     {
       title: "最低学时（分钟）",
-      width: 340,
+      // width: '13.7%',
+      width: 150,
       dataIndex: "period",
       render: (text: string) => <span>{text}</span>,
     },
@@ -171,7 +173,6 @@ const ResourceCoursewarePage = () => {
       title: "操作",
       key: "action",
       fixed: "right",
-      width: 180,
       render: (_, record: any) => {
         return (
           <Space size="small">
