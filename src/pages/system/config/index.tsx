@@ -345,7 +345,7 @@ const SystemConfigPage = () => {
               </div>
             </Form.Item>
           )}
-          <Form.Item
+          {/* <Form.Item
             style={{ marginBottom: 30 }}
             label="API访问地址"
             name="system.api_url"
@@ -365,7 +365,7 @@ const SystemConfigPage = () => {
             name="system.h5_url"
           >
             <Input style={{ width: 274 }} placeholder="请填写H5学员端地址" />
-          </Form.Item>
+          </Form.Item> */}
           <Form.Item
             style={{ marginBottom: 30 }}
             label="学员端标题"
@@ -618,166 +618,166 @@ const SystemConfigPage = () => {
         </Form>
       ),
     },
-    {
-      key: "4",
-      label: `MinIO存储`,
-      children: (
-        <Form
-          form={form}
-          name="IO-basic"
-          labelCol={{ span: 3 }}
-          wrapperCol={{ span: 21 }}
-          style={{ width: 1000, paddingTop: 30 }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          autoComplete="off"
-        >
-          <Form.Item
-            style={{ marginBottom: 30 }}
-            label="AccessKey"
-            name="minio.access_key"
-          >
-            <Input
-              style={{ width: 274 }}
-              allowClear
-              placeholder="请填写AccessKey"
-            />
-          </Form.Item>
-          <Form.Item
-            style={{ marginBottom: 30 }}
-            label="SecretKey"
-            name="minio.secret_key"
-          >
-            <Input
-              style={{ width: 274 }}
-              allowClear
-              placeholder="请填写SecretKey"
-            />
-          </Form.Item>
-          <Form.Item
-            style={{ marginBottom: 30 }}
-            label="Bucket"
-            name="minio.bucket"
-          >
-            <Input
-              style={{ width: 274 }}
-              allowClear
-              placeholder="请填写Bucket"
-            />
-          </Form.Item>
-          <Form.Item
-            style={{ marginBottom: 30 }}
-            label="Endpoint"
-            name="minio.endpoint"
-          >
-            <Input
-              style={{ width: 274 }}
-              allowClear
-              placeholder="请填写Endpoint"
-            />
-          </Form.Item>
-          <Form.Item
-            style={{ marginBottom: 30 }}
-            label="Domain"
-            name="minio.domain"
-          >
-            <Input
-              style={{ width: 274 }}
-              allowClear
-              placeholder="请填写Domain"
-            />
-          </Form.Item>
-          <Form.Item
-            style={{ marginBottom: 30 }}
-            wrapperCol={{ offset: 3, span: 21 }}
-          >
-            <Button type="primary" htmlType="submit" loading={loading}>
-              保存
-            </Button>
-          </Form.Item>
-        </Form>
-      ),
-    },
-    {
-      key: "5",
-      label: `LDAP配置`,
-      children: (
-        <Form
-          form={form}
-          name="LDAP-basic"
-          labelCol={{ span: 3 }}
-          wrapperCol={{ span: 21 }}
-          style={{ width: 1000, paddingTop: 30 }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          autoComplete="off"
-        >
-          <Form.Item
-            style={{ marginBottom: 30 }}
-            label="启用"
-            name="ldap.enabled"
-            valuePropName="checked"
-          >
-            <Switch onChange={onLDAPChange} />
-          </Form.Item>
-          <Form.Item style={{ marginBottom: 30 }} label="服务地址">
-            <Space align="baseline" style={{ height: 32 }}>
-              <Form.Item name="ldap.url">
-                <Input
-                  style={{ width: 274 }}
-                  allowClear
-                  placeholder="请填写服务地址"
-                />
-              </Form.Item>
-              <div className="helper-text">
-                （LDAP的对外服务地址。例如：ldap://ldap.example.com:389）
-              </div>
-            </Space>
-          </Form.Item>
-          <Form.Item style={{ marginBottom: 30 }} label="用户名">
-            <Space align="baseline" style={{ height: 32 }}>
-              <Form.Item name="ldap.admin_user">
-                <Input
-                  style={{ width: 274 }}
-                  allowClear
-                  placeholder="请填写用户名"
-                />
-              </Form.Item>
-              <div className="helper-text">
-                （用户登录到LDAP。例子：cn=admin,dc=playedu,dc=xyz）
-              </div>
-            </Space>
-          </Form.Item>
-          <Form.Item
-            style={{ marginBottom: 30 }}
-            name="ldap.admin_pass"
-            label="密码"
-          >
-            <Input style={{ width: 274 }} allowClear placeholder="请填写密码" />
-          </Form.Item>
-          <Form.Item style={{ marginBottom: 30 }} label="基本DN">
-            <Space align="baseline" style={{ height: 32 }}>
-              <Form.Item name="ldap.base_dn">
-                <Input
-                  style={{ width: 274 }}
-                  allowClear
-                  placeholder="请填写基本DN"
-                />
-              </Form.Item>
-              <div className="helper-text">（从此节点搜索用户）</div>
-            </Space>
-          </Form.Item>
-          <Form.Item
-            style={{ marginBottom: 30 }}
-            wrapperCol={{ offset: 3, span: 21 }}
-          >
-            <Button type="primary" htmlType="submit" loading={loading}>
-              保存
-            </Button>
-          </Form.Item>
-        </Form>
-      ),
-    },
+    // {
+    //   key: "4",
+    //   label: `MinIO存储`,
+    //   children: (
+    //     <Form
+    //       form={form}
+    //       name="IO-basic"
+    //       labelCol={{ span: 3 }}
+    //       wrapperCol={{ span: 21 }}
+    //       style={{ width: 1000, paddingTop: 30 }}
+    //       onFinish={onFinish}
+    //       onFinishFailed={onFinishFailed}
+    //       autoComplete="off"
+    //     >
+    //       <Form.Item
+    //         style={{ marginBottom: 30 }}
+    //         label="AccessKey"
+    //         name="minio.access_key"
+    //       >
+    //         <Input
+    //           style={{ width: 274 }}
+    //           allowClear
+    //           placeholder="请填写AccessKey"
+    //         />
+    //       </Form.Item>
+    //       <Form.Item
+    //         style={{ marginBottom: 30 }}
+    //         label="SecretKey"
+    //         name="minio.secret_key"
+    //       >
+    //         <Input
+    //           style={{ width: 274 }}
+    //           allowClear
+    //           placeholder="请填写SecretKey"
+    //         />
+    //       </Form.Item>
+    //       <Form.Item
+    //         style={{ marginBottom: 30 }}
+    //         label="Bucket"
+    //         name="minio.bucket"
+    //       >
+    //         <Input
+    //           style={{ width: 274 }}
+    //           allowClear
+    //           placeholder="请填写Bucket"
+    //         />
+    //       </Form.Item>
+    //       <Form.Item
+    //         style={{ marginBottom: 30 }}
+    //         label="Endpoint"
+    //         name="minio.endpoint"
+    //       >
+    //         <Input
+    //           style={{ width: 274 }}
+    //           allowClear
+    //           placeholder="请填写Endpoint"
+    //         />
+    //       </Form.Item>
+    //       <Form.Item
+    //         style={{ marginBottom: 30 }}
+    //         label="Domain"
+    //         name="minio.domain"
+    //       >
+    //         <Input
+    //           style={{ width: 274 }}
+    //           allowClear
+    //           placeholder="请填写Domain"
+    //         />
+    //       </Form.Item>
+    //       <Form.Item
+    //         style={{ marginBottom: 30 }}
+    //         wrapperCol={{ offset: 3, span: 21 }}
+    //       >
+    //         <Button type="primary" htmlType="submit" loading={loading}>
+    //           保存
+    //         </Button>
+    //       </Form.Item>
+    //     </Form>
+    //   ),
+    // },
+    // {
+    //   key: "5",
+    //   label: `LDAP配置`,
+    //   children: (
+    //     <Form
+    //       form={form}
+    //       name="LDAP-basic"
+    //       labelCol={{ span: 3 }}
+    //       wrapperCol={{ span: 21 }}
+    //       style={{ width: 1000, paddingTop: 30 }}
+    //       onFinish={onFinish}
+    //       onFinishFailed={onFinishFailed}
+    //       autoComplete="off"
+    //     >
+    //       <Form.Item
+    //         style={{ marginBottom: 30 }}
+    //         label="启用"
+    //         name="ldap.enabled"
+    //         valuePropName="checked"
+    //       >
+    //         <Switch onChange={onLDAPChange} />
+    //       </Form.Item>
+    //       <Form.Item style={{ marginBottom: 30 }} label="服务地址">
+    //         <Space align="baseline" style={{ height: 32 }}>
+    //           <Form.Item name="ldap.url">
+    //             <Input
+    //               style={{ width: 274 }}
+    //               allowClear
+    //               placeholder="请填写服务地址"
+    //             />
+    //           </Form.Item>
+    //           <div className="helper-text">
+    //             （LDAP的对外服务地址。例如：ldap://ldap.example.com:389）
+    //           </div>
+    //         </Space>
+    //       </Form.Item>
+    //       <Form.Item style={{ marginBottom: 30 }} label="用户名">
+    //         <Space align="baseline" style={{ height: 32 }}>
+    //           <Form.Item name="ldap.admin_user">
+    //             <Input
+    //               style={{ width: 274 }}
+    //               allowClear
+    //               placeholder="请填写用户名"
+    //             />
+    //           </Form.Item>
+    //           <div className="helper-text">
+    //             （用户登录到LDAP。例子：cn=admin,dc=playedu,dc=xyz）
+    //           </div>
+    //         </Space>
+    //       </Form.Item>
+    //       <Form.Item
+    //         style={{ marginBottom: 30 }}
+    //         name="ldap.admin_pass"
+    //         label="密码"
+    //       >
+    //         <Input style={{ width: 274 }} allowClear placeholder="请填写密码" />
+    //       </Form.Item>
+    //       <Form.Item style={{ marginBottom: 30 }} label="基本DN">
+    //         <Space align="baseline" style={{ height: 32 }}>
+    //           <Form.Item name="ldap.base_dn">
+    //             <Input
+    //               style={{ width: 274 }}
+    //               allowClear
+    //               placeholder="请填写基本DN"
+    //             />
+    //           </Form.Item>
+    //           <div className="helper-text">（从此节点搜索用户）</div>
+    //         </Space>
+    //       </Form.Item>
+    //       <Form.Item
+    //         style={{ marginBottom: 30 }}
+    //         wrapperCol={{ offset: 3, span: 21 }}
+    //       >
+    //         <Button type="primary" htmlType="submit" loading={loading}>
+    //           保存
+    //         </Button>
+    //       </Form.Item>
+    //     </Form>
+    //   ),
+    // },
   ];
 
   const onChange = (key: string) => {
