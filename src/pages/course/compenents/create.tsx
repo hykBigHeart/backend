@@ -90,6 +90,7 @@ export const CourseCreate: React.FC<PropInterface> = ({
       isRequired: 1,
       short_desc: "",
       purview: 1,
+      status: 1,
       hasChapter: 0,
     });
     setThumb(defaultThumb1);
@@ -238,7 +239,9 @@ export const CourseCreate: React.FC<PropInterface> = ({
     if (type === "elective") {
       dep_ids = values.dep_ids;
     }
-    if (chapters.length === 0 && treeData.length === 0) {
+    
+    let isSomeEmpty = chapters.length ? chapters.some(item=> item.hours.length === 0) : true
+    if (isSomeEmpty && !treeData.length) {
       message.error("请添加课件");
       return;
     }
@@ -252,7 +255,7 @@ export const CourseCreate: React.FC<PropInterface> = ({
       chapters.reduce((acc, item, index) => {
         const filteredHours = item.hours.filter(hour => hour.type !== "VIDEO").map(hour => ({ ...hour, chapter_id: index }));
         attachmentsList.push(...filteredHours);
-        item.hours = item.hours.filter(hour => hour.type === "VIDEO");
+        // item.hours = item.hours.filter(hour => hour.type === "VIDEO");
         item.attachments = item.attachments.filter(hour => hour.type !== "VIDEO");
         if (item.hours.length > 0 || item.attachments.length > 0) {
             acc.push(item);
@@ -287,10 +290,12 @@ export const CourseCreate: React.FC<PropInterface> = ({
         dep_ids,
         values.category_ids,
         chapters,
-        hoursList,  // treeData,
+        // 上传的附件和视频的数据放在视频的参数数组里
+        hoursList.concat(attachmentsList),  // treeData,
         attachmentsList, // attachmentData,
         values.effective_day,
         values.purview,
+        values.status,
         attachmentsList.length + hoursList.length + allhours.length
       )
       .then((res: any) => {
@@ -928,6 +933,16 @@ export const CourseCreate: React.FC<PropInterface> = ({
                 <Radio.Group>
                   <Radio value={1}>公开</Radio>
                   <Radio value={0} style={{ marginLeft: 22 }}>非公开</Radio>
+                </Radio.Group>
+              </Form.Item>
+              <Form.Item
+                label="课程状态"
+                name="status"
+                rules={[{ required: true, message: "请选择课程状态!" }]}
+              >
+                <Radio.Group>
+                  <Radio value={1}>启用</Radio>
+                  <Radio value={0} style={{ marginLeft: 22 }}>禁用</Radio>
                 </Radio.Group>
               </Form.Item>
                 {/* <Form.Item label="课程附件">

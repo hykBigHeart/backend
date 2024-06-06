@@ -241,7 +241,8 @@ const CourseUserPage = () => {
       "",
       name,
       email,
-      idCard
+      idCard,
+      false
     )
       .then((res: any) => {
         setTotal(res.data.total);

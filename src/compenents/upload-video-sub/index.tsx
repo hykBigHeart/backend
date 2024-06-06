@@ -161,7 +161,9 @@ export const UploadVideoSub = (props: PropsInterface) => {
                 name: row[i].name,
                 type: row[i].type,
                 rid: row[i].id,
-                period: row[i].period
+                period: row[i].period,
+                // 附件的时常默认给 0 （后端约定）
+                duration: 0
               });
             }
           }

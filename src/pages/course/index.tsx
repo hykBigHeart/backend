@@ -84,6 +84,7 @@ const CoursePage = () => {
 
   const [createVisible, setCreateVisible] = useState(false);
   const [updateVisible, setUpdateVisible] = useState(false);
+  const [drawerTitle, setDrawerTitle] = useState('编辑课程');
   const [updateHourVisible, setHourUpdateVisible] = useState(false);
   const [updateAttachmentVisible, setUpdateAttachmentVisible] = useState(false);
   const [cid, setCid] = useState(0);
@@ -180,12 +181,18 @@ const CoursePage = () => {
       render: (purview: number) => <Tag color={purview ? 'success' : 'error'}>{purview ? '公开' : '非公开'}</Tag>,
     },
     {
+      title: "课程状态",
+      width: '12%',
+      dataIndex: "status",
+      render: (status: number) => <Tag color={status ? 'success' : 'error'}>{status ? '启用' : '禁用'}</Tag>,
+    },
+    {
       title: "课程分类",
       width: '15%',
       dataIndex: "id",
       render: (id: number) => (
         <div className="float-left" style={{width: '80%'}}>
-          {course_category_ids[id].map((item: any, index: number) => {
+          {course_category_ids[id]?.map((item: any, index: number) => {
             return (
               <span key={index}>
                 {index === course_category_ids[id].length - 1
@@ -318,7 +325,9 @@ const CoursePage = () => {
               disabled={null}
             />
             <div className="form-column"></div>
-            <Button type="link" size="small" className="b-n-link c-red" onClick={() => { setCid(Number(record.id)); setUpdateVisible(true); }}>编辑</Button>
+            <Button type="link" size="small" className="b-n-link c-red" onClick={() => { setCid(Number(record.id)); setDrawerTitle('复制课程'); setUpdateVisible(true); }}>复制</Button>
+            <div className="form-column"></div>
+            <Button type="link" size="small" className="b-n-link c-red" onClick={() => { setCid(Number(record.id)); setDrawerTitle('编辑课程'); setUpdateVisible(true); }}>编辑</Button>
               <div className="form-column"></div>
               <Button type="link" size="small" className="b-n-link c-red" onClick={() => delItem(record.id)}>删除</Button>
             {/* <Dropdown menu={{ items }}>
@@ -543,20 +552,22 @@ const CoursePage = () => {
             />
             <CourseUpdate
               id={cid}
+              drawerTitle={drawerTitle}
               open={updateVisible}
               onCancel={() => {
                 setUpdateVisible(false);
                 setRefresh(!refresh);
               }}
             />
-            <CourseAttachmentUpdate
+            {/* 之前的逻辑 */}
+            {/* <CourseAttachmentUpdate
               id={cid}
               open={updateAttachmentVisible}
               onCancel={() => {
                 setUpdateAttachmentVisible(false);
                 setRefresh(!refresh);
               }}
-            />
+            /> */}
           </div>
         </div>
       </div>

@@ -39,6 +39,7 @@ export function storeCourse(
   attachments: any[],
   effectiveDay: number,
   purview: number,
+  status: number,
   coursewareNum: number
 ) {
   return client.post("/backend/v1/course/create", {
@@ -54,6 +55,7 @@ export function storeCourse(
     attachments: attachments,
     effective_day: effectiveDay,
     purview,
+    status,
     class_hour: coursewareNum
   });
 }
@@ -71,12 +73,14 @@ export function updateCourse(
   isRequired: number,
   depIds: number[],
   categoryIds: number[],
-  chapters: number[],
-  hours: number[],
+  chapters: any[],
+  hours: any[],
   publishedAt: string,
   effectiveDay: number,
   purview: number,
-  coursewareNum: number
+  status: number,
+  coursewareNum: number,
+  reset: number
 ) {
   return client.put(`/backend/v1/course/${id}`, {
     title: title,
@@ -91,7 +95,9 @@ export function updateCourse(
     published_at: publishedAt,
     effective_day: effectiveDay,
     purview,
-    class_hour: coursewareNum
+    status,
+    class_hour: coursewareNum,
+    reset
   });
 }
 
@@ -108,7 +114,8 @@ export function courseUser(
   sortAlgo: string,
   name: string,
   email: string,
-  idCard: string
+  idCard: string,
+  copy: boolean
 ) {
   return client.get(`/backend/v1/course/${courseId}/user/index`, {
     page: page,
@@ -118,6 +125,7 @@ export function courseUser(
     name: name,
     email: email,
     id_card: idCard,
+    copy
   });
 }
 
