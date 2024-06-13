@@ -58,6 +58,7 @@ export const CourseCreate: React.FC<PropInterface> = ({
   const [init, setInit] = useState(true);
   const [departments, setDepartments] = useState<Option[]>([]);
   const [categories, setCategories] = useState<Option[]>([]);
+  const [labels, setLabels] = useState<Option[]>([]);
   const [thumb, setThumb] = useState("");
   const [type, setType] = useState("open");
   const [chapterType, setChapterType] = useState(0);
@@ -166,6 +167,13 @@ export const CourseCreate: React.FC<PropInterface> = ({
       setCategories(new_arr);
     }
 
+    // 标签数据
+    const labels = res.data.labels;
+    if (JSON.stringify(labels) !== "{}") {
+      const new_arr: any = checkArr(labels, 0, null);
+      setLabels(new_arr);
+    }
+    
     if (cateIds.length !== 0 && cateIds[0] !== 0) {
       let item = checkChild(res.data.categories, cateIds[0]);
       let arr: any[] = [];
@@ -180,12 +188,30 @@ export const CourseCreate: React.FC<PropInterface> = ({
         });
         arr.push(cateIds[0]);
       }
+
+      // 标签相关
+      let item1 = checkChild(res.data.labels, cateIds[0]);
+      let arr1: any[] = [];
+      if (item1 === undefined) {
+        arr1.push(cateIds[0]);
+      } else if (item1.parent_chain === "") {
+        arr1.push(cateIds[0]);
+      } else {
+        let new_arr1 = item1.parent_chain.split(",");
+        new_arr1.map((num: any) => {
+          arr1.push(Number(num));
+        });
+        arr1.push(cateIds[0]);
+      }
+
       form.setFieldsValue({
         category_ids: arr,
+        label_ids: arr1
       });
     } else {
       form.setFieldsValue({
         category_ids: cateIds,
+        label_ids: cateIds
       });
     }
   };
@@ -289,6 +315,7 @@ export const CourseCreate: React.FC<PropInterface> = ({
         0, // values.isRequired,
         dep_ids,
         values.category_ids,
+        values.label_ids,
         chapters,
         // 上传的附件和视频的数据放在视频的参数数组里
         hoursList.concat(attachmentsList),  // treeData,
@@ -925,6 +952,21 @@ export const CourseCreate: React.FC<PropInterface> = ({
                     maxLength={200}
                   />
                 </Form.Item>
+                <Form.Item
+                label="课程标签"
+                name="label_ids"
+                rules={[{ required: true, message: "请选择课程标签!" }]}
+              >
+                <TreeSelect
+                  showCheckedStrategy={TreeSelect.SHOW_ALL}
+                  allowClear
+                  multiple
+                  style={{ width: 424 }}
+                  treeData={labels}
+                  placeholder="请选择课程标签"
+                  treeDefaultExpandAll
+                />
+              </Form.Item>
                 <Form.Item
                 label="课程权限"
                 name="purview"

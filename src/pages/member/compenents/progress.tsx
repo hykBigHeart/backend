@@ -49,7 +49,8 @@ export const MemberLearnProgressDialog: React.FC<PropInterface> = ({
     }
     setLoading(true);
     member.learnCoursesProgress(uid, id, {}).then((res: any) => {
-      setList([...res.data.hours, ...res.data.attachments]);
+      // setList([...res.data.hours, ...res.data.attachments]);
+      setList(res.data.hours);
       setRecords(Object.assign(res.data.learn_records, res.data.attach_learn_records));
       setLoading(false);
     });

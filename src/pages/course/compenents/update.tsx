@@ -75,6 +75,7 @@ export const CourseUpdate: React.FC<PropInterface> = ({
   const [loading, setLoading] = useState(false);
   const [departments, setDepartments] = useState<Option[]>([]);
   const [categories, setCategories] = useState<Option[]>([]);
+  const [labels, setLabels] = useState<Option[]>([]);
   const [thumb, setThumb] = useState("");
   const [type, setType] = useState("open");
 
@@ -113,6 +114,8 @@ export const CourseUpdate: React.FC<PropInterface> = ({
   // 编辑进来原始已存在的课件id（用于判断用户有没有对课件进行CRU）
   const [rawHours, setRawHours] = useState<number[]>([]);
   const [rawChapterHours, setRawChapterHours] = useState<any>([]);
+  const [rawTreeData, setRawTreeData] = useState<CourseHourModel[]>([]);
+  const [rawChapters, setRawChapters] = useState<CourseChaptersModel[]>([]);
   const [resetPopupVisible, setResetPopupVisible] = useState<boolean>(false);
 
   useEffect(() => {
@@ -151,6 +154,13 @@ export const CourseUpdate: React.FC<PropInterface> = ({
         const new_arr: any = checkArr(categories, 0, null);
         setCategories(new_arr);
       }
+
+    // 标签数据
+      const labels = res.data.labels;
+      if (JSON.stringify(labels) !== "{}") {
+        const new_arr: any = checkArr(labels, 0, null);
+        setLabels(new_arr);
+      }
     });
   };
   const getParams = () => {
@@ -174,6 +184,7 @@ export const CourseUpdate: React.FC<PropInterface> = ({
         thumb: res.data.course.thumb,
         dep_ids: res.data.dep_ids,
         category_ids: res.data.category_ids,
+        label_ids: res.data.label_ids,
         isRequired: res.data.course.is_required,
         type: type,
         short_desc: res.data.course.short_desc,
@@ -207,12 +218,14 @@ export const CourseUpdate: React.FC<PropInterface> = ({
           arr.push({
             id: chapters[i].id,
             name: chapters[i].name,
-            hours: resetHours([...(Object.keys(hours).length === 0 ? [] : hours[chapters[i].id] ? hours[chapters[i].id] : []), ...siftAttachments]).arr,
+            hours: resetHours([...(Object.keys(hours).length === 0 ? [] : hours[chapters[i].id] ? hours[chapters[i].id] : []), ...siftAttachments], 0).arr,
           });
-          keys.push(resetHours([...(Object.keys(hours).length === 0 ? [] : hours[chapters[i].id] ? hours[chapters[i].id] : []), ...siftAttachments]).keys);
+          keys.push(resetHours([...(Object.keys(hours).length === 0 ? [] : hours[chapters[i].id] ? hours[chapters[i].id] : []), ...siftAttachments], 0).keys);
         }
         setChapters(arr);
         setChapterHours(keys);
+
+        setRawChapters(JSON.parse(JSON.stringify(arr)));
         setRawChapterHours(JSON.parse(JSON.stringify(keys)))
       } else {  //  无章节（附件和视频可以共同展示了）
         setChapters([]);
@@ -220,10 +233,12 @@ export const CourseUpdate: React.FC<PropInterface> = ({
         setRawChapterHours([])
         if (JSON.stringify(hours) !== "{}" || attachments.length) {
           let mergeAttachmentsHoursArr = [...(Object.keys(hours).length === 0 ? [] : hours[0]), ...attachments]
-          const arr: any = resetHours(mergeAttachmentsHoursArr).arr;
-          const keys: any = resetHours(mergeAttachmentsHoursArr).keys;
+          const arr: any = resetHours(mergeAttachmentsHoursArr, 0).arr;
+          const keys: any = resetHours(mergeAttachmentsHoursArr, 0).keys;
           setTreeData(arr);
           setHours(keys);
+          
+          setRawTreeData(arr);
           setRawHours(keys)
         } else {
           setTreeData([]);
@@ -318,7 +333,8 @@ export const CourseUpdate: React.FC<PropInterface> = ({
     return current && current >= moment().add(0, "days"); // 选择时间要大于等于当前天。若今天不能被选择，去掉等号即可。
   };
 
-  const resetHours = (data: any) => {
+  // 添加课件的时候需要对次功能做些扩展 type 1 无章节添加，type 2 有章节添加，type 0 初始化
+  const resetHours = (data: any, type: number) => {
     const arr: any = [];
     const keys: any = [];
     if (data) {
@@ -328,7 +344,11 @@ export const CourseUpdate: React.FC<PropInterface> = ({
           type: data[i].type,
           name: data[i].title,
           rid: data[i].rid,
-          id: data[i].id,
+          id: type === 1 ? 
+            rawTreeData.filter(item=> item.rid == data[i].rid).length ? rawTreeData.filter(item=> item.rid == data[i].rid)[0].id : data[i].id 
+          : type === 2 ? 
+            rawChapters.map(item=> item.hours).flat().filter(item=> item.rid == data[i].rid).length ? rawChapters.map(item=> item.hours).flat().filter(item=> item.rid == data[i].rid)[0].id : data[i].id
+          : data[i].id
         });
         keys.push(data[i].rid);
       }
@@ -650,11 +670,11 @@ export const CourseUpdate: React.FC<PropInterface> = ({
       message.error("请选择课件");
       return;
     }
-    
-    const arr: any = resetHours(selectedCourseware).arr
-    const keys: any = resetHours(selectedCourseware).keys
-    let chapterType = chapters.length > 0 ? 1 : 0;
-    if (chapterType === 1) {  //  有章节
+  
+    let chapterType = chapters.length > 0 ? 2 : 1;
+    const arr: any = resetHours(selectedCourseware, chapterType).arr
+    const keys: any = resetHours(selectedCourseware, chapterType).keys
+    if (chapterType === 2) {  //  有章节
       for (let i = 0; i < chapters.length; i++) {
         if (i === addvideoCurrent) {
           chapters[addvideoCurrent].hours = [...chapters[addvideoCurrent].hours, ...arr]
@@ -702,6 +722,7 @@ export const CourseUpdate: React.FC<PropInterface> = ({
         0, // values.isRequired,
         [],
         values.category_ids,
+        values.label_ids,
         // 章节
         chapters,
         treeData,
@@ -871,6 +892,7 @@ export const CourseUpdate: React.FC<PropInterface> = ({
         0, // values.isRequired,
         [],
         values.category_ids,
+        values.label_ids,
         chapters,
         // 上传的附件和视频的数据放在视频的参数数组里
         treeData,  // treeData,
@@ -1205,10 +1227,10 @@ export const CourseUpdate: React.FC<PropInterface> = ({
                     </div>
                   </div>
                 </Form.Item>
-                <div className={styles["top-content"]}>
+                {/* <div className={styles["top-content"]}>
                   <p>1.线上课课时调整及时生效，操作不可逆，请谨慎操作。</p>
                   <p>2.课时调整后，已有学习进度会在学员学习时重新计算。</p>
-                </div>
+                </div> */}
                 <Form.Item
                   label="课件列表"
                   name="hasChapter"
@@ -1278,6 +1300,21 @@ export const CourseUpdate: React.FC<PropInterface> = ({
                     maxLength={200}
                   />
                 </Form.Item>
+                <Form.Item
+                  label="课程标签"
+                  name="label_ids"
+                  rules={[{ required: true, message: "请选择课程标签!" }]}
+                >
+                  <TreeSelect
+                    showCheckedStrategy={TreeSelect.SHOW_ALL}
+                    allowClear
+                    multiple
+                    style={{ width: 424 }}
+                    treeData={labels}
+                    placeholder="请选择课程标签"
+                    treeDefaultExpandAll
+                  />
+                </Form.Item>
                 <Form.Item label="课程权限" name="purview" rules={[{ required: true, message: "请选择课程权限!" }]}>
                   <Radio.Group>
                     <Radio value={1}>公开</Radio>
@@ -1333,7 +1370,11 @@ export const CourseUpdate: React.FC<PropInterface> = ({
             </div>
 
             {/* 重置弹窗 */}
-            <Modal title="提示" centered forceRender open={resetPopupVisible} width={416} okText="重置" cancelText="不重置" onOk={() => { saveApi(1); setResetPopupVisible(false) }} onCancel={() => { saveApi(2); setResetPopupVisible(false) }} maskClosable={false}>
+            <Modal title="提示" centered forceRender open={resetPopupVisible} width={416} okText="重置" cancelText="不重置" onOk={() => { saveApi(1); setResetPopupVisible(false) }} onCancel={() => { saveApi(2); setResetPopupVisible(false) }} maskClosable={false}
+              closeIcon={
+                <span onClick={(e)=> { setResetPopupVisible(false); e.stopPropagation()}}>&times;</span>
+              }
+              >
               <p>您已对课程中的课件进行修改，对于已完成课程学习的学员，是否重置学员学习记录？</p>
             </Modal>
           </div>

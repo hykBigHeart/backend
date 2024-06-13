@@ -18,6 +18,8 @@ const ChangePasswordPage = lazy(() => import("../pages/change-password"));
 const ResourceCategoryPage = lazy(
   () => import("../pages/resource/resource-category")
 );
+//标签管理
+const LabelManagementPage = lazy(() => import("../pages/label-management"));
 const ResourceImagesPage = lazy(() => import("../pages/resource/images"));
 const ResourceVideosPage = lazy(() => import("../pages/resource/videos"));
 const ResourceCoursewarePage = lazy(
@@ -98,6 +100,10 @@ const routes: RouteObject[] = [
           {
             path: "/resource-category",
             element: <PrivateRoute Component={<ResourceCategoryPage />} />,
+          },
+          {
+            path: "/label-management",
+            element: <PrivateRoute Component={<LabelManagementPage />} />,
           },
           {
             path: "/images",

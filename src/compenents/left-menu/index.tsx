@@ -40,6 +40,14 @@ const items = [
     "resource-category-menu"
   ),
   getItem(
+    "标签管理",
+    "/label-management",
+    <i className="iconfont icon-icon-category" />,
+    null,
+    null,
+    "resource-category-menu"
+  ),
+  getItem(
     "资源管理",
     "resource",
     <i className="iconfont icon-icon-file" />,
@@ -109,6 +117,7 @@ export const LeftMenu: React.FC = () => {
     "^/courseware": ["resource"],
     "^/member": ["user"],
     "^/department": ["user"],
+    "^/group": ["user"],
     "^/course": ["courses"],
     "^/system": ["system"],
   };
