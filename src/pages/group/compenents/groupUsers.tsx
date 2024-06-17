@@ -98,6 +98,7 @@ export const GroupUsers: React.FC<PropInterface> = ({
 
   const getData = ()=> {
     setLoading(true)
+    setSelectedRowKeys([])
     group.groupUsers(groupId, page, size).then((res: any) => {
       // console.log('res',res);
       if (!res.data.data.length && page > 1) {
@@ -231,7 +232,23 @@ export const GroupUsers: React.FC<PropInterface> = ({
             </div>
           }
         >
-          <Table rowSelection={{type: "checkbox", ...rowSelection}} loading={loading} columns={columns} dataSource={list} rowKey={(record) => record.id} pagination={paginationProps} scroll={{y: 670}}/>
+          <Table rowSelection={{type: "checkbox", ...rowSelection}} loading={loading} columns={columns} dataSource={list} rowKey={(record) => record.id} pagination={paginationProps} scroll={{y: 670}}
+
+            onRow={(record) => {
+              return {
+                onClick: (event) => {
+                  const newSelectedRowKeys = [...selectedRowKeys];
+                  const index = selectedRowKeys.indexOf(record.id);
+                  if (index >= 0) {
+                    newSelectedRowKeys.splice(index, 1);
+                  } else {
+                    newSelectedRowKeys.push(record.id);
+                  }
+                  rowSelection.onChange(newSelectedRowKeys, [])
+                },
+              };
+            }}
+            />
           <SelectUsers open={selectUsersVisible} triggerSource={triggerValue} groupId={groupId} groupName={groupName} onCancel={() => { setSelectUsersVisible(false); setRefresh(!refresh) }}/>
         </Drawer>
       ) : null}

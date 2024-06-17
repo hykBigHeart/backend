@@ -68,6 +68,7 @@ export const SelectUsers = (props: PropsInterface) => {
   const [pureTotal, setPureTotal] = useState(0);
   const [depUserCount, setDepUserCount] = useState<KeyNumberObject>();
   const [selectedRowKeys, setSelectedRowKeys] = useState<Key[]>([]);
+  const [selectedRows, setSelectedRows] = useState<any>([]);
   const [echoSelectedRowKeys, setEchoSelectedRowKeys] = useState<Key[]>([]);
   const [disabledRowKeys, setDisabledRowKeys] = useState<Key[]>([]);
   const [participateType, setParticipateType] = useState<any>(2);
@@ -111,6 +112,13 @@ export const SelectUsers = (props: PropsInterface) => {
       else getGroupData()
     }
   }, [refresh, page, size, dep_ids]);
+
+  useEffect(() => {
+    if (list.length) {
+      let result = list.filter((item: any) => selectedRowKeys.includes(item.id));
+      setSelectedRows(result)
+    }
+  }, [list])
 
   const onSelect = (selectedKeys: any, info: any) => {
     setSelectKey(selectedKeys);
@@ -164,7 +172,7 @@ export const SelectUsers = (props: PropsInterface) => {
         setLoading(false);
       });
     } else {
-      group.addPeople(props.groupId, props.groupName, selectedRowKeys).then((res: any) => {
+      group.addPeople(props.groupId, props.groupName, Array.from(new Set([...echoSelectedRowKeys, ...selectedRowKeys]))).then((res: any) => {
         setDepIds([0])
         setLoading(false);
         // resetData()
@@ -185,7 +193,6 @@ export const SelectUsers = (props: PropsInterface) => {
       student_course_status: participateType,
       dep_ids: dep_ids.join(","),
     }).then((res: any) => {
-      // console.log('res23',res)
       setList(res.data.data);
       setDepartments(res.data.departments);
       setUserDepIds(res.data.user_dep_ids);
@@ -226,40 +233,41 @@ export const SelectUsers = (props: PropsInterface) => {
 
   // rowSelection object indicates the need for row selection
   const rowSelection = {
-    selectedRowKeys,
+    // selectedRowKeys: selectedRowKeys.length ? selectedRowKeys : selectedRowKeys,
+    selectedRowKeys: [...echoSelectedRowKeys, ...selectedRowKeys],
     onChange: (selectedRowKeyList: React.Key[], selectedRows: DataType[], info: any) => {
-      // console.log(`selectedRowKeyList: ${selectedRowKeyList}`, 'selectedRows: ', selectedRows, 'info', info);
+      // console.log(`selectedRowKeyList: ${selectedRowKeyList}`, 'selectedRows: ', selectedRows, 'info', info, 'echoSelectedRowKeys', echoSelectedRowKeys);
       if (info.type == 'all' && selectedRowKeyList.length) {
         let uniqueKeys = Array.from(new Set(selectedRowKeys.concat( selectedRowKeyList )))
         setSelectedRowKeys(uniqueKeys)
+        setSelectedRows(selectedRows)
       }
       //  取消全选
-      if (info.type == 'all' && !selectedRowKeyList.length) {
+      let allKeysIncludeKeys = selectedRowKeyList.every(key => echoSelectedRowKeys.includes(key));
+      if ( (info.type == 'all' && !selectedRowKeyList.length) || allKeysIncludeKeys ) {
         let currKeys = list.map(item=> item.id)
         // console.log('curr' ,currKeys);
         // console.log('selectedRowKeys', selectedRowKeys);
         let uniqueKeys =  selectedRowKeys.filter(item => !currKeys.includes(item))
         // console.log('nui', uniqueKeys);
         setSelectedRowKeys(uniqueKeys)
+        setSelectedRows(selectedRows)
       }
-
-      // console.log('selectedRowKeys', selectedRowKeys, 'info', info);
-      // setSelectedRowKeys(uniqueKeys)
-      // setSelectedRowKeys(selectedRowKeyList)
     },
-    onSelect: (selected: any, selectedRows: boolean, changeRows: DataType[]) => {
+    onSelect: (record: any, selected: boolean, changeRows: DataType[]) => {
+      // console.log('record', record);
       // console.log('selected', selected);
-      // console.log('selectedRows', selectedRows);
       // console.log('changeRows', changeRows);
       let uniqueKeys = Array.from(new Set(selectedRowKeys.concat( changeRows.filter(item=> item !== undefined).map(item=> item.id) )))
       // console.log('sdf', uniqueKeys);
       
-      if (!selectedRows) uniqueKeys = uniqueKeys.filter(item=> item != selected.id)
+      if (!selected) uniqueKeys = uniqueKeys.filter(item=> item != record.id)
       // console.log('uni', uniqueKeys);
       setSelectedRowKeys(uniqueKeys)
+      setSelectedRows(changeRows)
     },
     getCheckboxProps: (record: DataType) => ({
-      // disabled: !(disabledRowKeys.findIndex(i=> i === record.id) === -1), // Column configuration not to be checked
+      disabled: !(echoSelectedRowKeys.findIndex(i=> i === record.id) === -1), // Column configuration not to be checked
       name: record.name,
     })
   };
@@ -427,7 +435,25 @@ export const SelectUsers = (props: PropsInterface) => {
                   <Button type="primary" onClick={() => { resetLocalSearchParams({ page: 1, }); setRefresh(!refresh); }} >查 询</Button>
                 </div>
               </div>
-              <Table rowSelection={{type: "checkbox", ...rowSelection}} loading={loading} columns={ props.triggerSource === 'course-group' ? groupColumns : props.triggerSource === 'course-department' ? columns1 : columns } dataSource={list} rowKey={(record) => record.id} pagination={paginationProps} scroll={{y: 425}}/>
+              <Table rowSelection={{type: "checkbox", ...rowSelection}} loading={loading} columns={ props.triggerSource === 'course-group' ? groupColumns : props.triggerSource === 'course-department' ? columns1 : columns } dataSource={list} rowKey={(record) => record.id} pagination={paginationProps} scroll={{y: 425}}
+
+                onRow={(record) => {
+                  return {
+                    onClick: (event) => {
+                      if (echoSelectedRowKeys.indexOf(record.id) >= 0) return
+
+                      const newSelectedRows = [...selectedRows];
+                      const index = selectedRows.findIndex((item: any) => item?.id === record.id);
+                      if (index >= 0) {
+                        newSelectedRows.splice(index, 1);
+                      } else {
+                        newSelectedRows.push(record);
+                      }
+                      rowSelection.onSelect(record, index === -1, newSelectedRows)
+                    },
+                  };
+                }}
+                />
             </Col>
           </Row>
         </Modal>

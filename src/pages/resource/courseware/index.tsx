@@ -180,8 +180,9 @@ const ResourceCoursewarePage = () => {
               type="link"
               size="small"
               className="b-n-link c-red"
-              onClick={() => {
-                 previewFile(record.url, record.type, record.name);
+              onClick={(e) => {
+                previewFile(record.url, record.type, record.name);
+                e.stopPropagation()
               }}
             >
               预览
@@ -191,8 +192,9 @@ const ResourceCoursewarePage = () => {
               type="link"
               size="small"
               className="b-n-link c-red"
-              onClick={() => {
+              onClick={(e) => {
                 downLoadFile(record.url);
+                e.stopPropagation()
               }}
             >
               下载
@@ -201,9 +203,10 @@ const ResourceCoursewarePage = () => {
             <Button
               type="link"
               className="b-link c-red"
-              onClick={() => {
+              onClick={(e) => {
                 setUpdateId(record.id);
                 setUpdateVisible(true);
+                e.stopPropagation()
               }}
             >
               编辑
@@ -212,7 +215,7 @@ const ResourceCoursewarePage = () => {
             <Button
               type="link"
               className="b-link c-red"
-              onClick={() => removeResource(record.id)}
+              onClick={(e) => { removeResource(record.id); e.stopPropagation() }}
             >
               删除
             </Button>
@@ -237,6 +240,7 @@ const ResourceCoursewarePage = () => {
   };
 
   const rowSelection = {
+    selectedRowKeys,
     onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
       setSelectedRowKeys(selectedRowKeys);
     },
@@ -355,7 +359,8 @@ const ResourceCoursewarePage = () => {
                 {multiConfig ? "取消操作" : "批量操作"}
               </Button>
               <Button
-                type="default"
+                type="primary"
+                danger
                 className="ml-16"
                 onClick={() => removeResourceMulti()}
                 disabled={selectedRowKeys.length === 0}
@@ -414,6 +419,20 @@ const ResourceCoursewarePage = () => {
                 loading={loading}
                 pagination={paginationProps}
                 rowKey={(record) => record.id}
+                onRow={(record) => {
+                  return {
+                    onClick: (event) => {
+                      const newSelectedRowKeys = [...selectedRowKeys];
+                      const index = selectedRowKeys.indexOf(record.id);
+                      if (index >= 0) {
+                        newSelectedRowKeys.splice(index, 1);
+                      } else {
+                        newSelectedRowKeys.push(record.id);
+                      }
+                      rowSelection.onChange(newSelectedRowKeys, [])
+                    },
+                  };
+                }}
               />
             ) : (
               <Table

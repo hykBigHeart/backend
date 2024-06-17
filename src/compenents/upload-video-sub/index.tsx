@@ -48,6 +48,7 @@ export const UploadVideoSub = (props: PropsInterface) => {
   const [size, setSize] = useState(10);
   const [total, setTotal] = useState(0);
   const [selectedRowKeys, setSelectedRowKeys] = useState<any>([]);
+  const [selectedRow, setSelectedRow] = useState<any>([]);
   const [title, setTitle] = useState("");
 
   // 加载列表
@@ -58,6 +59,7 @@ export const UploadVideoSub = (props: PropsInterface) => {
 
   useEffect(() => {
     if (props.defaultCheckedList.length > 0) {
+      // 一顿点击行选中确定后，再打开课件弹窗。keys会有重复的（但不影响功能，后续可以调查一下原因）
       setSelectedRowKeys(props.defaultCheckedList);
     }
   }, [props.defaultCheckedList]);
@@ -72,6 +74,10 @@ export const UploadVideoSub = (props: PropsInterface) => {
         setTotal(res.data.result.total);
         setVideoExtra(res.data.videos_extra);
         setVideoList(res.data.result.data);
+        
+        let result = res.data.result.data.filter((item: any) => props.defaultCheckedList.includes(item.id));
+        setSelectedRow(result)
+
         setLoading(false);
         setInit(false);
       })
@@ -141,7 +147,11 @@ export const UploadVideoSub = (props: PropsInterface) => {
   ];
 
   const rowSelection = {
-    selectedRowKeys: selectedRowKeys,
+    /* 
+      selectedRowKeys: selectedRowKeys
+      之前上面这种如果第二页全选再取消，会清空（页面上就没有选中状态了）。所以需要做了些处理
+     */ 
+    selectedRowKeys: selectedRowKeys.length ? [...selectedRowKeys, ...props.defaultCheckedList] : props.defaultCheckedList,
     onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
       let row: any = selectedRows;
       let arrVideos: any = [];
@@ -171,6 +181,7 @@ export const UploadVideoSub = (props: PropsInterface) => {
         props.onSelected(selectedRowKeys, arrVideos);
       }
       setSelectedRowKeys(selectedRowKeys);
+      setSelectedRow(selectedRows)
     },
     getCheckboxProps: (record: any) => ({
       disabled: props.defaultCheckedList.indexOf(record.id) !== -1, //禁用的条件
@@ -250,6 +261,26 @@ export const UploadVideoSub = (props: PropsInterface) => {
                   loading={loading}
                   pagination={paginationProps}
                   rowKey={(record) => record.id}
+
+                  onRow={(record) => {
+                    return {
+                      onClick: (event) => {
+                        if (props.defaultCheckedList.indexOf(record.id) >= 0) return
+                        
+                        const newSelectedRowKeys = [...selectedRowKeys];
+                        const newSelectedRows = [...selectedRow];
+                        const index = selectedRowKeys.indexOf(record.id);
+                        if (index >= 0) {
+                          newSelectedRowKeys.splice(index, 1);
+                          newSelectedRows.splice(index, 1);
+                        } else {
+                          newSelectedRowKeys.push(record.id);
+                          newSelectedRows.push(record);
+                        }
+                        rowSelection.onChange(newSelectedRowKeys, newSelectedRows)
+                      },
+                    };
+                  }}
                 />
               </div>
             )}

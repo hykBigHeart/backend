@@ -449,6 +449,20 @@ const CourseUserPage = () => {
               loading={loading}
               pagination={paginationProps}
               rowKey={(record) => record.id}
+              onRow={(record) => {
+                return {
+                  onClick: (event) => {
+                    const newSelectedRowKeys = [...selectedRowKeys];
+                    const index = selectedRowKeys.indexOf(record.id);
+                    if (index >= 0) {
+                      newSelectedRowKeys.splice(index, 1);
+                    } else {
+                      newSelectedRowKeys.push(record.id);
+                    }
+                    rowSelection.onChange(newSelectedRowKeys, [])
+                  },
+                };
+              }}
             />
           </div>
         </Col>

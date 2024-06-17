@@ -1032,7 +1032,7 @@ export const CourseUpdate: React.FC<PropInterface> = ({
                 }}
                 type="primary"
               >
-                {drawerTitle === '复制课程' && steps ? '完 成' : drawerTitle === '编辑课程' ? '确 认' : '保存并复制学员'}
+                {drawerTitle === '复制课程' && steps ? '完 成' : drawerTitle === '编辑课程' ? '保 存' : '保存并复制学员'}
               </Button>
             </Space>
           }

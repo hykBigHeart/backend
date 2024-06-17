@@ -589,7 +589,7 @@ export const CourseCreate: React.FC<PropInterface> = ({
                 onClick={() => form.submit()}
                 type="primary"
               >
-                确 认
+                保 存
               </Button>
             </Space>
           }
