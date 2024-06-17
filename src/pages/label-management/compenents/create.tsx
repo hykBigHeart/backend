@@ -171,7 +171,7 @@ export const LabelCreate: React.FC<PropInterface> = ({
                 <Input
                   style={{ width: 200 }}
                   allowClear
-                  placeholder="请输入分类名称"
+                  placeholder="请输入标签名称"
                 />
               </Form.Item>
             </Form>

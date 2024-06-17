@@ -246,7 +246,7 @@ const ResourceCategoryPage = () => {
     confirm({
       title: "操作确认",
       icon: <ExclamationCircleFilled />,
-      content: "确认删除此分类？",
+      content: "确认删除此标签？",
       centered: true,
       okText: "确认",
       cancelText: "取消",

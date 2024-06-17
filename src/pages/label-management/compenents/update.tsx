@@ -23,7 +23,7 @@ export const LabelUpdate: React.FC<PropInterface> = ({
   const [form] = Form.useForm();
   const [init, setInit] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [categories, setCategories] = useState<any>([]);
+  const [labels, setLabels] = useState<any>([]);
   const [parent_id, setParentId] = useState<number>(0);
   const [sort, setSort] = useState<number>(0);
 
@@ -36,14 +36,14 @@ export const LabelUpdate: React.FC<PropInterface> = ({
 
   const getParams = () => {
     labelManagement.createResourceCategory().then((res: any) => {
-      const categories = res.data.categories;
-      if (JSON.stringify(categories) !== "{}") {
-        const new_arr: Option[] = checkArr(categories, 0);
+      const labels = res.data.labels;
+      if (JSON.stringify(labels) !== "{}") {
+        const new_arr: Option[] = checkArr(labels, 0);
         new_arr.unshift({
           label: "作为一级分类",
           value: 0,
         });
-        setCategories(new_arr);
+        setLabels(new_arr);
       }
       if (id === 0) {
         return;
@@ -70,19 +70,19 @@ export const LabelUpdate: React.FC<PropInterface> = ({
     });
   };
 
-  const checkArr = (categories: any[], id: number) => {
+  const checkArr = (labels: any[], id: number) => {
     const arr = [];
-    for (let i = 0; i < categories[id].length; i++) {
-      if (!categories[categories[id][i].id]) {
+    for (let i = 0; i < labels[id].length; i++) {
+      if (!labels[labels[id][i].id]) {
         arr.push({
-          label: categories[id][i].name,
-          value: categories[id][i].id,
+          label: labels[id][i].name,
+          value: labels[id][i].id,
         });
       } else {
-        const new_arr: Option[] = checkArr(categories, categories[id][i].id);
+        const new_arr: Option[] = checkArr(labels, labels[id][i].id);
         arr.push({
-          label: categories[id][i].name,
-          value: categories[id][i].id,
+          label: labels[id][i].name,
+          value: labels[id][i].id,
           children: new_arr,
         });
       }
@@ -179,7 +179,7 @@ export const LabelUpdate: React.FC<PropInterface> = ({
                   allowClear
                   placeholder="请选择所属上级"
                   onChange={handleChange}
-                  options={categories}
+                  options={labels}
                   changeOnSelect
                   expand-trigger="hover"
                   displayRender={displayRender}
@@ -188,12 +188,12 @@ export const LabelUpdate: React.FC<PropInterface> = ({
               <Form.Item
                 label="分类名称"
                 name="name"
-                rules={[{ required: true, message: "请输入分类名称!" }]}
+                rules={[{ required: true, message: "请输入标签名称!" }]}
               >
                 <Input
                   style={{ width: 200 }}
                   allowClear
-                  placeholder="请输入分类名称"
+                  placeholder="请输入标签名称"
                 />
               </Form.Item>
             </Form>
